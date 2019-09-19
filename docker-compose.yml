@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: lsppmi_backend
+    tty: true
+    environment:
+      SERVICE_NAME: lsppmi_backend
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+    networks:
+      - default
+
+#Docker Networks
+networks:
+  default:
+    external:
+      name: db_network
+
