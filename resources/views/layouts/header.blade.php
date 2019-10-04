@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <!-- begin::Head -->
 <head>
 
@@ -33,7 +34,6 @@
     <!--end::Page Vendors Styles -->
 
     <!--begin::Global Theme Styles(used by all pages) -->
-{{--    <link href="{{ Storage::url('vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />--}}
     <link href="{{ asset('assets/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ Storage::url('css/demo7/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
@@ -46,7 +46,3 @@
 </head>
 
 <!-- end::Head -->
-<!-- begin::Body -->
-<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-aside--minimize kt-page--loading">
-
-<!-- begin:: Page -->
