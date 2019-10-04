@@ -10,6 +10,7 @@ services:
     environment:
       SERVICE_NAME: lsppmi_backend
       SERVICE_TAGS: dev
+      GOOGLE_APPLICATION_CREDENTIALS: /var/www/storage/app/lsppmi-storage.json
     working_dir: /var/www
     privileged: true
     cap_add:

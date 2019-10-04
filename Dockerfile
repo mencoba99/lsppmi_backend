@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y fuse openrc vim-tiny \
 
 ADD docker/nginx/ /etc/nginx/
 ADD docker/supervisor/conf.d/lsppmi-backend.conf /etc/supervisor/conf.d/lsppmi-backend.conf
+ADD storage/app/gcp-key.json /var/www/storage/app/lsppmi-storage.json
 #ADD docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 ADD . /var/www/

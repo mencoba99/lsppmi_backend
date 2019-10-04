@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'DashboardController@index')->name('dashboard');
+Route::get('login', 'DashboardController@login')->name('login');
+Route::post('login-process', 'DashboardController@loginProcess')->name('login.proses');
+Route::get('logout', 'DashboardController@logout')->name('logout');
