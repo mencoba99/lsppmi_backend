@@ -25,7 +25,7 @@ class CreateProgramsTable extends Migration
             $table->string('name');
             $table->timestamps();
 
-            $table->foreign('province_id')->references('id')->on('provinces');            
+            $table->foreign('province_id')->references('id')->on('provinces');
         });
 
         Schema::create('program_type', function (Blueprint $table) {
@@ -39,16 +39,32 @@ class CreateProgramsTable extends Migration
         Schema::create('competence_places', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('regency_id');
+            $table->integer('province_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('address');
             $table->text('contact');
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            $table->tinyInteger('status')->default(1); // 1=Active, 0=Inactive
+            $table->tinyInteger('status')->default(1)->comment('1=Active, 0=Inactive'); // 1=Active, 0=Inactive
             $table->timestamps();
 
             $table->foreign('regency_id')->references('id')->on('regencies');
+            $table->foreign('province_id')->references('id')->on('provinces');
+        });
+
+        // Untuk Assesor
+        Schema::create('assessors', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('email');
+            $table->text('profile')->nullable();
+            $table->string('mobile_phone', 32)->nullable();
+            $table->string('company')->nullable();
+            $table->string('position')->nullable();
+            $table->tinyInteger('status')->default(1)->comment('1=Active, 0=Inactive');
+            $table->jsonb('assessment_ability'); // Program-program apa saja yang bisa di assess oleh assessor
+            $table->timestamps();
         });
 
         Schema::create('programs', function (Blueprint $table) {
@@ -59,7 +75,8 @@ class CreateProgramsTable extends Migration
             $table->string('abbreviation_id');
             $table->string('abbreviation_en');
             $table->text('description')->nullable();
-            $table->integer('min_competence')->default(1);
+            $table->integer('min_competence')->default(1); // Amount of Mandatory competence
+            $table->integer('opt_competence')->default(1); // Amount of Optional competence
             $table->integer('level')->default(1);
             $table->jsonb('type'); // {"direct": ["cbt", "obs"]} / {"indirect": ["obs"]}
             $table->tinyInteger('status')->default(1); // Active/Inactive
@@ -117,6 +134,7 @@ class CreateProgramsTable extends Migration
             $table->integer('competence_place_id');
             $table->integer('price');
             $table->integer('min_participants')->default(1);
+            $table->integer('max_participants')->default(1); // Set 0 for unlimited
             $table->decimal('training_duration', 5, 1);
             $table->decimal('exam_duration', 5, 1);
             $table->tinyInteger('is_hidden')->default(0); // 0=Show, 1=hidden
@@ -145,5 +163,6 @@ class CreateProgramsTable extends Migration
         Schema::dropIfExists('competence_places');
         Schema::dropIfExists('regencies');
         Schema::dropIfExists('provinces');
+        Schema::dropIfExists('assessors');
     }
 }
