@@ -37,7 +37,7 @@ class CreateMembersTable extends Migration
             $table->string('company_fax')->nullable();
             $table->string('company_email')->nullable();
             $table->tinyInteger('status')->default(1);
-            $table->dateTime('verified_at');
+            $table->dateTime('verified_at')->nullable();
             $table->timestamps();
         });
 
