@@ -43,7 +43,8 @@ class CreateProgramsTable extends Migration
             $table->text('description')->nullable();
             $table->string('address');
             $table->text('contact');
-            $table->point('position')->nullable(); // Latitude, Longitude here
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->tinyInteger('status')->default(1); // 1=Active, 0=Inactive
             $table->timestamps();
 
@@ -67,7 +68,7 @@ class CreateProgramsTable extends Migration
             $table->foreign('program_type_id')->references('id')->on('program_type');
         });
 
-        Schema::create('competence_unit', function (Blueprint $table) {
+        Schema::create('competence_units', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code');
             $table->string('name');
