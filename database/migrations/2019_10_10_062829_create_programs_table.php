@@ -39,7 +39,6 @@ class CreateProgramsTable extends Migration
         Schema::create('competence_places', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('regency_id');
-            $table->integer('province_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('address');
@@ -78,7 +77,7 @@ class CreateProgramsTable extends Migration
             $table->integer('min_competence')->default(1); // Amount of Mandatory competence
             $table->integer('opt_competence')->default(1); // Amount of Optional competence
             $table->integer('level')->default(1);
-            $table->jsonb('type'); // {"direct": ["cbt", "obs"]} / {"indirect": ["obs"]}
+            $table->jsonb('type'); // {"type":"direct","methods":["cbt","interview"]}
             $table->tinyInteger('status')->default(1); // Active/Inactive
             $table->timestamps();
 
