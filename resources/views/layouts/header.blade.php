@@ -32,6 +32,8 @@
     <link href="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Page Vendors Styles -->
+    
+    @stack('styles')
 
     <!--begin::Global Theme Styles(used by all pages) -->
     <link href="{{ asset('assets/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
