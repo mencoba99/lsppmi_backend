@@ -15,7 +15,7 @@
             </div>
           </div>
           <!--begin::Form-->
-          {!! Form::open(['route' => 'assesor.store', 'class' => 'kt-form kt-form--fit kt-form--label-right', 'id' => 'form_create_asssesor', 'files'=> true]) !!}
+          {!! Form::open(['url' => route('assesor.update', $assesor->id), 'method' => 'put', 'class' => 'kt-form kt-form--fit kt-form--label-right', 'files'=> true]) !!}
             <div class="kt-portlet__body">
               <div class="form-group row">
                 <label class="col-lg-2 col-form-label">Nama *</label>

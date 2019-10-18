@@ -72,7 +72,7 @@ class AssesorController extends Controller
         }
 
         if ($success_trans == true) {
-            return redirect()->route('assesor');
+            return redirect()->route('assesor.index');
         }
     }
 
@@ -109,7 +109,28 @@ class AssesorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'nama' => 'required',
+            'email' => 'required',
+            'telepon' => 'required'
+        ]);
+        
+        $assesor = Assesor::find($id);
+        $data = [
+            'name'          => $request->nama,
+            'email'         => $request->email,
+            'telephone'     => $request->telepon,
+            'institution'   => $request->institusi,
+            'position'      => $request->jabatan
+        ];
+        $assesor->update($data);
+
+        // Session::flash("flash_notification", [
+        //     "level"=>"success",
+        //     "message"=>"Berhasil menyimpan $assesor->name"
+        // ]);
+
+        return redirect()->route('assesor.index');
     }
 
     /**
@@ -144,7 +165,8 @@ class AssesorController extends Controller
             ]);
             return datatables($assesor)
                         ->addColumn('action', function($assesor) {
-                            $btn_action = '<a href="' . route('assesor.edit', $assesor->id) .'" class="btn btn-outline-brand">Edit</a>&nbsp;';
+                            $btn_action = '<a href="' . route('assesor.edit', $assesor->id) .'" class="btn btn-outline-primary">Edit</a> ';
+                            $btn_action .= '<a href="' . route('assesor.destroy', $assesor->id) .'" class="btn btn-outline-danger">Delete</a> ';
                             return $btn_action;
                         })
                         ->toJson();

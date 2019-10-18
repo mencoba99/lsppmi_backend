@@ -22,7 +22,9 @@ Route::get('logout', 'DashboardController@logout')->name('logout');
 |--------------------------------------------------------------------------
 */
 Route::get('assesor/ajax_datatable', 'ManajemenKelas\AssesorController@ajax_datatable')->name('assesor.ajax_datatable');
-Route::get('assesor', 'ManajemenKelas\AssesorController@index')->name('assesor');
-Route::get('assesor/create', 'ManajemenKelas\AssesorController@create')->name('assesor.create');
-Route::post('assesor/store', 'ManajemenKelas\AssesorController@store')->name('assesor.store');
-Route::get('assesor/{id}/edit', 'ManajemenKelas\AssesorController@edit')->name('assesor.edit');
+// Route::get('assesor', 'ManajemenKelas\AssesorController@index')->name('assesor');
+// Route::get('assesor/create', 'ManajemenKelas\AssesorController@create')->name('assesor.create');
+// Route::post('assesor/store', 'ManajemenKelas\AssesorController@store')->name('assesor.store');
+// Route::get('assesor/{id}/edit', 'ManajemenKelas\AssesorController@edit')->name('assesor.edit');
+// Route::post('assesor/update', 'ManajemenKelas\AssesorController@update')->name('assesor.update');
+Route::resource('assesor', 'ManajemenKelas\AssesorController');
