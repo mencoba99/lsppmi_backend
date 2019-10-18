@@ -1,0 +1,114 @@
+//
+// Base
+//
+
+
+
+
+// Body
+body {
+	background-size: cover;
+    background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-color: $kt-page-body-bg-color;
+}
+
+// Page Wrapper
+.kt-body {
+	box-shadow: 0px 2px 15px 0px rgba(0,0,0,0.02);
+	background-color: $kt-page-content-bg-color;
+
+	@include kt-rounded {
+		border-bottom-left-radius: $kt-border-radius;
+		border-bottom-right-radius: $kt-border-radius;
+	}
+}
+
+// Page Fixed Mode(above $kt-page-container-width)
+@include kt-page-fixed-mode {
+	// Container
+	.kt-container {
+		width: $kt-page-container-width;
+		margin: 0 auto;
+	}
+
+	.kt-wrapper {
+		padding: 0 $kt-page-fluid-container-padding;
+	}
+
+	// Page Fluid 
+	.kt-page--fluid {
+		.kt-container {
+			width: 100%;
+		} 
+	}
+}
+
+// Page fluid mode(below $kt-page-container-width)
+@include kt-page-fluid-mode {
+	.kt-wrapper {
+		padding: 0 kt-get($kt-page-padding, desktop);
+	}
+
+	// Page Container
+	.kt-container {
+		width: 100%;
+	}
+}
+
+// Desktop
+@include kt-desktop() {
+	// Page Wrapper
+	.kt-wrapper {
+		// Fixed header mode
+		.kt-header--fixed & {
+			padding-top: kt-get($kt-header-config, base, desktop, default, height, top);
+		}
+
+		// Fixed and minimized header mode 
+		.kt-header--fixed.kt-header--minimize & {
+			padding-top: kt-get($kt-header-config, base, desktop, fixed, height);
+		}
+	}
+}
+
+// Tablet & Mobile Mode(1024px and below)
+@include kt-tablet-and-mobile() {
+	// Body
+	body {
+		//background-color: $kt-page-content-bg-color;
+	}
+
+	// Page wrapper
+	.kt-wrapper {
+		padding: 0 kt-get($kt-page-padding, mobile);
+	
+		// Fixed header
+		.kt-header-mobile--fixed & {
+			padding-top: kt-get($kt-header-config, base, mobile, self, default, height);
+		}
+	}
+
+	// Body Wrapper
+	.kt-body {
+		//background-color: $kt-page-content-bg-color;
+		background-color: $kt-page-body-bg-color;
+		box-shadow: none;
+
+		@include kt-rounded {
+			border-top-left-radius: $kt-border-radius;
+			border-top-right-radius: $kt-border-radius;
+		}		
+	}
+
+	// Subheader
+	.kt-subheader {
+		padding: 10px 0 !important;
+	}
+
+	// Page container
+	.kt-container {
+		width: 100%;
+		padding: 0;
+	}
+}

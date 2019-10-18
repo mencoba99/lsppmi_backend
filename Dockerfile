@@ -16,12 +16,12 @@ WORKDIR /var/www
 RUN touch storage/logs/laravel.log \
 && mkdir -p bootstrap/cache \
 && chmod -R 777 /var/www/storage \
-&& chmod -R 777 bootstrap/cache
+&& chmod -R 777 bootstrap/cache 
 #&& rm -rf /etc/nginx/sites-available/default \
 #&& ln -sf /dev/stderr /var/log/nginx/error.log \
 #&& ln -sf /dev/stdout /var/log/nginx/access.log \
 #&& ln -sf /dev/stdout /var/www/storage/logs/laravel.log \
 #&& ln -sf /dev/stderr /var/www/storage/logs/laravel.log \
 #&& ln -sf /dev/stdout /var/www/storage/logs/laravel.log
-
+ 
 RUN composer install

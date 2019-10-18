@@ -441,7 +441,7 @@
 {{--                Default--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo1.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo1.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo1/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -452,7 +452,7 @@
 {{--                Demo 2--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo2.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo2.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo2/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -463,7 +463,7 @@
 {{--                Demo 3--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo3.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo3.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo3/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -474,7 +474,7 @@
 {{--                Demo 4--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo4.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo4.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo4/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -485,7 +485,7 @@
 {{--                Demo 5--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo5.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo5.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo5/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -496,7 +496,7 @@
 {{--                Demo 6--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo6.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo6.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo6/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -507,7 +507,7 @@
 {{--                Demo 7--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo7.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo7.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo7/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -518,7 +518,7 @@
 {{--                Demo 8--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo8.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo8.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo8/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -529,7 +529,7 @@
 {{--                Demo 9--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo9.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo9.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo9/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -540,7 +540,7 @@
 {{--                Demo 10--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo10.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo10.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo10/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -551,7 +551,7 @@
 {{--                Demo 11--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo11.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo11.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo11/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -562,7 +562,7 @@
 {{--                Demo 12--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo12.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo12.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="demo12/index.html" class="btn btn-brand btn-elevate " target="_blank">Preview</a>--}}
 {{--                </div>--}}
@@ -573,7 +573,7 @@
 {{--                Demo 13--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo13.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo13.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="#" class="btn btn-brand btn-elevate disabled">Coming soon</a>--}}
 {{--                </div>--}}
@@ -584,7 +584,7 @@
 {{--                Demo 14--}}
 {{--            </div>--}}
 {{--            <div class="kt-demo-panel__item-preview">--}}
-{{--                <img src="./assets/media/demos/preview/demo14.jpg" alt="" />--}}
+{{--                <img src="{{ url('/') }}/assets/media/demos/preview/demo14.jpg" alt="" />--}}
 {{--                <div class="kt-demo-panel__item-preview-overlay">--}}
 {{--                    <a href="#" class="btn btn-brand btn-elevate disabled">Coming soon</a>--}}
 {{--                </div>--}}
@@ -683,7 +683,7 @@
                                 <div class="kt-chat__message kt-bg-light-success">
                                     <div class="kt-chat__user">
 												<span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-													<img src="./assets/media/users/100_12.jpg" alt="image">
+													<img src="{{ url('/') }}/assets/media/users/100_12.jpg" alt="image">
 												</span>
                                         <a href="#" class="kt-chat__username">Jason Muller</span></a>
                                         <span class="kt-chat__datetime">2 Hours</span>
@@ -697,7 +697,7 @@
                                         <span class="kt-chat__datetime">30 Seconds</span>
                                         <a href="#" class="kt-chat__username">You</span></a>
                                         <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-													<img src="./assets/media/users/300_21.jpg" alt="image">
+													<img src="{{ url('/') }}/assets/media/users/300_21.jpg" alt="image">
 												</span>
                                     </div>
                                     <div class="kt-chat__text">
@@ -707,7 +707,7 @@
                                 <div class="kt-chat__message kt-bg-light-success">
                                     <div class="kt-chat__user">
 												<span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-													<img src="./assets/media/users/100_12.jpg" alt="image">
+													<img src="{{ url('/') }}/assets/media/users/100_12.jpg" alt="image">
 												</span>
                                         <a href="#" class="kt-chat__username">Jason Muller</span></a>
                                         <span class="kt-chat__datetime">30 Seconds</span>
@@ -721,7 +721,7 @@
                                         <span class="kt-chat__datetime">Just Now</span>
                                         <a href="#" class="kt-chat__username">You</span></a>
                                         <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-													<img src="./assets/media/users/300_21.jpg" alt="image">
+													<img src="{{ url('/') }}/assets/media/users/300_21.jpg" alt="image">
 												</span>
                                     </div>
                                     <div class="kt-chat__text">
@@ -731,7 +731,7 @@
                                 <div class="kt-chat__message kt-bg-light-success">
                                     <div class="kt-chat__user">
 												<span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-													<img src="./assets/media/users/100_12.jpg" alt="image">
+													<img src="{{ url('/') }}/assets/media/users/100_12.jpg" alt="image">
 												</span>
                                         <a href="#" class="kt-chat__username">Jason Muller</span></a>
                                         <span class="kt-chat__datetime">2 Hours</span>
@@ -745,7 +745,7 @@
                                         <span class="kt-chat__datetime">30 Seconds</span>
                                         <a href="#" class="kt-chat__username">You</span></a>
                                         <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-													<img src="./assets/media/users/300_21.jpg" alt="image">
+													<img src="{{ url('/') }}/assets/media/users/300_21.jpg" alt="image">
 												</span>
                                     </div>
                                     <div class="kt-chat__text">
@@ -755,7 +755,7 @@
                                 <div class="kt-chat__message kt-bg-light-success">
                                     <div class="kt-chat__user">
 												<span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-													<img src="./assets/media/users/100_12.jpg" alt="image">
+													<img src="{{ url('/') }}/assets/media/users/100_12.jpg" alt="image">
 												</span>
                                         <a href="#" class="kt-chat__username">Jason Muller</span></a>
                                         <span class="kt-chat__datetime">30 Seconds</span>
@@ -769,7 +769,7 @@
                                         <span class="kt-chat__datetime">Just Now</span>
                                         <a href="#" class="kt-chat__username">You</span></a>
                                         <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-													<img src="./assets/media/users/300_21.jpg" alt="image">
+													<img src="{{ url('/') }}/assets/media/users/300_21.jpg" alt="image">
 												</span>
                                     </div>
                                     <div class="kt-chat__text">

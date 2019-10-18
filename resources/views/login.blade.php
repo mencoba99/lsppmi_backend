@@ -46,7 +46,7 @@
     <link href="{{ Storage::url('css/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Layout Skins -->
-    <link rel="shortcut icon" href="./assets/media/logos/favicon.ico" />
+    <link rel="shortcut icon" href="{{ Storage::url('media/logos/lsppmi.ico') }}" />
 </head>
 
 <!-- end::Head -->
@@ -57,17 +57,18 @@
 <!-- begin:: Page -->
 <div class="kt-grid kt-grid--ver kt-grid--root">
     <div class="kt-grid kt-grid--hor kt-grid--root kt-login kt-login--v2 kt-login--signin" id="kt_login">
-        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url(./assets/media//bg/bg-1.jpg);">
+        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" >
             <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
                 <div class="kt-login__container">
                     <div class="kt-login__logo">
                         <a href="#">
-                            <img src="{{ Storage::url('media/logos/logo-mini-2-md.png') }}">
+                                <img alt="Logo" src="{{ Storage::url('media/logos/logo_lsppmi.png') }}" />
+                          
                         </a>
                     </div>
                     <div class="kt-login__signin">
                         <div class="kt-login__head">
-                            <h3 class="kt-login__title">Sign In To Admin</h3>
+                            <h3 class="kt-login__title" style="color:black;">Sign In To Admin</h3>
                         </div>
                         {!! Form::open(['route' => 'login.proses', 'method' => 'post', 'class' => 'kt-form', 'name'=>'loginForm']) !!}
                             <div class="input-group">
