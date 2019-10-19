@@ -28,7 +28,7 @@ class CreateProgramsTable extends Migration
             $table->foreign('province_id')->references('id')->on('provinces');
         });
 
-        Schema::create('program_type', function (Blueprint $table) {
+        Schema::create('program_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code');
             $table->string('name');
@@ -49,7 +49,6 @@ class CreateProgramsTable extends Migration
             $table->timestamps();
 
             $table->foreign('regency_id')->references('id')->on('regencies');
-            $table->foreign('province_id')->references('id')->on('provinces');
         });
 
         // Untuk Assesor
@@ -81,7 +80,7 @@ class CreateProgramsTable extends Migration
             $table->tinyInteger('status')->default(1); // Active/Inactive
             $table->timestamps();
 
-            $table->foreign('program_type_id')->references('id')->on('program_type');
+            $table->foreign('program_type_id')->references('id')->on('program_types');
         });
 
         Schema::create('competence_units', function (Blueprint $table) {
@@ -158,7 +157,7 @@ class CreateProgramsTable extends Migration
         Schema::dropIfExists('program_competence_unit');
         Schema::dropIfExists('competence_units');
         Schema::dropIfExists('programs');
-        Schema::dropIfExists('program_type');
+        Schema::dropIfExists('program_types');
         Schema::dropIfExists('competence_places');
         Schema::dropIfExists('regencies');
         Schema::dropIfExists('provinces');
