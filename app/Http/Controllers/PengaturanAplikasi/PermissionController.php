@@ -30,10 +30,10 @@ class PermissionController extends Controller
         $data = PermissionModel::with(['children'])->where('parent_id', 0)->get();
 
         $permissionJson = DataTables::collection($data)->addColumn('action', function (PermissionModel $permission) {
-            $action = "<a href='" . route('permission.edit', ['permission' => $permission]) . "' class='btn btn-xs btn-icon btn-clean btn-icon-sm' title='Edit'>
+            $action = "<a href='" . route('permission.edit', ['permission' => $permission]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm' title='Edit'>
                           <i class='la la-edit'></i>
                         </a>
-                        <a href='" . route('permission.delete', ['permission' => $permission]) . "' class='btn btn-xs btn-icon btn-clean btn-icon-sm delconfirm' title='Hapus'>
+                        <a href='" . route('permission.delete', ['permission' => $permission]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' title='Hapus'>
                           <i class='la la-trash'></i>
                         </a>";
 
@@ -112,7 +112,7 @@ class PermissionController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -122,7 +122,7 @@ class PermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param PermissionModel $permission
      * @return \Illuminate\Http\Response
      */
     public function edit(PermissionModel $permission)
@@ -157,11 +157,17 @@ class PermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param PermissionModel $permission
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function delete(PermissionModel $permission)
     {
-        //
+        if ($permission->delete()) {
+            flash()->success('Berhasil menghapus Permission');
+        } else {
+            flash()->error('Gagal menghapus permission');
+        }
+        return redirect()->route('permission.index');
     }
 }

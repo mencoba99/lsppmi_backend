@@ -30,20 +30,20 @@ class GeneralHelper
         if ($action['prefix']) {
             $actionArr = explode('/', $action['prefix']);
             if (count($actionArr) > 0) {
-                $text_1 = str_replace('-', ' ', $actionArr[0]);
-                $text_1 = ucwords($text_1);
-                $breadcrumb .= '<h3 class="kt-subheader__title">'.$text_1.'</h3>';
-                $subtext = Route::currentRouteName();
+                $text_1     = str_replace('-', ' ', $actionArr[0]);
+                $text_1     = ucwords($text_1);
+                $breadcrumb .= '<h3 class="kt-subheader__title">' . $text_1 . '</h3>';
+                $subtext    = Route::currentRouteName();
                 if ($subtext) {
                     $breadcrumb .= '<span class="kt-subheader__separator kt-hidden"></span>
                                     <div class="kt-subheader__breadcrumbs">
                                         <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>';
                     $subtextArr = explode('.', $subtext);
                     foreach ($subtextArr as $item) {
-                        $subtext_1 = str_replace('-',' ',$item);
-                        $subtext_1 = ucwords($subtext_1);
+                        $subtext_1  = str_replace('-', ' ', $item);
+                        $subtext_1  = ucwords($subtext_1);
                         $breadcrumb .= '<span class="kt-subheader__breadcrumbs-separator"></span>
-                                        <a href="" class="kt-subheader__breadcrumbs-link">'.$subtext_1.' </a>';
+                                        <a href="" class="kt-subheader__breadcrumbs-link">' . $subtext_1 . ' </a>';
                     }
                     $breadcrumb .= '</div>
                                 </div>';
@@ -57,8 +57,8 @@ class GeneralHelper
         $breadcrumb .= '<div class="kt-subheader__toolbar">
                             <div class="kt-subheader__wrapper">
                                 <a href="#" class="btn kt-subheader__btn-daterange" id="kt_dashboard_daterangepicker" data-toggle="kt-tooltip" title="Tanggal hari ini" data-placement="left">
-                                    <span class="kt-subheader__btn-daterange-title" id="kt_dashboard_daterangepicker_title">Hari ini </span>&nbsp;
-                                    <span class="kt-subheader__btn-daterange-date" id="kt_dashboard_daterangepicker_date">'. date('D, d F') .'</span>
+                                    <span class="kt-subheader__btn-daterange-title" id="kt_dashboard_daterangepicker_title">Hari ini </span>&nbsp;&nbsp;
+                                    <span class="kt-subheader__btn-daterange-date" id="kt_dashboard_daterangepicker_date">' . date('D, d F') . '</span>
                 
                                     <!--<i class="flaticon2-calendar-1"></i>-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon kt-svg-icon--sm">
@@ -73,5 +73,36 @@ class GeneralHelper
                     </div>
                     <!-- end:: Subheader -->';
         return $breadcrumb;
+    }
+
+    /**
+     * Helper untuk Page Title dengan mengambil dari Route Prefix dan route name
+     *
+     * @param string $title
+     * @return string
+     */
+    public static function getPageTitle($title = '')
+    {
+        $prefix    = Route::current()->action['prefix'];
+        $actionArr = explode('/', $prefix);
+        if (count($actionArr) > 0) {
+            $text_1    = str_replace('-', ' ', $actionArr[0]);
+            $text_1    = ucwords($text_1);
+            $title .= $text_1;
+        }
+
+        $title .= ' - ';
+        $subtext    = Route::currentRouteName();
+        $subtextArr = explode('.', $subtext);
+        foreach ($subtextArr as $item) {
+            $subtext_1  = str_replace('-', ' ', $item);
+            $subtext_1  = ucwords($subtext_1);
+            $title .= $subtext_1." ";
+        }
+
+        if (!empty($title))
+            return $title;
+        else
+            return 'Dashboard';
     }
 }

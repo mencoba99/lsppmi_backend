@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PengaturanAplikasi;
 
+use App\Models\PermissionModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
@@ -19,16 +20,26 @@ class RoleController extends Controller
         return view('PengaturanAplikasi.RoleController.index');
     }
 
+    /**
+     * Method untuk retrieve data Role yang akan dikonsumsi oleh datatable pada halaman index
+     *
+     * @param DataTables $dataTables
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function getRoleData(DataTables $dataTables)
     {
         $roles = Role::query();
 
         $roleJson = $dataTables->eloquent($roles)->addColumn('action', function (Role $role) {
-            $action = "<a href='".route('role.edit',['role'=>$role])."' class='btn btn-sm btn-outline-info btn-icon btn-icon-sm' title='Edit'>
+            $action = "<a href='" . route('role.edit', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm' data-toggle='kt-tooltip' title='Edit' data-original-tooltip='Edit'>
                           <i class='la la-edit'></i>
                         </a>
-                        <a href='".route('role.delete',['role'=>$role])."' class='btn btn-sm btn-outline-danger btn-icon btn-icon-sm delconfirm' title='Edit'>
+                        <a href='" . route('role.delete', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' data-toggle='kt-tooltip' title='Hapus' data-original-tooltip='Hapus'>
                           <i class='la la-trash'></i>
+                        </a>
+                        <a href='" . route('role.permission', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Role Permission' data-original-title='Role Permission'>
+                          <i class='la la-lock'></i>
                         </a>";
 
             return $action;
@@ -60,7 +71,7 @@ class RoleController extends Controller
                                'name'       => 'required',
                                'guard_name' => 'required'
                            ]);
-        $role = Role::create(['name'=>$request->get('name')]);
+        $role = Role::create(['name' => $request->get('name')]);
         if ($role) {
             flash()->success('Sukses menambah data Role');
         } else {
@@ -106,7 +117,7 @@ class RoleController extends Controller
                                'guard_name' => 'required'
                            ]);
 
-        if ($role->update(['name'=>$request->get('name')])) {
+        if ($role->update(['name' => $request->get('name')])) {
             flash()->success('Sukses mengubah data Role');
         } else {
             flash()->error('Gagal mengubah data Role');
@@ -130,5 +141,43 @@ class RoleController extends Controller
         }
 
         return redirect()->route('role.index');
+    }
+
+    /**
+     * Method untuk menampilkan permission yang dimiliki role
+     *
+     * @param Role $role
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function permission(Role $role)
+    {
+        $permissions = PermissionModel::with(['children'])->where('parent_id', 0)->get();
+        return view('PengaturanAplikasi.RoleController.permission', compact('role', 'permissions'));
+    }
+
+    /**
+     * Method untuk menyimpan/update permission untuk role
+     *
+     * @param Request $request
+     * @param Role $role
+     * @param PermissionModel $permission
+     * @return array
+     */
+    public function permissionStore(Request $request, Role $role, PermissionModel $permission)
+    {
+        $state = $request->get('state');
+        $status = ['status'=>false];
+
+        if ($state == "true") {
+            $role->givePermissionTo($permission);
+            $status['status'] = true;
+            $status['action'] = 'attach';
+        } else {
+            $role->revokePermissionTo($permission);
+            $status['status'] = true;
+            $status['action'] = 'revoke';
+        }
+
+        echo json_encode($status,JSON_PRETTY_PRINT);
     }
 }

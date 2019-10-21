@@ -35,3 +35,12 @@ table > tbody > tr.shown td.details-control:before {
 table#kt_table_1 > tfoot{
     display: table-header-group;
 }
+
+/** Untuk Modal */
+@media (min-width: 1400px) {
+    .modal-dialog.modal-xl {
+        max-width: 90%; }
+}
+#mod-iframe-large .modal-body {
+    padding: 1px;
+}
