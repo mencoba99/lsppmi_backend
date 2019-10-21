@@ -10,6 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/tt', function () {
+    $cert = \App\MemberCertification::findOrFail(10);
+    \App\Jobs\CreateAPL02::dispatch($cert);
+    echo "string";
+    // $units = $cert->schedules->programs->units;
+    // foreach ($units as $k => $v) {
+    //     dd($v->kuk);
+    // }
+});
 
 Route::get('/', 'DashboardController@index')->name('dashboard');
 Route::get('login', 'DashboardController@login')->name('login');

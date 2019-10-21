@@ -46,7 +46,7 @@ class CreateMembersTable extends Migration
             $table->integer('member_id');
             $table->integer('program_schedule_id');
             $table->tinyInteger('payment_method_id')->default(1); // Default 1 = Bank Transfer
-            $table->tinyInteger('payment_file')->nullable();
+            $table->string('payment_file')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
 
