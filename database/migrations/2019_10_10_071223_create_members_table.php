@@ -37,7 +37,7 @@ class CreateMembersTable extends Migration
             $table->string('company_fax')->nullable();
             $table->string('company_email')->nullable();
             $table->tinyInteger('status')->default(1);
-            $table->dateTime('verified_at');
+            $table->dateTime('verified_at')->nullable();
             $table->timestamps();
         });
 
@@ -46,7 +46,7 @@ class CreateMembersTable extends Migration
             $table->integer('member_id');
             $table->integer('program_schedule_id');
             $table->tinyInteger('payment_method_id')->default(1); // Default 1 = Bank Transfer
-            $table->tinyInteger('payment_file')->nullable();
+            $table->string('payment_file')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
 
@@ -70,25 +70,25 @@ class CreateMembersTable extends Migration
         Schema::create('member_certification_apl_01', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('member_id');
-            $table->integer('program_unit_id');
+            $table->integer('program_competence_unit_id');
             $table->string('proof')->nullable(); // Bukti
             $table->tinyInteger('status')->default(1); // 1 = Memenuhi Syarat, 0 = Tidak memenuhi syarat
             $table->timestamps();
 
             $table->foreign('member_id')->references('id')->on('members');
-            $table->foreign('program_unit_id')->references('id')->on('program_units');
+            $table->foreign('program_competence_unit_id')->references('id')->on('program_competence_unit');
         });
 
         Schema::create('member_certification_apl_02', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('member_id');
-            $table->integer('program_kuk_id');
+            $table->integer('competence_kuk_id');
             $table->tinyInteger('is_competent')->default(1); // 1 = Kompeten, 0 = Belum Kompeten
             $table->string('proof')->nullable(); // Bukti
             $table->timestamps();
 
             $table->foreign('member_id')->references('id')->on('members');
-            $table->foreign('program_kuk_id')->references('id')->on('program_kuk');
+            $table->foreign('competence_kuk_id')->references('id')->on('competence_kuk');
         });
     }
 
