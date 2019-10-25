@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class KatProgram extends Migration
+class Submodul extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class KatProgram extends Migration
      */
     public function up()
     {
-        Schema::create('program_type', function (Blueprint $table) {
+        Schema::create('submodul', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code',10);
-            $table->string('nama',50);
-            $table->string('description',50);
+            $table->string('name',100);
+            $table->string('id_modul',10);
+            $table->string('description',255);
+            $table->string('status',1);
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
             $table->dateTime('deleted_at')->nullable();
@@ -31,6 +32,6 @@ class KatProgram extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('program_type');
+        Schema::dropIfExists('submodul');
     }
 }

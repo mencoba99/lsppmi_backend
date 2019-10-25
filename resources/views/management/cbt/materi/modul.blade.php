@@ -69,7 +69,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <form class="kt-form kt-form--label-right">
+                    <form id="form" class="kt-form kt-form--label-right">
                             <div class="kt-portlet__body">
                                 <div class="kt-section kt-section--first">
                                     
@@ -79,48 +79,39 @@
                                             <div class="col-lg-6">
                                                 {!! Form::text('modul_nm',null,['id'=>'modul_nm','class'=>'form-control ','required'=>'required']) !!}
                                                 {!! Form::text('modul_id',null,['id'=>'modul_id','class'=>'form-control','hidden'=>'hidden']) !!}
-                                               <span class="form-text text-muted">Silahkan tulis nama modul yang akan diinput.</span>
+                                               
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Harga:</label>
-                                                <div class="col-lg-6">
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend"><span class="input-group-text" id="btnGroupAddon2">Rp.</span></div>
-                                                            {!! Form::number('harga',null,['id'=>'harga','class'=>'form-control ','required'=>'required']) !!}
-                                                        </div>
-                                                        <span class="form-text text-muted">Silahkan tulis harga yang akan diinput.</span>
-                                                </div>
-                                        </div>
-                                        <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Persentase Kelulusan:</label>
-                                                <div class="col-lg-6">
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend"><span class="input-group-text" id="btnGroupAddon2">Rp.</span></div>
+                                                <div class="col-lg-2">
+                                                        <div class="input-group right-text">
+                                                           
                                                             {!! Form::number('persentase_kelulusan',null,['id'=>'persentase_kelulusan','class'=>'form-control ','required'=>'required']) !!}
+                                                             <div class="input-group-prepend"><span class="input-group-text" id="btnGroupAddon2">%.</span></div>
                                                         </div>
-                                                        <span class="form-text text-muted">Silahkan tulis persentase kelulusan yang akan diinput.</span>
+                                                       
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Singkatan Eng:</label>
                                                 <div class="col-lg-6">
                                                     {!! Form::text('sing_eng',null,['id'=>'sing_eng','class'=>'form-control ','required'=>'required']) !!}
-                                                   <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
+                                                 
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Keterangan:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('kategori_desc',null,['id'=>'kategori_desc','class'=>'form-control ','required'=>'required']) !!}
-                                                   <span class="form-text text-muted">Silahkan tulis keterangan yang akan diinput.</span>
+                                                    {!! Form::textarea('modul_desc',null,['id'=>'modul_desc','class'=>'form-control ','required'=>'required']) !!}
+                                                  
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Status:</label>
                                             <div class="col-lg-6">
-                                                {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Level']) !!}
-                                               <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
+                                                {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
+                                              
                                             </div>
                                     </div>
                                     </div>
@@ -128,32 +119,20 @@
                                 </div>
                             </div>
                             
-                        </form>
-                {{-- <form id="form-provinsi">
-                    <div class="form-group row">
-                        <label for="recipient-name" class="form-control-label  col-lg-3 col-sm-12">Nama Provinsi:</label>
-                        <input type="text" class="form-control" name="nm_provinsi[]" id="provinsi_nm">
-                        <input type="text" class="form-control " style="display:none" name="id_provinsi[]" id="provinsi_id">
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3 col-sm-12">Remote Data:</label>
-                        
-                            <select class="form-control kt-select2" id="kt_select2_6" name="param">
-                                <option></option>
-                            </select>
                        
-                    </div>
-                </form> --}}
+               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="simpan" class="btn btn-primary">Simpan</button>
+                <button type="submit" id="simpan" class="btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
             </div>
+        </form>
         </div>
     </div>
 </div>
 
 @endsection
+
 
 @push('scripts')
   
@@ -162,8 +141,9 @@
     
     // Private functions
     var demos = function () {
-        // minimum setup
-        $('.kt-selectpicker').selectpicker();
+        $('.kt-selectpicker').selectpicker().change(function(){
+            $(this).valid()
+        });
     }
 
     return {
@@ -176,104 +156,56 @@
 
 jQuery(document).ready(function() {
     KTBootstrapSelect.init();
-});
-
-  function view(){
-    $('#datatable').DataTable().destroy(); // destroy datatable
-    /* Datatable View */
-    $('#datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('mgt.cbt.kategori.data') }}",
-            columns: [
-                { data: 'id', render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                } , title: 'No.' },
-                { data: 'code', name: 'code' , title: 'Kode ' },
-                { data: 'name', name: 'name' , title: 'Nama Kategori' },
-                { data: 'description', name: 'description' , title: 'Keterangan' },
-                { data: 'action', name: 'action' , title: 'Action' }
-            ]
-    });
-    }
-
-    $(function() {
-
-
-        view(); //call datatable view
-
-
-        /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
-             $("input").val(""); 
-            data = $(this).data('id');
-            nama = $(this).data('nama');
-            desc = $(this).data('desc');
-            code = $(this).data('code');
-            $("#kategori_id").val(data);
-            $("#kategori_code").val(code);
-            $("#kategori_desc").val(desc);
-            $("#kategori_nm").val(nama);
-           
-           
-            $('#add').modal('show');
-        });
-
-        $("#datatable").on("click", "tr #hapus", function() {
-     
-            data = $(this).data('id');
-            table = $('#datatable').DataTable().destroy();
-
-        $.ajax({
-            type: "post",
-            url: "{{ route('mgt.cbt.kategori.delete') }}",
-            dataType:"json",
-            data: {
-                id: data,
+    form = $("#form").validate({
+        rules: {
+            "modul_nm": {
+                required: true
             },
-            beforeSend: function() {
-                KTApp.blockPage();
-                },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            "persentase_kelulusan": {
+                required: true,
+                maxlength: 2
             },
-            success: function (response) {
-                //  alert(JSON.stringify(response));
-                if(response.status === 200) {
-                    view();
-                    setTimeout(function() {
-                        KTApp.unblockPage(); //loading icon
-                    }, 2000);
-                    
-                } else if(response.status === 500) {
-                    // do something with response.message or whatever other data on error
-                }
+            "sing_eng": {
+                required: true
+            },
+            "modul_desc": {
+                required: true
+            },
+            "status": {
+                required: true
             }
-        })
-        return false;
-        event.preventDefault();
-        });
 
-        /* New Data Button */
-        $('#new').click(function(event) {
-            $("input").val("");
-        });
-
-        /* Simpan Data */
-        $('#simpan').click(function(event) {
-        
+        },
+        messages: {
+            "modul_nm": {
+                required: "Silahkan tulus nama modul yang akan diinput "
+            },
+            "persentase_kelulusan": {
+                required: "Silahkan tulis persentase kelulusan yang akan diinput"
+            },
+            "sing_eng": {
+                required: "Silahkan tulis singkatan eng yang akan diinput"
+            },
+            "modul_desc": {
+                required: "Silahkan pilih status"
+            },
+            "status": {
+                required: "Silahkan pilih status"
+            }
+        },
+        submitHandler: function (form) { 
             table = $('#datatable').DataTable().destroy();
-        
-
             $.ajax({
                 type: "post",
-                url: "{{ route('mgt.cbt.kategori.insert') }}",
+                url: "{{ route('mgt.cbt.materi.pembuatan_modul.insert') }}",
                 dataType:"json",
                 data: {
-                    name: $("#kategori_nm").val(),
-                    id: $("#kategori_id").val(),
-                    code: $("#kategori_code").val(),
-                    desc: $("#kategori_desc").val(),
+                    name: $("#modul_nm").val(),
+                    id: $("#modul_id").val(),
+                    persen: $("#persentase_kelulusan").val(),
+                    eng: $("#sing_eng").val(),
+                    status: $("#status").val(),
+                    desc: $("#modul_desc").val(),
                 },
                 beforeSend: function() {
                     KTApp.block('#add .modal-content', {
@@ -303,7 +235,62 @@ jQuery(document).ready(function() {
             })
             return false;
             event.preventDefault();
+        }
+    });
+});
+
+  function view(){
+    $('#datatable').DataTable().destroy(); // destroy datatable
+    /* Datatable View */
+    $('#datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('mgt.cbt.materi.pembuatan_modul.data') }}",
+            columns: [
+                { data: 'id', render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                } , title: 'No.', width : "3%" },
+                { data: 'name', name: 'name' , title: 'Nama Modul' },
+                { data: 'description', name: 'description' , title: 'Keterangan' },
+                { data: 'status', name: 'status' , title: 'Status', width : "10%" },
+                { data: 'action', name: 'action' , title: 'Action', width : "5%" }
+            ]
+    });
+    }
+
+    $(function() {
+
+
+        view(); //call datatable view
+
+
+        /* Edit Data */
+        $("#datatable").on("click", "tr #edit", function() { 
+            $("input").val(""); 
+            form.resetForm();
+           
+            $("#modul_id").val($(this).data('id'));
+            $("#modul_nm").val($(this).data('nama'));
+            $("#modul_desc").val($(this).data('desc'));
+            $("#persentase_kelulusan").val($(this).data('persen'));
+            $("#sing_eng").val($(this).data('eng'));
+            $("#status").val($(this).data('status'));
+            $('.kt-selectpicker').selectpicker('refresh');
+          
+           
+           
+            $('#add').modal('show');
         });
+
+        /* New Data Button */
+        $('#new').click(function(event) {
+            $("input").val("");
+            $("select#status").val("");
+            $('.kt-selectpicker').selectpicker('refresh');
+            form.resetForm();
+        });
+
+        
 
    
     });

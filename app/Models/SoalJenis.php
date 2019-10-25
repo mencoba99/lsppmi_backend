@@ -6,27 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class Kategori extends Model
+class SoalJenis extends Model
 {
      // use RevisionableTrait;
     //  use SoftDeletes;
 	
      // protected $revisionCreationsEnabled = true;
      
-     protected $table = 'program_types';
+     protected $table = 'soal_jenis';
  
      protected $fillable = [
          
-         'code',
-         'name',
-         'description',
-         'status',
+         'name'
          
         
      ];
-
-     public function program()
-     {
-         return $this->belongsTo('\App\Models\Kategori','program_type_id','id');
-     }
 }

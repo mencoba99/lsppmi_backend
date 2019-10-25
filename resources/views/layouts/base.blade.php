@@ -177,6 +177,10 @@
     };
 </script>
 
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js" type="text/javascript"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/additional-methods.js" type="text/javascript"></script>
+
+
 <!-- end::Global Config -->
 
 <!--begin::Global Theme Bundle(used by all pages) -->
@@ -199,6 +203,11 @@
 <script src="{{ Storage::url('js/datatables.bundle.js')}}" type="text/javascript"></script>
 <script src="{{ Storage::url('js/blockui.js')}}" type="text/javascript"></script>
 <script src="{{ Storage::url('js/select2.js')}}" type="text/javascript"></script>
+{{-- <script src="{{ Storage::url('js/jstree.bundle.js')}}" type="text/javascript"></script> --}}
+{{-- <script src="{{ Storage::url('js/treeview.js')}}" type="text/javascript"></script> --}}
+<script src="http://static.jstree.com/3.0.0-beta3/assets/dist/jstree.min.js" type="text/javascript"></script>
+
+
 
 
 <!--end::Page Scripts -->

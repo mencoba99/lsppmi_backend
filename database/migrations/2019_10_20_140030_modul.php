@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Program extends Migration
+class Modul extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class Program extends Migration
      */
     public function up()
     {
-        Schema::create('program', function (Blueprint $table) {
+        Schema::create('modul', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('program_type_id',10);
-            $table->string('code',10)->nullable();
-            $table->string('name',50)->nullable();
-            
+            $table->string('name',50);
+            $table->string('persentase',10);
+            $table->string('sing_eng',25);
             $table->string('description',50);
-            $table->string('type',50);
-            $table->integer('status',1);
+            $table->string('status',1);
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
             $table->dateTime('deleted_at')->nullable();
@@ -35,6 +33,6 @@ class Program extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('program');
+        Schema::dropIfExists('modul');
     }
 }

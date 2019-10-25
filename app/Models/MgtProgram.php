@@ -8,18 +8,40 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class MgtProgram extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 	
     // protected $revisionCreationsEnabled = true;
     
-    protected $table = 'program_type';
+    protected $table = 'program_mgt';
 
     protected $fillable = [
         
-        'code',
         'name',
-        'description',
+        'program_id',
+        'modul_id',
+        'submodul_id',
+        'user_created',
+        
         
        
     ];
+
+    public function program()
+    {
+        return $this->hasMany('App\Models\Program','id','program_id');
+    }
+
+    public function modul()
+    {
+        return $this->hasMany('App\Models\Modul','id','modul_id');
+    }
+
+    public function submodul()
+    {
+        return $this->hasMany('App\Models\SubModul','id','submodul_id');
+    }
+
+    
+
+
 }

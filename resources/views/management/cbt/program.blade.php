@@ -25,11 +25,7 @@
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
                             Tambah  {{ucfirst(trans(end($crumbs)))}}</button>
-                        &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
+                        
                     </div>
                 </div>
             </div>
@@ -79,7 +75,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <form class="kt-form kt-form--label-right" onsubmit="return false;">
+                    <form id="form" class="kt-form kt-form--label-right" onsubmit="return false;">
                             <div class="kt-portlet__body">
                                 <div class="kt-section kt-section--first">
                                     
@@ -89,64 +85,77 @@
                                             <div class="col-lg-6">
                                                 {!! Form::select('kategori_id',$Kategori,null,['id'=>'kategori_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Kategori']) !!}
                                                 {!! Form::text('program_id',null,['id'=>'program_id','class'=>'form-control','hidden'=>'hidden']) !!}
-                                               <span class="form-text text-muted">Silahkan tulis nama kategori yang akan diinput.</span>
+                                               
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Kode Program:</label>
                                                 <div class="col-lg-6">
                                                     {!! Form::text('program_code',null,['id'=>'program_code','class'=>'form-control ','required'=>'required']) !!}
-                                                   <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Nama Program:</label>
                                                 <div class="col-lg-6">
                                                     {!! Form::text('program_name',null,['id'=>'program_name','class'=>'form-control ','required'=>'required']) !!}
-                                                   <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Singkatan Ind:</label>
                                                 <div class="col-lg-6">
                                                     {!! Form::text('program_sing_ind',null,['id'=>'program_sing_ind','class'=>'form-control ','required'=>'required']) !!}
-                                                   <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Singkatan Eng:</label>
                                                 <div class="col-lg-6">
                                                     {!! Form::text('program_sing_eng',null,['id'=>'program_sing_eng','class'=>'form-control ','required'=>'required']) !!}
-                                                   <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Level:</label>
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-3">
                                                 {!! Form::select('level',$level,null,['id'=>'level','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Level']) !!}
-                                               <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Harga:</label>
-                                                <div class="col-lg-6">
-                                                    {!! Form::text('program_harga',null,['id'=>'program_harga','class'=>'form-control ','required'=>'required']) !!}
-                                                   <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
+                                        <div class="form-group row mta">
+                                            <label class="col-3 col-form-label">Metode Assesment</label>
+                                            <div class="col-9">
+                                                <div class="kt-checkbox-inline">
+                                                    <label class="kt-checkbox">
+                                                        {!! Form::checkbox('type',1,null,['id'=>'type','data-direct'=>'']) !!} Direct
+                                                        <span></span>
+                                                    </label>
+                                                    
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row metode" style="display:none;">
+                                            <label class="col-3 col-form-label">Metode</label>
+                                            <div class="col-9">
+                                                <div class="kt-checkbox-inline">
+                                                    <label class="kt-checkbox">
+                                                        {!! Form::checkbox('cbt',1,null,['id'=>'cbt','data-cbt'=>'']) !!} CBT
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-checkbox">
+                                                        {!! Form::checkbox('interview',1,null,['id'=>'interview','data-interview'=>'','checked'=>false]) !!} Interview
+                                                        <span></span>
+                                                    </label>
+                                                    
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Keterangan:</label>
                                                 <div class="col-lg-6">
-                                                        
-                                                    {!! Form::text('program_desc',null,['id'=>'program_desc','class'=>'summernote form-control ','required'=>'required']) !!}
-                                                   <span class="form-text text-muted">Silahkan tulis keterangan yang akan diinput.</span>
+                                                    {!! Form::text('program_desc',null,['id'=>'program_desc','class'=>'summernote form-control ']) !!}
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Status:</label>
-                                            <div class="col-lg-2">
-                                                {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Level']) !!}
-                                               <span class="form-text text-muted">Silahkan tulis kode yang akan diinput.</span>
+                                            <div class="col-lg-3">
+                                                {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -160,7 +169,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" id="simpan" class="btn btn-primary">Simpan</button>
+                <button type="submit" id="simpan" class=" btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
             </div>
         </form>
         </div>
@@ -174,10 +183,11 @@
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
     
-    // Private functions
-    var demos = function () {
-        // minimum setup
-        $('.kt-selectpicker').selectpicker();
+    //  functions init
+    var start = function () {
+        $('.kt-selectpicker').selectpicker().change(function(){
+            $(this).valid()
+        });
         $('.summernote').summernote({
             height: 150
         });
@@ -188,13 +198,134 @@
     return {
         // public functions
         init: function() {
-            demos(); 
+            start(); 
         }
     };
 }();
 
+//validate
 jQuery(document).ready(function() {
     KTBootstrapSelect.init();
+    form = $("#form").validate({
+        rules: {
+            "kategori_id": {
+                required: true
+            },
+            "program_code": {
+                required: true
+            },
+            "program_name": {
+                required: true
+            },
+            "program_sing_ind": {
+                required: true
+            },
+            "program_sing_eng": {
+                required: true
+            },
+            "level": {
+                required: true
+            },
+            "interview": {
+                required: function (element) {
+                if($("#type").prop("checked") == true) { 
+                    if($("#cbt").prop("checked") == true){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                    
+                    
+                }else{
+                    return false;
+                }
+            },
+                maxlength: 2
+            },
+            "status": {
+                required: true
+            }
+
+        },
+        messages: {
+            "kategori_id": {
+                required: "Silahkan pilih kategori "
+            },
+            "program_code": {
+                required: "Silahkan tulis kode yang akan diinput"
+            },
+            "program_name": {
+                required: "Silahkan tulis nama yang akan diinput"
+            },
+            "program_sing_ind": {
+                required: "Silahkan tulis singkatan ind yang akan diinput"
+            },
+            "program_sing_eng": {
+                required: "Silahkan tulis singkatan eng yang akan diinput"
+            },
+            "level": {
+                required: "Silahkan pilih level"
+            },
+            "interview": {
+                required: "Silahkan pilih modul"
+            },
+            "status": {
+                required: "Silahkan pilih status"
+            }
+        },
+        submitHandler: function (form) { 
+              table = $('#datatable').DataTable().destroy();
+            
+           
+
+            $.ajax({
+                type: "post",
+                url: "{{ route('mgt.cbt.program.insert') }}",
+                dataType:"json",
+                data: {
+                    id: $("#program_id").val(),
+                    program_type_id: $("#kategori_id").val(),
+                    code: $("#program_code").val(),
+                    name: $("#program_name").val(),
+                    sing_ind: $("#program_sing_ind").val(),
+                    sing_int: $("#program_sing_eng").val(),
+                    level: $("#level").val(),
+                    type: $("#type").data('direct'),
+                    cbt: $("#cbt").data('cbt'),
+                    interview: $("#interview").data('interview'),
+                    status: $("#status").val(),
+                    desc: $(".note-editable").html(),
+                },
+                beforeSend: function() {
+                    KTApp.block('#add .modal-content', {
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'primary',
+                    message: 'Processing...'
+                });
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    // alert(JSON.stringify(response));
+                    if(response.status === 200) {
+                        view();
+                        setTimeout(function() {
+                            KTApp.unblock('#add .modal-content');
+                            $('#add').modal('hide');
+                        }, 2000);
+                        
+            //          
+                    } else if(response.status === 500) {
+                        
+                    }
+                }
+            })
+            return false;
+            event.preventDefault();
+        }
+    });
 });
 
   function view(){
@@ -208,16 +339,16 @@ jQuery(document).ready(function() {
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
-                } , title: 'No.' },
+                } , title: 'No.', width : "3%" },
                 { data: 'code', name: 'code' , title: 'Kode ' },
                 { data: 'name', name: 'name' , title: 'Nama Program' },
                 { data: 'kategori.name', name: 'kategori.name' , title: 'Kategori' },
-                { data: 'sing_ind', name: 'name' , title: 'Singkatan Ind' },
-                { data: 'sing_int', name: 'name' , title: 'Singkatan Eng' },
-                { data: 'status', name: 'name' , title: 'Status' },
-                { data: 'level', name: 'name' , title: 'Level' },
+                { data: 'abbreviation_id', name: 'abbreviation_en' , title: 'Singkatan Ind' },
+                { data: 'abbreviation_en', name: 'abbreviation_en' , title: 'Singkatan Eng' },
+                { data: 'level', name: 'level' , title: 'Level' },
                 { data: 'keterangan', name: 'keterangan' , title: 'Keterangan' },
-                { data: 'action', name: 'action' , title: 'Action' }
+                { data: 'status', name: 'status' , title: 'Status', width : "10%" },
+                { data: 'action', name: 'action' , title: 'Action', width : "5%"  }
             ]
     });
     
@@ -230,7 +361,8 @@ jQuery(document).ready(function() {
 
         /* Edit Data */
         $("#datatable").on("click", "tr #edit", function() { 
-             $("input").val(""); 
+             $("input").val("");
+             form.resetForm();
              $('#summernote').summernote('destroy');
 
             $("#program_id").val($(this).data('id'));
@@ -277,6 +409,40 @@ jQuery(document).ready(function() {
            
         });
 
+        
+
+        $('#type').change(function () {
+            if($(this).prop("checked") == true){
+                $(".metode").show();
+               
+                $(this).data('direct','direct');
+                
+            }
+            else if($(this).prop("checked") == false){
+                $(".metode").hide();
+                $("#cbt").prop("checked",false).trigger("change");
+                $("#interview").prop("checked",false).trigger("change");
+                $(this).data('direct','');
+            }
+
+        });
+
+        $('#cbt').change(function () {
+            if($(this).prop("checked") == true){
+                $(this).data('cbt','cbt');
+           }else{
+                $(this).data('cbt','');
+           }
+        });
+
+        $('#interview').change(function () {
+            if($(this).prop("checked") == true){
+                $(this).data('interview','interview');
+            }else{
+                $(this).data('interview','');
+            }
+        });
+
         $("#datatable").on("click", "tr #hapus", function(event) {
      
             data = $(this).data('id');
@@ -304,7 +470,7 @@ jQuery(document).ready(function() {
                     }, 2000);
                     
                 } else if(response.status === 500) {
-                    // do something with response.message or whatever other data on error
+                    
                 }
             }
         })
@@ -316,66 +482,13 @@ jQuery(document).ready(function() {
         $('#new').click(function(event) {
             $("input").val("");
             $('.summernote').summernote('reset');
-            $("select#kategori_id").val("");
+            $("select#program_id").val("");
             $('.kt-selectpicker').selectpicker('refresh');
+            form.resetForm();
         });
 
-        /* Simpan Data */
-        $('#simpan').click(function(event) {
-            if($("form")[0].checkValidity()) {
-               alert("error");
-               console.log("error");
-               
-        }else {
-            console.log("invalid form");
-        }
-            // table = $('#datatable').DataTable().destroy();
-           
-            // $.ajax({
-            //     type: "post",
-            //     url: "{{ route('mgt.cbt.program.insert') }}",
-            //     dataType:"json",
-            //     data: {
-            //         id: $("#program_id").val(),
-            //         program_type_id: $("#kategori_id").val(),
-            //         code: $("#program_code").val(),
-            //         name: $("#program_name").val(),
-            //         sing_ind: $("#program_sing_ind").val(),
-            //         sing_int: $("#program_sing_eng").val(),
-            //         level: $("#level").val(),
-            //         harga: $("#program_harga").val(),
-            //         status: $("#status").val(),
-            //         desc: $(".note-editable").html(),
-            //     },
-            //     beforeSend: function() {
-            //         KTApp.block('#add .modal-content', {
-            //         overlayColor: '#000000',
-            //         type: 'v2',
-            //         state: 'primary',
-            //         message: 'Processing...'
-            //     });
-            //     },
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     },
-            //     success: function (response) {
-            //         // alert(JSON.stringify(response));
-            //         if(response.status === 200) {
-            //             view();
-            //             setTimeout(function() {
-            //                 KTApp.unblock('#add .modal-content');
-            //                 $('#add').modal('hide');
-            //             }, 2000);
-                        
-            // //          
-            //         } else if(response.status === 500) {
-            //             // do something with response.message or whatever other data on error
-            //         }
-            //     }
-            // })
-            // return false;
-            // event.preventDefault();
-        });
+        
+      
 
    
     });

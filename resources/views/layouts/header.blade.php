@@ -30,7 +30,7 @@
 
     <!--begin::Page Vendors Styles(used by this page) -->
     <link href="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-  
+    {{-- <link href="{{ Storage::url('css/jstree.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
  
     <!--end::Page Vendors Styles -->
 
@@ -38,7 +38,10 @@
    
     <link href="{{ asset('assets/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ Storage::url('css/demo7/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+   
     <link href="{{ asset('assets/vendors/global/datatable/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="http://static.jstree.com/3.0.0-beta3/assets/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+   
     <!--end::Global Theme Styles -->
 
     <!--begin::Layout Skins(used by all pages) -->
@@ -46,7 +49,7 @@
     <!--end::Layout Skins -->
     <link rel="shortcut icon" href="{{ Storage::url('media/logos/favicon.ico') }}" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" ></script>
- 
+    @stack('style')
 </head>
 
 <!-- end::Head -->

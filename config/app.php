@@ -176,6 +176,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Venturecraft\Revisionable\RevisionableServiceProvider::class,
         // Zizaco\Entrust\EntrustServiceProvider::class,
         // Laracasts\Flash\FlashServiceProvider::class,
 

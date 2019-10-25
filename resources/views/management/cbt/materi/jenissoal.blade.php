@@ -41,16 +41,10 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="nosearch"></td>
@@ -63,7 +57,7 @@
 </div>
 
 <div class="modal fade" id="add"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
@@ -77,46 +71,27 @@
                                     
                                     <div class="kt-section__body">
                                         <div class="form-group row">
-                                            <label class="col-lg-3 col-form-label">Nama Kategori:</label>
+                                            <label class="col-lg-3 col-form-label">Nama Modul:</label>
                                             <div class="col-lg-6">
-                                                {!! Form::text('kategori_nm',null,['id'=>'kategori_nm','class'=>'form-control ','required'=>'required']) !!}
-                                                {!! Form::text('kategori_id',null,['id'=>'kategori_id','class'=>'form-control','hidden'=>'hidden']) !!}
+                                                {!! Form::text('jenis_soal_nm',null,['id'=>'jenis_soal_nm','class'=>'form-control ','required'=>'required']) !!}
+                                                {!! Form::text('jenis_soal_id',null,['id'=>'jenis_soal_id','class'=>'form-control','hidden'=>'hidden']) !!}
                                                
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Kode:</label>
-                                                <div class="col-lg-6">
-                                                    {!! Form::text('kategori_code',null,['id'=>'kategori_code','class'=>'form-control ','required'=>'required']) !!}
-                                                  
-                                                </div>
-                                        </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Keterangan:</label>
-                                                <div class="col-lg-6">
-                                                    {!! Form::textarea('kategori_desc',null,['id'=>'kategori_desc','class'=>'form-control ','required'=>'required']) !!}
-                                                   
-                                                </div>
-                                        </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Status:</label>
-                                                <div class="col-lg-4 ">
-                                                    {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
-                                                </div>
-                                            </div>
+                                       
                                     </div>
             
                                 </div>
                             </div>
                             
+                       
+               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" id="simpan" class="submit btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
+                <button type="submit" id="simpan" class="btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
             </div>
         </form>
-
-        
         </div>
     </div>
 </div>
@@ -126,14 +101,13 @@
 @push('scripts')
   
 <script type="text/javascript">
- 
-
     var KTBootstrapSelect = function () {
     
     // Private functions
     var demos = function () {
-        // minimum setup
-        $('.kt-selectpicker').selectpicker();
+        $('.kt-selectpicker').selectpicker().change(function(){
+            $(this).valid()
+        });
     }
 
     return {
@@ -148,48 +122,25 @@ jQuery(document).ready(function() {
     KTBootstrapSelect.init();
     form = $("#form").validate({
         rules: {
-            "kategori_nm": {
+            "jenis_soal_nm": {
                 required: true
             },
-            "kategori_code": {
-                required: true
-            },
-            "kategori_desc": {
-                required: true
-            },
-            "status": {
-                required: true
-            }
 
         },
         messages: {
-            "kategori_nm": {
-                required: "Silahkan tulis nama kategori yang akan diinput "
-            },
-            "kategori_code": {
-                required: "Silahkan tulis kode yang akan diinput"
-            },
-            "kategori_desc": {
-                required: "Silahkan tulis keterangan yang akan diinput"
-            },
-            "status": {
-                required: "Silahkan pilih status"
+            "jenis_soal_nm": {
+                required: "Silahkan tulis jenis soal yang akan diinput "
             }
         },
-        submitHandler: function (form) { // for demo
-               table = $('#datatable').DataTable().destroy();
-        
-
+        submitHandler: function (form) { 
+            table = $('#datatable').DataTable().destroy();
             $.ajax({
                 type: "post",
-                url: "{{ route('mgt.cbt.kategori.insert') }}",
+                url: "{{ route('mgt.cbt.materi.jenis_soal.insert') }}",
                 dataType:"json",
                 data: {
-                    name: $("#kategori_nm").val(),
-                    id: $("#kategori_id").val(),
-                    code: $("#kategori_code").val(),
-                    desc: $("#kategori_desc").val(),
-                    status: $("#status").val(),
+                    name: $("#jenis_soal_nm").val(),
+                    id: $("#jenis_soal_id").val(),
                 },
                 beforeSend: function() {
                     KTApp.block('#add .modal-content', {
@@ -229,16 +180,13 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('mgt.cbt.kategori.data') }}",
+            ajax: "{{ route('mgt.cbt.materi.jenis_soal.data') }}",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 } , title: 'No.', width : "3%" },
-                { data: 'code', name: 'code' , title: 'Kode ' },
-                { data: 'name', name: 'name' , title: 'Nama Kategori' },
-                { data: 'description', name: 'description' , title: 'Keterangan' },
-                { data: 'status', name: 'status' , title: 'Status', width : "10%" },
-                { data: 'action', name: 'action' , title: 'Action', width : "5%" },
+                { data: 'name', name: 'name' , title: 'Jenis Soal' },
+                { data: 'action', name: 'action' , title: 'Action', width : "5%" }
             ]
     });
     }
@@ -253,27 +201,26 @@ jQuery(document).ready(function() {
         $("#datatable").on("click", "tr #edit", function() { 
             $("input").val(""); 
             form.resetForm();
-            $("#kategori_id").val($(this).data('id'));
-            $("#kategori_code").val($(this).data('code'));
-            $("#kategori_desc").val($(this).data('desc'));
-            $("#kategori_nm").val($(this).data('nama'));
-            $("#status").val($(this).data('status'));
-            $("#simpan").show();
+           
+            $("#jenis_soal_id").val($(this).data('id'));
+            $("#jenis_soal_nm").val($(this).data('nama'));
+            
+          
+           
            
             $('#add').modal('show');
         });
 
-      
 
         /* New Data Button */
         $('#new').click(function(event) {
             $("input").val("");
-            $("textarea").val("");
-           
             form.resetForm();
-            $("#simpan").show();
         });
 
+        
+
+   
     });
     
 </script>   

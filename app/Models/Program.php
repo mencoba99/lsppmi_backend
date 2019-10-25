@@ -9,11 +9,11 @@ use Venturecraft\Revisionable\RevisionableTrait;
 class Program extends Model
 {
      // use RevisionableTrait;
-     use SoftDeletes;
+    //  use SoftDeletes;
 	
      // protected $revisionCreationsEnabled = true;
      
-     protected $table = 'program';
+     protected $table = 'programs';
  
      protected $fillable = [
          
@@ -35,4 +35,13 @@ class Program extends Model
     {
         return $this->belongsTo('\App\Models\Kategori','program_type_id','id');
     }
+
+    
+
+     public function mgt_program()
+    {
+        return $this->belongsTo('\App\Models\MgtProgram','id','program_id');
+    }
+
+    
 }

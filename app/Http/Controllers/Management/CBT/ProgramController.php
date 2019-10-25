@@ -53,8 +53,8 @@ class ProgramController extends Controller
         
         return DataTables::of($Data)->addColumn('action', function (Program $Program) {
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit" data-code="'.$Program->code.'" data-status="'.$Program->status.'" data-level="'.$Program->level.'" data-harga="'.$Program->harga.'" data-sing_ind="'.$Program->sing_ind.'" data-sing_int="'.$Program->sing_int.'" data-kategori="'.$Program->program_type_id.'" data-id="'.$Program->id.'" data-nama="'.$Program->name.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Program->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            $action .= '<button id="hapus"  data-id="'.$Program->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Program->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
+            $action .= '<button id="edit" data-code="'.$Program->code.'" data-status="'.$Program->status.'" data-level="'.$Program->level.'" data-harga="'.$Program->harga.'" data-sing_ind="'.$Program->abbreviation_id.'" data-sing_int="'.$Program->abbreviation_en.'" data-kategori="'.$Program->program_type_id.'" data-id="'.$Program->id.'" data-nama="'.$Program->name.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Program->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            // $action .= '<button id="hapus"  data-id="'.$Program->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Program->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
            
 			$action .= "</div>";
 			return $action;
@@ -91,11 +91,11 @@ class ProgramController extends Controller
             return json_encode(array(
                     "status"=>200,
                     "data"=>$data->description
-                ));
+            ));
         } else {
             return json_encode(array(
                     "status"=>500
-                ));
+            ));
         }
 
 
@@ -108,11 +108,11 @@ class ProgramController extends Controller
         if ($deleted) {
             return json_encode(array(
                     "status"=>200
-                ));
+            ));
         } else {
             return json_encode(array(
                     "status"=>500
-                ));
+            ));
         }
     }
 
@@ -127,7 +127,10 @@ class ProgramController extends Controller
         $Program->sing_int = $request->get('sing_int');
         $Program->status = $request->get('status');
         $Program->level = $request->get('level');
-        $Program->harga = $request->get('harga');
+        $Program->type = json_encode(array(
+            "type" =>$request->get('type'),
+            "message"=>array($request->get('cbt'), $request->get('interview'))
+        ));
         $Program->description = $request->get('desc');
         
 
@@ -142,9 +145,14 @@ class ProgramController extends Controller
             $update['sing_int'] = $request->get('sing_int');
             $update['level'] = $request->get('level');
             $update['status'] = $request->get('status');
-          
+            $update['type'] = json_encode(array(
+                "type" =>$request->get('type'),
+                "message"=>array($request->get('cbt'), $request->get('interview'))
+            ));
             $update['harga'] = $request->get('harga');
             $update['description'] = $request->get('desc');
+            
+            
             if(Program::whereId($request->get('id'))->update($update)){
                 return json_encode(array(
                     "status"=>200,
