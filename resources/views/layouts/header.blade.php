@@ -9,7 +9,7 @@
 
     <!--end::Base Path -->
     <meta charset="utf-8" />
-    <title>LSPPMI | Dashboard</title>
+    <title>LSPPMI | {{ GeneralHelper::getPageTitle() }}</title>
     <meta name="description" content="Latest updates and statistic charts">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -32,6 +32,9 @@
     <link href="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
     {{-- <link href="{{ Storage::url('css/jstree.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
  
+    {{-- <link href="{{ Storage::url('vendors/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
+
+
     <!--end::Page Vendors Styles -->
 
     <!--begin::Global Theme Styles(used by all pages) -->
@@ -43,8 +46,10 @@
     <link href="http://static.jstree.com/3.0.0-beta3/assets/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
    
     <!--end::Global Theme Styles -->
+    @stack('style')
 
     <!--begin::Layout Skins(used by all pages) -->
+    <link href="{{ asset('assets/css/lsppmi-custom.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Layout Skins -->
     <link rel="shortcut icon" href="{{ Storage::url('media/logos/favicon.ico') }}" />
