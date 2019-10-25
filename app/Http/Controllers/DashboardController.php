@@ -12,7 +12,9 @@ class DashboardController extends Controller
             return redirect('login');
         }
 
-        return view('dashboard');
+        $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
+
+        return view('dashboard', compact('crumbs'));
     }
 
     public function login()

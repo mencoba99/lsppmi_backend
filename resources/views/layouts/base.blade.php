@@ -49,11 +49,20 @@
 <!-- end:: Page -->
 
 @include('layouts.widget')
+@stack('scripts')
 
 {!! Form::input('hidden','base_url',url('/')) !!}
 {!! Form::input('hidden','_token',csrf_token()) !!}
 <!-- begin::Global Config(global config for global JS sciprts) -->
 <script>
+    $(function() {
+     KTApp.blockPage();
+
+    setTimeout(function() {
+        KTApp.unblockPage();
+    }, 2000);
+    });
+    
     var KTAppOptions = {
         "colors": {
             "state": {
@@ -74,6 +83,10 @@
     };
 </script>
 
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js" type="text/javascript"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/additional-methods.js" type="text/javascript"></script>
+
+
 <!-- end::Global Config -->
 
 <!--begin::Global Theme Bundle(used by all pages) -->
@@ -92,6 +105,16 @@
 <!--end::Page Vendors -->
 
 <!--begin::Page Scripts(used by this page) -->
+<script src="{{ Storage::url('js/dashboard.js')}}" type="text/javascript"></script>
+<script src="{{ Storage::url('js/datatables.bundle.js')}}" type="text/javascript"></script>
+<script src="{{ Storage::url('js/blockui.js')}}" type="text/javascript"></script>
+<script src="{{ Storage::url('js/select2.js')}}" type="text/javascript"></script>
+{{-- <script src="{{ Storage::url('js/jstree.bundle.js')}}" type="text/javascript"></script> --}}
+{{-- <script src="{{ Storage::url('js/treeview.js')}}" type="text/javascript"></script> --}}
+<script src="http://static.jstree.com/3.0.0-beta3/assets/dist/jstree.min.js" type="text/javascript"></script>
+
+
+
 <script src="{{ Storage::url('js/pages/dashboard.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/lsppmi-custom.js') }}" type="text/javascript"></script>
 

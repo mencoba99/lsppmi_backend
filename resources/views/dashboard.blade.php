@@ -273,7 +273,7 @@
                             <div class="kt-widget4__items kt-widget4__items--bottom kt-portlet__space-x kt-margin-b-20">
                                 <div class="kt-widget4__item">
                                     <div class="kt-widget4__img kt-widget4__img--logo">
-                                        <img src="./assets/media/client-logos/logo3.png" alt="">
+                                        <img src="{{ Storage::url('media/client-logos/logo3.png')}}" alt="">
                                     </div>
                                     <div class="kt-widget4__info">
                                         <a href="#" class="kt-widget4__title">
@@ -289,7 +289,7 @@
                                 </div>
                                 <div class="kt-widget4__item">
                                     <div class="kt-widget4__img kt-widget4__img--logo">
-                                        <img src="./assets/media/client-logos/logo1.png" alt="">
+                                        <img src="{{ Storage::url('media/client-logos/logo1.png')}}" alt="">
                                     </div>
                                     <div class="kt-widget4__info">
                                         <a href="#" class="kt-widget4__title">
@@ -305,7 +305,7 @@
                                 </div>
                                 <div class="kt-widget4__item">
                                     <div class="kt-widget4__img kt-widget4__img--logo">
-                                        <img src="./assets/media/client-logos/logo2.png" alt="">
+                                        <img src="{{ Storage::url('media/client-logos/logo2.png')}}" alt="">
                                     </div>
                                     <div class="kt-widget4__info">
                                         <a href="#" class="kt-widget4__title">
@@ -688,7 +688,7 @@
                         <div class="kt-widget4">
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--icon">
-                                    <img src="./assets/media/files/doc.svg" alt="">
+                                    <img src="{{ Storage::url('media/files/doc.svg')}}" alt="">
                                 </div>
                                 <a href="#" class="kt-widget4__title">
                                     Metronic Documentation
@@ -701,7 +701,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--icon">
-                                    <img src="./assets/media/files/jpg.svg" alt="">
+                                    <img src="{{ Storage::url('media/files/jpg.svg')}}" alt="">
                                 </div>
                                 <a href="#" class="kt-widget4__title">
                                     Project Launch Event
@@ -714,7 +714,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--icon">
-                                    <img src="./assets/media/files/pdf.svg" alt="">
+                                    <img src="{{ Storage::url('media/files/pdf.svg')}}" alt="">
                                 </div>
                                 <a href="#" class="kt-widget4__title">
                                     Full Developer Manual For 4.7
@@ -727,7 +727,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--icon">
-                                    <img src="./assets/media/files/javascript.svg" alt="">
+                                    <img src="{{ Storage::url('media/files/javascript.svg')}}" alt="">
                                 </div>
                                 <a href="#" class="kt-widget4__title">
                                     Make JS Great Again
@@ -740,7 +740,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--icon">
-                                    <img src="./assets/media/files/zip.svg" alt="">
+                                    <img src="{{ Storage::url('media/files/zip.svg')}}" alt="">
                                 </div>
                                 <a href="#" class="kt-widget4__title">
                                     Download Ziped version OF 5.0
@@ -753,7 +753,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--icon">
-                                    <img src="./assets/media/files/pdf.svg" alt="">
+                                    <img src="{{ Storage::url('media/files/pdf.svg')}}" alt="">
                                 </div>
                                 <a href="#" class="kt-widget4__title">
                                     Finance Report 2016/2017
@@ -803,7 +803,7 @@
                                 <div class="kt-widget4">
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_4.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_4.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -817,7 +817,7 @@
                                     </div>
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_14.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_14.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -831,7 +831,7 @@
                                     </div>
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_11.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_11.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -845,7 +845,7 @@
                                     </div>
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_1.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_1.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -859,7 +859,7 @@
                                     </div>
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_5.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_5.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -877,7 +877,7 @@
                                 <div class="kt-widget4">
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_2.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_2.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -891,7 +891,7 @@
                                     </div>
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_13.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_13.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -905,7 +905,7 @@
                                     </div>
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_9.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_9.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -919,7 +919,7 @@
                                     </div>
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_2.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_2.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -933,7 +933,7 @@
                                     </div>
                                     <div class="kt-widget4__item">
                                         <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                            <img src="./assets/media/users/100_8.jpg" alt="">
+                                            <img src="{{ Storage::url('media/users/100_8.jpg')}}" alt="">
                                         </div>
                                         <div class="kt-widget4__info">
                                             <a href="#" class="kt-widget4__username">
@@ -1132,7 +1132,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product27.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product27.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1163,7 +1163,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product22.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product22.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1194,7 +1194,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product15.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product15.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1229,7 +1229,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product10.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product10.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1260,7 +1260,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product11.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product11.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1291,7 +1291,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product6.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product6.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1326,7 +1326,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product11.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product11.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1357,7 +1357,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product6.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product6.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1388,7 +1388,7 @@
                                     <div class="kt-widget5__item">
                                         <div class="kt-widget5__content">
                                             <div class="kt-widget5__pic">
-                                                <img class="kt-widget7__img" src="./assets/media//products/product10.jpg" alt="">
+                                                <img class="kt-widget7__img" src="{{ Storage::url('media/products/product10.jpg')}}" alt="">
                                             </div>
                                             <div class="kt-widget5__section">
                                                 <a href="#" class="kt-widget5__title">
@@ -1484,7 +1484,7 @@
                         <div class="kt-widget4">
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--logo">
-                                    <img src="./assets/media/client-logos/logo5.png" alt="">
+                                    <img src="{{ Storage::url('media/client-logos/logo5.png')}}" alt="">
                                 </div>
                                 <div class="kt-widget4__info">
                                     <a href="#" class="kt-widget4__title">
@@ -1498,7 +1498,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--logo">
-                                    <img src="./assets/media/client-logos/logo4.png" alt="">
+                                    <img src="{{ Storage::url('media/client-logos/logo4.png')}}" alt="">
                                 </div>
                                 <div class="kt-widget4__info">
                                     <a href="#" class="kt-widget4__title">
@@ -1512,7 +1512,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--logo">
-                                    <img src="./assets/media/client-logos/logo3.png" alt="">
+                                    <img src="{{ Storage::url('media/client-logos/logo3.png')}}" alt="">
                                 </div>
                                 <div class="kt-widget4__info">
                                     <a href="#" class="kt-widget4__title">
@@ -1526,7 +1526,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--logo">
-                                    <img src="./assets/media/client-logos/logo2.png" alt="">
+                                    <img src="{{ Storage::url('media/client-logos/logo2.png')}}" alt="">
                                 </div>
                                 <div class="kt-widget4__info">
                                     <a href="#" class="kt-widget4__title">
@@ -1540,7 +1540,7 @@
                             </div>
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--logo">
-                                    <img src="./assets/media/client-logos/logo1.png" alt="">
+                                    <img src="{{ Storage::url('media/client-logos/logo1.png')}}" alt="">
                                 </div>
                                 <div class="kt-widget4__info">
                                     <a href="#" class="kt-widget4__title">
@@ -1772,3 +1772,4 @@
 
     <!-- end:: Content -->
 @endsection
+
