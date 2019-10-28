@@ -21,7 +21,7 @@ class ModulSoal extends Migration
             $table->integer('modul_id');
           
 
-            $table->foreign('soal_id')->references('soal_id')->on('soal')->onDelete('cascade');
+            // $table->foreign('soal_id')->references('soal_id')->on('soal')->onDelete('cascade');
             $table->foreign('submodul_id')->references('id')->on('submodul')->onDelete('cascade');
             $table->foreign('modul_id')->references('id')->on('modul')->onDelete('cascade');
           
