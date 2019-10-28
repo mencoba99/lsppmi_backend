@@ -280,7 +280,7 @@ jQuery(document).ready(function() {
 
             $.ajax({
                 type: "post",
-                url: "{{ route('mgt.cbt.program.insert') }}",
+                url: "{{ route('ujian-komputer.program.insert') }}",
                 dataType:"json",
                 data: {
                     id: $("#program_id").val(),
@@ -335,17 +335,17 @@ jQuery(document).ready(function() {
             processing: true,
             serverSide: true,
             responsive: true,
-            ajax: "{{ route('mgt.cbt.program.data') }}",
+            ajax: "{{ route('ujian-komputer.program.data') }}",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 } , title: 'No.', width : "3%" },
-                { data: 'code', name: 'code' , title: 'Kode ' },
+                { data: 'code', name: 'code' , title: 'Kode ', width : "5%" },
                 { data: 'name', name: 'name' , title: 'Nama Program' },
                 { data: 'kategori.name', name: 'kategori.name' , title: 'Kategori' },
                 { data: 'abbreviation_id', name: 'abbreviation_en' , title: 'Singkatan Ind' },
                 { data: 'abbreviation_en', name: 'abbreviation_en' , title: 'Singkatan Eng' },
-                { data: 'level', name: 'level' , title: 'Level' },
+                { data: 'level', name: 'level' , title: 'Level', width : "3%" },
                 { data: 'keterangan', name: 'keterangan' , title: 'Keterangan' },
                 { data: 'status', name: 'status' , title: 'Status', width : "10%" },
                 { data: 'action', name: 'action' , title: 'Action', width : "5%"  }
@@ -379,7 +379,7 @@ jQuery(document).ready(function() {
            
             $.ajax({
             type: "post",
-            url: "{{ route('mgt.cbt.program.desc') }}",
+            url: "{{ route('ujian-komputer.program.desc') }}",
             dataType:"json",
             data: {
                 id: $(this).data('id'),
@@ -443,40 +443,40 @@ jQuery(document).ready(function() {
             }
         });
 
-        $("#datatable").on("click", "tr #hapus", function(event) {
+        // $("#datatable").on("click", "tr #hapus", function(event) {
      
-            data = $(this).data('id');
-            table = $('#datatable').DataTable().destroy();
+        //     data = $(this).data('id');
+        //     table = $('#datatable').DataTable().destroy();
 
-        $.ajax({
-            type: "post",
-            url: "{{ route('mgt.cbt.program.delete') }}",
-            dataType:"json",
-            data: {
-                id: data,
-            },
-            beforeSend: function() {
-                KTApp.blockPage();
-                },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (response) {
-                //  alert(JSON.stringify(response));
-                if(response.status === 200) {
-                    view();
-                    setTimeout(function() {
-                        KTApp.unblockPage(); //loading icon
-                    }, 2000);
+        // $.ajax({
+        //     type: "post",
+        //     url: "{{ route('ujian-komputer.program.delete') }}",
+        //     dataType:"json",
+        //     data: {
+        //         id: data,
+        //     },
+        //     beforeSend: function() {
+        //         KTApp.blockPage();
+        //         },
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     },
+        //     success: function (response) {
+        //         //  alert(JSON.stringify(response));
+        //         if(response.status === 200) {
+        //             view();
+        //             setTimeout(function() {
+        //                 KTApp.unblockPage(); //loading icon
+        //             }, 2000);
                     
-                } else if(response.status === 500) {
+        //         } else if(response.status === 500) {
                     
-                }
-            }
-        })
-        return false;
-        event.preventDefault();
-        });
+        //         }
+        //     }
+        // })
+        // return false;
+        // event.preventDefault();
+        // });
 
         /* New Data Button */
         $('#new').click(function(event) {

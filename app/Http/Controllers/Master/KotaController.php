@@ -35,7 +35,7 @@ class KotaController extends Controller
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
                     $provinsi             = [];
 				foreach ($data as $value) {
-					$provinsi[ $value->id ] = $value->nm_provinsi;
+					$provinsi[ $value->id ] = $value->name;
 				}
 
 		return view('master.kota', compact('pageTitle','provinsi','crumbs'));
@@ -45,17 +45,16 @@ class KotaController extends Controller
     {
        
         $Kota = new Kota();
-        $Kota->nm_kota = $request->get('nm_kota');
-        $Kota->id_provinsi = $request->get('id_provinsi');
-        $Kota->kode_pos = $request->get('pos_kd');
+        $Kota->name = $request->get('nm_kota');
+        $Kota->province_id = $request->get('id_provinsi');
         
 
         if($request->get('id_kota')){
             
             $update =[];
             $update['id'] = $request->get('id_kota');
-            $update['nm_kota'] = $request->get('nm_kota');
-            $update['kode_pos'] = $request->get('pos_kd');
+            $update['name'] = $request->get('nm_kota');
+           
             if(Kota::whereId($request->get('id_kota'))->update($update)){
                 return json_encode(array(
                     "status"=>200,
@@ -94,9 +93,7 @@ class KotaController extends Controller
         return DataTables::of($kota)->addColumn('action', function (Kota $kota) {
             $action = "<div class='btn-group'>";
             $action .= '<button id="edit" data-id="'.$kota->id.'" data-nama="'.$kota->nm_kota.'" data-kode="'.$kota->kode_pos.'" data-provinsi="'.$kota->id_provinsi.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $kota->nm_kota . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            $action .= '<button id="hapus"  data-id="'.$kota->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $kota->nm_kota . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-           
-			$action .= "</div>";
+            $action .= "</div>";
 			return $action;
 		})->make(true);
     }

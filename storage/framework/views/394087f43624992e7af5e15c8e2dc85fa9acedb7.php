@@ -1,15 +1,7 @@
-@extends('layouts.base')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-    <div class="alert alert-light alert-elevate" role="alert">
-        <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
-        <div class="alert-text">
-            {{$Title}}
-            <br>For more info see <a class="kt-link kt-font-bold" href="https://datatables.net/" target="_blank">the official home</a> of the plugin.
-        </div>
-    </div>
+ 
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
@@ -17,19 +9,17 @@
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                  {{ucfirst(trans(end($crumbs)))}}
+                  <?php echo e(ucfirst(trans(end($crumbs)))); ?>
+
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah   {{ucfirst(trans(end($crumbs)))}}</button>
+                            Tambah   <?php echo e(ucfirst(trans(end($crumbs)))); ?></button>
                         &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
+                        
                     </div>
                 </div>
             </div>
@@ -43,12 +33,10 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -63,10 +51,10 @@
 </div>
 
 <div class="modal fade" id="add"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah  <?php echo e(ucfirst(trans(end($crumbs)))); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -76,39 +64,43 @@
                                 <div class="kt-section kt-section--first">
                                     
                                     <div class="kt-section__body">
+                                            <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">Modul:</label>
+                                                    <div class="col-lg-6">
+                                                        <?php echo Form::select('id_modul',$Modul,null,['id'=>'id_modul','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Kategori']); ?>
+
+                                                        <?php echo Form::text('submodul_id',null,['id'=>'submodul_id','class'=>'form-control','hidden'=>'hidden']); ?>
+
+                                                       
+                                                    </div>
+                                                </div>
                                         <div class="form-group row">
-                                            <label class="col-lg-3 col-form-label">Nama Kategori:</label>
-                                            <div class="col-lg-6">
-                                                {!! Form::text('kategori_nm',null,['id'=>'kategori_nm','class'=>'form-control ','required'=>'required']) !!}
-                                                {!! Form::text('kategori_id',null,['id'=>'kategori_id','class'=>'form-control','hidden'=>'hidden']) !!}
-                                               
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Kode:</label>
+                                                <label class="col-lg-3 col-form-label">Sub Modul:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('kategori_code',null,['id'=>'kategori_code','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('submodul_name',null,['id'=>'submodul_name','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Keterangan:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('kategori_desc',null,['id'=>'kategori_desc','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('submodul_desc',null,['id'=>'submodul_desc','class'=>'form-control ','required'=>'required']); ?>
+
                                                    
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Status:</label>
-                                                <div class="col-lg-4 ">
-                                                    {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
+                                                <div class="col-lg-4">
+                                                    <?php echo Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']); ?>
+
                                                 </div>
                                             </div>
                                     </div>
             
                                 </div>
                             </div>
-                            
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -121,9 +113,9 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
   
 <script type="text/javascript">
  
@@ -151,13 +143,13 @@ jQuery(document).ready(function() {
             "kategori_nm": {
                 required: true
             },
+            "id_modul": {
+                required: true
+            },
             "kategori_code": {
                 required: true
             },
             "kategori_desc": {
-                required: true
-            },
-            "status": {
                 required: true
             }
 
@@ -166,14 +158,14 @@ jQuery(document).ready(function() {
             "kategori_nm": {
                 required: "Silahkan tulis nama kategori yang akan diinput "
             },
+            "id_modul": {
+                required: "Silahkan pilih modul "
+            },
             "kategori_code": {
                 required: "Silahkan tulis kode yang akan diinput"
             },
             "kategori_desc": {
                 required: "Silahkan tulis keterangan yang akan diinput"
-            },
-            "status": {
-                required: "Silahkan pilih status"
             }
         },
         submitHandler: function (form) { // for demo
@@ -182,14 +174,14 @@ jQuery(document).ready(function() {
 
             $.ajax({
                 type: "post",
-                url: "{{ route('ujian-komputer.kategori.insert') }}",
+                url: "<?php echo e(route('materi.pembuatan-submodul.insert')); ?>",
                 dataType:"json",
                 data: {
-                    name: $("#kategori_nm").val(),
-                    id: $("#kategori_id").val(),
-                    code: $("#kategori_code").val(),
-                    desc: $("#kategori_desc").val(),
+                    name: $("#submodul_name").val(),
+                    modul: $("#id_modul").val(),
+                    id: $("#submodul_id").val(),
                     status: $("#status").val(),
+                    desc: $("#submodul_desc").val(),
                 },
                 beforeSend: function() {
                     KTApp.block('#add .modal-content', {
@@ -229,17 +221,36 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('ujian-komputer.kategori.data') }}",
+            ajax: "<?php echo e(route('materi.pembuatan-submodul.data')); ?>",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 } , title: 'No.', width : "3%" },
-                { data: 'code', name: 'code' , title: 'Kode ' },
-                { data: 'name', name: 'name' , title: 'Nama Kategori' },
+                { data: 'name', name: 'name' , title: 'Nama Sub Modul' },
+                { data: 'modul.name', name: 'modul.name' , title: 'Modul ' },
                 { data: 'description', name: 'description' , title: 'Keterangan' },
-                { data: 'status', name: 'status' , title: 'Status', width : "10%" },
-                { data: 'action', name: 'action' , title: 'Action', width : "5%" },
-            ]
+                { data: 'action', name: 'action' , title: 'Action', width : "5%"  }
+            ],
+            initComplete: function () {
+            this.api().columns(2).every( function () {
+                var column = this;
+                var select = $('<select class="form-control input-sm kt-selectpicker" data-live-search="true" data-live-search-style="startsWith" placeholder="filter by modul"><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
     });
     }
 
@@ -251,31 +262,42 @@ jQuery(document).ready(function() {
 
         /* Edit Data */
         $("#datatable").on("click", "tr #edit", function() { 
-            $("input").val(""); 
-            form.resetForm();
-            $("#kategori_id").val($(this).data('id'));
-            $("#kategori_code").val($(this).data('code'));
-            $("#kategori_desc").val($(this).data('desc'));
-            $("#kategori_nm").val($(this).data('nama'));
+             $("input").val(""); 
+             form.resetForm();
+            $("#submodul_id").val($(this).data('id'));
+            $("#id_modul").val($(this).data('modul'));
+            $("#submodul_name").val($(this).data('nama'));
+            $("#submodul_desc").val($(this).data('desc'));
             $("#status").val($(this).data('status'));
-            $("#simpan").show();
+            $('.kt-selectpicker').selectpicker('refresh');
+           
            
             $('#add').modal('show');
         });
 
-      
 
         /* New Data Button */
         $('#new').click(function(event) {
             $("input").val("");
             $("textarea").val("");
-           
+            $("select#status").val("");
+            $('.kt-selectpicker').selectpicker('refresh');
             form.resetForm();
-            $("#simpan").show();
         });
 
     });
     
 </script>   
    
-@endpush
+<?php $__env->stopPush(); ?>
+
+
+<?php $__env->startPush('style'); ?>
+<style>
+        tfoot {
+             display: table-header-group;
+        }
+        </style>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/materi/submodul.blade.php ENDPATH**/ ?>

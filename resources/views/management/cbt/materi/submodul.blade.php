@@ -3,13 +3,7 @@
 @section('content')
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-    <div class="alert alert-light alert-elevate" role="alert">
-        <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
-        <div class="alert-text">
-            {{$Title}}
-            <br>For more info see <a class="kt-link kt-font-bold" href="https://datatables.net/" target="_blank">the official home</a> of the plugin.
-        </div>
-    </div>
+ 
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
@@ -179,7 +173,7 @@ jQuery(document).ready(function() {
 
             $.ajax({
                 type: "post",
-                url: "{{ route('mgt.cbt.materi.pembuatan_submodul.insert') }}",
+                url: "{{ route('materi.pembuatan-submodul.insert') }}",
                 dataType:"json",
                 data: {
                     name: $("#submodul_name").val(),
@@ -226,7 +220,7 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('mgt.cbt.materi.pembuatan_submodul.data') }}",
+            ajax: "{{ route('materi.pembuatan-submodul.data') }}",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;

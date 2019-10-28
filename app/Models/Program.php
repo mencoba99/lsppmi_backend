@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
+use Venturecraft\Revisionable\Revisionable;
 
-class Program extends Model
+class Program extends Revisionable
 {
-     // use RevisionableTrait;
-    //  use SoftDeletes;
-	
-     // protected $revisionCreationsEnabled = true;
+    
+     protected $revisionCreationsEnabled = true;
      
      protected $table = 'programs';
  

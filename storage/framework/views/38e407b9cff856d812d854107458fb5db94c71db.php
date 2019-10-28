@@ -1,12 +1,11 @@
-@extends('layouts.base')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
     <div class="alert alert-light alert-elevate" role="alert">
         <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
         <div class="alert-text">
-            {{$Title}}
+            <?php echo e($Title); ?>
+
             <br>For more info see <a class="kt-link kt-font-bold" href="https://datatables.net/" target="_blank">the official home</a> of the plugin.
         </div>
     </div>
@@ -17,19 +16,17 @@
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                  {{ucfirst(trans(end($crumbs)))}}
+                  <?php echo e(ucfirst(trans(end($crumbs)))); ?>
+
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah   {{ucfirst(trans(end($crumbs)))}}</button>
+                            Tambah   <?php echo e(ucfirst(trans(end($crumbs)))); ?></button>
                         &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
+                        
                     </div>
                 </div>
             </div>
@@ -66,7 +63,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah  <?php echo e(ucfirst(trans(end($crumbs)))); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -79,29 +76,34 @@
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Nama Kategori:</label>
                                             <div class="col-lg-6">
-                                                {!! Form::text('kategori_nm',null,['id'=>'kategori_nm','class'=>'form-control ','required'=>'required']) !!}
-                                                {!! Form::text('kategori_id',null,['id'=>'kategori_id','class'=>'form-control','hidden'=>'hidden']) !!}
+                                                <?php echo Form::text('kategori_nm',null,['id'=>'kategori_nm','class'=>'form-control ','required'=>'required']); ?>
+
+                                                <?php echo Form::text('kategori_id',null,['id'=>'kategori_id','class'=>'form-control','hidden'=>'hidden']); ?>
+
                                                
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Kode:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('kategori_code',null,['id'=>'kategori_code','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('kategori_code',null,['id'=>'kategori_code','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Keterangan:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('kategori_desc',null,['id'=>'kategori_desc','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('kategori_desc',null,['id'=>'kategori_desc','class'=>'form-control ','required'=>'required']); ?>
+
                                                    
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Status:</label>
                                                 <div class="col-lg-4 ">
-                                                    {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
+                                                    <?php echo Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']); ?>
+
                                                 </div>
                                             </div>
                                     </div>
@@ -121,9 +123,9 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
   
 <script type="text/javascript">
  
@@ -182,7 +184,7 @@ jQuery(document).ready(function() {
 
             $.ajax({
                 type: "post",
-                url: "{{ route('ujian-komputer.kategori.insert') }}",
+                url: "<?php echo e(route('ujian-komputer.kategori.insert')); ?>",
                 dataType:"json",
                 data: {
                     name: $("#kategori_nm").val(),
@@ -229,7 +231,7 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('ujian-komputer.kategori.data') }}",
+            ajax: "<?php echo e(route('ujian-komputer.kategori.data')); ?>",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -278,4 +280,6 @@ jQuery(document).ready(function() {
     
 </script>   
    
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/kategori.blade.php ENDPATH**/ ?>
