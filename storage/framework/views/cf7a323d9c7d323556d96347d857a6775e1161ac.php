@@ -1,6 +1,4 @@
-@extends('layouts.base')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
     <div class="kt-portlet kt-portlet--mobile">
@@ -10,14 +8,15 @@
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                        {{ucfirst(trans(end($crumbs)))}}
+                        <?php echo e(ucfirst(trans(end($crumbs)))); ?>
+
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah  {{ucfirst(trans(end($crumbs)))}}</button>
+                            Tambah  <?php echo e(ucfirst(trans(end($crumbs)))); ?></button>
                         
                     </div>
                 </div>
@@ -76,39 +75,46 @@
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Kategori:</label>
                                             <div class="col-lg-6">
-                                                {!! Form::select('kategori_id',$Kategori,null,['id'=>'kategori_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Kategori']) !!}
-                                                {!! Form::text('program_id',null,['id'=>'program_id','class'=>'form-control','hidden'=>'hidden']) !!}
+                                                <?php echo Form::select('kategori_id',$Kategori,null,['id'=>'kategori_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Kategori']); ?>
+
+                                                <?php echo Form::text('program_id',null,['id'=>'program_id','class'=>'form-control','hidden'=>'hidden']); ?>
+
                                                
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Kode Program:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('program_code',null,['id'=>'program_code','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('program_code',null,['id'=>'program_code','class'=>'form-control ','required'=>'required']); ?>
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Nama Program:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('program_name',null,['id'=>'program_name','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('program_name',null,['id'=>'program_name','class'=>'form-control ','required'=>'required']); ?>
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Singkatan Ind:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('program_sing_ind',null,['id'=>'program_sing_ind','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('program_sing_ind',null,['id'=>'program_sing_ind','class'=>'form-control ','required'=>'required']); ?>
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Singkatan Eng:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('program_sing_eng',null,['id'=>'program_sing_eng','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('program_sing_eng',null,['id'=>'program_sing_eng','class'=>'form-control ','required'=>'required']); ?>
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Level:</label>
                                             <div class="col-lg-3">
-                                                {!! Form::select('level',$level,null,['id'=>'level','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Level']) !!}
+                                                <?php echo Form::select('level',$level,null,['id'=>'level','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Level']); ?>
+
                                             </div>
                                         </div>
                                         <div class="form-group row mta">
@@ -116,7 +122,7 @@
                                             <div class="col-9">
                                                 <div class="kt-checkbox-inline">
                                                     <label class="kt-checkbox">
-                                                        {!! Form::checkbox('type',1,null,['id'=>'type','data-direct'=>'']) !!} Direct
+                                                        <?php echo Form::checkbox('type',1,null,['id'=>'type','data-direct'=>'']); ?> Direct
                                                         <span></span>
                                                     </label>
                                                     
@@ -128,11 +134,11 @@
                                             <div class="col-9">
                                                 <div class="kt-checkbox-inline">
                                                     <label class="kt-checkbox">
-                                                        {!! Form::checkbox('cbt',1,null,['id'=>'cbt','data-cbt'=>'']) !!} CBT
+                                                        <?php echo Form::checkbox('cbt',1,null,['id'=>'cbt','data-cbt'=>'']); ?> CBT
                                                         <span></span>
                                                     </label>
                                                     <label class="kt-checkbox">
-                                                        {!! Form::checkbox('interview',1,null,['id'=>'interview','data-interview'=>'','checked'=>false]) !!} Interview
+                                                        <?php echo Form::checkbox('interview',1,null,['id'=>'interview','data-interview'=>'','checked'=>false]); ?> Interview
                                                         <span></span>
                                                     </label>
                                                     
@@ -142,13 +148,15 @@
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Keterangan:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('program_desc',null,['id'=>'program_desc','class'=>'summernote form-control ']) !!}
+                                                    <?php echo Form::text('program_desc',null,['id'=>'program_desc','class'=>'summernote form-control ']); ?>
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Status:</label>
                                             <div class="col-lg-3">
-                                                {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
+                                                <?php echo Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']); ?>
+
                                             </div>
                                         </div>
                                     </div>
@@ -169,9 +177,9 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
   
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
@@ -272,7 +280,7 @@ jQuery(document).ready(function() {
 
             $.ajax({
                 type: "post",
-                url: "{{ route('ujian-komputer.program.insert') }}",
+                url: "<?php echo e(route('ujian-komputer.program.insert')); ?>",
                 dataType:"json",
                 data: {
                     id: $("#program_id").val(),
@@ -384,7 +392,7 @@ jQuery(document).ready(function() {
             processing: true,
             serverSide: true,
             responsive: true,
-            ajax: "{{ route('ujian-komputer.program.data') }}",
+            ajax: "<?php echo e(route('ujian-komputer.program.data')); ?>",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -428,7 +436,7 @@ jQuery(document).ready(function() {
            
             $.ajax({
             type: "post",
-            url: "{{ route('ujian-komputer.program.desc') }}",
+            url: "<?php echo e(route('ujian-komputer.program.desc')); ?>",
             dataType:"json",
             data: {
                 id: $(this).data('id'),
@@ -510,4 +518,6 @@ jQuery(document).ready(function() {
     
 </script>   
    
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/program.blade.php ENDPATH**/ ?>

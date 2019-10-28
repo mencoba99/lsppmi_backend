@@ -5,7 +5,7 @@
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-tag"></i>
+                    <i class="kt-font-brand flaticon-interface-8"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
                   <?php echo e(ucfirst(trans(end($crumbs)))); ?>
@@ -23,6 +23,8 @@
                 </div>
             </div>
         </div>
+        
+
         <div class="kt-portlet__body tabel-provinsi">
             <table class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" id="datatable">
                 <thead>
@@ -52,7 +54,7 @@
 </div>
 
 <div class="modal fade" id="add"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah  <?php echo e(ucfirst(trans(end($crumbs)))); ?></h5>
@@ -66,38 +68,39 @@
                                     
                                     <div class="kt-section__body">
                                         <div class="form-group row">
-                                            <label class="col-lg-3 col-form-label">Nama Kategori:</label>
+                                            <label class="col-lg-3 col-form-label">Program:</label>
                                             <div class="col-lg-6">
-                                                <?php echo Form::text('kategori_nm',null,['id'=>'kategori_nm','class'=>'form-control ','required'=>'required']); ?>
+                                                <?php echo Form::select('program_id',$Program,null,['id'=>'program_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Program']); ?>
 
-                                                <?php echo Form::text('kategori_id',null,['id'=>'kategori_id','class'=>'form-control','hidden'=>'hidden']); ?>
+                                                <?php echo Form::text('mgt_id',null,['id'=>'mgt_id','class'=>'form-control','hidden'=>'hidden']); ?>
 
                                                
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Kode:</label>
+                                                <label class="col-lg-3 col-form-label">Modul:</label>
                                                 <div class="col-lg-6">
-                                                    <?php echo Form::text('kategori_code',null,['id'=>'kategori_code','class'=>'form-control ','required'=>'required']); ?>
+                                                        <div id="tree">
+                                                                <ul>
+                                                        <?php $__currentLoopData = $modul; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $data_modul): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <li id="<?php echo e($data_modul->id); ?>">
+                                                                <?php echo e($data_modul->name); ?>
 
-                                                  
+                                                                <ul>
+                                                                <?php $__currentLoopData = $data_modul->submodul; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <li id="<?php echo e($item->id); ?>">
+                                                                   <?php echo e($item->name); ?>
+
+                                                                </li>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                            </ul>
+                                                            </li>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </ul>
+                                                </div>
                                                 </div>
                                         </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Keterangan:</label>
-                                                <div class="col-lg-6">
-                                                    <?php echo Form::textarea('kategori_desc',null,['id'=>'kategori_desc','class'=>'form-control ','required'=>'required']); ?>
-
-                                                   
-                                                </div>
-                                        </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Status:</label>
-                                                <div class="col-lg-4 ">
-                                                    <?php echo Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']); ?>
-
-                                                </div>
-                                            </div>
+                                       
                                     </div>
             
                                 </div>
@@ -120,15 +123,29 @@
 <?php $__env->startPush('scripts'); ?>
   
 <script type="text/javascript">
- 
+    $(function () {
+    $("#tree").jstree({
+        "checkbox": {
+            "keep_selected_style": false
+        },
+            "plugins": ["checkbox"]
+    });
+    $("#tree").bind("changed.jstree",
+    function (e, data) {
+        alert("Checked: " + data.node.id);
+        alert("Parent: " + data.node.parent); 
+        //alert(JSON.stringify(data));
+    });
+
+
+});
 
     var KTBootstrapSelect = function () {
     
     // Private functions
     var demos = function () {
-        $('.kt-selectpicker').selectpicker().change(function(){
-            $(this).valid()
-        });
+        // minimum setup
+        $('.kt-selectpicker').selectpicker();
     }
 
     return {
@@ -139,52 +156,43 @@
     };
 }();
 
-jQuery(document).ready(function() {
+$(function () {
     KTBootstrapSelect.init();
     form = $("#form").validate({
         rules: {
-            "kategori_nm": {
+            "program_id": {
                 required: true
             },
-            "kategori_code": {
-                required: true
-            },
-            "kategori_desc": {
-                required: true
-            },
-            "status": {
+            "tree": {
                 required: true
             }
 
         },
         messages: {
-            "kategori_nm": {
-                required: "Silahkan tulis nama kategori yang akan diinput "
+            "program_id": {
+                required: "Silahkan pilih program "
             },
-            "kategori_code": {
-                required: "Silahkan tulis kode yang akan diinput"
-            },
-            "kategori_desc": {
+            "tree": {
                 required: "Silahkan tulis keterangan yang akan diinput"
-            },
-            "status": {
-                required: "Silahkan pilih status"
             }
         },
         submitHandler: function (form) { // for demo
                table = $('#datatable').DataTable().destroy();
-        
+               checked_ids = []; 
+                $("#tree").jstree("get_checked",null,true).each 
+                    (function () { 
+                        checked_ids.push(this.id); 
+                    }); 
+           doStuff(checked_ids); 
 
             $.ajax({
                 type: "post",
-                url: "<?php echo e(route('ujian-komputer.kategori.insert')); ?>",
+                url: "<?php echo e(route('ujian-komputer.management.insert')); ?>",
                 dataType:"json",
                 data: {
-                    name: $("#kategori_nm").val(),
-                    id: $("#kategori_id").val(),
-                    code: $("#kategori_code").val(),
-                    desc: $("#kategori_desc").val(),
-                    status: $("#status").val(),
+                    program: $("#program_id").val(),
+                    id: $("#mgt_id").val(),
+                    modul: checked_ids,
                 },
                 beforeSend: function() {
                     KTApp.block('#add .modal-content', {
@@ -198,38 +206,17 @@ jQuery(document).ready(function() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    // alert(JSON.stringify(response));
+                    alert(JSON.stringify(response));
                     if(response.status === 200) {
                         view();
                         setTimeout(function() {
                             KTApp.unblock('#add .modal-content');
                             $('#add').modal('hide');
-                            $.notify({
-                                // options
-                                message: 'Berhasil disimpan' 
-                            },{
-                                // settings
-                                type: 'success',
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                }
-                            });
                         }, 2000);
                         
             //          
                     } else if(response.status === 500) {
-                        $.notify({
-                                // options
-                                message: 'Error' 
-                            },{
-                                // settings
-                                type: 'danger',
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                }
-                            });
+                        // do something with response.message or whatever other data on error
                     }
                 }
             })
@@ -245,15 +232,16 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "<?php echo e(route('ujian-komputer.kategori.data')); ?>",
+            ajax: "<?php echo e(route('ujian-komputer.management.data')); ?>",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 } , title: 'No.', width : "3%" },
-                { data: 'code', name: 'code' , title: 'Kode ' },
                 { data: 'name', name: 'name' , title: 'Nama Kategori' },
-                { data: 'description', name: 'description' , title: 'Keterangan' },
-                { data: 'status', name: 'status' , title: 'Status', width : "10%" },
+                { data: 'programs.name', name: 'programs.name' , title: 'Modul ' },
+                { data: 'modul.name', name: 'modul.name' , title: 'Modul' },
+                { data: 'submodul.name', name: 'submodul.name' , title: 'SubModul' },
+                { data: 'total_soal', name: 'total_soal' , title: 'Total Soal', width : "10%" },
                 { data: 'action', name: 'action' , title: 'Action', width : "5%" },
             ]
     });
@@ -273,8 +261,7 @@ jQuery(document).ready(function() {
             $("#kategori_code").val($(this).data('code'));
             $("#kategori_desc").val($(this).data('desc'));
             $("#kategori_nm").val($(this).data('nama'));
-            $("select#status").val($(this).data('status'));
-            $('.kt-selectpicker').selectpicker('refresh');
+            $("#status").val($(this).data('status'));
             $("#simpan").show();
            
             $('#add').modal('show');
@@ -286,8 +273,7 @@ jQuery(document).ready(function() {
         $('#new').click(function(event) {
             $("input").val("");
             $("textarea").val("");
-            $("select").val("");
-            $('.kt-selectpicker').selectpicker('refresh');
+           
             form.resetForm();
             $("#simpan").show();
         });
@@ -298,4 +284,4 @@ jQuery(document).ready(function() {
    
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/kategori.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/mgtprogram.blade.php ENDPATH**/ ?>
