@@ -26,10 +26,6 @@
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
                             Tambah Data</button>
                         &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -41,14 +37,10 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="nosearch"></td>
@@ -68,19 +60,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-provinsi">
+                <form id="form">
                     <div class="form-group">
                         <label for="recipient-name" class="form-control-label">Nama Provinsi:</label>
-                        <input type="text" class="form-control" name="nm_provinsi[]" id="provinsi_nm">
+                        <input type="text" class="form-control" name="provinsi_nm" id="provinsi_nm">
                         <input type="text" class="form-control " style="display:none" name="id_provinsi[]" id="provinsi_id">
                     </div>
                     
-                </form>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="simpan" class="btn btn-primary">Simpan</button>
+                <button type="submit" id="simpan" class="submit btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
             </div>
+        </form>
         </div>
     </div>
 </div>
@@ -92,93 +85,27 @@
 <script type="text/javascript">
   function view(){
     $('#datatable').DataTable().destroy();
-    $('#datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('master.provinsi.data') }}",
-            columns: [
-                { data: 'id', render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                } , title: 'No.' },
-                { data: 'nm_provinsi', name: 'nm_provinsi' , title: 'Nama Provinsi' },
-                { data: 'created_at', name: 'created_at' , title: 'Created At' },
-                { data: 'updated_at', name: 'updated_at' , title: 'Update At' },
-                { data: 'action', name: 'action' , title: 'Action' }
-            ]
-        });
+    form = $("#form").validate({
+        rules: {
+            "provinsi_nm": {
+                required: true
+            }
 
-        
-
-  }
-    $(function() {
-       
-
-        view();     
-    $("#datatable").on("click", "tr #edit", function() {  
-        data = $(this).data('id');
-        nama = $(this).data('nama');
-        $("#provinsi_id").val(data);
-        $("#provinsi_nm").val(nama);
-        $('#add').modal('show');
-
-
-    });
-
-    $("#datatable").on("click", "tr #hapus", function() {
-     
-     data = $(this).data('id');
-     table = $('#datatable').DataTable().destroy();
-
-     $.ajax({
-         type: "post",
-         url: "{{ route('master.provinsi.delete') }}",
-         dataType:"json",
-         data: {
-             id: data,
-         },
-         beforeSend: function() {
-            KTApp.blockPage();
-            },
-         headers: {
-             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         },
-         success: function (response) {
-            //  alert(JSON.stringify(response));
-             if(response.status === 200) {
-                 view();
-                 setTimeout(function() {
-                    KTApp.unblockPage();
-                }, 2000);
-                
-             } else if(response.status === 500) {
-                 // do something with response.message or whatever other data on error
-             }
-         }
-     })
-     return false;
-     event.preventDefault();
-    });
-
-    $('#new').click(function(event) {
-        $("input").val("");
-    });
-
-    $('#simpan').click(function(event) {
-        
-        dataString = $("#form-provinsi").serialize();
-        data = $("#provinsi_nm").val();
-        id = $("#provinsi_id").val();
-       
-        table = $('#datatable').DataTable().destroy();
-        
-
-        $.ajax({
+        },
+        messages: {
+            "provinsi_nm": {
+                required: "Silahkan tulis nama provinsi yang akan diinput "
+            }
+        },
+        submitHandler: function (form) { // for demo
+            table = $('#datatable').DataTable().destroy();
+            $.ajax({
             type: "post",
             url: "{{ route('master.provinsi.insert') }}",
             dataType:"json",
             data: {
-                nm_provinsi: data,
-                id_provinsi: id,
+                nm_provinsi: $("#provinsi_nm").val(),
+                id_provinsi: $("#provinsi_id").val(),
             },
             beforeSend: function() {
                 KTApp.block('#add .modal-content', {
@@ -206,8 +133,46 @@
                 }
             }
         })
-        return false;
-        event.preventDefault();
+            return false;
+            event.preventDefault();
+        }
+    });
+    $('#datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('master.provinsi.data') }}",
+            columns: [
+                { data: 'id', render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                } , title: 'No.', width : "3%" },
+                { data: 'name', name: 'nm_provinsi' , title: 'Nama Provinsi' },
+                // { data: 'created_at', name: 'created_at' , title: 'Created At' },
+                // { data: 'updated_at', name: 'updated_at' , title: 'Update At' },
+                { data: 'action', name: 'action' , title: 'Action', width : "5%" }
+            ]
+        });
+
+        
+
+  }
+    $(function() {
+       
+
+        view();     
+    $("#datatable").on("click", "tr #edit", function() {  
+        data = $(this).data('id');
+        nama = $(this).data('nama');
+        $("#provinsi_id").val(data);
+        $("#provinsi_nm").val(nama);
+        $('#add').modal('show');
+
+
+    });
+
+   
+
+    $('#new').click(function(event) {
+        $("input").val("");
     });
 
    

@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
+use Venturecraft\Revisionable\Revisionable;
 
-class Provinsi extends Model
+class Provinsi extends Revisionable
 {
-    // use RevisionableTrait;
-    use SoftDeletes;
+   
+	protected $revisionCreationsEnabled = true;
 	
-	// protected $revisionCreationsEnabled = true;
-	
-    protected $table = 'provinsi';
+    protected $table = 'provinces';
 
     protected $fillable = [
         
-        'nm_provinsi',
+        'name',
        
     ];
 

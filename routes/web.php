@@ -25,76 +25,6 @@ Route::get('login', 'DashboardController@login')->name('login');
 Route::post('login-process', 'DashboardController@loginProcess')->name('login.proses');
 Route::get('logout', 'DashboardController@logout')->name('logout');
 
-<<<<<<< HEAD
-
-
-Route::group(['middleware' => 'auth'], function () {
-    Route::group(['prefix' => 'mgt'], function () {
-    
-        Route::group(['prefix' => 'cbt'], function () {
-            Route::get('kategori', 'Management\CBT\KategoriController@Kategori')->name('mgt.cbt.kategori');
-            Route::get('kategori/data', 'Management\CBT\KategoriController@AjaxKategoriGetData')->name('mgt.cbt.kategori.data');
-            Route::post('kategori/insert', 'Management\CBT\KategoriController@AjaxKategoriInsertData')->name('mgt.cbt.kategori.insert');
-            Route::post('kategori/delete', 'Management\CBT\KategoriController@AjaxKategoriDeleteData')->name('mgt.cbt.kategori.delete');
-
-            Route::get('program', 'Management\CBT\ProgramController@Program')->name('mgt.cbt.program');
-            Route::get('program/data', 'Management\CBT\ProgramController@AjaxProgramGetData')->name('mgt.cbt.program.data');
-            Route::post('program/desc', 'Management\CBT\ProgramController@AjaxProgramGetDesc')->name('mgt.cbt.program.desc');
-            Route::post('program/insert', 'Management\CBT\ProgramController@AjaxProgramInsertData')->name('mgt.cbt.program.insert');
-            Route::post('program/delete', 'Management\CBT\ProgramController@AjaxProgramDeleteData')->name('mgt.cbt.program.delete');
-
-            Route::get('management', 'Management\CBT\ManagementController@index')->name('mgt.cbt.management');
-            Route::get('management/data', 'Management\CBT\ManagementController@AjaxMgtProgramGetData')->name('mgt.cbt.management.data');
-            Route::post('management/insert', 'Management\CBT\ManagementController@AjaxMgtProgramInsertData')->name('mgt.cbt.management.insert');
-            Route::post('management/delete', 'Management\CBT\ManagementController@AjaxMgtProgramDeleteData')->name('mgt.cbt.management.delete');
-
-            Route::group(['prefix' => 'materi'], function () {
-                Route::get('jenis-soal', 'Management\CBT\Materi\JenisSoalController@index')->name('mgt.cbt.materi.jenis_soal');
-                Route::get('jenis-soal/data', 'Management\CBT\Materi\JenisSoalController@AjaxJenisSoalGetData')->name('mgt.cbt.materi.jenis_soal.data');
-                Route::post('jenis-soal/insert', 'Management\CBT\Materi\JenisSoalController@AjaxJenisSoalInsertData')->name('mgt.cbt.materi.jenis_soal.insert');
-
-                Route::get('soal', 'Management\CBT\Materi\PembuatanSoalController@index')->name('mgt.cbt.materi.pembuatan_soal');
-                Route::get('soal/data', 'Management\CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalGetData')->name('mgt.cbt.materi.pembuatan_soal.data');
-                Route::post('soal/insert', 'Management\CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalInsertData')->name('mgt.cbt.materi.pembuatan_soal.insert');
-                Route::post('soal/delete', 'Management\CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalDeleteData')->name('mgt.cbt.materi.pembuatan_soal.delete');
-
-                Route::get('modul', 'Management\CBT\Materi\PembuatanModulController@index')->name('mgt.cbt.materi.pembuatan_modul');
-                Route::get('modul/data', 'Management\CBT\Materi\PembuatanModulController@AjaxModulGetData')->name('mgt.cbt.materi.pembuatan_modul.data');
-                Route::post('modul/insert', 'Management\CBT\Materi\PembuatanModulController@AjaxModulInsertData')->name('mgt.cbt.materi.pembuatan_modul.insert');
-                Route::post('modul/delete', 'Management\CBT\Materi\PembuatanModulController@AjaxModulDeleteData')->name('mgt.cbt.materi.pembuatan_modul.delete');
-            
-                Route::get('submodul', 'Management\CBT\Materi\PembuatanSubModulController@index')->name('mgt.cbt.materi.pembuatan_submodul');
-                Route::get('submodul/data', 'Management\CBT\Materi\PembuatanSubModulController@AjaxSubModulGetData')->name('mgt.cbt.materi.pembuatan_submodul.data');
-                Route::post('submodul/insert', 'Management\CBT\Materi\PembuatanSubModulController@AjaxSubModulInsertData')->name('mgt.cbt.materi.pembuatan_submodul.insert');
-                Route::post('submodul/delete', 'Management\CBT\Materi\PembuatanSubModulController@AjaxSubModulDeleteData')->name('mgt.cbt.materi.pembuatan_submodul.delete');
-            
-            });
-
-        });
-
-
-    });
-
-    Route::group(['prefix' => 'master'], function () {
-        Route::get('provinsi', 'Master\ProvinsiController@provinsi')->name('master.provinsi');
-        Route::get('provinsi/data', 'Master\ProvinsiController@AjaxProvinsiGetData')->name('master.provinsi.data');
-        Route::get('provinsi/json', 'Master\ProvinsiController@ProvinsiJson')->name('master.provinsi.json');
-        // Route::get('provinsi/edit', 'MasterDataController@json')->name('master.provinsi.edit');
-        Route::post('provinsi/insert', 'Master\ProvinsiController@AjaxProvinsiInsertData')->name('master.provinsi.insert');
-        Route::post('provinsi/delete', 'Master\ProvinsiController@AjaxProvinsiDeleteData')->name('master.provinsi.delete');
-       
-        
-        Route::get('kota', 'Master\KotaController@kota')->name('master.kota');
-        Route::get('kota/data', 'Master\KotaController@AjaxKotaGetData')->name('master.kota.data');
-        Route::post('kota/insert', 'Master\KotaController@AjaxKotaInsertData')->name('master.kota.insert');
-        Route::post('kota/delete', 'Master\KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
-
-       
-
-       
-    });
-});
-=======
 Route::middleware(['auth'])->group(function (){
 
     Route::group(['namespace'=>'PengaturanAplikasi', 'prefix'=>'pengaturan-aplikasi'], function () {
@@ -119,7 +49,82 @@ Route::middleware(['auth'])->group(function (){
             Route::post('permission/data','PermissionController@getPermissionData')->name('permission.getdata');
             Route::get('permission/{role}/delete','PermissionController@delete')->name('permission.delete');
         });
+
+        
+    });
+
+    Route::group(['namespace'=>'Master', 'prefix'=>'master-data'], function () {
+
+        /**
+         * Master Data
+         */
+      
+            Route::get('provinsi', 'ProvinsiController@provinsi')->name('master.provinsi');
+            Route::get('provinsi/data', 'ProvinsiController@AjaxProvinsiGetData')->name('master.provinsi.data');
+            Route::get('provinsi/json', 'ProvinsiController@ProvinsiJson')->name('master.provinsi.json');
+            Route::post('provinsi/insert', 'ProvinsiController@AjaxProvinsiInsertData')->name('master.provinsi.insert');
+            Route::post('provinsi/delete', 'ProvinsiController@AjaxProvinsiDeleteData')->name('master.provinsi.delete');
+           
+            
+            Route::get('kota', 'KotaController@kota')->name('master.kota');
+            Route::get('kota/data', 'KotaController@AjaxKotaGetData')->name('master.kota.data');
+            Route::post('kota/insert', 'KotaController@AjaxKotaInsertData')->name('master.kota.insert');
+            Route::post('kota/delete', 'KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
+    
+
+        
+    });
+
+    Route::group(['namespace'=>'management', 'prefix'=>'management-data'], function () {
+
+      
+            Route::group(['prefix' => 'cbt'], function () {
+                Route::get('kategori', 'CBT\KategoriController@Kategori')->name('mgt.cbt.kategori');
+                Route::get('kategori/data', 'CBT\KategoriController@AjaxKategoriGetData')->name('mgt.cbt.kategori.data');
+                Route::post('kategori/insert', 'CBT\KategoriController@AjaxKategoriInsertData')->name('mgt.cbt.kategori.insert');
+                Route::post('kategori/delete', 'CBT\KategoriController@AjaxKategoriDeleteData')->name('mgt.cbt.kategori.delete');
+    
+                Route::get('program', 'CBT\ProgramController@Program')->name('mgt.cbt.program');
+                Route::get('program/data', 'CBT\ProgramController@AjaxProgramGetData')->name('mgt.cbt.program.data');
+                Route::post('program/desc', 'CBT\ProgramController@AjaxProgramGetDesc')->name('mgt.cbt.program.desc');
+                Route::post('program/insert', 'CBT\ProgramController@AjaxProgramInsertData')->name('mgt.cbt.program.insert');
+                Route::post('program/delete', 'CBT\ProgramController@AjaxProgramDeleteData')->name('mgt.cbt.program.delete');
+    
+                Route::get('management', 'CBT\ManagementController@index')->name('mgt.cbt.management');
+                Route::get('management/data', 'CBT\ManagementController@AjaxMgtProgramGetData')->name('mgt.cbt.management.data');
+                Route::post('management/insert', 'CBT\ManagementController@AjaxMgtProgramInsertData')->name('mgt.cbt.management.insert');
+                Route::post('management/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('mgt.cbt.management.delete');
+    
+                Route::group(['prefix' => 'materi'], function () {
+                    Route::get('jenis-soal', 'CBT\Materi\JenisSoalController@index')->name('mgt.cbt.materi.jenis_soal');
+                    Route::get('jenis-soal/data', 'CBT\Materi\JenisSoalController@AjaxJenisSoalGetData')->name('mgt.cbt.materi.jenis_soal.data');
+                    Route::post('jenis-soal/insert', 'CBT\Materi\JenisSoalController@AjaxJenisSoalInsertData')->name('mgt.cbt.materi.jenis_soal.insert');
+    
+                    Route::get('soal', 'CBT\Materi\PembuatanSoalController@index')->name('mgt.cbt.materi.pembuatan_soal');
+                    Route::get('soal/data', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalGetData')->name('mgt.cbt.materi.pembuatan_soal.data');
+                    Route::post('soal/insert', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalInsertData')->name('mgt.cbt.materi.pembuatan_soal.insert');
+                    Route::post('soal/delete', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalDeleteData')->name('mgt.cbt.materi.pembuatan_soal.delete');
+    
+                    Route::get('modul', 'CBT\Materi\PembuatanModulController@index')->name('mgt.cbt.materi.pembuatan_modul');
+                    Route::get('modul/data', 'CBT\Materi\PembuatanModulController@AjaxModulGetData')->name('mgt.cbt.materi.pembuatan_modul.data');
+                    Route::post('modul/insert', 'CBT\Materi\PembuatanModulController@AjaxModulInsertData')->name('mgt.cbt.materi.pembuatan_modul.insert');
+                    Route::post('modul/delete', 'CBT\Materi\PembuatanModulController@AjaxModulDeleteData')->name('mgt.cbt.materi.pembuatan_modul.delete');
+                
+                    Route::get('submodul', 'CBT\Materi\PembuatanSubModulController@index')->name('mgt.cbt.materi.pembuatan_submodul');
+                    Route::get('submodul/data', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulGetData')->name('mgt.cbt.materi.pembuatan_submodul.data');
+                    Route::post('submodul/insert', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulInsertData')->name('mgt.cbt.materi.pembuatan_submodul.insert');
+                    Route::post('submodul/delete', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulDeleteData')->name('mgt.cbt.materi.pembuatan_submodul.delete');
+                
+                });
+    
+            });
+    
+    
+
+        
     });
 
 });
->>>>>>> fa70d974c5c0c1209cf60dfc3d94305687d5dea0
+
+
+

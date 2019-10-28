@@ -37,79 +37,54 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="click"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-calendar-5"></i><span class="kt-menu__link-text">Add</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--submenu-fullheight {{ in_array('master-data', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-presentation"></i><span class="kt-menu__link-text">Pengaturan Aplikasi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Management</span></span></li>
-                                    <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Ujian Komputer</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                        <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                            <ul class="kt-menu__subnav">
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.kategori') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Kategori</span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.program') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Program</span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.management') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Management</span></a></li>
-                                                <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Materi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                                    <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                                        <ul class="kt-menu__subnav">
-                                                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_modul') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-computer"></i><span class="kt-menu__link-text">Pembuatan Modul</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--warning">10</span></span></a></li>
-                                                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_submodul') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-signs-2"></i><span class="kt-menu__link-text">Pembuatan Sub Modul</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--danger">6</span></span></a></li>
-                                                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.jenis_soal') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-clipboard"></i><span class="kt-menu__link-text">Jenis Soal</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--success">2</span></span></a></li>
-                                                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_soal') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-multimedia-2"></i><span class="kt-menu__link-text">Pembuatan Soal</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--info kt-badge--inline">245</span></span></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Peserta</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                        <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                            <ul class="kt-menu__subnav">
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.kategori') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-computer"></i><span class="kt-menu__link-text">Kategori</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--warning">10</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.program') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-signs-2"></i><span class="kt-menu__link-text">Program</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--danger">6</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.management') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-clipboard"></i><span class="kt-menu__link-text">Management</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--success">2</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_modul') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-multimedia-2"></i><span class="kt-menu__link-text">Materi</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--info kt-badge--inline">245</span></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pendaftaran</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                        <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                            <ul class="kt-menu__subnav">
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.kategori') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-computer"></i><span class="kt-menu__link-text">Kategori</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--warning">10</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.program') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-signs-2"></i><span class="kt-menu__link-text">Program</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--danger">6</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.management') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-clipboard"></i><span class="kt-menu__link-text">Management</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--success">2</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_modul') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-multimedia-2"></i><span class="kt-menu__link-text">Materi</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--info kt-badge--inline">245</span></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pembayaran</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                        <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                            <ul class="kt-menu__subnav">
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.kategori') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-computer"></i><span class="kt-menu__link-text">Kategori</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--warning">10</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.program') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-signs-2"></i><span class="kt-menu__link-text">Program</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--danger">6</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.management') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-clipboard"></i><span class="kt-menu__link-text">Management</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--success">2</span></span></a></li>
-                                                <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_modul') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-multimedia-2"></i><span class="kt-menu__link-text">Materi</span><span class="kt-menu__link-badge"><span class="kt-badge kt-badge--info kt-badge--inline">245</span></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <div class="kt-menu__wrapper">
+                                    <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Master Data</span></span></li>
+                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('master', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-map"><span></span></i><span class="kt-menu__link-text">Location</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                                <ul class="kt-menu__subnav">
+                                                    <li class="kt-menu__item {{ ($routeName == 'master.provinsi') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('master.provinsi') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Provinsi</span></a></li>
+                                                    <li class="kt-menu__item {{ ($routeName == 'master.kota') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('master.kota') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Kota / Kabupaten</span></a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--bottom" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-link-redirect="1"><a target="_blank" href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-analytics-2"></i><span class="kt-menu__link-text">Customers</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--submenu-fullheight {{ in_array('management', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-map"></i><span class="kt-menu__link-text">Management</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--bottom"><span class="kt-menu__link"><span class="kt-menu__link-text">Master Data</span></span></li>
-                                    <li class="kt-menu__item " ><a href="{{ route('master.provinsi') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Provinsi</span></a></li>
-                                    
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('master.kota') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Kabupaten / Kota</span></a></li>
-                                    
-                                   
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Unit Kompetensi</span></a></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Elemen Kompetensi</span></a></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Kriteria Unjuk Kerja</span></a></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Daftar Pertanyaan Lisan / Wawancara</span></a></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Daftar Pertanyaan Tertulis</span></a></li>
-                                </ul>
+                                <div class="kt-menu__wrapper">
+                                    <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Management</span></span></li>
+                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('cbt', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-imac"><span></span></i><span class="kt-menu__link-text">Ujian Komputer</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                                <ul class="kt-menu__subnav">
+                                                    <li class="kt-menu__item {{ ($routeName == 'mgt.cbt.kategori') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('mgt.cbt.kategori') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Kategori</span></a></li>
+                                                    <li class="kt-menu__item {{ ($routeName == 'mgt.cbt.program') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('mgt.cbt.program') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Program</span></a></li>
+                                                    <li class="kt-menu__item {{ ($routeName == 'mgt.cbt.management') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('mgt.cbt.management') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Management</span></a></li>
+                                                  
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('materi', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-file-1"><span></span></i><span class="kt-menu__link-text">Materi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                                <ul class="kt-menu__subnav">
+                                                    <li class="kt-menu__item {{ ($routeName == 'mgt.cbt.materi.pembuatan_modul') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_modul') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pembuatan Modul</span></a></li>
+                                                    <li class="kt-menu__item {{ ($routeName == 'mgt.cbt.materi.pembuatan_submodul') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_submodul') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pembuatan Submodul</span></a></li>
+                                                    <li class="kt-menu__item {{ ($routeName == 'mgt.cbt.materi.jenis_soal') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.jenis_soal') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Jenis Soal</span></a></li>
+                                                    <li class="kt-menu__item {{ ($routeName == 'mgt.cbt.materi.pembuatan_soal') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('mgt.cbt.materi.pembuatan_soal') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pembuatan Soal</span></a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
                             </div>
                         </li>
+                        
                         <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--bottom-2" aria-haspopup="true" data-ktmenu-submenu-toggle="click"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-gear"></i><span class="kt-menu__link-text">Settings</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu kt-menu__submenu--up"><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">

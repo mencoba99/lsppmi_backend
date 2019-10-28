@@ -38,7 +38,7 @@ class ProvinsiController extends Controller
     {
        
         $Provinsi = new Provinsi();
-        $Provinsi->nm_provinsi = $request->get('nm_provinsi');
+        $Provinsi->name = $request->get('nm_provinsi');
         // $Provinsi->id = $request->get('id_provinsi');
         
 
@@ -46,7 +46,7 @@ class ProvinsiController extends Controller
             
             $update =[];
             $update['id'] = $request->get('id_provinsi');
-            $update['nm_provinsi'] = $request->get('nm_provinsi');
+            $update['name'] = $request->get('nm_provinsi');
             if(Provinsi::whereId($request->get('id_provinsi'))->update($update)){
                 
                 return json_encode(array(
@@ -79,35 +79,6 @@ class ProvinsiController extends Controller
     }
 
 
-    public function AjaxProvinsiDeleteData(Request $request)
-    {
-       
-    //    return $request->get('nm_provinsi');
-       
-        $deleted = Provinsi::find($request->get('id'))->delete();
-            if($deleted){
-                return json_encode(array(
-                    "status"=>200
-                ));
-            }else{
-                return json_encode(array(
-                    "status"=>500
-                ));
-            }
-       
-
-        // if ($Provinsi->save()) {
-        //     return json_encode(array(
-        //         "status"=>200
-        //     ));
-		// } else {
-        //     return json_encode(array(
-        //         "status"=>500
-        //     ));
-		// }
-       
-
-    }
 
 
     public function AjaxProvinsiGetData()
@@ -115,10 +86,8 @@ class ProvinsiController extends Controller
     
         return DataTables::of(Provinsi::all())->addColumn('action', function (Provinsi $provinsi) {
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit" data-id="'.$provinsi->id.'" data-nama="'.$provinsi->nm_provinsi.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $provinsi->nm_provinsi . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            $action .= '<button id="hapus"  data-id="'.$provinsi->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $provinsi->nm_provinsi . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-           
-			$action .= "</div>";
+            $action .= '<button id="edit" data-id="'.$provinsi->id.'" data-nama="'.$provinsi->name.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $provinsi->nm_provinsi . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            $action .= "</div>";
 			return $action;
 		})->make(true);
     }
