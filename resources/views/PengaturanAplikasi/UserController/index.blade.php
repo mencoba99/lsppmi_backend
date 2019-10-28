@@ -49,7 +49,7 @@
 @endsection
 
 @push('script')
-    <script src="{{ Storage::url('vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
+    <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             var table = $('#kt_table_1');

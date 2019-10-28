@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(function () {
 
     /**
@@ -29,6 +31,11 @@ $(document).ready(function () {
             });
         });
     }
+
+    /**
+     * Summernote initialization
+     */
+    $(".summernote").summernote({height:150,dialogsInBody: true});
 
     /**
      * Untuk fungsi Popup konfirmasi pada saat menghapus item
@@ -93,10 +100,15 @@ $(document).ready(function () {
         });
         $('#mod-iframe-large').modal({show:true});
     });
-
+    /** Set lebar Iframe on show up modal */
     $('#mod-iframe-large').on('shown.bs.modal', function (e) {
         var iframeWindow = $(this).find('iframe');
         // $(this).find('iframe').attr('src',url);
         var h = $(this).find('.modal-body').outerWidth();
     });
-})
+
+    /** Untuk memunculkan loading saat setiap submit button di klik */
+    $(".btn-loading").on('click', 'body', function (e) {
+        $(this).addClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
+    });
+});

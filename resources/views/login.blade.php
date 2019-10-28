@@ -29,21 +29,21 @@
     <!--end::Fonts -->
 
     <!--begin::Page Custom Styles(used by this page) -->
-    <link href="{{ Storage::url('login/login-2.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/login/login-2.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Page Custom Styles -->
 
     <!--begin::Global Theme Styles(used by all pages) -->
-    <link href="{{ Storage::url('vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Global Theme Styles -->
 
     <!--begin::Layout Skins(used by all pages) -->
-    <link href="{{ Storage::url('css/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('css/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('css/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('css/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/css/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/css/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/css/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/css/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Layout Skins -->
     <link rel="shortcut icon" href="./assets/media/logos/favicon.ico" />
@@ -62,7 +62,7 @@
                 <div class="kt-login__container">
                     <div class="kt-login__logo">
                         <a href="#">
-                            <img src="{{ Storage::url('media/logos/logo-mini-2-md.png') }}">
+                            <img src="{{ Storage::url('assets/backend/media/logos/logo-mini-2-md.png') }}">
                         </a>
                     </div>
                     <div class="kt-login__signin">
@@ -179,14 +179,14 @@
 <!-- end::Global Config -->
 
 <!--begin::Global Theme Bundle(used by all pages) -->
-<script src="{{ Storage::url('vendors/global/vendors.bundle.js') }}" type="text/javascript"></script>
-<script src="{{ Storage::url('js/scripts.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/vendors/global/vendors.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/js/scripts.bundle.js') }}" type="text/javascript"></script>
 
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Scripts(used by this page) -->
 {{--<script src="{{ asset('assets/js/pages/login/login-general.js') }}" type="text/javascript"></script>--}}
-<script src="{{ Storage::url('js/pages/login/login-general.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/js/pages/login/login-general.js') }}" type="text/javascript"></script>
 
 <!--end::Page Scripts -->
 </body>

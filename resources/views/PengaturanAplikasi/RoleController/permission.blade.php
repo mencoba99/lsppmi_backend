@@ -235,24 +235,11 @@
                         cancelButtonText: 'Tidak',
                     }).then(function(result){
                         if (result.value) {
-                            $.post(link, {state:isChecked}, function (data) {
+                            $.post(_link, {state:isChecked}, function (data) {
                                 KTApp.unblockPage();
                                 if(data.status == true) {
                                     KTApp.unblockPage();
                                     var blocked = _this.closest('.kt-portlet').find('.roleList');
-                                    // console.log(blocked);
-                                    KTApp.block(blocked, {
-                                        // overlayColor: '#000000',
-                                        state: 'primary',
-                                        type: 'v2',
-                                        size: 'lg',
-                                        overlayCSS:  {
-                                            backgroundColor: '#000',
-                                            opacity:         0.3,
-                                            cursor:          'wait'
-                                        },
-                                        message: "BLOCKED"
-                                    });
                                     $.notify({
                                         title: "Sukses:",
                                         message: "Permission berhasil dihapus dari Role"

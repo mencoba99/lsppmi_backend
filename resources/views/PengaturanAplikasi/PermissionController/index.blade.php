@@ -12,7 +12,7 @@
 											<i class="kt-font-brand flaticon2-line-chart"></i>
 										</span>
                     <h3 class="kt-portlet__head-title">
-                        Manajemen Permission
+                        Manajemen Permissions
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
@@ -21,9 +21,11 @@
                             <i class="la la-long-arrow-left"></i>
                             Back
                         </a>
+                        @can('Permission Add')
                         <a href="{{ route('permission.create') }}" class="btn btn-brand btn-icon-sm">
                             <i class="flaticon2-plus"></i> Tambah Permission
                         </a>
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -60,7 +62,7 @@
 @endsection
 
 @push('script')
-    <script src="{{ Storage::url('vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
+    <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 

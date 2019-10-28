@@ -29,15 +29,15 @@
     <!--end::Fonts -->
 
     <!--begin::Page Vendors Styles(used by this page) -->
-    <link href="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('vendors/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 
 
     <!--end::Page Vendors Styles -->
 
     <!--begin::Global Theme Styles(used by all pages) -->
     <link href="{{ asset('assets/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('css/demo7/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/css/demo7/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Global Theme Styles -->
     @stack('style')
@@ -46,7 +46,7 @@
     <link href="{{ asset('assets/css/lsppmi-custom.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Layout Skins -->
-    <link rel="shortcut icon" href="{{ Storage::url('media/logos/favicon.ico') }}" />
+    <link rel="shortcut icon" href="{{ Storage::url('assets/backend/media/logos/favicon.ico') }}" />
 </head>
 
 <!-- end::Head -->

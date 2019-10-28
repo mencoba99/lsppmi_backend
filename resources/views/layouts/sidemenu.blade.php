@@ -6,7 +6,7 @@
             <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
                 <div class="kt-aside__brand-logo">
                     <a href="{{ route('dashboard') }}">
-                        <img alt="Logo" src="{{ Storage::url('media/logos/logo-7.png') }}" />
+                        <img alt="Logo" src="{{ Storage::url('assets/backend/media/logos/logo-7.png') }}" />
                     </a>
                 </div>
             </div>
@@ -19,15 +19,44 @@
                         <li class="kt-menu__item {{ empty($prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}">
                             <a href="{{ route('dashboard') }}" class="kt-menu__link"><i class="kt-menu__link-icon flaticon2-protection"></i><span class="kt-menu__link-text">Dashboard</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--submenu-fullheight {{ in_array('pengaturan-aplikasi', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-settings"></i><span class="kt-menu__link-text">Pengaturan Aplikasi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                        @canany(['User', 'Role', 'Permission'])
+                            <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--submenu-fullheight {{ in_array('pengaturan-aplikasi', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-settings"></i><span class="kt-menu__link-text">Pengaturan Aplikasi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                    <div class="kt-menu__wrapper">
+                                        <ul class="kt-menu__subnav">
+                                            <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Pengaturan Aplikasi</span></span></li>
+                                            <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('manajemen-user', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Manajemen User</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                                    <ul class="kt-menu__subnav">
+                                                        @can('User')
+                                                            <li class="kt-menu__item {{ ($routeName == 'user.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('user.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">User</span></a></li>
+                                                        @endcan
+                                                        @can('Role')
+                                                            <li class="kt-menu__item {{ ($routeName == 'role.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('role.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Role</span></a></li>
+                                                        @endcan
+                                                        @can('Permission')
+                                                            <li class="kt-menu__item {{ ($routeName == 'permission.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('permission.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Permission</span></a></li>
+                                                        @endcan
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        @endcanany
+                        @canany(['Assessor'])
+                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--submenu-fullheight {{ in_array('data-master', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon la la-database"></i><span class="kt-menu__link-text">Data Master</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <div class="kt-menu__wrapper">
                                     <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Pengaturan Aplikasi</span></span></li>
-                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('manajemen-user', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Manajemen User</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                        <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Data Master</span></span></li>
+                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('manajemen-kelas', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Manajemen Kelas</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                                 <ul class="kt-menu__subnav">
-                                                    <li class="kt-menu__item {{ ($routeName == 'user.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('user.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">User</span></a></li>
+                                                    @can('Assessor')
+                                                        <li class="kt-menu__item {{ ($routeName == 'assessor.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('assessor.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Assessor</span></a></li>
+                                                    @endcan
                                                     <li class="kt-menu__item {{ ($routeName == 'role.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('role.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Role</span></a></li>
                                                     <li class="kt-menu__item {{ ($routeName == 'permission.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('permission.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Permission</span></a></li>
                                                 </ul>
@@ -37,17 +66,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="click"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-calendar-5"></i><span class="kt-menu__link-text">Add</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                <ul class="kt-menu__subnav">
-                                    <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Add</span></span></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-icon la la-commenting"></i><span class="kt-menu__link-text">Post</span></a></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-icon la la-user"></i><span class="kt-menu__link-text">Member</span></a></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-icon la la-cart-arrow-down"></i><span class="kt-menu__link-text">Order</span></a></li>
-                                    <li class="kt-menu__item " aria-haspopup="true"><a href="#" class="kt-menu__link "><i class="kt-menu__link-icon la la-coffee"></i><span class="kt-menu__link-text">Entry</span></a></li>
-                                </ul>
-                            </div>
-                        </li>
+                        @endcanany
                         <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--bottom" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-link-redirect="1"><a target="_blank" href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-analytics-2"></i><span class="kt-menu__link-text">Customers</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <ul class="kt-menu__subnav">

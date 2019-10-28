@@ -13,12 +13,12 @@
                         <i class="kt-font-brand flaticon2-line-chart"></i>
                     </span>
                     <h3 class="kt-portlet__head-title">
-                        Manajemen User <small>Ubah User</small>
+                        Manajemen Assessor <small>Tambah Assessor</small>
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
                     <div class="kt-portlet__head-wrapper">
-                        <a href="{{ route('user.index') }}" class="btn btn-clean btn-icon-sm">
+                        <a href="{{ route('assessor.index') }}" class="btn btn-clean btn-icon-sm">
                             <i class="la la-long-arrow-left"></i>
                             Back
                         </a>
@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            @include('PengaturanAplikasi.UserController.form', ['button' => 'Ubah','action'=>route('user.update',['user'=>$user])])
+            @include('DataMaster.AssessorController.form', ['button' => 'Simpan','action'=>route('assessor.store')])
 
         </div>
 

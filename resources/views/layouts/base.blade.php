@@ -8,7 +8,7 @@
 <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
     <div class="kt-header-mobile__logo">
         <a href="demo7/index.html">
-            <img alt="Logo" src="{{ Storage::url('media/logos/logo-6.png') }}" />
+            <img alt="Logo" src="{{ Storage::url('assets/backend/media/logos/logo-6.png') }}" />
         </a>
     </div>
     <div class="kt-header-mobile__toolbar">
@@ -80,19 +80,19 @@
 {{--<script src="./assets/vendors/global/vendors.bundle.js" type="text/javascript"></script>--}}
 {{--<script src="./assets/js/demo7/scripts.bundle.js" type="text/javascript"></script>--}}
 <script src="{{ asset('assets/vendors/global/vendors.bundle.js') }}" type="text/javascript"></script>
-<script src="{{ Storage::url('js/scripts.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/js/scripts.bundle.js') }}" type="text/javascript"></script>
 
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors(used by this page) -->
-<script src="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
-<script src="{{ Storage::url('vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
 
 <!--end::Page Vendors -->
 
 <!--begin::Page Scripts(used by this page) -->
-<script src="{{ Storage::url('js/pages/dashboard.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/js/pages/dashboard.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/lsppmi-custom.js') }}" type="text/javascript"></script>
 
 @stack('script')

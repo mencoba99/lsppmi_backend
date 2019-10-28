@@ -13,7 +13,7 @@
                         <i class="kt-font-brand flaticon2-line-chart"></i>
                     </span>
                     <h3 class="kt-portlet__head-title">
-                        Manajemen Permission <small>Tambah Permission</small>
+                        Manajemen Permission <small>Ubah Permission</small>
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">

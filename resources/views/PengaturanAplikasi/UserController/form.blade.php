@@ -1,5 +1,5 @@
 <div class="kt-portlet__body">
-    {!! Form::open(['route'=>'user.store','id'=>'form-user','method'=>(!empty($role) ? 'PUT':'POST')]) !!}
+    {!! Form::open(['url'=>$action,'id'=>'form-user','method'=>(is_object($user) ? 'PUT':'POST')]) !!}
     <div class="row">
         <div class="col-xl-2"></div>
         <div class="col-xl-8">
@@ -8,19 +8,27 @@
                     <div class="form-group row">
                         <label class="col-3 col-form-label">Nama</label>
                         <div class="col-9">
-                            {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Nama Lengkap']) !!}
+                            {!! Form::text('name',(is_object($user) ? $user->name:''),['class'=>'form-control','placeholder'=>'Nama Lengkap']) !!}
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-3 col-form-label">Email</label>
                         <div class="col-9">
-                            {!! Form::text('email',null,['class'=>'form-control','placeholder'=>'Email']) !!}
+                            {!! Form::email('email',(is_object($user) ? $user->email:''),['class'=>'form-control','placeholder'=>'Email',(is_object($user) ? 'readonly':'')]) !!}
+                            @if (is_object($assessor))
+                                <small class="form-text text-muted">Untuk akun user email tidak bisa diubah</small>
+                            @else
+                                <small class="form-text text-muted">Pastikan email yang digunakan aktif dan dapat diakses</small>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-3 col-form-label">Password</label>
                         <div class="col-9">
                             {!! Form::password('password',['class'=>'form-control','id'=>'password','placeholder'=>'Password']) !!}
+                            @if (is_object($assessor))
+                                <small class="form-text text-muted">Biarkan kosong jika tidak ingin melakukan perubahan password</small>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
@@ -32,7 +40,7 @@
                     <div class="form-group row">
                         <label class="col-3 col-form-label">Role User</label>
                         <div class="col-9">
-                            {!! Form::select('role',$role,null,['class'=>'form-control']) !!}
+                            {!! Form::select('role',$role,(is_object($user) ? $user->roles->first()->id:''),['class'=>'form-control']) !!}
                         </div>
                     </div>
                 </div>
@@ -67,12 +75,14 @@
                         required: true,
                         email: true
                     },
+                    @if(!is_object($user))
                     password: {
                         required: true
                     },
                     password_confirmation: {
                         equalTo: '#password'
                     },
+                    @endif
                     role: {
                         required: true
                     }
