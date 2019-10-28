@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,7 +19,7 @@ class CompetenceUnit extends Model
     public function kuk()
     {
     	return $this->hasManyThrough(
-    		'App\CompetenceKUK', 
+    		'App\CompetenceKUK',
     		'App\CompetenceElement',
     		'competence_unit_id',
     		'competence_element_id',

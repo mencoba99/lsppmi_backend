@@ -32,15 +32,22 @@ class RoleController extends Controller
         $roles = Role::query();
 
         $roleJson = $dataTables->eloquent($roles)->addColumn('action', function (Role $role) {
-            $action = "<a href='" . route('role.edit', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm' data-toggle='kt-tooltip' title='Edit' data-original-tooltip='Edit'>
-                          <i class='la la-edit'></i>
-                        </a>
-                        <a href='" . route('role.delete', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' data-toggle='kt-tooltip' title='Hapus' data-original-tooltip='Hapus'>
+            $action = '';
+            if (auth()->user()->can('Role Edit')) {
+                $action .= "<a href='" . route('role.edit', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm' data-toggle='kt-tooltip' title='Edit' data-original-tooltip='Edit'>
+                              <i class='la la-edit'></i>
+                            </a>";
+            }
+            if (auth()->user()->can('Role Delete')) {
+                $action .= "<a href='" . route('role.delete', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' data-toggle='kt-tooltip' title='Hapus' data-original-tooltip='Hapus'>
                           <i class='la la-trash'></i>
-                        </a>
-                        <a href='" . route('role.permission', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Role Permission' data-original-title='Role Permission'>
+                        </a>";
+            }
+            if (auth()->user()->can('Role Permission')) {
+                $action = "<a href='" . route('role.permission', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Role Permission' data-original-title='Role Permission'>
                           <i class='la la-lock'></i>
                         </a>";
+            }
 
             return $action;
         })->escapeColumns([])->make(true);
@@ -67,18 +74,24 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-                               'name'       => 'required',
-                               'guard_name' => 'required'
-                           ]);
-        $role = Role::create(['name' => $request->get('name')]);
-        if ($role) {
-            flash()->success('Sukses menambah data Role');
-        } else {
-            flash()->error('Gagal menambah data Role');
-        }
+        /** Cek dulu apakah user bisa melakukan tambah data */
+        if (auth()->user()->can('User Add')) {
+            $request->validate([
+                                   'name'       => 'required',
+                                   'guard_name' => 'required'
+                               ]);
+            $role = Role::create(['name' => $request->get('name')]);
+            if ($role) {
+                flash()->success('Sukses menambah data Role');
+            } else {
+                flash()->error('Gagal menambah data Role');
+            }
 
-        return redirect()->route('role.create');
+            return redirect()->route('role.create');
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk menambah Role');
+            return redirect()->route('user.index');
+        }
     }
 
     /**
@@ -100,7 +113,13 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('PengaturanAplikasi.RoleController.edit', compact('role'));
+        /** Cek apakah user bisa akses menu */
+        if (auth()->user()->can('Role Edit')) {
+            return view('PengaturanAplikasi.RoleController.edit', compact('role'));
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk mengubah Role');
+            return redirect()->route('user.index');
+        }
     }
 
     /**
@@ -112,15 +131,19 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $request->validate([
-                               'name'       => 'required',
-                               'guard_name' => 'required'
-                           ]);
+        if (auth()->user()->can('Role Edit')) {
+            $request->validate([
+                                   'name'       => 'required',
+                                   'guard_name' => 'required'
+                               ]);
 
-        if ($role->update(['name' => $request->get('name')])) {
-            flash()->success('Sukses mengubah data Role');
+            if ($role->update(['name' => $request->get('name')])) {
+                flash()->success('Sukses mengubah data Role');
+            } else {
+                flash()->error('Gagal mengubah data Role');
+            }
         } else {
-            flash()->error('Gagal mengubah data Role');
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk mengubah Role');
         }
         return redirect()->route('role.index');
     }
@@ -133,11 +156,15 @@ class RoleController extends Controller
      */
     public function delete($id)
     {
-        $role = Role::destroy($id);
-        if ($role) {
-            flash()->success('Berhasil menghapus Role');
+        if (auth()->user()->can('Role Delete')) {
+            $role = Role::destroy($id);
+            if ($role) {
+                flash()->success('Berhasil menghapus Role');
+            } else {
+                flash()->error('Gagal menghapus Role');
+            }
         } else {
-            flash()->error('Gagal menghapus Role');
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk menghapus Role');
         }
 
         return redirect()->route('role.index');
@@ -151,8 +178,13 @@ class RoleController extends Controller
      */
     public function permission(Role $role)
     {
-        $permissions = PermissionModel::with(['children'])->where('parent_id', 0)->get();
-        return view('PengaturanAplikasi.RoleController.permission', compact('role', 'permissions'));
+        if (auth()->user()->can('Role Permission')) {
+            $permissions = PermissionModel::with(['children'])->where('parent_id', 0)->get();
+            return view('PengaturanAplikasi.RoleController.permission', compact('role', 'permissions'));
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk mengakses Role Permission');
+            return redirect()->route('role.index');
+        }
     }
 
     /**
@@ -165,19 +197,21 @@ class RoleController extends Controller
      */
     public function permissionStore(Request $request, Role $role, PermissionModel $permission)
     {
-        $state = $request->get('state');
-        $status = ['status'=>false];
+        $state  = $request->get('state');
+        $status = ['status' => false];
+        if (auth()->user()->can('Role Permission')) {
+            if ($state == "true") {
+                $role->givePermissionTo($permission);
+                $status['status'] = true;
+                $status['action'] = 'attach';
+            } else {
+                $role->revokePermissionTo($permission);
+                $status['status'] = true;
+                $status['action'] = 'revoke';
+            }
 
-        if ($state == "true") {
-            $role->givePermissionTo($permission);
-            $status['status'] = true;
-            $status['action'] = 'attach';
-        } else {
-            $role->revokePermissionTo($permission);
-            $status['status'] = true;
-            $status['action'] = 'revoke';
         }
 
-        echo json_encode($status,JSON_PRETTY_PRINT);
+        echo json_encode($status, JSON_PRETTY_PRINT);
     }
 }

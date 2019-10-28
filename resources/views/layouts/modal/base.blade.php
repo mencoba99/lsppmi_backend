@@ -29,15 +29,15 @@
     <!--end::Fonts -->
 
     <!--begin::Page Vendors Styles(used by this page) -->
-    <link href="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('vendors/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 
 
     <!--end::Page Vendors Styles -->
 
     <!--begin::Global Theme Styles(used by all pages) -->
     <link href="{{ asset('assets/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('css/demo7/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/css/demo7/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Global Theme Styles -->
     @stack('modal-style')
@@ -46,7 +46,7 @@
     <link href="{{ asset('assets/css/lsppmi-custom.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Layout Skins -->
-    <link rel="shortcut icon" href="{{ Storage::url('media/logos/favicon.ico') }}" />
+    <link rel="shortcut icon" href="{{ Storage::url('assets/backend/media/logos/favicon.ico') }}" />
 </head>
 
 <!-- end::Head -->
@@ -99,19 +99,19 @@
 {{--<script src="./assets/vendors/global/vendors.bundle.js" type="text/javascript"></script>--}}
 {{--<script src="./assets/js/demo7/scripts.bundle.js" type="text/javascript"></script>--}}
 <script src="{{ asset('assets/vendors/global/vendors.bundle.js') }}" type="text/javascript"></script>
-<script src="{{ Storage::url('js/scripts.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/js/scripts.bundle.js') }}" type="text/javascript"></script>
 
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors(used by this page) -->
 <script src="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
-<script src="{{ Storage::url('vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
 
 <!--end::Page Vendors -->
 
 <!--begin::Page Scripts(used by this page) -->
-<script src="{{ Storage::url('js/pages/dashboard.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/js/pages/dashboard.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/lsppmi-custom.js') }}" type="text/javascript"></script>
 
 @stack('modal-script')
