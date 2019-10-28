@@ -66,6 +66,7 @@
                                 </div>
                             </div>
                         </li>
+                        @endcanany
                         <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--bottom" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-link-redirect="1"><a target="_blank" href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-analytics-2"></i><span class="kt-menu__link-text">Customers</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <div class="kt-menu__wrapper">
