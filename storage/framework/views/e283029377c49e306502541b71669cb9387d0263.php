@@ -1,6 +1,4 @@
-@extends('layouts.base')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
     <div class="alert alert-light alert-elevate" role="alert">
@@ -26,10 +24,7 @@
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
                             Tambah Data</button>
                         &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
+                        
                     </div>
                 </div>
             </div>
@@ -75,14 +70,17 @@
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Nama Kota:</label>
                                             <div class="col-lg-6">
-                                                {!! Form::text('kota_nm',null,['id'=>'kota_nm','class'=>'form-control ','required'=>'required']) !!}
-                                                {!! Form::text('kota_id',null,['id'=>'kota_id','class'=>'form-control','hidden'=>'hidden']) !!}
+                                                <?php echo Form::text('kota_nm',null,['id'=>'kota_nm','class'=>'form-control ','required'=>'required']); ?>
+
+                                                <?php echo Form::text('kota_id',null,['id'=>'kota_id','class'=>'form-control','hidden'=>'hidden']); ?>
+
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Provinsi:</label>
                                             <div class="col-lg-6">
-                                                    {!! Form::select('id_provinsi',$provinsi,null,['id'=>'id_provinsi','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Provinsi']) !!}
+                                                    <?php echo Form::select('id_provinsi',$provinsi,null,['id'=>'id_provinsi','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Provinsi']); ?>
+
                                                 
                                             </div>
                                         </div>	
@@ -104,9 +102,9 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
   
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
@@ -151,7 +149,7 @@ jQuery(document).ready(function() {
 
         $.ajax({
             type: "post",
-            url: "{{ route('master.kota.insert') }}",
+            url: "<?php echo e(route('master.kota.insert')); ?>",
             dataType:"json",
             data: {
                 nm_kota: $("#kota_nm").val(),
@@ -196,7 +194,7 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('master.kota.data') }}",
+            ajax: "<?php echo e(route('master.kota.data')); ?>",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -241,4 +239,6 @@ jQuery(document).ready(function() {
     
 </script>   
    
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/master/kota.blade.php ENDPATH**/ ?>

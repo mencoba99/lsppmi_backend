@@ -15,7 +15,7 @@ class Soal extends Migration
     {
         Schema::create('soal', function (Blueprint $table) {
            
-            $table->bigIncrements('id');
+            $table->bigIncrements('soal_id');
             $table->text('nick');
             $table->text('soal');
             $table->text('a');

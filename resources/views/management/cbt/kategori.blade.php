@@ -3,18 +3,11 @@
 @section('content')
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-    <div class="alert alert-light alert-elevate" role="alert">
-        <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
-        <div class="alert-text">
-            {{$Title}}
-            <br>For more info see <a class="kt-link kt-font-bold" href="https://datatables.net/" target="_blank">the official home</a> of the plugin.
-        </div>
-    </div>
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                    <i class="kt-font-brand flaticon2-tag"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
                   {{ucfirst(trans(end($crumbs)))}}
@@ -132,8 +125,9 @@
     
     // Private functions
     var demos = function () {
-        // minimum setup
-        $('.kt-selectpicker').selectpicker();
+        $('.kt-selectpicker').selectpicker().change(function(){
+            $(this).valid()
+        });
     }
 
     return {
@@ -182,7 +176,7 @@ jQuery(document).ready(function() {
 
             $.ajax({
                 type: "post",
-                url: "{{ route('mgt.cbt.kategori.insert') }}",
+                url: "{{ route('ujian-komputer.kategori.insert') }}",
                 dataType:"json",
                 data: {
                     name: $("#kategori_nm").val(),
@@ -209,11 +203,32 @@ jQuery(document).ready(function() {
                         setTimeout(function() {
                             KTApp.unblock('#add .modal-content');
                             $('#add').modal('hide');
+                            $.notify({
+                                // options
+                                message: 'Berhasil disimpan' 
+                            },{
+                                // settings
+                                type: 'success',
+                                placement: {
+                                    from: "top",
+                                    align: "right"
+                                }
+                            });
                         }, 2000);
                         
             //          
                     } else if(response.status === 500) {
-                        // do something with response.message or whatever other data on error
+                        $.notify({
+                                // options
+                                message: 'Error' 
+                            },{
+                                // settings
+                                type: 'danger',
+                                placement: {
+                                    from: "top",
+                                    align: "right"
+                                }
+                            });
                     }
                 }
             })
@@ -229,7 +244,7 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('mgt.cbt.kategori.data') }}",
+            ajax: "{{ route('ujian-komputer.kategori.data') }}",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -257,7 +272,8 @@ jQuery(document).ready(function() {
             $("#kategori_code").val($(this).data('code'));
             $("#kategori_desc").val($(this).data('desc'));
             $("#kategori_nm").val($(this).data('nama'));
-            $("#status").val($(this).data('status'));
+            $("select#status").val($(this).data('status'));
+            $('.kt-selectpicker').selectpicker('refresh');
             $("#simpan").show();
            
             $('#add').modal('show');
@@ -269,7 +285,8 @@ jQuery(document).ready(function() {
         $('#new').click(function(event) {
             $("input").val("");
             $("textarea").val("");
-           
+            $("select").val("");
+            $('.kt-selectpicker').selectpicker('refresh');
             form.resetForm();
             $("#simpan").show();
         });

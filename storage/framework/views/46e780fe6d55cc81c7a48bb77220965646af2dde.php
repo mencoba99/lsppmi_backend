@@ -1,6 +1,4 @@
-@extends('layouts.base')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
     <div class="kt-portlet kt-portlet--mobile">
@@ -10,19 +8,17 @@
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                  {{ucfirst(trans(end($crumbs)))}}
+                  <?php echo e(ucfirst(trans(end($crumbs)))); ?>
+
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah   {{ucfirst(trans(end($crumbs)))}}</button>
+                            Tambah   <?php echo e(ucfirst(trans(end($crumbs)))); ?></button>
                         &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
+                        
                     </div>
                 </div>
             </div>
@@ -57,7 +53,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah  <?php echo e(ucfirst(trans(end($crumbs)))); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -70,8 +66,10 @@
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Nama Modul:</label>
                                             <div class="col-lg-6">
-                                                {!! Form::text('modul_nm',null,['id'=>'modul_nm','class'=>'form-control ','required'=>'required']) !!}
-                                                {!! Form::text('modul_id',null,['id'=>'modul_id','class'=>'form-control','hidden'=>'hidden']) !!}
+                                                <?php echo Form::text('modul_nm',null,['id'=>'modul_nm','class'=>'form-control ','required'=>'required']); ?>
+
+                                                <?php echo Form::text('modul_id',null,['id'=>'modul_id','class'=>'form-control','hidden'=>'hidden']); ?>
+
                                                
                                             </div>
                                         </div>
@@ -80,7 +78,8 @@
                                                 <div class="col-lg-2">
                                                         <div class="input-group right-text">
                                                            
-                                                            {!! Form::number('persentase_kelulusan',null,['id'=>'persentase_kelulusan','class'=>'form-control ','required'=>'required']) !!}
+                                                            <?php echo Form::number('persentase_kelulusan',null,['id'=>'persentase_kelulusan','class'=>'form-control ','required'=>'required']); ?>
+
                                                              <div class="input-group-prepend"><span class="input-group-text" id="btnGroupAddon2">%.</span></div>
                                                         </div>
                                                        
@@ -89,21 +88,24 @@
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Singkatan Eng:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('sing_eng',null,['id'=>'sing_eng','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('sing_eng',null,['id'=>'sing_eng','class'=>'form-control ','required'=>'required']); ?>
+
                                                  
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Keterangan:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('modul_desc',null,['id'=>'modul_desc','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('modul_desc',null,['id'=>'modul_desc','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Status:</label>
                                             <div class="col-lg-6">
-                                                {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
+                                                <?php echo Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']); ?>
+
                                               
                                             </div>
                                     </div>
@@ -124,10 +126,10 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
   
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
@@ -190,7 +192,7 @@ jQuery(document).ready(function() {
             table = $('#datatable').DataTable().destroy();
             $.ajax({
                 type: "post",
-                url: "{{ route('materi.pembuatan-modul.insert') }}",
+                url: "<?php echo e(route('materi.pembuatan-modul.insert')); ?>",
                 dataType:"json",
                 data: {
                     name: $("#modul_nm").val(),
@@ -238,7 +240,7 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('materi.pembuatan-modul.data') }}",
+            ajax: "<?php echo e(route('materi.pembuatan-modul.data')); ?>",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -290,4 +292,6 @@ jQuery(document).ready(function() {
     
 </script>   
    
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/materi/modul.blade.php ENDPATH**/ ?>

@@ -161,6 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        
 
 
       
@@ -178,6 +179,7 @@ return [
         // Zizaco\Entrust\EntrustServiceProvider::class,
         // Laracasts\Flash\FlashServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+
         
 
     ],

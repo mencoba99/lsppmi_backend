@@ -3,18 +3,11 @@
 @section('content')
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-    <div class="alert alert-light alert-elevate" role="alert">
-        <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
-        <div class="alert-text">
-            {{$Title}}
-            <br>For more info see <a class="kt-link kt-font-bold" href="https://datatables.net/" target="_blank">the official home</a> of the plugin.
-        </div>
-    </div>
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                    <i class="kt-font-brand flaticon-interface-8"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
                   {{ucfirst(trans(end($crumbs)))}}
@@ -194,7 +187,7 @@ $(function () {
 
             $.ajax({
                 type: "post",
-                url: "{{ route('mgt.cbt.kategori.insert') }}",
+                url: "{{ route('ujian-komputer.management.insert') }}",
                 dataType:"json",
                 data: {
                     program: $("#program_id").val(),
@@ -239,7 +232,7 @@ $(function () {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('mgt.cbt.management.data') }}",
+            ajax: "{{ route('ujian-komputer.management.data') }}",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;

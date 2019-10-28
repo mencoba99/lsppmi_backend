@@ -1,33 +1,30 @@
-@extends('layouts.base')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
- 
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                    <i class="kt-font-brand flaticon-interface-8"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                  {{ucfirst(trans(end($crumbs)))}}
+                  <?php echo e(ucfirst(trans(end($crumbs)))); ?>
+
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah   {{ucfirst(trans(end($crumbs)))}}</button>
+                            Tambah   <?php echo e(ucfirst(trans(end($crumbs)))); ?></button>
                         &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
+                        
                     </div>
                 </div>
             </div>
         </div>
+        
+
         <div class="kt-portlet__body tabel-provinsi">
             <table class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" id="datatable">
                 <thead>
@@ -37,10 +34,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -58,7 +57,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah  <?php echo e(ucfirst(trans(end($crumbs)))); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -68,38 +67,45 @@
                                 <div class="kt-section kt-section--first">
                                     
                                     <div class="kt-section__body">
-                                            <div class="form-group row">
-                                                    <label class="col-lg-3 col-form-label">Modul:</label>
-                                                    <div class="col-lg-6">
-                                                        {!! Form::select('id_modul',$Modul,null,['id'=>'id_modul','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Kategori']) !!}
-                                                        {!! Form::text('submodul_id',null,['id'=>'submodul_id','class'=>'form-control','hidden'=>'hidden']) !!}
-                                                       
-                                                    </div>
-                                                </div>
                                         <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Sub Modul:</label>
-                                                <div class="col-lg-6">
-                                                    {!! Form::text('submodul_name',null,['id'=>'submodul_name','class'=>'form-control ','required'=>'required']) !!}
-                                                  
-                                                </div>
-                                        </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Keterangan:</label>
-                                                <div class="col-lg-6">
-                                                    {!! Form::textarea('submodul_desc',null,['id'=>'submodul_desc','class'=>'form-control ','required'=>'required']) !!}
-                                                   
-                                                </div>
-                                        </div>
-                                        <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Status:</label>
-                                                <div class="col-lg-4">
-                                                    {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
-                                                </div>
+                                            <label class="col-lg-3 col-form-label">Program:</label>
+                                            <div class="col-lg-6">
+                                                <?php echo Form::select('program_id',$Program,null,['id'=>'program_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Program']); ?>
+
+                                                <?php echo Form::text('mgt_id',null,['id'=>'mgt_id','class'=>'form-control','hidden'=>'hidden']); ?>
+
+                                               
                                             </div>
+                                        </div>
+                                        <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label">Modul:</label>
+                                                <div class="col-lg-6">
+                                                        <div id="tree">
+                                                                <ul>
+                                                        <?php $__currentLoopData = $modul; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $data_modul): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <li id="<?php echo e($data_modul->id); ?>">
+                                                                <?php echo e($data_modul->name); ?>
+
+                                                                <ul>
+                                                                <?php $__currentLoopData = $data_modul->submodul; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <li id="<?php echo e($item->id); ?>">
+                                                                   <?php echo e($item->name); ?>
+
+                                                                </li>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                            </ul>
+                                                            </li>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </ul>
+                                                </div>
+                                                </div>
+                                        </div>
+                                       
                                     </div>
             
                                 </div>
                             </div>
+                            
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -112,12 +118,27 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
   
 <script type="text/javascript">
- 
+    $(function () {
+    $("#tree").jstree({
+        "checkbox": {
+            "keep_selected_style": false
+        },
+            "plugins": ["checkbox"]
+    });
+    $("#tree").bind("changed.jstree",
+    function (e, data) {
+        alert("Checked: " + data.node.id);
+        alert("Parent: " + data.node.parent); 
+        //alert(JSON.stringify(data));
+    });
+
+
+});
 
     var KTBootstrapSelect = function () {
     
@@ -135,52 +156,43 @@
     };
 }();
 
-jQuery(document).ready(function() {
+$(function () {
     KTBootstrapSelect.init();
     form = $("#form").validate({
         rules: {
-            "kategori_nm": {
+            "program_id": {
                 required: true
             },
-            "id_modul": {
-                required: true
-            },
-            "kategori_code": {
-                required: true
-            },
-            "kategori_desc": {
+            "tree": {
                 required: true
             }
 
         },
         messages: {
-            "kategori_nm": {
-                required: "Silahkan tulis nama kategori yang akan diinput "
+            "program_id": {
+                required: "Silahkan pilih program "
             },
-            "id_modul": {
-                required: "Silahkan pilih modul "
-            },
-            "kategori_code": {
-                required: "Silahkan tulis kode yang akan diinput"
-            },
-            "kategori_desc": {
+            "tree": {
                 required: "Silahkan tulis keterangan yang akan diinput"
             }
         },
         submitHandler: function (form) { // for demo
                table = $('#datatable').DataTable().destroy();
-        
+               checked_ids = []; 
+                $("#tree").jstree("get_checked",null,true).each 
+                    (function () { 
+                        checked_ids.push(this.id); 
+                    }); 
+           doStuff(checked_ids); 
 
             $.ajax({
                 type: "post",
-                url: "{{ route('materi.pembuatan-submodul.insert') }}",
+                url: "<?php echo e(route('ujian-komputer.management.insert')); ?>",
                 dataType:"json",
                 data: {
-                    name: $("#submodul_name").val(),
-                    modul: $("#id_modul").val(),
-                    id: $("#submodul_id").val(),
-                    status: $("#status").val(),
-                    desc: $("#submodul_desc").val(),
+                    program: $("#program_id").val(),
+                    id: $("#mgt_id").val(),
+                    modul: checked_ids,
                 },
                 beforeSend: function() {
                     KTApp.block('#add .modal-content', {
@@ -194,7 +206,7 @@ jQuery(document).ready(function() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    // alert(JSON.stringify(response));
+                    alert(JSON.stringify(response));
                     if(response.status === 200) {
                         view();
                         setTimeout(function() {
@@ -220,36 +232,18 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('materi.pembuatan-submodul.data') }}",
+            ajax: "<?php echo e(route('ujian-komputer.management.data')); ?>",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 } , title: 'No.', width : "3%" },
-                { data: 'name', name: 'name' , title: 'Nama Sub Modul' },
-                { data: 'modul.name', name: 'modul.name' , title: 'Modul ' },
-                { data: 'description', name: 'description' , title: 'Keterangan' },
-                { data: 'action', name: 'action' , title: 'Action', width : "5%"  }
-            ],
-            initComplete: function () {
-            this.api().columns(2).every( function () {
-                var column = this;
-                var select = $('<select class="form-control input-sm kt-selectpicker" data-live-search="true" data-live-search-style="startsWith" placeholder="filter by modul"><option value=""></option></select>')
-                    .appendTo( $(column.footer()).empty() )
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
- 
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
- 
-                column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                } );
-            } );
-        }
+                { data: 'name', name: 'name' , title: 'Nama Kategori' },
+                { data: 'programs.name', name: 'programs.name' , title: 'Modul ' },
+                { data: 'modul.name', name: 'modul.name' , title: 'Modul' },
+                { data: 'submodul.name', name: 'submodul.name' , title: 'SubModul' },
+                { data: 'total_soal', name: 'total_soal' , title: 'Total Soal', width : "10%" },
+                { data: 'action', name: 'action' , title: 'Action', width : "5%" },
+            ]
     });
     }
 
@@ -261,40 +255,33 @@ jQuery(document).ready(function() {
 
         /* Edit Data */
         $("#datatable").on("click", "tr #edit", function() { 
-             $("input").val(""); 
-             form.resetForm();
-            $("#submodul_id").val($(this).data('id'));
-            $("#id_modul").val($(this).data('modul'));
-            $("#submodul_name").val($(this).data('nama'));
-            $("#submodul_desc").val($(this).data('desc'));
+            $("input").val(""); 
+            form.resetForm();
+            $("#kategori_id").val($(this).data('id'));
+            $("#kategori_code").val($(this).data('code'));
+            $("#kategori_desc").val($(this).data('desc'));
+            $("#kategori_nm").val($(this).data('nama'));
             $("#status").val($(this).data('status'));
-            $('.kt-selectpicker').selectpicker('refresh');
-           
+            $("#simpan").show();
            
             $('#add').modal('show');
         });
 
+      
 
         /* New Data Button */
         $('#new').click(function(event) {
             $("input").val("");
             $("textarea").val("");
-            $("select#status").val("");
-            $('.kt-selectpicker').selectpicker('refresh');
+           
             form.resetForm();
+            $("#simpan").show();
         });
 
     });
     
 </script>   
    
-@endpush
+<?php $__env->stopPush(); ?>
 
-
-@push('style')
-<style>
-        tfoot {
-             display: table-header-group;
-        }
-        </style>
-@endpush
+<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/mgtprogram.blade.php ENDPATH**/ ?>

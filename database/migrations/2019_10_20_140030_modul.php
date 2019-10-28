@@ -15,10 +15,10 @@ class Modul extends Migration
     {
         Schema::create('modul', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name',50);
+            $table->string('name',150);
             $table->string('persentase',10);
-            $table->string('sing_eng',25);
-            $table->string('description',50);
+            $table->string('sing_eng',150);
+            $table->string('description',250);
             $table->string('status',1);
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();

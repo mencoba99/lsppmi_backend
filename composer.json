@@ -21,8 +21,7 @@
         "spatie/laravel-permission": "^3.2",
         "superbalist/laravel-google-cloud-storage": "^2.2",
         "venturecraft/revisionable": "1.*",
-        "yajra/laravel-datatables-oracle": "~9.0",
-        "zizaco/entrust": "dev-master"
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

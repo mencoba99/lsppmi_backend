@@ -36,7 +36,7 @@ class ManagementController extends Controller
 
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
         
-		return view('management.cbt.MgtProgram', compact('pageTitle','Title','pageHeader','crumbs','status','modul','Program'));
+		return view('management.cbt.mgtprogram', compact('pageTitle','Title','pageHeader','crumbs','status','modul','Program'));
     }
 
     public function AjaxMgtProgramGetData()
