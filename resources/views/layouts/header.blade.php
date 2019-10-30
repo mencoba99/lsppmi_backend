@@ -37,7 +37,7 @@
 
     <!--begin::Global Theme Styles(used by all pages) -->
     <link href="{{ asset('assets/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ Storage::url('css/demo7/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ Storage::url('assets/backend/css/demo7/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('assets/vendors/global/datatable/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="http://static.jstree.com/3.0.0-beta3/assets/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />

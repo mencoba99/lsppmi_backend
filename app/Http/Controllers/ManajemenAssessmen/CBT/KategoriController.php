@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Management\CBT;
+namespace App\Http\Controllers\ManajemenAssessmen\CBT;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -24,10 +24,10 @@ class KategoriController extends Controller
             '0'  => 'Non Aktif',
             '1' => 'Aktif'
         ];
-        
+
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-        
-		return view('management.cbt.kategori', compact('pageTitle','Title','pageHeader','crumbs','status'));
+
+		return view('ManajemenAssessmen.cbt.kategori', compact('pageTitle','Title','pageHeader','crumbs','status'));
     }
 
     public function AjaxKategoriGetData()
@@ -36,11 +36,11 @@ class KategoriController extends Controller
             $action = "<div class='btn-group'>";
             $action .= '<button id="edit" data-status="'.$kategori->status.'"  data-code="'.$kategori->code.'" data-id="'.$kategori->id.'" data-nama="'.$kategori->name.'" data-desc="'.$kategori->description.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $kategori->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             // $action .= '<button id="view"  data-id="'.$kategori->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View ' . $kategori->name . '"><i class="flaticon2 flaticon2-search"></i></button>';
-           
+
 			$action .= "</div>";
 			return $action;
 		})->addColumn('status', function (Kategori $kategori) {
-            
+
             if($kategori->status==1){
                 return "Aktif";
             }else{
@@ -52,7 +52,7 @@ class KategoriController extends Controller
 
     public function AjaxKategoriDeleteData(Request $request)
     {
-       
+
         $deleted = Kategori::find($request->get('id'))->delete();
         if ($deleted) {
             return json_encode(array(
@@ -67,16 +67,16 @@ class KategoriController extends Controller
 
     public function AjaxKategoriInsertData(Request $request)
     {
-       
+
         $Kategori = new Kategori();
         $Kategori->name = $request->get('name');
         $Kategori->description = $request->get('desc');
         $Kategori->code = $request->get('code');
         $Kategori->status = $request->get('status');
-        
+
 
         if($request->get('id')){
-            
+
             $update =[];
             $update['id'] = $request->get('id');
             $update['name'] = $request->get('name');
@@ -94,9 +94,9 @@ class KategoriController extends Controller
                     "message"=>"error"
                 ));
             }
-            
+
         }else{
-            
+
             if ($Kategori->save()) {
                 return json_encode(array(
                     "status"=>200
@@ -107,8 +107,8 @@ class KategoriController extends Controller
                 ));
             }
         }
-       
-       
+
+
 
     }
 

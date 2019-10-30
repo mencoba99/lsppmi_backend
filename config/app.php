@@ -161,10 +161,10 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        
 
 
-      
+
+
 
         /*
          * Application Service Providers...
@@ -176,12 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Venturecraft\Revisionable\RevisionableServiceProvider::class,
-        // Zizaco\Entrust\EntrustServiceProvider::class,
-        // Laracasts\Flash\FlashServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
-
-        
-
     ],
 
     /*

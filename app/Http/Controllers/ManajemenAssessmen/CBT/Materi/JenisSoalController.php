@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Management\CBT\Materi;
+namespace App\Http\Controllers\ManajemenAssessmen\CBT\Materi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -21,9 +21,9 @@ class JenisSoalController extends Controller
             '0'  => 'Non Aktif',
             '1' => 'Aktif'
         ];
-        
+
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-        
+
 		return view('management.cbt.materi.jenissoal', compact('pageTitle','Title','pageHeader','crumbs','status'));
     }
 
@@ -33,7 +33,7 @@ class JenisSoalController extends Controller
             $action = "<div class='btn-group'>";
             $action .= '<button id="edit"  data-id="'.$JenisSoal->id.'" data-nama="'.$JenisSoal->name.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $JenisSoal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             // $action .= '<button id="hapus"  data-id="'.$JenisSoal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $JenisSoal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-           
+
 			$action .= "</div>";
 			return $action;
 		})->make(true);
@@ -41,7 +41,7 @@ class JenisSoalController extends Controller
 
     public function AjaxJenisSoalDeleteData(Request $request)
     {
-       
+
         $deleted = SoalJenis::find($request->get('id'))->delete();
         if ($deleted) {
             return json_encode(array(
@@ -56,13 +56,13 @@ class JenisSoalController extends Controller
 
     public function AjaxJenisSoalInsertData(Request $request)
     {
-       
+
         $JenisSoal = new SoalJenis();
         $JenisSoal->name = $request->get('name');
-        
+
 
         if($request->get('id')){ // for update
-            
+
             $update =[];
             $update['id'] = $request->get('id');
             $update['name'] = $request->get('name');
@@ -77,9 +77,9 @@ class JenisSoalController extends Controller
                     "message"=>"error"
                 ));
             }
-            
+
         }else{
-            
+
             if ($JenisSoal->save()) {
                 return json_encode(array(
                     "status"=>200
@@ -90,8 +90,8 @@ class JenisSoalController extends Controller
                 ));
             }
         }
-       
-       
+
+
 
     }
 }
