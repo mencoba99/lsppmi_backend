@@ -50,7 +50,7 @@
                 </tr>
                 </tfoot>
             </table>
-          
+
         </div>
     </div>
 </div>
@@ -67,28 +67,28 @@
                     <form id="form" class="kt-form kt-form--label-right">
                             <div class="kt-portlet__body">
                                 <div class="kt-section kt-section--first">
-                                    
+
                                     <div class="kt-section__body">
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Nama Kategori:</label>
                                             <div class="col-lg-6">
                                                 {!! Form::text('kategori_nm',null,['id'=>'kategori_nm','class'=>'form-control ','required'=>'required']) !!}
                                                 {!! Form::text('kategori_id',null,['id'=>'kategori_id','class'=>'form-control','hidden'=>'hidden']) !!}
-                                               
+
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Kode:</label>
                                                 <div class="col-lg-6">
                                                     {!! Form::text('kategori_code',null,['id'=>'kategori_code','class'=>'form-control ','required'=>'required']) !!}
-                                                  
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Keterangan:</label>
                                                 <div class="col-lg-6">
                                                     {!! Form::textarea('kategori_desc',null,['id'=>'kategori_desc','class'=>'form-control ','required'=>'required']) !!}
-                                                   
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
@@ -98,10 +98,10 @@
                                                 </div>
                                             </div>
                                     </div>
-            
+
                                 </div>
                             </div>
-                            
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -109,20 +109,20 @@
             </div>
         </form>
 
-        
+
         </div>
     </div>
 </div>
 
 @endsection
 
-@push('scripts')
-  
+@push('script')
+
 <script type="text/javascript">
- 
+
 
     var KTBootstrapSelect = function () {
-    
+
     // Private functions
     var demos = function () {
         $('.kt-selectpicker').selectpicker().change(function(){
@@ -133,7 +133,7 @@
     return {
         // public functions
         init: function() {
-            demos(); 
+            demos();
         }
     };
 }();
@@ -172,7 +172,7 @@ jQuery(document).ready(function() {
         },
         submitHandler: function (form) { // for demo
                table = $('#datatable').DataTable().destroy();
-        
+
 
             $.ajax({
                 type: "post",
@@ -205,7 +205,7 @@ jQuery(document).ready(function() {
                             $('#add').modal('hide');
                             $.notify({
                                 // options
-                                message: 'Berhasil disimpan' 
+                                message: 'Berhasil disimpan'
                             },{
                                 // settings
                                 type: 'success',
@@ -215,12 +215,12 @@ jQuery(document).ready(function() {
                                 }
                             });
                         }, 2000);
-                        
-            //          
+
+            //
                     } else if(response.status === 500) {
                         $.notify({
                                 // options
-                                message: 'Error' 
+                                message: 'Error'
                             },{
                                 // settings
                                 type: 'danger',
@@ -265,8 +265,8 @@ jQuery(document).ready(function() {
 
 
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
-            $("input").val(""); 
+        $("#datatable").on("click", "tr #edit", function() {
+            $("input").val("");
             form.resetForm();
             $("#kategori_id").val($(this).data('id'));
             $("#kategori_code").val($(this).data('code'));
@@ -275,11 +275,11 @@ jQuery(document).ready(function() {
             $("select#status").val($(this).data('status'));
             $('.kt-selectpicker').selectpicker('refresh');
             $("#simpan").show();
-           
+
             $('#add').modal('show');
         });
 
-      
+
 
         /* New Data Button */
         $('#new').click(function(event) {
@@ -292,7 +292,7 @@ jQuery(document).ready(function() {
         });
 
     });
-    
-</script>   
-   
+
+</script>
+
 @endpush

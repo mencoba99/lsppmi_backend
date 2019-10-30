@@ -63,25 +63,30 @@ Route::middleware(['auth'])->group(function (){
         Route::group(['prefix'=>'manajemen-kelas'], function () {
             /** Manajemen Assessor */
             Route::resource('assessor', 'AssessorController');
-            Route::post('assessor/data', 'AssessorController@getAssessorData')->name('assessor.data');
+            Route::post('assessor/data', 'AssessorController@getAssessorData')->name('assessor.getdata');
             Route::get('assessor/{assessor}/delete', 'AssessorController@delete')->name('assessor.delete');
 
+            /** Manajemen TUK (Tempat Uji Kompetensi */
+            Route::resource('tuk','TukController');
+            Route::post('tuk/data', 'TukController@getTukData')->name('tuk.getdata');
+            Route::post('tuk/getregency','TukController@getRegency')->name('tuk.getregency');
+            Route::get('tuk/{tuk}/delete', 'TukController@delete')->name('tuk.delete');
+
+            Route::get('provinsi', 'ProvinsiController@provinsi')->name('master.provinsi');
+            Route::get('provinsi/data', 'ProvinsiController@AjaxProvinsiGetData')->name('master.provinsi.data');
+            Route::get('provinsi/json', 'ProvinsiController@ProvinsiJson')->name('master.provinsi.json');
+            Route::post('provinsi/insert', 'ProvinsiController@AjaxProvinsiInsertData')->name('master.provinsi.insert');
+            Route::post('provinsi/delete', 'ProvinsiController@AjaxProvinsiDeleteData')->name('master.provinsi.delete');
+
+
+            Route::get('kota', 'KotaController@kota')->name('master.kota');
+            Route::get('kota/data', 'KotaController@AjaxKotaGetData')->name('master.kota.data');
+            Route::post('kota/insert', 'KotaController@AjaxKotaInsertData')->name('master.kota.insert');
+            Route::post('kota/delete', 'KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
         });
-
-        Route::get('provinsi', 'ProvinsiController@provinsi')->name('master.provinsi');
-        Route::get('provinsi/data', 'ProvinsiController@AjaxProvinsiGetData')->name('master.provinsi.data');
-        Route::get('provinsi/json', 'ProvinsiController@ProvinsiJson')->name('master.provinsi.json');
-        Route::post('provinsi/insert', 'ProvinsiController@AjaxProvinsiInsertData')->name('master.provinsi.insert');
-        Route::post('provinsi/delete', 'ProvinsiController@AjaxProvinsiDeleteData')->name('master.provinsi.delete');
-
-
-        Route::get('kota', 'KotaController@kota')->name('master.kota');
-        Route::get('kota/data', 'KotaController@AjaxKotaGetData')->name('master.kota.data');
-        Route::post('kota/insert', 'KotaController@AjaxKotaInsertData')->name('master.kota.insert');
-        Route::post('kota/delete', 'KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
     });
 
-    Route::group(['namespace'=>'management', 'prefix'=>'management-data'], function () {
+    Route::group(['namespace'=>'ManajemenAssessmen', 'prefix'=>'management-assesmen'], function () {
 
         Route::group(['prefix' => 'cbt'], function () {
             Route::get('kategori', 'CBT\KategoriController@Kategori')->name('ujian-komputer.kategori');

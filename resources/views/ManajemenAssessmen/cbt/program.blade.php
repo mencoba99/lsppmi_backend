@@ -18,7 +18,7 @@
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
                             Tambah  {{ucfirst(trans(end($crumbs)))}}</button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                 </tr>
                 </tfoot>
             </table>
-          
+
         </div>
     </div>
 </div>
@@ -71,14 +71,14 @@
                     <form id="form" class="kt-form kt-form--label-right" onsubmit="return false;">
                             <div class="kt-portlet__body">
                                 <div class="kt-section kt-section--first">
-                                    
+
                                     <div class="kt-section__body">
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Kategori:</label>
                                             <div class="col-lg-6">
                                                 {!! Form::select('kategori_id',$Kategori,null,['id'=>'kategori_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Kategori']) !!}
                                                 {!! Form::text('program_id',null,['id'=>'program_id','class'=>'form-control','hidden'=>'hidden']) !!}
-                                               
+
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -119,7 +119,7 @@
                                                         {!! Form::checkbox('type',1,null,['id'=>'type','data-direct'=>'']) !!} Direct
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@
                                                         {!! Form::checkbox('interview',1,null,['id'=>'interview','data-interview'=>'','checked'=>false]) !!} Interview
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -152,13 +152,13 @@
                                             </div>
                                         </div>
                                     </div>
-            
-            
+
+
                                 </div>
                             </div>
-                            
-                      
-                
+
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -171,11 +171,11 @@
 
 @endsection
 
-@push('scripts')
-  
+@push('script')
+
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
-    
+
     //  functions init
     var start = function () {
         $('.kt-selectpicker').selectpicker().change(function(){
@@ -185,13 +185,13 @@
             height: 150
         });
 
-        
+
     }
 
     return {
         // public functions
         init: function() {
-            start(); 
+            start();
         }
     };
 }();
@@ -221,14 +221,14 @@ jQuery(document).ready(function() {
             },
             "interview": {
                 required: function (element) {
-                if($("#type").prop("checked") == true) { 
+                if($("#type").prop("checked") == true) {
                     if($("#cbt").prop("checked") == true){
                         return false;
                     }else{
                         return true;
                     }
-                    
-                    
+
+
                 }else{
                     return false;
                 }
@@ -266,9 +266,9 @@ jQuery(document).ready(function() {
                 required: "Silahkan pilih status"
             }
         },
-        submitHandler: function (form) { 
+        submitHandler: function (form) {
               table = $('#datatable').DataTable().destroy();
-            
+
 
             $.ajax({
                 type: "post",
@@ -308,7 +308,7 @@ jQuery(document).ready(function() {
                             $('#add').modal('hide');
                             $.notify({
                                 // options
-                                message: 'Berhasil disimpan' 
+                                message: 'Berhasil disimpan'
                             },{
                                 // settings
                                 type: 'success',
@@ -318,14 +318,14 @@ jQuery(document).ready(function() {
                                 }
                             });
                         }, 2000);
-                        
-            //          
+
+            //
                     } else if(response.status === 500) {
                             KTApp.unblock('#add .modal-content');
                             $('#add').modal('hide');
                             $.notify({
                                 // options
-                                message: 'Tidak berhasil disimpan' 
+                                message: 'Tidak berhasil disimpan'
                             },{
                                 // settings
                                 type: 'danger',
@@ -336,7 +336,7 @@ jQuery(document).ready(function() {
                             });
                     }
                 },error: function (jqXHR, exception) {
-                    
+
                      msg = '';
                     if (jqXHR.status === 0) {
                         msg = 'Not connect.\n Verify Network.';
@@ -359,7 +359,7 @@ jQuery(document).ready(function() {
 
                             $.notify({
                                 // options
-                                message: msg 
+                                message: msg
                             },{
                                 // settings
                                 type: 'danger',
@@ -400,7 +400,7 @@ jQuery(document).ready(function() {
                 { data: 'action', name: 'action' , title: 'Action', width : "5%"  }
             ]
     });
-    
+
     }
 
     $(function() {
@@ -409,7 +409,7 @@ jQuery(document).ready(function() {
         view(); //call datatable view
 
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
+        $("#datatable").on("click", "tr #edit", function() {
              $("input").val("");
              form.resetForm();
              $('#summernote').summernote('destroy');
@@ -422,10 +422,10 @@ jQuery(document).ready(function() {
             $("#program_sing_eng").val($(this).data('sing_int'));
             $("#program_sing_ind").val($(this).data('sing_ind'));
             $("#program_harga").val($(this).data('harga'));
-           
+
             $("select#level").val($(this).data('level'));
             $('.kt-selectpicker').selectpicker('refresh');
-           
+
             $.ajax({
             type: "post",
             url: "{{ route('ujian-komputer.program.desc') }}",
@@ -440,32 +440,32 @@ jQuery(document).ready(function() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
-                
+
                 if(response.status === 200) {
-                   
+
                     $('.summernote').summernote('code', response.data);
                     setTimeout(function() {
                         KTApp.unblockPage(); //loading icon
                     }, 2000);
                     $('#add').modal('show');
-                    
+
                 } else if(response.status === 500) {
                     // do something with response.message or whatever other data on error
                 }
             }
         })
 
-           
+
         });
 
-        
+
 
         $('#type').change(function () {
             if($(this).prop("checked") == true){
                 $(".metode").show();
-               
+
                 $(this).data('direct','direct');
-                
+
             }
             else if($(this).prop("checked") == false){
                 $(".metode").hide();
@@ -502,12 +502,12 @@ jQuery(document).ready(function() {
             form.resetForm();
         });
 
-        
-      
 
-   
+
+
+
     });
-    
-</script>   
-   
+
+</script>
+
 @endpush

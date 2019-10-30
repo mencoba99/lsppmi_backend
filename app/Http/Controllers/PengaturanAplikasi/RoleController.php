@@ -44,7 +44,7 @@ class RoleController extends Controller
                         </a>";
             }
             if (auth()->user()->can('Role Permission')) {
-                $action = "<a href='" . route('role.permission', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Role Permission' data-original-title='Role Permission'>
+                $action .= "<a href='" . route('role.permission', ['role' => $role]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Role Permission' data-original-title='Role Permission'>
                           <i class='la la-lock'></i>
                         </a>";
             }

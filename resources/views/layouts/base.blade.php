@@ -77,10 +77,9 @@
 <!-- end::Global Config -->
 
 <!--begin::Global Theme Bundle(used by all pages) -->
-{{--<script src="./assets/vendors/global/vendors.bundle.js" type="text/javascript"></script>--}}
-{{--<script src="./assets/js/demo7/scripts.bundle.js" type="text/javascript"></script>--}}
 <script src="{{ asset('assets/vendors/global/vendors.bundle.js') }}" type="text/javascript"></script>
 <script src="{{ Storage::url('assets/backend/js/scripts.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 
 <!--end::Global Theme Bundle -->
 
@@ -92,17 +91,10 @@
 <!--end::Page Vendors -->
 
 <!--begin::Page Scripts(used by this page) -->
-<script src="{{ Storage::url('js/dashboard.js')}}" type="text/javascript"></script>
-<script src="{{ Storage::url('js/datatables.bundle.js')}}" type="text/javascript"></script>
-<script src="{{ Storage::url('js/blockui.js')}}" type="text/javascript"></script>
-<script src="{{ Storage::url('js/select2.js')}}" type="text/javascript"></script>
-{{-- <script src="{{ Storage::url('js/jstree.bundle.js')}}" type="text/javascript"></script> --}}
-{{-- <script src="{{ Storage::url('js/treeview.js')}}" type="text/javascript"></script> --}}
 <script src="http://static.jstree.com/3.0.0-beta3/assets/dist/jstree.min.js" type="text/javascript"></script>
 
 
 
-<script src="{{ Storage::url('js/pages/dashboard.js') }}" type="text/javascript"></script>
 <script src="{{ Storage::url('assets/backend/js/pages/dashboard.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/lsppmi-custom.js') }}" type="text/javascript"></script>
 

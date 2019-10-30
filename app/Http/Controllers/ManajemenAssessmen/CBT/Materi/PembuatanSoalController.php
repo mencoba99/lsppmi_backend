@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Management\CBT\Materi;
+namespace App\Http\Controllers\ManajemenAssessmen\CBT\Materi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -33,7 +33,7 @@ class PembuatanSoalController extends Controller
             $bobot[$value2->id]=$value2->name;
         }
 
-        
+
 
         $modul = [];
         $getModul = Modul::all();
@@ -48,26 +48,26 @@ class PembuatanSoalController extends Controller
         }
 
         $parent = '';
-       
+
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-        
+
 		return view('management.cbt.materi.soal', compact('pageTitle','Title','pageHeader','crumbs','status','modul','submodul','bobot','parent'));
     }
 
     public function AjaxPembuatanSoalGetData()
     {
         $dataSoal = Soal::with('modul','submodul')->get();
-        
+
 
        return DataTables::of($dataSoal)->addColumn('action', function (Soal $Soal) {
             $action = "<div class='btn-group'>";
             $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.$Soal->penjelasan.'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.$Soal->e.'"   data-d="'.$Soal->d.'"  data-c="'.$Soal->c.'" data-b="'.$Soal->b.'"  data-a="'.$Soal->a.'" data-soal="'.$Soal->soal.'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Soal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             // $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Soal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-           
+
 			$action .= "</div>";
 			return $action;
 		})->addColumn('status', function (Soal $Soal) {
-            
+
             if($Soal->status==1){
                 return "Aktif";
             }else{
@@ -75,22 +75,22 @@ class PembuatanSoalController extends Controller
             }
 
 		})->addColumn('modul', function (Soal $Soal) {
-            
+
             if($Soal->modul_id){
                 $data = Modul::find($Soal->modul_id)->first();
                 return $data->name;
             }
-            
+
 
 		})->addColumn('submodul', function (Soal $Soal) {
-            
+
             if($Soal->submodul_id){
                 $data = SubModul::find($Soal->submodul_id)->first();
                 return $data->name;
             }
 
 		})->addColumn('bobot', function (Soal $Soal) {
-            
+
             $data = SoalJenis::find($Soal->jenis_soal_id)->first();
             return $data->name;
 
@@ -99,7 +99,7 @@ class PembuatanSoalController extends Controller
 
     public function AjaxPembuatanSoalDeleteData(Request $request)
     {
-       
+
         $deleted = Soal::find($request->get('id'))->delete();
         if ($deleted) {
             return json_encode(array(
@@ -114,7 +114,7 @@ class PembuatanSoalController extends Controller
 
     public function AjaxPembuatanSoalInsertData(Request $request)
     {
-       
+
         $Soal = new Soal();
         $Soal->nick = $request->get('nick');
         $Soal->soal = $request->get('soal');
@@ -134,11 +134,11 @@ class PembuatanSoalController extends Controller
         $Soal->modul_id = $request->get('modul_id');
         $Soal->submodul_id = $request->get('submodul');
 
-        
-      
+
+
 
         if($request->get('id')){ // for update
-            
+
             $update =[];
             $update['nick'] = $request->get('nick');
             $update['soal'] = $request->get('soal');
@@ -153,7 +153,7 @@ class PembuatanSoalController extends Controller
             $update['jenis_soal_id'] = $request->get('bobot');
             $update['modul_id'] = $request->get('modul_id');
             $update['submodul_id'] = $request->get('submodul');
-           
+
             $update['status'] = $request->get('status');
             $update['aktif'] = $request->get('aktif');
             $update['parent'] = $request->get('parent');
@@ -168,9 +168,9 @@ class PembuatanSoalController extends Controller
                     "message"=>"error"
                 ));
             }
-            
+
         }else{
-            
+
             if ($Soal->save()) {
                 $Modul_soal                       = new Modul_soal();
                 $Modul_soal->modul_id        = $request->get('modul_id');
@@ -188,10 +188,10 @@ class PembuatanSoalController extends Controller
                 ));
             }
 
-           
+
         }
-       
-       
+
+
 
     }
 }

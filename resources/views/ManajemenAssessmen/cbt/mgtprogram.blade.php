@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <div class="kt-portlet__body tabel-provinsi">
             <table class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" id="datatable">
@@ -52,7 +52,7 @@
                 </tr>
                 </tfoot>
             </table>
-          
+
         </div>
     </div>
 </div>
@@ -69,14 +69,14 @@
                     <form id="form" class="kt-form kt-form--label-right">
                             <div class="kt-portlet__body">
                                 <div class="kt-section kt-section--first">
-                                    
+
                                     <div class="kt-section__body">
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Program:</label>
                                             <div class="col-lg-6">
                                                 {!! Form::select('program_id',$Program,null,['id'=>'program_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Program']) !!}
                                                 {!! Form::text('mgt_id',null,['id'=>'mgt_id','class'=>'form-control','hidden'=>'hidden']) !!}
-                                               
+
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -100,12 +100,12 @@
                                                 </div>
                                                 </div>
                                         </div>
-                                       
+
                                     </div>
-            
+
                                 </div>
                             </div>
-                            
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -113,15 +113,15 @@
             </div>
         </form>
 
-        
+
         </div>
     </div>
 </div>
 
 @endsection
 
-@push('scripts')
-  
+@push('script')
+
 <script type="text/javascript">
     $(function () {
     $("#tree").jstree({
@@ -133,7 +133,7 @@
     $("#tree").bind("changed.jstree",
     function (e, data) {
         alert("Checked: " + data.node.id);
-        alert("Parent: " + data.node.parent); 
+        alert("Parent: " + data.node.parent);
         //alert(JSON.stringify(data));
     });
 
@@ -141,7 +141,7 @@
 });
 
     var KTBootstrapSelect = function () {
-    
+
     // Private functions
     var demos = function () {
         // minimum setup
@@ -151,7 +151,7 @@
     return {
         // public functions
         init: function() {
-            demos(); 
+            demos();
         }
     };
 }();
@@ -178,12 +178,12 @@ $(function () {
         },
         submitHandler: function (form) { // for demo
                table = $('#datatable').DataTable().destroy();
-               checked_ids = []; 
-                $("#tree").jstree("get_checked",null,true).each 
-                    (function () { 
-                        checked_ids.push(this.id); 
-                    }); 
-           doStuff(checked_ids); 
+               checked_ids = [];
+                $("#tree").jstree("get_checked",null,true).each
+                    (function () {
+                        checked_ids.push(this.id);
+                    });
+           doStuff(checked_ids);
 
             $.ajax({
                 type: "post",
@@ -213,8 +213,8 @@ $(function () {
                             KTApp.unblock('#add .modal-content');
                             $('#add').modal('hide');
                         }, 2000);
-                        
-            //          
+
+            //
                     } else if(response.status === 500) {
                         // do something with response.message or whatever other data on error
                     }
@@ -254,8 +254,8 @@ $(function () {
 
 
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
-            $("input").val(""); 
+        $("#datatable").on("click", "tr #edit", function() {
+            $("input").val("");
             form.resetForm();
             $("#kategori_id").val($(this).data('id'));
             $("#kategori_code").val($(this).data('code'));
@@ -263,23 +263,23 @@ $(function () {
             $("#kategori_nm").val($(this).data('nama'));
             $("#status").val($(this).data('status'));
             $("#simpan").show();
-           
+
             $('#add').modal('show');
         });
 
-      
+
 
         /* New Data Button */
         $('#new').click(function(event) {
             $("input").val("");
             $("textarea").val("");
-           
+
             form.resetForm();
             $("#simpan").show();
         });
 
     });
-    
-</script>   
-   
+
+</script>
+
 @endpush

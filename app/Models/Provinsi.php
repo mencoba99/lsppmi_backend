@@ -9,15 +9,18 @@ use Venturecraft\Revisionable\Revisionable;
 
 class Provinsi extends Revisionable
 {
-   
+
+    /** Untuk config Revision Log */
+    protected $revisionCleanup          = true;
 	protected $revisionCreationsEnabled = true;
-	
+    protected $historyLimit             = 10000;
+
     protected $table = 'provinces';
 
     protected $fillable = [
-        
+
         'name',
-       
+
     ];
 
     // public function users()

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Management\CBT;
+namespace App\Http\Controllers\ManajemenAssessmen\CBT;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -26,7 +26,7 @@ class ManagementController extends Controller
             '0'  => 'Non Aktif',
             '1' => 'Aktif'
         ];
-        
+
         $modul = Modul::with('submodul')->where('status',1)->get();
         $Program = [];
         $program = Program::where('status',1)->get();
@@ -35,21 +35,21 @@ class ManagementController extends Controller
         }
 
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-        
-		return view('management.cbt.mgtprogram', compact('pageTitle','Title','pageHeader','crumbs','status','modul','Program'));
+
+		return view('ManajemenAssessmen.cbt.mgtprogram', compact('pageTitle','Title','pageHeader','crumbs','status','modul','Program'));
     }
 
     public function AjaxMgtProgramGetData()
     {
 
     $mgtProgram = MgtProgram::with('program','modul','submodul')->get();
-    
+
 
        return DataTables::of($mgtProgram)->addColumn('action', function (MgtProgram $MgtProgram) {
             $action = "<div class='btn-group'>";
             $action .= '<button id="edit"   data-code="'.$MgtProgram->code.'" data-id="'.$MgtProgram->id.'" data-nama="'.$MgtProgram->name.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $MgtProgram->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             // $action .= '<button id="view"  data-id="'.$MgtProgram->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View ' . $MgtProgram->name . '"><i class="flaticon2 flaticon2-search"></i></button>';
-           
+
 			$action .= "</div>";
 			return $action;
 		})->make(true);
@@ -57,7 +57,7 @@ class ManagementController extends Controller
 
     public function AjaxMgtProgramDeleteData(Request $request)
     {
-       
+
         $deleted = MgtProgram::find($request->get('id'))->delete();
         if ($deleted) {
             return json_encode(array(
@@ -72,16 +72,16 @@ class ManagementController extends Controller
 
     public function AjaxMgtProgramInsertData(Request $request)
     {
-       
+
         $MgtProgram = new MgtProgram();
         $MgtProgram->name = $request->get('name');
         $MgtProgram->description = $request->get('desc');
         $MgtProgram->code = $request->get('code');
         $MgtProgram->status = $request->get('status');
-        
+
 
         if($request->get('id')){
-            
+
             $update =[];
             $update['id'] = $request->get('id');
             $update['name'] = $request->get('name');
@@ -99,9 +99,9 @@ class ManagementController extends Controller
                     "message"=>"error"
                 ));
             }
-            
+
         }else{
-            
+
             if ($MgtProgram->save()) {
                 return json_encode(array(
                     "status"=>200
@@ -112,8 +112,8 @@ class ManagementController extends Controller
                 ));
             }
         }
-       
-       
+
+
 
     }
 
