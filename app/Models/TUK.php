@@ -24,4 +24,9 @@ class TUK extends Revisionable
     {
         return $this->hasOne('App\Models\Kota', 'id', 'regency_id');
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status',1);
+    }
 }

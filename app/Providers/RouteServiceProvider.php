@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+//use App\Models\CompetenceUnit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,8 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        Route::model('unit_kompetensi', \App\Models\CompetenceUnit::class);
     }
 
     /**

@@ -45,7 +45,7 @@
                                 </div>
                             </li>
                         @endcanany
-                        @canany(['Assessor','Tempat Uji Kompetensi (TUK)','Provinsi','Kota'])
+                        @canany(['Assessor','Tempat Uji Kompetensi (TUK)','Provinsi','Kota','Unit Kompetensi','Elemen Kompetensi','Kerangka Unjuk Kerja'])
                         <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--submenu-fullheight {{ in_array('data-master', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon la la-database"></i><span class="kt-menu__link-text">Data Master</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <div class="kt-menu__wrapper">
@@ -66,6 +66,15 @@
                                                     @can('Kota')
                                                         <li class="kt-menu__item {{ ($routeName == 'master.kota') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('master.kota') }}" class="kt-menu__link "><span class="kt-menu__link-text">Kabupaten/Kota</span></a></li>
                                                     @endcan
+                                                    @can('Unit Kompetensi')
+                                                        <li class="kt-menu__item {{ ($routeName == 'unit-kompetensi.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('unit-kompetensi.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Unit Kompetensi</span></a></li>
+                                                    @endcan
+                                                    @can('Elemen Kompetensi')
+                                                        <li class="kt-menu__item {{ ($routeName == 'elemen-kompetensi.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('elemen-kompetensi.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Elemen Kompetensi</span></a></li>
+                                                    @endcan
+                                                    @can('Kerangka Unjuk Kerja')
+                                                        <li class="kt-menu__item {{ ($routeName == 'kuk.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('kuk.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Kerangka Unjuk Kerja</span></a></li>
+                                                    @endcan
                                                 </ul>
                                             </div>
                                         </li>
@@ -74,21 +83,22 @@
                             </div>
                         </li>
                         @endcanany
-                        <li class="kt-menu__item  kt-menu__item--submenu  kt-menu__item--submenu-fullheight" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a target="_blank" href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-analytics-2"></i><span class="kt-menu__link-text">Customers</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                        @canany(['Jadwal Kelas'])
+                        <li class="kt-menu__item  kt-menu__item--submenu  kt-menu__item--submenu-fullheight {{ in_array('management-assesmen', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a target="_blank" href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-analytics-2"></i><span class="kt-menu__link-text">Customers</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <div class="kt-menu__wrapper">
                                     <ul class="kt-menu__subnav">
                                         <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Manajemen Assessmen</span></span></li>
-                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('cbt', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-event-calendar-symbol"><span></span></i><span class="kt-menu__link-text">Manajemen Kelas</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                        <li class="kt-menu__item  kt-menu__item--submenu {{ in_array('manajemen-kelas', $prefix) ? ' kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-event-calendar-symbol"><span></span></i><span class="kt-menu__link-text">Manajemen Kelas</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                                 <ul class="kt-menu__subnav">
-                                                    <li class="kt-menu__item {{ ($routeName == 'ujian-komputer.kategori') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('ujian-komputer.kategori') }}" class="kt-menu__link "><span class="kt-menu__link-text">Jadwal Kelas</span></a></li>
-                                                    <li class="kt-menu__item {{ ($routeName == 'ujian-komputer.program') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('ujian-komputer.program') }}" class="kt-menu__link "><span class="kt-menu__link-text">Program</span></a></li>
-                                                    <li class="kt-menu__item {{ ($routeName == 'ujian-komputer.management') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('ujian-komputer.management') }}" class="kt-menu__link "><span class="kt-menu__link-text">Management</span></a></li>
+                                                    @can('Jadwal Kelas')
+                                                        <li class="kt-menu__item {{ ($routeName == 'jadwal-kelas.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('jadwal-kelas.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Jadwal Kelas</span></a></li>
+                                                    @endcan
                                                 </ul>
                                             </div>
                                         </li>
-                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('cbt', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-imac"><span></span></i><span class="kt-menu__link-text">Ujian Komputer</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                        <li class="kt-menu__item  kt-menu__item--submenu {{ in_array('cbt', $prefix) ? ' kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-imac"><span></span></i><span class="kt-menu__link-text">Ujian Komputer</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                                 <ul class="kt-menu__subnav">
                                                     <li class="kt-menu__item {{ ($routeName == 'ujian-komputer.kategori') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('ujian-komputer.kategori') }}" class="kt-menu__link "><span class="kt-menu__link-text">Kategori</span></a></li>
@@ -98,7 +108,7 @@
                                                 </ul>
                                             </div>
                                         </li>
-                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('materi', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-file-1"><span></span></i><span class="kt-menu__link-text">Materi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                        <li class="kt-menu__item  kt-menu__item--submenu {{ in_array('materi', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-file-1"><span></span></i><span class="kt-menu__link-text">Materi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                                 <ul class="kt-menu__subnav">
                                                     <li class="kt-menu__item {{ ($routeName == 'materi.pembuatan-modul') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('materi.pembuatan-modul') }}" class="kt-menu__link "><span class="kt-menu__link-text">Pembuatan Modul</span></a></li>
@@ -113,6 +123,7 @@
                                 </div>
                             </div>
                         </li>
+                        @endcanany
                         <li class="kt-menu__item">
                             <a href="{{ route('logout') }}" class="kt-menu__link"><i class="kt-menu__link-icon flaticon-logout"></i><span class="kt-menu__link-text">Logout</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                         </li>

@@ -15,6 +15,9 @@ use function GuzzleHttp\Psr7\str;
 
 class AssessorController extends Controller
 {
+    /**
+     * AssessorController constructor.
+     */
     public function __construct()
     {
         $this->middleware(['permission:Assessor']);
@@ -295,7 +298,7 @@ class AssessorController extends Controller
     public function delete(Assessor $assessor)
     {
         if (auth()->user()->can('Assessor Delete')) {
-            
+
         } else {
             flash()->error('Maaf, Anda tidak mempunyai akses untuk menghapus data Assessor');
         }

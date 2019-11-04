@@ -76,13 +76,20 @@ Route::middleware(['auth'])->group(function (){
             Route::get('provinsi/data', 'ProvinsiController@AjaxProvinsiGetData')->name('master.provinsi.data');
             Route::get('provinsi/json', 'ProvinsiController@ProvinsiJson')->name('master.provinsi.json');
             Route::post('provinsi/insert', 'ProvinsiController@AjaxProvinsiInsertData')->name('master.provinsi.insert');
-            Route::post('provinsi/delete', 'ProvinsiController@AjaxProvinsiDeleteData')->name('master.provinsi.delete');
-
+            Route::post('provinsi/{provinsi}/delete', 'ProvinsiController@AjaxProvinsiDeleteData')->name('master.provinsi.delete');
 
             Route::get('kota', 'KotaController@kota')->name('master.kota');
             Route::get('kota/data', 'KotaController@AjaxKotaGetData')->name('master.kota.data');
             Route::post('kota/insert', 'KotaController@AjaxKotaInsertData')->name('master.kota.insert');
-            Route::post('kota/delete', 'KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
+            Route::post('kota/{kota}/delete', 'KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
+
+            Route::resource('unit-kompetensi', 'UnitKompetensiController');
+            Route::post('unit-kompetensi/getdata', 'UnitKompetensiController@geUnitKompetensiData')->name('unit-kompetensi.getdata');
+            Route::post('unit-kompetensi/{unit_kompetensi}/delete', 'UnitKompetensiController@delete')->name('unit-kompetensi.delete');
+
+            Route::resource('elemen-kompetensi', 'ElemenKompetensiController');
+
+            Route::resource('kuk', 'KukController');
         });
     });
 
@@ -129,8 +136,11 @@ Route::middleware(['auth'])->group(function (){
 
         });
 
-
-
+        Route::group(['prefix'=>'manajemen-kelas'], function () {
+            Route::resource('jadwal-kelas', 'JadwalKelasController');
+            Route::post('jadwal-kelas/getdata', 'JadwalKelasController@getJadwalKelasData')->name('jadwal-kelas.getdata');
+            Route::get('jadwal-kelas/delete', 'JadwalKelasController@delete')->name('jadwal-kelas.delete');
+        });
 
     });
 

@@ -22,6 +22,7 @@ class AddColumnsOnProgramSchedules extends Migration
             $table->tinyInteger('status')->default(1)->comment('1=Open , 0 = Closed, 2 = Canceled');
             $table->dateTime('date_closed')->nullable();
             $table->integer('closed_by')->nullable();
+            $table->text('remark')->nullable();
             $table->softDeletes();
         });
     }
@@ -34,7 +35,7 @@ class AddColumnsOnProgramSchedules extends Migration
     public function down()
     {
         Schema::table('program_schedules', function (Blueprint $table) {
-            $table->dropColumn('is_approved');
+            $table->dropColumn('is_approve');
             $table->dropColumn('date_approve');
             $table->dropColumn('approved_by');
             $table->dropColumn('is_publish');
@@ -42,6 +43,7 @@ class AddColumnsOnProgramSchedules extends Migration
             $table->dropColumn('status');
             $table->dropColumn('date_closed');
             $table->dropColumn('closed_by');
+            $table->dropColumn('remark');
             $table->dropSoftDeletes();
         });
     }

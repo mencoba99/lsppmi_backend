@@ -9,13 +9,13 @@ use Venturecraft\Revisionable\Revisionable;
 
 class Program extends Revisionable
 {
-    
+
      protected $revisionCreationsEnabled = true;
-     
+
      protected $table = 'programs';
- 
+
      protected $fillable = [
-         
+
          'code',
          'name',
          'description',
@@ -26,8 +26,8 @@ class Program extends Revisionable
          'sing_int',
          'harga',
          'level',
-         
-        
+
+
      ];
 
      public function kategori()
@@ -35,12 +35,14 @@ class Program extends Revisionable
         return $this->belongsTo('\App\Models\Kategori','program_type_id','id');
     }
 
-    
-
      public function mgt_program()
     {
         return $this->belongsTo('\App\Models\MgtProgram','id','program_id');
     }
 
-    
+    public function scopeActive($query)
+    {
+        return $query->where('status',1);
+    }
+
 }
