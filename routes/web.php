@@ -70,8 +70,23 @@ Route::middleware(['auth'])->group(function (){
             Route::get('kota/data', 'KotaController@AjaxKotaGetData')->name('master.kota.data');
             Route::post('kota/insert', 'KotaController@AjaxKotaInsertData')->name('master.kota.insert');
             Route::post('kota/delete', 'KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
-    
 
+            Route::get('units', 'UnitsController@index')->name('master.units');
+            Route::get('units/data', 'UnitsController@AjaxGetData')->name('master.units.data');
+            Route::post('units/insert', 'UnitsController@AjaxInsertData')->name('master.units.insert');
+
+            Route::get('element', 'ElementController@index')->name('master.element');
+            Route::get('element/data', 'ElementController@AjaxGetData')->name('master.element.data');
+            Route::post('element/insert', 'ElementController@AjaxInsertData')->name('master.element.insert');
+
+            Route::get('kuk', 'KUKController@index')->name('master.kuk');
+            Route::get('kuk/data', 'KUKController@AjaxGetData')->name('master.kuk.data');
+            Route::post('kuk/insert', 'KUKController@AjaxInsertData')->name('master.kuk.insert');
+
+            Route::get('places', 'PlacesController@index')->name('master.places');
+            Route::get('places/data', 'PlacesController@AjaxGetData')->name('master.places.data');
+            Route::post('places/insert', 'PlacesController@AjaxInsertData')->name('master.places.insert');
+           
         
     });
 
@@ -92,6 +107,7 @@ Route::middleware(['auth'])->group(function (){
     
                 Route::get('management', 'CBT\ManagementController@index')->name('ujian-komputer.management');
                 Route::get('management/data', 'CBT\ManagementController@AjaxMgtProgramGetData')->name('ujian-komputer.management.data');
+                Route::post('management/modul', 'CBT\ManagementController@AjaxGetSubModul')->name('ujian-komputer.management.modul');
                 Route::post('management/insert', 'CBT\ManagementController@AjaxMgtProgramInsertData')->name('ujian-komputer.management.insert');
                 Route::post('management/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('ujian-komputer.management.delete');
     
@@ -102,6 +118,8 @@ Route::middleware(['auth'])->group(function (){
     
                     Route::get('soal', 'CBT\Materi\PembuatanSoalController@index')->name('materi.pembuatan-soal');
                     Route::get('soal/data', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalGetData')->name('materi.pembuatan-soal.data');
+                    Route::post('soal/modul', 'CBT\Materi\PembuatanSoalController@AjaxGetSubmodul')->name('materi.pembuatan-soal.modul');
+                    Route::post('soal/id', 'CBT\Materi\PembuatanSoalController@AjaxGetId')->name('materi.pembuatan-soal.findId');
                     Route::post('soal/insert', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalInsertData')->name('materi.pembuatan-soal.insert');
                     Route::post('soal/delete', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalDeleteData')->name('materi.pembuatan-soal.delete');
     

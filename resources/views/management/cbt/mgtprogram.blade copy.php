@@ -1,38 +1,34 @@
-<?php $__env->startSection('content'); ?>
+@extends('layouts.base')
+
+@section('content')
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-    <div class="alert alert-light alert-elevate" role="alert">
-        <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
-        <div class="alert-text">
-            <?php echo e($Title); ?>
-
-            <br>For more info see <a class="kt-link kt-font-bold" href="https://datatables.net/" target="_blank">the official home</a> of the plugin.
-        </div>
-    </div>
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                    <i class="kt-font-brand flaticon-interface-8"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                  <?php echo e(ucfirst(trans(end($crumbs)))); ?>
-
+                  {{ucfirst(trans(end($crumbs)))}}
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah   <?php echo e(ucfirst(trans(end($crumbs)))); ?></button>
+                            Tambah   {{ucfirst(trans(end($crumbs)))}}</button>
                         &nbsp;
-                        
+                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
+                            <i class="la la-plus"></i>
+                            New Record
+                        </a> --}}
                     </div>
                 </div>
             </div>
         </div>
         
-
+       
         <div class="kt-portlet__body tabel-provinsi">
             <table class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" id="datatable">
                 <thead>
@@ -65,7 +61,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah  <?php echo e(ucfirst(trans(end($crumbs)))); ?></h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -78,10 +74,8 @@
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Program:</label>
                                             <div class="col-lg-6">
-                                                <?php echo Form::select('program_id',$Program,null,['id'=>'program_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Program']); ?>
-
-                                                <?php echo Form::text('mgt_id',null,['id'=>'mgt_id','class'=>'form-control','hidden'=>'hidden']); ?>
-
+                                                {!! Form::select('program_id',$Program,null,['id'=>'program_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Program']) !!}
+                                                {!! Form::text('mgt_id',null,['id'=>'mgt_id','class'=>'form-control','hidden'=>'hidden']) !!}
                                                
                                             </div>
                                         </div>
@@ -90,22 +84,20 @@
                                                 <div class="col-lg-6">
                                                         <div id="tree">
                                                                 <ul>
-                                                        <?php $__currentLoopData = $modul; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $data_modul): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                        <li id="<?php echo e($data_modul->id); ?>">
-                                                                <?php echo e($data_modul->name); ?>
-
-                                                                <ul>
-                                                                <?php $__currentLoopData = $data_modul->submodul; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                <li id="<?php echo e($item->id); ?>">
-                                                                   <?php echo e($item->name); ?>
-
-                                                                </li>
-                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                            </ul>
-                                                            </li>
-                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                    </ul>
-                                                </div>
+                                                                    @foreach ($modul as $key => $data_modul)
+                                                                    <li id="modul-{{$data_modul->id}}">
+                                                                        {{$data_modul->name}}
+                                                                        <ul>
+                                                                            @foreach ($data_modul->submodul as $item)
+                                                                            <li id="submodul-{{$item->id}}">
+                                                                                {{$item->name}}
+                                                                            </li>
+                                                                            @endforeach
+                                                                        </ul>
+                                                                    </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>    
                                                 </div>
                                         </div>
                                        
@@ -117,7 +109,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" id="simpan" class="submit btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
+                <button type="submit" id="simpan" class=" btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
             </div>
         </form>
 
@@ -126,20 +118,20 @@
     </div>
 </div>
 
-<?php $__env->stopSection(); ?>
+@endsection
 
-<?php $__env->startPush('scripts'); ?>
+@push('scripts')
   
 <script type="text/javascript">
     $(function () {
     $("#tree").jstree({
         "checkbox": {
-            "keep_selected_style": false
+            "keep_selected_style": true
         },
-            "plugins": ["checkbox"]
+            "plugins": ["checkbox","sort"]
     });
-    $("#tree").bind("changed.jstree",
-    function (e, data) {
+    $("#tree").bind("changed.jstree",function (e, data) {
+        
         alert("Checked: " + data.node.id);
         alert("Parent: " + data.node.parent); 
         //alert(JSON.stringify(data));
@@ -170,32 +162,20 @@ $(function () {
         rules: {
             "program_id": {
                 required: true
-            },
-            "tree": {
-                required: true
             }
 
         },
         messages: {
             "program_id": {
                 required: "Silahkan pilih program "
-            },
-            "tree": {
-                required: "Silahkan tulis keterangan yang akan diinput"
             }
         },
         submitHandler: function (form) { // for demo
                table = $('#datatable').DataTable().destroy();
-               checked_ids = []; 
-                $("#tree").jstree("get_checked",null,true).each 
-                    (function () { 
-                        checked_ids.push(this.id); 
-                    }); 
-           doStuff(checked_ids); 
-
+             
             $.ajax({
                 type: "post",
-                url: "<?php echo e(route('mgt.cbt.kategori.insert')); ?>",
+                url: "{{ route('ujian-komputer.management.insert') }}",
                 dataType:"json",
                 data: {
                     program: $("#program_id").val(),
@@ -229,7 +209,6 @@ $(function () {
                 }
             })
             return false;
-            event.preventDefault();
         }
     });
 });
@@ -240,7 +219,7 @@ $(function () {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "<?php echo e(route('mgt.cbt.management.data')); ?>",
+            ajax: "{{ route('ujian-komputer.management.data') }}",
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -290,6 +269,4 @@ $(function () {
     
 </script>   
    
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/MgtProgram.blade.php ENDPATH**/ ?>
+@endpush

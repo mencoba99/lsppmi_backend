@@ -43,7 +43,7 @@
     <link href="<?php echo e(Storage::url('css/demo7/style.bundle.css')); ?>" rel="stylesheet" type="text/css" />
    
     <link href="<?php echo e(asset('assets/vendors/global/datatable/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
-    <link href="http://static.jstree.com/3.0.0-beta3/assets/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.8/themes/default/style.min.css" rel="stylesheet" type="text/css" />
    
     <!--end::Global Theme Styles -->
     <?php echo $__env->yieldPushContent('style'); ?>

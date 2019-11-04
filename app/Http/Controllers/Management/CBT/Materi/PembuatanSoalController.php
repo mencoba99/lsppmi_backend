@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Management\CBT\Materi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use App\User;
 use App\Models\Soal;
 use App\Models\Modul;
@@ -58,11 +59,23 @@ class PembuatanSoalController extends Controller
     {
         $dataSoal = Soal::with('modul','submodul')->get();
         
+        // $encrypted = Crypt::encryptString('a');
+		// $decrypted = Crypt::decryptString($dataSoal[0]->a);
+ 
+		// echo "Hasil Enkripsi : " . $encrypted;
+		// echo "<br/>";
+		// echo "<br/>";
+        // echo "Hasil asli : " . $dataSoal[0]->a;
+        // echo "<br/>";
+        // echo "Hasil Dekripsi : " . $decrypted;
+        
+        // exit;
+
 
        return DataTables::of($dataSoal)->addColumn('action', function (Soal $Soal) {
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.$Soal->penjelasan.'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.$Soal->e.'"   data-d="'.$Soal->d.'"  data-c="'.$Soal->c.'" data-b="'.$Soal->b.'"  data-a="'.$Soal->a.'" data-soal="'.$Soal->soal.'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Soal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            // $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Soal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
+            $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($Soal->penjelasan).'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.Crypt::decryptString($Soal->e).'"   data-d="'.Crypt::decryptString($Soal->d).'"  data-c="'.Crypt::decryptString($Soal->c).'" data-b="'.Crypt::decryptString($Soal->b).'"  data-a="'.Crypt::decryptString($Soal->a).'" data-soal="'.Crypt::decryptString($Soal->soal).'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Soal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Soal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
            
 			$action .= "</div>";
 			return $action;
@@ -97,6 +110,26 @@ class PembuatanSoalController extends Controller
 		})->make(true);
     }
 
+    public function AjaxGetSubmodul(Request $request)
+    {
+       
+        $submodul = [];
+        $getsubModul = SubModul::where('id_modul',$request->id_modul)->get();
+        // foreach ($getsubModul as $key1 => $value1) {
+        //      return json_encode(array(
+        //     "id"=>$value1->id,
+        //     "name"=>$submvalue1odul->name
+        //     ));
+           
+        // }
+        
+        // return json_encode(array(
+        //     "id"=>$submodul->id,
+        //     "name"=>$submodul->name
+        // ));
+       return  $getsubModul;
+    }
+
     public function AjaxPembuatanSoalDeleteData(Request $request)
     {
        
@@ -115,16 +148,22 @@ class PembuatanSoalController extends Controller
     public function AjaxPembuatanSoalInsertData(Request $request)
     {
        
+        $a = (string) $request->get('answer_a');
+        $b = (string) $request->get('answer_b');
+        $c = (string) $request->get('answer_c');
+        $d = (string) $request->get('answer_d');
+        $e = (string) $request->get('answer_e');
+
         $Soal = new Soal();
         $Soal->nick = $request->get('nick');
-        $Soal->soal = $request->get('soal');
-        $Soal->a = $request->get('answer_a');
-        $Soal->b = $request->get('answer_b');
-        $Soal->c = $request->get('answer_c');
-        $Soal->d = $request->get('answer_d');
-        $Soal->e = $request->get('answer_e');
+        $Soal->soal = Crypt::encryptString((string)$request->get('soal'));
+        $Soal->a = Crypt::encryptString($a);
+        $Soal->b = Crypt::encryptString($b);
+        $Soal->c = Crypt::encryptString($c);
+        $Soal->d = Crypt::encryptString($d);
+        $Soal->e = Crypt::encryptString($e);
         $Soal->tag = $request->get('tag');
-        $Soal->penjelasan = $request->get('desc');
+        $Soal->penjelasan = Crypt::encryptString($request->get('desc'));
         $Soal->kunci_id = $request->get('answer');
         $Soal->jenis_soal_id = $request->get('bobot');
         $Soal->hit              = '0';
@@ -133,22 +172,22 @@ class PembuatanSoalController extends Controller
         $Soal->parent = $request->get('parent');
         $Soal->modul_id = $request->get('modul_id');
         $Soal->submodul_id = $request->get('submodul');
-
+       
+        // exit;
         
-      
-
+        
         if($request->get('id')){ // for update
             
             $update =[];
             $update['nick'] = $request->get('nick');
-            $update['soal'] = $request->get('soal');
-            $update['a'] = $request->get('answer_a');
-            $update['b'] = $request->get('answer_b');
-            $update['c'] = $request->get('answer_c');
-            $update['d'] = $request->get('answer_d');
-            $update['e'] = $request->get('answer_e');
+            $update['soal'] = Crypt::encryptString($request->get('soal'));
+            $update['a'] = Crypt::encryptString($request->get('answer_a'));
+            $update['b'] = Crypt::encryptString($request->get('answer_b'));
+            $update['c'] = Crypt::encryptString($request->get('answer_c'));
+            $update['d'] = Crypt::encryptString($request->get('answer_d'));
+            $update['e'] = Crypt::encryptString($request->get('answer_e'));
             $update['tag'] = $request->get('tag');
-            $update['penjelasan'] = $request->get('desc');
+            $update['penjelasan'] = Crypt::encryptString($request->get('desc'));
             $update['kunci_id'] = $request->get('answer');
             $update['jenis_soal_id'] = $request->get('bobot');
             $update['modul_id'] = $request->get('modul_id');

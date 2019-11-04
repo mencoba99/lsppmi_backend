@@ -205,7 +205,7 @@
 }();
 
 //validate
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     KTBootstrapSelect.init();
     form = $("#form").validate({
         rules: {
@@ -229,18 +229,18 @@ jQuery(document).ready(function() {
             },
             "interview": {
                 required: function (element) {
-                if($("#type").prop("checked") == true) { 
-                    if($("#cbt").prop("checked") == true){
+                    if ($("#type").prop("checked") == true) {
+                        if ($("#cbt").prop("checked") == true) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+
+
+                    } else {
                         return false;
-                    }else{
-                        return true;
                     }
-                    
-                    
-                }else{
-                    return false;
-                }
-            },
+                },
                 maxlength: 2
             },
             "status": {
@@ -274,14 +274,14 @@ jQuery(document).ready(function() {
                 required: "Silahkan pilih status"
             }
         },
-        submitHandler: function (form) { 
-              table = $('#datatable').DataTable().destroy();
-            
+        submitHandler: function (form) {
+            table = $('#datatable').DataTable().destroy();
+
 
             $.ajax({
                 type: "post",
                 url: "<?php echo e(route('ujian-komputer.program.insert')); ?>",
-                dataType:"json",
+                dataType: "json",
                 data: {
                     id: $("#program_id").val(),
                     program_type_id: $("#kategori_id").val(),
@@ -296,28 +296,28 @@ jQuery(document).ready(function() {
                     status: $("#status").val(),
                     desc: $(".note-editable").html(),
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     KTApp.block('#add .modal-content', {
-                    overlayColor: '#000000',
-                    type: 'v2',
-                    state: 'primary',
-                    message: 'Processing...'
-                });
+                        overlayColor: '#000000',
+                        type: 'v2',
+                        state: 'primary',
+                        message: 'Processing...'
+                    });
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
                     // alert(JSON.stringify(response));
-                    if(response.status === 200) {
+                    if (response.status === 200) {
                         view();
-                        setTimeout(function() {
+                        setTimeout(function () {
                             KTApp.unblock('#add .modal-content');
                             $('#add').modal('hide');
                             $.notify({
                                 // options
-                                message: 'Berhasil disimpan' 
-                            },{
+                                message: 'Berhasil disimpan'
+                            }, {
                                 // settings
                                 type: 'success',
                                 placement: {
@@ -326,26 +326,27 @@ jQuery(document).ready(function() {
                                 }
                             });
                         }, 2000);
-                        
-            //          
-                    } else if(response.status === 500) {
-                            KTApp.unblock('#add .modal-content');
-                            $('#add').modal('hide');
-                            $.notify({
-                                // options
-                                message: 'Tidak berhasil disimpan' 
-                            },{
-                                // settings
-                                type: 'danger',
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                }
-                            });
+
+                        //          
+                    } else if (response.status === 500) {
+                        KTApp.unblock('#add .modal-content');
+                        $('#add').modal('hide');
+                        $.notify({
+                            // options
+                            message: 'Tidak berhasil disimpan'
+                        }, {
+                            // settings
+                            type: 'danger',
+                            placement: {
+                                from: "top",
+                                align: "right"
+                            }
+                        });
                     }
-                },error: function (jqXHR, exception) {
-                    
-                     msg = '';
+                },
+                error: function (jqXHR, exception) {
+
+                    msg = '';
                     if (jqXHR.status === 0) {
                         msg = 'Not connect.\n Verify Network.';
                     } else if (jqXHR.status == 404) {
@@ -362,20 +363,20 @@ jQuery(document).ready(function() {
                         msg = 'Uncaught Error.\n' + jqXHR.responseText;
                     }
 
-                            KTApp.unblock('#add .modal-content');
-                            $('#add').modal('hide');
+                    KTApp.unblock('#add .modal-content');
+                    $('#add').modal('hide');
 
-                            $.notify({
-                                // options
-                                message: msg 
-                            },{
-                                // settings
-                                type: 'danger',
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                }
-                            });
+                    $.notify({
+                        // options
+                        message: msg
+                    }, {
+                        // settings
+                        type: 'danger',
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        }
+                    });
 
                 },
             })
@@ -411,16 +412,15 @@ jQuery(document).ready(function() {
     
     }
 
-    $(function() {
-
+    $(function () {
 
         view(); //call datatable view
 
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
-             $("input").val("");
-             form.resetForm();
-             $('#summernote').summernote('destroy');
+        $("#datatable").on("click", "tr #edit", function () {
+            $("input").val("");
+            form.resetForm();
+            $('#summernote').summernote('destroy');
 
             $("#program_id").val($(this).data('id'));
             $("select#kategori_id").val($(this).data('kategori'));
@@ -430,79 +430,78 @@ jQuery(document).ready(function() {
             $("#program_sing_eng").val($(this).data('sing_int'));
             $("#program_sing_ind").val($(this).data('sing_ind'));
             $("#program_harga").val($(this).data('harga'));
-           
+
             $("select#level").val($(this).data('level'));
             $('.kt-selectpicker').selectpicker('refresh');
-           
-            $.ajax({
-            type: "post",
-            url: "<?php echo e(route('ujian-komputer.program.desc')); ?>",
-            dataType:"json",
-            data: {
-                id: $(this).data('id'),
-            },
-            beforeSend: function() {
-                KTApp.blockPage();
-                },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (response) {
-                
-                if(response.status === 200) {
-                   
-                    $('.summernote').summernote('code', response.data);
-                    setTimeout(function() {
-                        KTApp.unblockPage(); //loading icon
-                    }, 2000);
-                    $('#add').modal('show');
-                    
-                } else if(response.status === 500) {
-                    // do something with response.message or whatever other data on error
-                }
-            }
-        })
 
-           
+            $.ajax({
+                type: "post",
+                url: "<?php echo e(route('ujian-komputer.program.desc')); ?>",
+                dataType: "json",
+                data: {
+                    id: $(this).data('id'),
+                },
+                beforeSend: function () {
+                    KTApp.blockPage();
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+
+                    if (response.status === 200) {
+
+                        $('.summernote').summernote('code', response.data);
+                        setTimeout(function () {
+                            KTApp.unblockPage(); //loading icon
+                        }, 2000);
+                        $('#add').modal('show');
+
+                    } else if (response.status === 500) {
+                        // do something with response.message or whatever other data on error
+                    }
+                }
+            })
+
+
         });
 
-        
+
 
         $('#type').change(function () {
-            if($(this).prop("checked") == true){
+            if ($(this).prop("checked") == true) {
                 $(".metode").show();
-               
-                $(this).data('direct','direct');
-                
-            }
-            else if($(this).prop("checked") == false){
+
+                $(this).data('direct', 'direct');
+
+            } else if ($(this).prop("checked") == false) {
                 $(".metode").hide();
-                $("#cbt").prop("checked",false).trigger("change");
-                $("#interview").prop("checked",false).trigger("change");
-                $(this).data('direct','');
+                $("#cbt").prop("checked", false).trigger("change");
+                $("#interview").prop("checked", false).trigger("change");
+                $(this).data('direct', '');
             }
 
         });
 
         $('#cbt').change(function () {
-            if($(this).prop("checked") == true){
-                $(this).data('cbt','cbt');
-           }else{
-                $(this).data('cbt','');
-           }
+            if ($(this).prop("checked") == true) {
+                $(this).data('cbt', 'cbt');
+            } else {
+                $(this).data('cbt', '');
+            }
         });
 
         $('#interview').change(function () {
-            if($(this).prop("checked") == true){
-                $(this).data('interview','interview');
-            }else{
-                $(this).data('interview','');
+            if ($(this).prop("checked") == true) {
+                $(this).data('interview', 'interview');
+            } else {
+                $(this).data('interview', '');
             }
         });
 
 
         /* New Data Button */
-        $('#new').click(function(event) {
+        $('#new').click(function (event) {
             $("input").val("");
             $('.summernote').summernote('reset');
             $("select#program_id").val("");
@@ -510,10 +509,6 @@ jQuery(document).ready(function() {
             form.resetForm();
         });
 
-        
-      
-
-   
     });
     
 </script>   

@@ -43,6 +43,14 @@ class PembuatanSubModulController extends Controller
            
 			$action .= "</div>";
 			return $action;
+		})->addColumn('status_s', function (SubModul $SubModul) {
+            
+            if($SubModul->status==1){
+                return "Aktif";
+            }else{
+                return "Non Aktif";
+            }
+
 		})->make(true);
     }
 

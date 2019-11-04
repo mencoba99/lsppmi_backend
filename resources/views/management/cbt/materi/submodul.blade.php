@@ -37,10 +37,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -124,7 +126,9 @@
     // Private functions
     var demos = function () {
         // minimum setup
-        $('.kt-selectpicker').selectpicker();
+        $('.kt-selectpicker').selectpicker().change(function(){
+            $(this).valid()
+        });
     }
 
     return {
@@ -228,6 +232,7 @@ jQuery(document).ready(function() {
                 { data: 'name', name: 'name' , title: 'Nama Sub Modul' },
                 { data: 'modul.name', name: 'modul.name' , title: 'Modul ' },
                 { data: 'description', name: 'description' , title: 'Keterangan' },
+                { data: 'status', name: 'status' , title: 'Status', width : "5%" },
                 { data: 'action', name: 'action' , title: 'Action', width : "5%"  }
             ],
             initComplete: function () {

@@ -50,6 +50,16 @@
                                                 </ul>
                                             </div>
                                         </li>
+                                        <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open <?php echo e(in_array('master', $prefix) ? 'kt-menu__item--here':''); ?>" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-map"><span></span></i><span class="kt-menu__link-text">Competence</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                                <ul class="kt-menu__subnav">
+                                                    <li class="kt-menu__item <?php echo e(($routeName == 'master.units') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.units')); ?>" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Units</span></a></li>
+                                                    <li class="kt-menu__item <?php echo e(($routeName == 'master.element') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.element')); ?>" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Element</span></a></li>
+                                                    <li class="kt-menu__item <?php echo e(($routeName == 'master.kuk') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.kuk')); ?>" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">KUK</span></a></li>
+                                                    <li class="kt-menu__item <?php echo e(($routeName == 'master.places') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.places')); ?>" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Places</span></a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

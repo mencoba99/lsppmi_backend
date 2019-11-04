@@ -84,7 +84,7 @@
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Submodul:</label>
                                                 <div class="col-lg-6">
-                                                    <?php echo Form::select('submodul_id',$submodul,null,['id'=>'submodul_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Submodul']); ?>
+                                                    <?php echo Form::select('submodul_id',['' => ''],null,['id'=>'submodul_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true"]); ?>
 
                                               
                                                 </div>
@@ -331,6 +331,7 @@ jQuery(document).ready(function() {
         },
         submitHandler: function (form) { 
             table = $('#datatable').DataTable().destroy();
+           
             $.ajax({
                 type: "post",
                 url: "<?php echo e(route('materi.pembuatan-soal.insert')); ?>",
@@ -353,18 +354,18 @@ jQuery(document).ready(function() {
                     desc: $("#desc").val(),
                 },
                 beforeSend: function() {
-                    KTApp.block('#add .modal-content', {
-                    overlayColor: '#000000',
-                    type: 'v2',
-                    state: 'primary',
-                    message: 'Processing...'
-                });
+                //     KTApp.block('#add .modal-content', {
+                //     overlayColor: '#000000',
+                //     type: 'v2',
+                //     state: 'primary',
+                //     message: 'Processing...'
+                // });
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    // alert(JSON.stringify(response));
+                    alert(JSON.stringify(response));
                     if(response.status === 200) {
                         view();
                         setTimeout(function() {
@@ -427,19 +428,17 @@ jQuery(document).ready(function() {
     });
     }
 
-    $(function() {
-
+    $(function () {
 
         view(); //call datatable view
 
-
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
-            $("input").val(""); 
+        $("#datatable").on("click", "tr #edit", function () {
+            $("input").val("");
             form.resetForm();
-           
-            $("#modul_id").val($(this).data('modul'));
             $("#soal_id").val($(this).data('id'));
+            $("#modul_id").val($(this).data('modul'));
+
             $("#soal").val($(this).data('soal'));
             $("#submodul_id").val($(this).data('submodul'));
             $("#jenissoal_id").val($(this).data('bobot'));
@@ -453,26 +452,51 @@ jQuery(document).ready(function() {
             $("#answer").val($(this).data('jawaban'));
             $("#status").val($(this).data('status'));
             $("#desc").val($(this).data('desc'));
-           
+            $('.summernote').summernote('code', $(this).data('desc'));
             $('.kt-selectpicker').selectpicker('refresh');
-          
 
-           
-           
             $('#add').modal('show');
         });
 
         /* New Data Button */
-        $('#new').click(function(event) {
+        $('#new').click(function (event) {
             $("input").val("");
             $("select#status").val("");
             $('.kt-selectpicker').selectpicker('refresh');
             form.resetForm();
         });
 
-        
+        $('select#modul_id').on('change', function () {
 
-   
+            $.ajax({
+                type: "POST",
+                url: "<?php echo e(route('materi.pembuatan-soal.modul')); ?>",
+                data: {
+                    'id_modul': this.value
+                },
+                beforeSend: function () {
+                    KTApp.block();
+                    $('select#submodul_id').html("");
+                    $('.kt-selectpicker').selectpicker('refresh');
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+
+                    $.each(data, function (index, value) {
+                        KTApp.unblock();
+                        $('select#submodul_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        $('.kt-selectpicker').selectpicker('refresh');
+                    });
+
+                }
+            });
+
+        });
+
+
+
     });
     
 </script>   
