@@ -10,6 +10,16 @@ class MemberCertification extends Model
 
     public function schedules()
     {
-    	return $this->belongsTo('App\ProgramSchedule', 'program_schedule_id', 'id');
+    	return $this->belongsTo('App\Models\ProgramSchedule', 'program_schedule_id', 'id');
+    }
+
+    public function members()
+    {
+    	return $this->belongsTo('App\Models\Member', 'member_id', 'id');
+    }
+
+    public function apl01()
+    {
+    	return $this->hasMany('App\Models\MemberCertificationAPL01');
     }
 }

@@ -10,6 +10,6 @@ class ProgramSchedule extends Model
 
     public function programs()
     {
-    	return $this->belongsTo('App\Program', 'program_id', 'id');
+    	return $this->belongsTo('App\Models\Program', 'program_id', 'id');
     }
 }
