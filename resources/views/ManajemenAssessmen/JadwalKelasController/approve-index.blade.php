@@ -21,11 +21,6 @@
                             <i class="la la-long-arrow-left"></i>
                             Back
                         </a>
-                        @can('Jadwal Kelas Add')
-                            <a href="{{ route('jadwal-kelas.create') }}" class="btn btn-brand btn-icon-sm">
-                                <i class="flaticon2-plus"></i> Tambah Jadwal Kelas
-                            </a>
-                        @endcan
                     </div>
                 </div>
             </div>
@@ -41,7 +36,6 @@
                         <th>Program</th>
                         <th>TUK</th>
                         <th>Harga</th>
-                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -50,7 +44,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td class="nosearch"></td>
                     <td class="nosearch"></td>
                     </tfoot>
                 </table>
@@ -77,7 +70,7 @@
                 ordering: false,
                 lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
                 ajax: {
-                    'url': '{{ route('jadwal-kelas.getdata') }}',
+                    'url': '{{ route('jadwal-kelas.approve.getdata') }}',
                     'type': 'POST',
                     'headers': {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -88,7 +81,6 @@
                     {data: 'tuk.name', name: 'tuk.name', title: 'Tempat Uji Kompetensi'},
                     {data: 'program.name', name: 'program.name', title: 'Program'},
                     {data: 'price', name: 'price', title: 'Harga'},
-                    {data: 'status', name: 'status', title: 'Status'},
                     {data: 'action', responsivePriority: -1},
                 ],
                 columnDefs: [

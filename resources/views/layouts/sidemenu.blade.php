@@ -95,6 +95,9 @@
                                                     @can('Jadwal Kelas')
                                                         <li class="kt-menu__item {{ ($routeName == 'jadwal-kelas.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('jadwal-kelas.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Jadwal Kelas</span></a></li>
                                                     @endcan
+                                                    @can('Jadwal Kelas Approve')
+                                                        <li class="kt-menu__item {{ ($routeName == 'jadwal-kelas.approve.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('jadwal-kelas.approve.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Approve Jadwal Kelas</span></a></li>
+                                                    @endcan
                                                 </ul>
                                             </div>
                                         </li>

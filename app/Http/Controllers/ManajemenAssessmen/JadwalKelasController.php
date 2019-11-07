@@ -51,6 +51,26 @@ class JadwalKelasController extends Controller
             }
 
             return $action;
+        })->editColumn('status', function (JadwalKelas $jadwalKelas) {
+            $status = '';
+            /** Status Aktif atau tidak */
+            if ($jadwalKelas->status == 1) {
+                $status .= '<button type="button" class="btn btn-brand btn-elevate btn-circle btn-icon btn-sm" data-toggle="kt-tooltip" data-original-title="Aktif"><i class="la la-check"></i></button>';
+            } elseif ($jadwalKelas->status == 0) {
+                $status .= '<button type="button" class="btn btn-secondary btn-elevate btn-circle btn-icon btn-sm" data-toggle="kt-tooltip" data-original-title="Tidak Aktif"><i class="la la-check"></i></button>';
+            }
+
+            /** Status Approve atau Tidak */
+            if ($jadwalKelas->is_approve == 1) {
+                $status .= '<button type="button" class="btn btn-brand btn-elevate btn-circle btn-icon btn-sm" data-toggle="kt-tooltip" data-original-title="Sudah diapprove"><i class="flaticon-like"></i></button>';
+            } else {
+                $status .= '<button type="button" class="btn btn-secondary btn-elevate btn-circle btn-icon btn-sm" data-toggle="kt-tooltip" data-original-title="Belum diapprove"><i class="flaticon-like"></i></button>';
+            }
+
+            /** Status Publish atau tidak */
+            if ($jadwalKelas->is_publish == 1)
+
+            return $status;
         })->escapeColumns([])->make(true);
 
         return $jadwalKelasJson;
@@ -198,5 +218,98 @@ class JadwalKelasController extends Controller
             flash()->error('Maaf, Anda tidak mempunyai kases untuk menghapus data jadwal kelas');
         }
         return redirect()->route('jadwal-kelas.index');
+    }
+
+    /**
+     * Halaman index untuk proses approval kelas
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function approveIndex()
+    {
+        if (auth()->user()->can('Jadwal Kelas Approve')) {
+            return view('ManajemenAssessmen.JadwalKelasController.approve-index');
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Approval Kelas');
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Method untuk get Data kelas yang belum approve untuk feed datatable halaman approve
+     *
+     * @param DataTables $dataTables
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getJadwalKelasNotApproveData(DataTables $dataTables)
+    {
+        $jadwalKelas = JadwalKelas::where('is_approve',0)->where('status',1)->get();
+        $jadwalKelas->load('program', 'tuk');
+
+        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (JadwalKelas $jadwalKelas) {
+            $action = "<a href='" . route('jadwal-kelas.show', ['jadwal_kela' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View " . $jadwalKelas->program->name . "' data-original-tooltip='View " . $jadwalKelas->program->name . "'>
+                              <i class='la la-search'></i>
+                            </a>";
+            if (auth()->user()->can('Jadwal Kelas Approve')) {
+                $action .= "<a href='" . route('jadwal-kelas.approve.view', ['jadwal_kelas' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Approve Kelas' data-original-tooltip='Approve Kelas'>
+                              <i class='la la-check'></i>
+                            </a>";
+            }
+
+            return $action;
+        })->escapeColumns([])->make(true);
+
+        return $jadwalKelasJson;
+    }
+
+    /**
+     * Halaman pop up untuk proses Approval/Unapprove Kelas
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function approveView(Request $request, $id)
+    {
+        if (auth()->user()->can('Jadwal Kelas Approve')) {
+            $jadwalKelas = JadwalKelas::find($id);
+            return view('ManajemenAssessmen.JadwalKelasController.approve-view', compact('jadwalKelas'));
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Approval Kelas');
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Proses Approval & Batalkan Approve Jadwal Kelas
+     *
+     * @param Request $request
+     * @param JadwalKelas $jadwalKelas
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function approveJadwalKelas(Request $request, JadwalKelas $jadwalKelas, $status)
+    {
+        if (auth()->user()->can('Jadwal Kelas Approve')) {
+            if ($status == 'approve') {
+                $update = ['is_approve'=>1,'approve_by'=>auth()->user()->id,'date_approve'=>date('Y-m-d H:i:s')];
+                if ($jadwalKelas->update($update)) {
+                    flash()->success('Berhasil Approve Jadwal Kelas');
+                } else {
+                    flash()->error('Gagal Approve Jadwal Kelas');
+                }
+            } elseif ($status == 'unapprove') {
+                $update = ['is_approve'=>'0','approve_by'=>'NULL','date_approve'=>'NULL'];
+                if ($jadwalKelas->update($update)) {
+                    flash()->success('Berhasil Approve Jadwal Kelas');
+                } else {
+                    flash()->error('Gagal Approve Jadwal Kelas');
+                }
+            }
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Approval Kelas');
+        }
+        return redirect()->route('jadwal-kelas.approve.view',['jadwal_kelas'=>$jadwalKelas]);
     }
 }

@@ -139,7 +139,11 @@ Route::middleware(['auth'])->group(function (){
         Route::group(['prefix'=>'manajemen-kelas'], function () {
             Route::resource('jadwal-kelas', 'JadwalKelasController');
             Route::post('jadwal-kelas/getdata', 'JadwalKelasController@getJadwalKelasData')->name('jadwal-kelas.getdata');
-            Route::get('jadwal-kelas/delete', 'JadwalKelasController@delete')->name('jadwal-kelas.delete');
+            Route::get('jadwal-kelas/{jadwal_kelas}/delete', 'JadwalKelasController@delete')->name('jadwal-kelas.delete');
+            Route::get('jadwal-kelas/approve/index', 'JadwalKelasController@approveIndex')->name('jadwal-kelas.approve.index');
+            Route::get('jadwal-kelas/approve/{jadwal_kelas}/view', 'JadwalKelasController@approveView')->name('jadwal-kelas.approve.view');
+            Route::post('jadwal-kelas/approve/getdata', 'JadwalKelasController@getJadwalKelasNotApproveData')->name('jadwal-kelas.approve.getdata');
+            Route::get('jadwal-kelas/approve/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@approveJadwalKelas')->name('jadwal-kelas.approve.set-approve');
         });
 
     });

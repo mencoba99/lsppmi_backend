@@ -19,7 +19,7 @@ class AddColumnsOnProgramSchedules extends Migration
             $table->integer('approved_by')->nullable();
             $table->tinyInteger('is_publish')->default(0)->comment('0=Not Publish , 1 = Published');
             $table->dateTime('date_publish')->nullable();
-            $table->tinyInteger('status')->default(1)->comment('1=Open , 0 = Closed, 2 = Canceled');
+            $table->tinyInteger('status')->default(1)->comment('1=Open , 0 = Not Active, 2 = Canceled, 3 = Closed');
             $table->dateTime('date_closed')->nullable();
             $table->integer('closed_by')->nullable();
             $table->text('remark')->nullable();
