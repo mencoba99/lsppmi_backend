@@ -146,6 +146,13 @@ Route::middleware(['auth'])->group(function (){
             Route::get('jadwal-kelas/approve/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@approveJadwalKelas')->name('jadwal-kelas.approve.set-approve');
         });
 
+        Route::group(['prefix'=>'manajemen-asssessmen'], function () {
+            Route::resource('pengaturan-kompetensi', 'PengaturanKompetensiController');
+            Route::post('pengaturan-kompetensi/getdata', 'PengaturanKompetensiController@getPengaturanKompetensiData')->name('pengaturan-kompetensi.getdata');
+            Route::get('pengaturan-kompetensi/{pengaturan_kompetensi}/delete', 'PengaturanKompetensiController@delete')->name('pengaturan-kompetensi.delete');
+            Route::post('pengaturan-kompetensi/getprogramunitkompetensi', 'PengaturanKompetensiController@getProgramUnitKompetensi')->name('pengaturan-kompetensi.getunitkompetensi');
+        });
+
     });
 
 });

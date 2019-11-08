@@ -66,15 +66,6 @@
                                                     @can('Kota')
                                                         <li class="kt-menu__item {{ ($routeName == 'master.kota') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('master.kota') }}" class="kt-menu__link "><span class="kt-menu__link-text">Kabupaten/Kota</span></a></li>
                                                     @endcan
-                                                    @can('Unit Kompetensi')
-                                                        <li class="kt-menu__item {{ ($routeName == 'unit-kompetensi.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('unit-kompetensi.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Unit Kompetensi</span></a></li>
-                                                    @endcan
-                                                    @can('Elemen Kompetensi')
-                                                        <li class="kt-menu__item {{ ($routeName == 'elemen-kompetensi.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('elemen-kompetensi.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Elemen Kompetensi</span></a></li>
-                                                    @endcan
-                                                    @can('Kerangka Unjuk Kerja')
-                                                        <li class="kt-menu__item {{ ($routeName == 'kuk.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('kuk.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Kerangka Unjuk Kerja</span></a></li>
-                                                    @endcan
                                                 </ul>
                                             </div>
                                         </li>
@@ -83,7 +74,7 @@
                             </div>
                         </li>
                         @endcanany
-                        @canany(['Jadwal Kelas'])
+                        @canany(['Jadwal Kelas','Pengaturan Kompetensi'])
                         <li class="kt-menu__item  kt-menu__item--submenu  kt-menu__item--submenu-fullheight {{ in_array('management-assesmen', $prefix) ? 'kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-dropdown-toggle-class="kt-aside-menu-overlay--on"><a target="_blank" href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-analytics-2"></i><span class="kt-menu__link-text">Customers</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                 <div class="kt-menu__wrapper">
@@ -97,6 +88,15 @@
                                                     @endcan
                                                     @can('Jadwal Kelas Approve')
                                                         <li class="kt-menu__item {{ ($routeName == 'jadwal-kelas.approve.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('jadwal-kelas.approve.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Approve Jadwal Kelas</span></a></li>
+                                                    @endcan
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="kt-menu__item  kt-menu__item--submenu {{ in_array('manajemen-assessmen', $prefix) ? ' kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-customer"><span></span></i><span class="kt-menu__link-text">Manajemen Assessmen</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                            <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                                <ul class="kt-menu__subnav">
+                                                    @can('Pengaturan Kompetensi')
+                                                        <li class="kt-menu__item {{ ($routeName == 'pengaturan-kompetensi.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('pengaturan-kompetensi.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Pengaturan Kompetensi</span></a></li>
                                                     @endcan
                                                 </ul>
                                             </div>

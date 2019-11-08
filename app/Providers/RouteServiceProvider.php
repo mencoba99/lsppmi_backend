@@ -29,6 +29,7 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         Route::model('unit_kompetensi', \App\Models\CompetenceUnit::class);
+        Route::model('pengaturan_kompetensi', \App\Models\ProgramCompetenceUnit::class);
     }
 
     /**

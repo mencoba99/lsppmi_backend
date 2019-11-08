@@ -38,4 +38,10 @@ class CompetenceUnit extends Revisionable
             'id'
         );
     }
+
+    public function program()
+    {
+        return $this->belongsToMany('App\Models\Program','program_competence_unit','competence_id','program_id')
+                    ->using('App\Models\ProgramCompetenceUnit')->withPivot('is_required');
+    }
 }
