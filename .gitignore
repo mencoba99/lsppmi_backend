@@ -132,3 +132,5 @@ Homestead.json
 /public/metronic/
 /public/_assets/
 /.vscode/
+/_ide_helper_models.php
+/config/ide-helper.php

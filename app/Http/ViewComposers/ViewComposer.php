@@ -10,7 +10,7 @@ class ViewComposer
         $currentRoute = Route::current();
         $routeName    = Route::currentRouteName();
         $routeAction  = Route::currentRouteAction();
-        $prefix       = is_array($currentRoute->action) ? $currentRoute->action : null;
+        $prefix       = !empty($currentRoute->action) ? $currentRoute->action : null;
         $prefix       = !empty($prefix) ? explode('/', $prefix['prefix']) : null;
 
         $view->with('currentRoute', $currentRoute)

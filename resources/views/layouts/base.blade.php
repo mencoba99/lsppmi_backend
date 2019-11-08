@@ -64,7 +64,7 @@
                 "success": "#34bfa3",
                 "info": "#36a3f7",
                 "warning": "#ffb822",
-                "danger": "#fd3995"
+                "danger": "#FD3943"
             },
             "base": {
                 "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
