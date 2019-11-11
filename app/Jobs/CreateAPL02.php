@@ -8,8 +8,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-use App\MemberCertification;
-use App\MemberCertificationAPL02 as APL02;
+use App\Models\MemberCertification;
+use App\Models\MemberCertificationAPL02 as APL02;
 
 class CreateAPL02 implements ShouldQueue
 {

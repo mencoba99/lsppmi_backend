@@ -22,4 +22,8 @@ class ProgramCompetenceUnit extends Pivot
     protected $fillable = [
         'program_id', 'competence_unit_id', 'is_required'
     ];
+    public function uk()
+    {
+    	return $this->belongsTo('App\Models\CompetenceUnit', 'competence_unit_id', 'id');
+    }
 }
