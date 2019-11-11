@@ -37,7 +37,7 @@ class CreateAPL02 implements ShouldQueue
     public function handle()
     {
         try {
-            $units = $this->cert->schedules->programs->units;
+            $units = $this->cert->schedules->programs->unit_kompetensi;
             foreach ($units as $key => $value) {
                 foreach ($value->kuk as $k => $v) {
                     APL02::create([
