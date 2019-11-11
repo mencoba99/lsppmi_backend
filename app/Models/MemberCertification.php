@@ -22,4 +22,9 @@ class MemberCertification extends Model
     {
     	return $this->hasMany('App\Models\MemberCertificationAPL01');
     }
+
+    public function payment()
+    {
+        return $this->hasOne('App\Models\MemberCertificationPayment');
+    }
 }

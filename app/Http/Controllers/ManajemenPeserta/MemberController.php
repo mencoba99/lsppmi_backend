@@ -5,12 +5,14 @@ namespace App\Http\Controllers\ManajemenPeserta;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 
+use DB;
 use Mail;
+
 use App\Mail\APL01Verified;
 use App\Mail\PaymentVerified;
-
 use App\Models\Member;
 use App\Models\MemberCertification;
+use App\Models\MemberCertificationPayment;
 
 use App\Jobs\CreateAPL02;
 
@@ -31,8 +33,8 @@ class MemberController extends Controller
 		$data = Member::query();
 
 		$json = $dataTables->eloquent($data)->addColumn('action', function ($member) {
-            $action = "<a href='#' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip'>
-                              <i class='la la-search'></i>
+            $action = "<a href='#' class='btn btn-sm btn-icon btn-clean btn-icon-sm' title='Kirim Email Verifikasi' data-original-tooltip='Kirim Email Verifikasi'>
+                              <i class='la la-envelope'></i>
                             </a>";
 
             return $action;
@@ -67,15 +69,15 @@ class MemberController extends Controller
 
 	public function getPaymentData(DataTables $dataTables)
 	{
-		$data = MemberCertification::where('status', 2)->with(['members', 'schedules', 'schedules.programs'])->select('member_certification.*');
+		$data = MemberCertificationPayment::with(['certification', 'certification.schedules.programs']);
 
 		return $dataTables->eloquent($data)
 		->editColumn('payment_file', function ($c) {
 			return $c->payment_file ? '<a href="'.env('GOOGLE_CLOUD_STORAGE_API_URI').'/'.$c->payment_file.'" target="_blank"/><i class="la la-file"></i> Click</a>' : null;
 		})
 		->addColumn('actions', function ($c) {
-			$action = "<a href='".route('peserta.pendaftaran.sertifikasi.apl01', ['token' => $c->token])."' class='btn btn-sm btn-icon btn-clean btn-icon-sm'>
-                              <i class='la la-eye'></i>
+			$action = "<a href='".route('peserta.pendaftaran.sertifikasi.pembayaran.confirm', ['id' => $c->id])."' class='btn btn-sm btn-icon btn-clean btn-icon-sm' title='Approve' data-original-tooltip='Approve'>
+                              <i class='la la-check'></i>
                             </a>";
 
             return $action;
@@ -93,12 +95,19 @@ class MemberController extends Controller
 	public function verifyAPL01()
 	{
 		try {
+			DB::beginTransaction();
+
 			$cert = MemberCertification::where('token', request('token'))->firstOrFail();
-			MemberCertification::where('token', request('token'))
-				->update([
-					'status' => 2,
-					'updated_at' => date('Y-m-d H:i:s')
-				]);
+			// MemberCertification::where('token', request('token'))
+			// 	->update([
+			// 		'status' => 2,
+			// 		'updated_at' => date('Y-m-d H:i:s')
+			// 	]);
+			$cert->status = 2;
+			$cert->updated_at = date('Y-m-d H:i:s');
+			$cert->save();
+
+			DB::commit();
 
 			Mail::to($cert->members->email)->send(new APL01Verified($cert));
 		} catch (\Exception $e) {
@@ -114,19 +123,34 @@ class MemberController extends Controller
 		return view('ManajemenPeserta.paymentList');
 	}
 
+	public function viewPayment($id)
+	{
+		$p = MemberCertificationPayment::findOrFail($id);
+		return view('ManajemenPeserta.viewPayment', compact('p'));
+	}
+
 	public function verifyAPL01Payment()
 	{
 		try {
-			$cert = MemberCertification::where('token', request('token'))->firstOrFail();
-			MemberCertification::where('token', request('token'))
-				->update([
-					'status' => 3,
-					'updated_at' => date('Y-m-d H:i:s')
-				]);
+			DB::beginTransaction();
+
+			$pay = MemberCertificationPayment::where('id', request('id'))->firstOrFail();
+			$pay->status = 2;
+			$pay->updated_at = date('Y-m-d H:i:s');
+			$pay->save();
+
+			$cert = MemberCertification::findOrFail($pay->member_certification_id);
+			$cert->status = 3;
+			$cert->updated_at = date('Y-m-d H:i:s');
+			$cert->save();
 
 			CreateAPL02::dispatch($cert);
+
+			DB::commit();
+
 			Mail::to($cert->members->email)->send(new PaymentVerified($cert));
 		} catch (\Exception $e) {
+			DB::rollBack();
 			dd($e);
 		}
 

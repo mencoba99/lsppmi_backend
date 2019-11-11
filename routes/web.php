@@ -11,9 +11,10 @@
 |
 */
 Route::get('/tt', function () {
-    $cert = \App\MemberCertification::findOrFail(10);
-    \App\Jobs\CreateAPL02::dispatch($cert);
-    echo "string";
+    echo bcrypt('admin123');
+    // $cert = \App\MemberCertification::findOrFail(10);
+    // \App\Jobs\CreateAPL02::dispatch($cert);
+    // echo "string";
     // $units = $cert->schedules->programs->units;
     // foreach ($units as $k => $v) {
     //     dd($v->kuk);
@@ -133,7 +134,8 @@ Route::middleware(['auth'])->group(function (){
             Route::get('peserta/sertifikasi/apl01/data', 'MemberController@getAPL01Data')->name('peserta.pendaftaran.sertifikasi.data');
             Route::get('peserta/sertifikasi/apl01/view/{token}', 'MemberController@viewAPL01')->name('peserta.pendaftaran.sertifikasi.apl01');
             Route::get('peserta/sertifikasi/pembayaran', 'MemberController@viewPaymentList')->name('peserta.pendaftaran.sertifikasi.pembayaran');
-            Route::put('peserta/sertifikasi/pembayaran', 'MemberController@verifyAPL01Payment');
+            Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment')->name('peserta.pendaftaran.sertifikasi.pembayaran.confirm');
+            //Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment');
             Route::get('peserta/sertifikasi/pembayaran/data', 'MemberController@getPaymentData')->name('peserta.pendaftaran.sertifikasi.pembayaran.data');
             Route::put('peserta/sertifikasi/apl01/verify', 'MemberController@verifyAPL01');
         });

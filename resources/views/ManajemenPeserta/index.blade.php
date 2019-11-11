@@ -53,14 +53,17 @@
 @endsection
 
 @push('script')
-    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 
-            Echo.channel(`interview-12-4-5`)
-            .listen('CertificationInterview', (e) => {
-                console.log(e.update);
+            var socket = io(window.location.hostname + ':6001', null);
+            socket.emit('subscribe', {
+              channel: 'interview-12-4-5',
+              auth: null
+            }).on('App\Events\CertificationInterview', function(channel, data) {
+              console.log(data);
             });
 
             var table = $('#kt_table_1').DataTable({

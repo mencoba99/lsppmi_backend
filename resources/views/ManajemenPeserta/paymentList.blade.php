@@ -39,10 +39,12 @@
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tfoot>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -78,9 +80,10 @@
                     }
                 },
                 columns: [
-                    {data: 'schedules.programs.name', name: 'schedules.programs.name', title: 'Program'},
-                    {data: 'members.name', name: 'members.name', title: 'Peserta'},
-                    {data: 'schedules.started_at', name: 'schedules.started_at', title: 'Jadwal'},
+                    {data: 'certification.schedules.programs.name', name: 'schedules.programs.name', title: 'Program'},
+                    {data: 'account_no', name: 'account_name', title: 'No. Rekening'},
+                    {data: 'account_name', name: 'account_name', title: 'Nama'},
+                    {data: 'transfer_date', name: 'transfer_date', title: 'Tgl. Transfer'},
                     {data: 'payment_file', name: 'payment_file', title: 'Pembayaran', searchable: false},
                     {data: 'actions', responsivePriority: -1},
                 ],
