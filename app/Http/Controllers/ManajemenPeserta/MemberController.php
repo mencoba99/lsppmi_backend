@@ -54,7 +54,7 @@ class MemberController extends Controller
 
 		return $dataTables->eloquent($data)
 		->editColumn('payment_file', function ($c) {
-			return $c->payment_file ? '<a href="'.env('GOOGLE_CLOUD_STORAGE_API_URI').'/'.$c->payment_file.'" target="_blank"/><i class="la la-file"></i> View</a>' : null;
+			return $c->payment_file ? '<a href="'.env('GOOGLE_CLOUD_STORAGE_API_URI').$c->payment_file.'" target="_blank"/><i class="la la-file"></i> View</a>' : null;
 		})
 		->addColumn('actions', function ($c) {
 			$action = "<a href='".route('peserta.pendaftaran.sertifikasi.apl01', ['token' => $c->token])."' class='btn btn-sm btn-icon btn-clean btn-icon-sm'>
@@ -73,7 +73,7 @@ class MemberController extends Controller
 
 		return $dataTables->eloquent($data)
 		->editColumn('payment_file', function ($c) {
-			return $c->payment_file ? '<a href="'.env('GOOGLE_CLOUD_STORAGE_API_URI').'/'.$c->payment_file.'" target="_blank"/><i class="la la-file"></i> Click</a>' : null;
+			return $c->payment_file ? '<a href="'.env('GOOGLE_CLOUD_STORAGE_API_URI').$c->payment_file.'" target="_blank"/><i class="la la-file"></i> Click</a>' : null;
 		})
 		->addColumn('actions', function ($c) {
 			$action = "<a href='".route('peserta.pendaftaran.sertifikasi.pembayaran.confirm', ['id' => $c->id])."' class='btn btn-sm btn-icon btn-clean btn-icon-sm' title='Approve' data-original-tooltip='Approve'>
