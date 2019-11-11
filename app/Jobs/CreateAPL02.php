@@ -11,6 +11,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\MemberCertification;
 use App\Models\MemberCertificationAPL02 as APL02;
 
+use Illuminate\Support\Facades\Log;
+
 class CreateAPL02 implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -46,7 +48,7 @@ class CreateAPL02 implements ShouldQueue
                 }
             }
         } catch (\Exception $e) {
-
+            Log::error($e);
         }
     }
 }
