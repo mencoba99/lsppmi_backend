@@ -83,8 +83,9 @@
                     {data: 'certification.schedules.programs.name', name: 'schedules.programs.name', title: 'Program'},
                     {data: 'account_no', name: 'account_name', title: 'No. Rekening'},
                     {data: 'account_name', name: 'account_name', title: 'Nama'},
-                    {data: 'transfer_date', name: 'transfer_date', title: 'Tgl. Transfer'},
+
                     {data: 'payment_file', name: 'payment_file', title: 'Pembayaran', searchable: false},
+                    {data: 'status', name: 'status', title: 'Status'},
                     {data: 'actions', responsivePriority: -1},
                 ],
                 initComplete: function () {

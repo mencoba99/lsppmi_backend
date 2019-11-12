@@ -106,11 +106,17 @@ class MemberController extends Controller
 		->editColumn('payment_file', function ($c) {
 			return $c->payment_file ? '<a href="'.env('GOOGLE_CLOUD_STORAGE_API_URI').$c->payment_file.'" target="_blank"/><i class="la la-file"></i> Click</a>' : null;
 		})
+		->editColumn('status', function ($c) {
+			return $c->status == 2 ? 'Diverifikasi' : 'Diterima';
+		})
 		->addColumn('actions', function ($c) {
+			if ($c->status == 1) {
 			$action = "<a href='".route('peserta.pendaftaran.sertifikasi.pembayaran.confirm', ['id' => $c->id])."' class='btn btn-sm btn-icon btn-clean btn-icon-sm' title='Approve' data-original-tooltip='Approve'>
                               <i class='la la-check'></i>
                             </a>";
-
+            } else {
+            	$action = null;
+            }
             return $action;
 		})
 		->rawColumns(['actions', 'payment_file'])
