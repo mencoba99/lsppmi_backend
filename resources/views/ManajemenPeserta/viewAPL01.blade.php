@@ -137,8 +137,8 @@
                             <button type="submit" class="btn btn-success btn-loading" id="approveAPL01">Verifikasi</button>
                             <a href="{{ route('peserta.pendaftaran.sertifikasi') }}" id="rejectAPL01" class="btn btn-secondary">Tolak</a>
                             @elseif ($c->status == 2)
-                            <button type="submit" class="btn btn-success btn-loading" id="approveAPL01Payment">Verifikasi Pembayaran</button>
-                            <a href="{{ route('peserta.pendaftaran.sertifikasi') }}" id="rejectAPL01" class="btn btn-secondary">Tolak</a>
+                            <button type="submit" class="btn btn-success btn-loading" id="sendAPL01Payment">Kirim Tagihan Pembayaran</button>
+                            <!-- <a href="{{ route('peserta.pendaftaran.sertifikasi') }}" id="rejectAPL01" class="btn btn-secondary">Tolak</a> -->
                             @else
                             <button type="submit" class="btn btn-success btn-loading" id="approveAPL01">Verifikasi</button>
                             <a href="{{ route('peserta.pendaftaran.sertifikasi') }}" class="btn btn-secondary">Tolak</a>
@@ -180,7 +180,27 @@
             $('#form-apl01').attr('action', '/management-peserta/peserta/sertifikasi/apl01/verify').submit();
         });
 
+        $('#rejectAPL01').click(function (e) {
+            e.preventDefault();
+
+            if (!confirm('Anda yakin?')) {
+                return false;
+            }
+
+            $('#form-apl01').attr('action', '/management-peserta/peserta/sertifikasi/apl01/reject').submit();
+        });
+
         $('#approveAPL01Payment').click(function (e) {
+            e.preventDefault();
+
+            if (!confirm('Anda yakin?')) {
+                return false;
+            }
+
+            $('#form-apl01').attr('action', '/management-peserta/peserta/sertifikasi/pembayaran').submit();
+        });
+
+        $('#sendAPL01Payment').click(function (e) {
             e.preventDefault();
 
             if (!confirm('Anda yakin?')) {
