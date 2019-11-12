@@ -131,7 +131,7 @@ Route::middleware(['auth'])->group(function (){
                 Route::post('submodul/delete', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulDeleteData')->name('materi.pembuatan-submodul.delete');
             });
         });
-        
+
         Route::group(['prefix'=>'manajemen-kelas'], function () {
             Route::resource('jadwal-kelas', 'JadwalKelasController');
             Route::post('jadwal-kelas/getdata', 'JadwalKelasController@getJadwalKelasData')->name('jadwal-kelas.getdata');
@@ -143,10 +143,14 @@ Route::middleware(['auth'])->group(function (){
         });
 
         Route::group(['prefix'=>'manajemen-asssessmen'], function () {
+            /** Pengaturan Kompetensi */
             Route::resource('pengaturan-kompetensi', 'PengaturanKompetensiController');
             Route::post('pengaturan-kompetensi/getdata', 'PengaturanKompetensiController@getPengaturanKompetensiData')->name('pengaturan-kompetensi.getdata');
             Route::get('pengaturan-kompetensi/{pengaturan_kompetensi}/delete', 'PengaturanKompetensiController@delete')->name('pengaturan-kompetensi.delete');
             Route::post('pengaturan-kompetensi/getprogramunitkompetensi', 'PengaturanKompetensiController@getProgramUnitKompetensi')->name('pengaturan-kompetensi.getunitkompetensi');
+
+            /** Pre Assessment Modul */
+            Route::get('pre-assessment','PreAssessmentController@index')->name('pre-assessment.index');
         });
 
     });

@@ -62,7 +62,7 @@
                 <div class="kt-login__container">
                     <div class="kt-login__logo">
                         <a href="#">
-                            <img src="{{ Storage::url('media/logos/logo-mini-2-md.png') }}">
+                            <img src="{{ Storage::url('assets/backend/media/logos/logo-mini-2-md.png') }}">
                         </a>
                     </div>
                     <div class="kt-login__signin">
