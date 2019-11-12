@@ -30,13 +30,15 @@
                 <table class="table table-striped- table-bordered table-hover table-checkable" id="kt_table_1">
                     <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>No HP</th>
-                        <th>Actions</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tfoot>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -84,6 +86,7 @@
                     {data: 'name', name: 'name', title: 'Nama'},
                     {data: 'email', name: 'email', title: 'Email'},
                     {data: 'handphone', name: 'handphone', title: 'No HP'},
+                    {data: 'status', name: 'status', title: 'Status'},
                     {data: 'action', responsivePriority: -1},
                 ],
                 initComplete: function () {

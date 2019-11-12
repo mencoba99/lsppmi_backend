@@ -154,15 +154,18 @@ Route::middleware(['auth'])->group(function (){
     Route::group(['namespace' => 'ManajemenPeserta', 'prefix' => 'management-peserta'], function () {
         Route::group(['prefipostx' => 'peserta'], function () {
             Route::get('peserta', 'MemberController@index')->name('peserta.pendaftaran');
+            Route::get('peserta/email/{token}', 'MemberController@sendVerificationEmail')->name('peserta.email');
             Route::get('peserta/data', 'MemberController@getPesertaData')->name('peserta.pendaftaran.data');
             Route::get('peserta/sertifikasi', 'MemberController@APL01')->name('peserta.pendaftaran.sertifikasi');
             Route::get('peserta/sertifikasi/apl01/data', 'MemberController@getAPL01Data')->name('peserta.pendaftaran.sertifikasi.data');
             Route::get('peserta/sertifikasi/apl01/view/{token}', 'MemberController@viewAPL01')->name('peserta.pendaftaran.sertifikasi.apl01');
             Route::get('peserta/sertifikasi/pembayaran', 'MemberController@viewPaymentList')->name('peserta.pendaftaran.sertifikasi.pembayaran');
+            Route::put('peserta/sertifikasi/pembayaran', 'MemberController@sendPaymentEmail');
             Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment')->name('peserta.pendaftaran.sertifikasi.pembayaran.confirm');
             //Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment');
             Route::get('peserta/sertifikasi/pembayaran/data', 'MemberController@getPaymentData')->name('peserta.pendaftaran.sertifikasi.pembayaran.data');
             Route::put('peserta/sertifikasi/apl01/verify', 'MemberController@verifyAPL01');
+            Route::put('peserta/sertifikasi/apl01/reject', 'MemberController@rejectAPL01');
         });
     });
 });

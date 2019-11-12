@@ -38,10 +38,14 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th>No HP</th>
+                        <th></th>
+                        <th></th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tfoot>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -79,6 +83,8 @@
                     {data: 'schedules.programs.name', name: 'schedules.programs.name', title: 'Program'},
                     {data: 'members.name', name: 'members.name', title: 'Peserta'},
                     {data: 'schedules.started_at', name: 'schedules.started_at', title: 'Jadwal'},
+                    {data: 'status', name: 'status', title: 'Status'},
+                    {data: 'created_at', name: 'created_at', title: 'Tanggal'},
                     {data: 'actions', responsivePriority: -1},
                 ],
                 initComplete: function () {
