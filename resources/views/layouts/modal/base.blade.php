@@ -42,7 +42,7 @@
     <!--end::Global Theme Styles -->
     @stack('modal-style')
 
-<!--begin::Layout Skins(used by all pages) -->
+        <!--begin::Layout Skins(used by all pages) -->
     <link href="{{ asset('assets/css/lsppmi-custom.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Layout Skins -->
@@ -99,19 +99,20 @@
 {{--<script src="./assets/vendors/global/vendors.bundle.js" type="text/javascript"></script>--}}
 {{--<script src="./assets/js/demo7/scripts.bundle.js" type="text/javascript"></script>--}}
 <script src="{{ asset('assets/vendors/global/vendors.bundle.js') }}" type="text/javascript"></script>
-<script src="{{ Storage::url('assets/backend/js/scripts.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/js/scripts.bundle.js') }}" type="text/javascript"></script>
+{{--<script src="{{ Storage::url('assets/backend/js/scripts.bundle.js') }}" type="text/javascript"></script>--}}
 
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors(used by this page) -->
-<script src="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
-<script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
-<script src="{{ Storage::url('assets/backend/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
+{{--<script src="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>--}}
+{{--<script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>--}}
+{{--<script src="{{ Storage::url('assets/backend/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>--}}
 
 <!--end::Page Vendors -->
 
 <!--begin::Page Scripts(used by this page) -->
-<script src="{{ Storage::url('assets/backend/js/pages/dashboard.js') }}" type="text/javascript"></script>
+{{--<script src="{{ Storage::url('assets/backend/js/pages/dashboard.js') }}" type="text/javascript"></script>--}}
 <script src="{{ asset('assets/js/lsppmi-custom.js') }}" type="text/javascript"></script>
 
 @stack('modal-script')

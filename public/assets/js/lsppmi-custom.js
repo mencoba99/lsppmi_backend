@@ -100,12 +100,18 @@ $(document).ready(function () {
         });
         $('#mod-iframe-large').modal({show:true});
     });
+
     /** Set lebar Iframe on show up modal */
     $('#mod-iframe-large').on('shown.bs.modal', function (e) {
         var iframeWindow = $(this).find('iframe');
-        // $(this).find('iframe').attr('src',url);
+        $(this).find('iframe').attr('src',url);
         var h = $(this).find('.modal-body').outerWidth();
     });
+
+    /** Clear Iframe on modal hide */
+    // $('#mod-iframe-large').on('hidden.bs.modal', function (e) {
+    //     $(this).find('iframe').attr('src','');
+    // });
 
     /** Untuk memunculkan loading saat setiap submit button di klik */
     $(".btn-loading").on('click', 'body', function (e) {

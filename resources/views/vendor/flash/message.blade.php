@@ -6,30 +6,32 @@
             'body'       => $message['message']
         ])
     @else
-        <div class="alert
-                    alert-{{ $message['level'] }}
-                    {{ $message['important'] ? 'alert-important' : '' }}"
-                    role="alert"
-        >
-            @if ($message['important'])
-                <div class="alert-close">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true"><i class="la la-close"></i></span>
-                    </button>
-                </div>
-            @endif
-
-            <div class="alert-text">
-                @if ($message['level'] == 'danger')
-                    <h4>Maaf, terjadi kesalahan</h4>
-                @elseif($message['level'] == 'success')
-                    <h4>Sukses</h4>
-                @elseif($message['level'] == 'info')
-                    <h4>Informasi</h4>
-                @elseif($message['level'] == 'warning')
-                    <h4>Perhatian!</h4>
+        <div class="kt-portlet__body">
+            <div class="alert
+                        alert-{{ $message['level'] }}
+                        {{ $message['important'] ? 'alert-important' : '' }}"
+                        role="alert"
+            >
+                @if ($message['important'])
+                    <div class="alert-close">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-close"></i></span>
+                        </button>
+                    </div>
                 @endif
-                {!! $message['message'] !!}
+
+                <div class="alert-text">
+                    @if ($message['level'] == 'danger')
+                        <h4>Maaf, terjadi kesalahan</h4>
+                    @elseif($message['level'] == 'success')
+                        <h4>Sukses</h4>
+                    @elseif($message['level'] == 'info')
+                        <h4>Informasi</h4>
+                    @elseif($message['level'] == 'warning')
+                        <h4>Perhatian!</h4>
+                    @endif
+                    {!! $message['message'] !!}
+                </div>
             </div>
         </div>
     @endif

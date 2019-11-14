@@ -25,10 +25,10 @@ table > tbody > tr.shown td.details-control:before {
 
 .table td, .table th {
     font-size: 12px;
-    padding: 2px 6px;
+    /*padding: 2px 6px;*/
 }
 .table thead tr th {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
 }
 /** Untuk Searching datatable */

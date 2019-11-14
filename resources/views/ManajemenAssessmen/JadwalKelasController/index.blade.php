@@ -41,6 +41,7 @@
                         <th>Program</th>
                         <th>TUK</th>
                         <th>Harga</th>
+                        <th>Pendaftar</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -50,6 +51,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td class="nosearch"></td>
                     <td class="nosearch"></td>
                     <td class="nosearch"></td>
                     </tfoot>
@@ -88,6 +90,7 @@
                     {data: 'tuk.name', name: 'tuk.name', title: 'Tempat Uji Kompetensi'},
                     {data: 'program.name', name: 'program.name', title: 'Program'},
                     {data: 'price', name: 'price', title: 'Harga'},
+                    {data: 'pendaftar', name: 'pendaftar', title: 'Pendaftar'},
                     {data: 'status', name: 'status', title: 'Status'},
                     {data: 'action', responsivePriority: -1},
                 ],
@@ -131,6 +134,10 @@
                     }
                 },
                 // dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
+            });
+
+            $('#mod-iframe-large').on('hide.bs.modal', function (e) {
+                table.ajax.reload();
             });
         })
     </script>

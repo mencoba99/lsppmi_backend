@@ -118,6 +118,9 @@
                 });
             }
             });
+            $('#mod-iframe-large').on('hide.bs.modal', function (e) {
+                table.ajax.reload();
+            });
 
             // Add event listener for opening and closing details
             $('#kt_table_1 tbody').on('click', 'td.details-control', function () {

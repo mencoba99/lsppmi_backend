@@ -76,6 +76,10 @@
                     {data: 'action', responsivePriority: -1},
                 ],
             });
+
+            $('#mod-iframe-large').on('hide.bs.modal', function (e) {
+                table.ajax.reload();
+            });
         })
     </script>
 @endpush

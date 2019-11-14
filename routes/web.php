@@ -136,10 +136,24 @@ Route::middleware(['auth'])->group(function (){
             Route::resource('jadwal-kelas', 'JadwalKelasController');
             Route::post('jadwal-kelas/getdata', 'JadwalKelasController@getJadwalKelasData')->name('jadwal-kelas.getdata');
             Route::get('jadwal-kelas/{jadwal_kelas}/delete', 'JadwalKelasController@delete')->name('jadwal-kelas.delete');
+
+            /** Approve Jadwal Kelas */
             Route::get('jadwal-kelas/approve/index', 'JadwalKelasController@approveIndex')->name('jadwal-kelas.approve.index');
             Route::get('jadwal-kelas/approve/{jadwal_kelas}/view', 'JadwalKelasController@approveView')->name('jadwal-kelas.approve.view');
             Route::post('jadwal-kelas/approve/getdata', 'JadwalKelasController@getJadwalKelasNotApproveData')->name('jadwal-kelas.approve.getdata');
             Route::get('jadwal-kelas/approve/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@approveJadwalKelas')->name('jadwal-kelas.approve.set-approve');
+
+            /** Publish Jadwal Kelas */
+            Route::get('jadwal-kelas/publish/index', 'JadwalKelasController@publishIndex')->name('jadwal-kelas.publish.index');
+            Route::get('jadwal-kelas/publish/{jadwal_kelas}/view', 'JadwalKelasController@publishView')->name('jadwal-kelas.publish.view');
+            Route::post('jadwal-kelas/publish/getdata', 'JadwalKelasController@getJadwalKelasNotPublishData')->name('jadwal-kelas.publish.getdata');
+            Route::get('jadwal-kelas/publish/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@publishJadwalKelas')->name('jadwal-kelas.publish.set-approve');
+
+            /** Penutupan Pendaftaran Kelas */
+            Route::get('jadwal-kelas/register/index', 'JadwalKelasController@registerIndex')->name('jadwal-kelas.register.index');
+            Route::get('jadwal-kelas/register/{jadwal_kelas}/view', 'JadwalKelasController@registerView')->name('jadwal-kelas.register.view');
+            Route::post('jadwal-kelas/register/getdata', 'JadwalKelasController@getJadwalKelasNotCloseRegisterData')->name('jadwal-kelas.register.getdata');
+            Route::get('jadwal-kelas/register/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@registerJadwalKelas')->name('jadwal-kelas.register.set-approve');
         });
 
         Route::group(['prefix'=>'manajemen-asssessmen'], function () {
@@ -151,6 +165,8 @@ Route::middleware(['auth'])->group(function (){
 
             /** Pre Assessment Modul */
             Route::get('pre-assessment','PreAssessmentController@index')->name('pre-assessment.index');
+            Route::post('pre-assessment/getdata','PreAssessmentController@getPreAssessmentData')->name('pre-assessment.getdata');
+            Route::get('pre-assessment/{jadwal_kelas}/view-peserta','PreAssessmentController@viewPeserta')->name('pre-assessment.viewpeserta');
         });
 
     });

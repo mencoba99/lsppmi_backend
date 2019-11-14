@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\ManajemenAssessmen;
 
 use App\Http\Controllers\Controller;
+use App\Models\Assessor;
 use App\Models\JadwalKelas;
 use App\Models\Program;
+use App\Models\ProgramSchedule;
 use App\Models\TUK;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Yajra\DataTables\DataTables;
 use function GuzzleHttp\Psr7\str;
 
@@ -32,10 +35,10 @@ class JadwalKelasController extends Controller
 
     public function getJadwalKelasData(DataTables $dataTables)
     {
-        $jadwalKelas = JadwalKelas::all();
+        $jadwalKelas = ProgramSchedule::orderBy('id','desc')->get();
         $jadwalKelas->load('program', 'tuk');
 
-        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (JadwalKelas $jadwalKelas) {
+        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (ProgramSchedule $jadwalKelas) {
             $action = "<a href='" . route('jadwal-kelas.show', ['jadwal_kela' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View " . $jadwalKelas->program->name . "' data-original-tooltip='View " . $jadwalKelas->program->name . "'>
                               <i class='la la-search'></i>
                             </a>";
@@ -51,7 +54,7 @@ class JadwalKelasController extends Controller
             }
 
             return $action;
-        })->editColumn('status', function (JadwalKelas $jadwalKelas) {
+        })->editColumn('status', function (ProgramSchedule $jadwalKelas) {
             $status = '';
             /** Status Aktif atau tidak */
             if ($jadwalKelas->status == 1) {
@@ -86,6 +89,10 @@ class JadwalKelasController extends Controller
             }
 
             return $status;
+        })->addColumn('pendaftar', function (ProgramSchedule $jadwalKelas) {
+            $pendaftar = $jadwalKelas->pendaftar->count();
+//            $pendaftar = 0;
+            return $pendaftar;
         })->escapeColumns([])->make(true);
 
         return $jadwalKelasJson;
@@ -102,7 +109,8 @@ class JadwalKelasController extends Controller
             $jadwalKelas = null;
             $programs    = Program::selectRaw("CONCAT(name,'( ',code,' ) ',' ') AS name, id")->active()->get()->pluck('name', 'id')->prepend('', '');
             $tuk         = TUK::active()->get()->pluck('name', 'id')->prepend('', '');
-            return view('ManajemenAssessmen.JadwalKelasController.create', compact('jadwalKelas', 'programs', 'tuk'));
+            $assessor    = Assessor::active()->get()->pluck('name', 'id');
+            return view('ManajemenAssessmen.JadwalKelasController.create', compact('jadwalKelas', 'programs', 'tuk', 'assessor'));
         } else {
             flash()->error("Maaf, Anda tidak mempunyai akses untuk menambah Jadwal Kelas");
             return redirect()->route('jadwal-kelas.index');
@@ -117,6 +125,7 @@ class JadwalKelasController extends Controller
      */
     public function store(Request $request)
     {
+//        return $request->all();
         if (auth()->user()->can('Jadwal Kelas Add')) {
             $request->validate([
                                    'program_id'          => 'required',
@@ -125,14 +134,21 @@ class JadwalKelasController extends Controller
                                    'min_participants'    => 'required',
                                    'max_participants'    => 'required',
                                    'started_at'          => 'required',
+                                   'assessor_id'         => 'required',
                                ]);
 
-            $jadwalKelas                    = new JadwalKelas($request->all());
+            $jadwalKelas                    = new ProgramSchedule($request->all());
             $token                          = \Str::random(16);
             $jadwalKelas->token             = $token;
             $jadwalKelas->training_duration = 1;
 
+            /** Get Assessor */
+            $assessor_ids = $request->get('assessor_id');
+            $assessor_ids = Arr::flatten($assessor_ids);
+
             if ($jadwalKelas->save()) {
+                /** Save Assessor */
+                $jadwalKelas->assessor()->sync($assessor_ids);
                 flash()->success('Berhasil menambahkan Jadwal Kelas');
             } else {
                 flash()->error('Gagal menambahkan Jadwal Kelas');
@@ -149,9 +165,9 @@ class JadwalKelasController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ProgramSchedule $jadwalKelas)
     {
-        //
+        return view('ManajemenAssessmen.JadwalKelasController.show', compact('jadwalKelas'));
     }
 
     /**
@@ -163,10 +179,11 @@ class JadwalKelasController extends Controller
     public function edit(Request $request, $id)
     {
         if (auth()->user()->can('Jadwal Kelas Edit')) {
-            $jadwalKelas = JadwalKelas::find($id);
+            $jadwalKelas = ProgramSchedule::find($id);
             $programs    = Program::selectRaw("CONCAT(name,'( ',code,' ) ',' ') AS name, id")->active()->get()->pluck('name', 'id')->prepend('', '');
             $tuk         = TUK::active()->get()->pluck('name', 'id')->prepend('', '');
-            return view('ManajemenAssessmen.JadwalKelasController.edit', compact('jadwalKelas', 'programs', 'tuk'));
+            $assessor    = Assessor::active()->get()->pluck('name', 'id');
+            return view('ManajemenAssessmen.JadwalKelasController.edit', compact('jadwalKelas', 'programs', 'tuk', 'assessor'));
         } else {
             flash()->error("Maaf, Anda tidak mempunyai akses untuk mengubah Jadwal Kelas");
             return redirect()->route('jadwal-kelas.index');
@@ -190,8 +207,9 @@ class JadwalKelasController extends Controller
                                    'min_participants'    => 'required',
                                    'max_participants'    => 'required',
                                    'started_at'          => 'required',
+                                   'assessor_id'         => 'required|array',
+                                   'assessor_id.*.*'       => 'required|distinct|min:1',
                                ]);
-
             /** @var  $update | get semua value POST dari form edit */
             $update = $request->all();
 
@@ -201,9 +219,14 @@ class JadwalKelasController extends Controller
             $is_hidden           = $request->get('is_hidden');
             $update['is_hidden'] = empty($is_hidden) ? '0' : $is_hidden;
 
-            $jadwalKelas         = JadwalKelas::find($id);
+            $jadwalKelas = ProgramSchedule::find($id);
+
+            /** Get Assessor */
+            $assessor_ids = $request->get('assessor_id');
+            $assessor_ids = Arr::flatten($assessor_ids);
 
             if ($jadwalKelas->update($update)) {
+                $jadwalKelas->assessor()->sync($assessor_ids);
                 flash()->success('Berhasil mengubah data Jadwal Kelas');
             } else {
                 flash()->success('Gagal mengubah data Jadwal Kelas');
@@ -223,7 +246,7 @@ class JadwalKelasController extends Controller
     public function delete($id)
     {
         if (auth()->user()->can('Jadwal Kelas Delete')) {
-            $jadwalKelas = JadwalKelas::find($id);
+            $jadwalKelas = ProgramSchedule::find($id);
             if ($jadwalKelas->delete()) {
                 flash()->success('Berhasil mneghapus data Jadwal Kelas');
             } else {
@@ -259,10 +282,10 @@ class JadwalKelasController extends Controller
      */
     public function getJadwalKelasNotApproveData(DataTables $dataTables)
     {
-        $jadwalKelas = JadwalKelas::where('is_approve',0)->where('status',1)->get();
+        $jadwalKelas = ProgramSchedule::where('is_publish', 0)->where('status', 1)->orderBy('id', 'desc')->get();
         $jadwalKelas->load('program', 'tuk');
 
-        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (JadwalKelas $jadwalKelas) {
+        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (ProgramSchedule $jadwalKelas) {
             $action = "<a href='" . route('jadwal-kelas.show', ['jadwal_kela' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View " . $jadwalKelas->program->name . "' data-original-tooltip='View " . $jadwalKelas->program->name . "'>
                               <i class='la la-search'></i>
                             </a>";
@@ -288,7 +311,7 @@ class JadwalKelasController extends Controller
     public function approveView(Request $request, $id)
     {
         if (auth()->user()->can('Jadwal Kelas Approve')) {
-            $jadwalKelas = JadwalKelas::find($id);
+            $jadwalKelas = ProgramSchedule::find($id);
             return view('ManajemenAssessmen.JadwalKelasController.approve-view', compact('jadwalKelas'));
         } else {
             flash()->error('Maaf, Anda tidak mempunyai akses untuk Approval Kelas');
@@ -304,18 +327,18 @@ class JadwalKelasController extends Controller
      * @param $status
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function approveJadwalKelas(Request $request, JadwalKelas $jadwalKelas, $status)
+    public function approveJadwalKelas(Request $request, ProgramSchedule $jadwalKelas, $status)
     {
         if (auth()->user()->can('Jadwal Kelas Approve')) {
             if ($status == 'approve') {
-                $update = ['is_approve'=>1,'approve_by'=>auth()->user()->id,'date_approve'=>date('Y-m-d H:i:s')];
+                $update = ['is_approve' => 1, 'approve_by' => auth()->user()->id, 'date_approve' => date('Y-m-d H:i:s')];
                 if ($jadwalKelas->update($update)) {
                     flash()->success('Berhasil Approve Jadwal Kelas');
                 } else {
                     flash()->error('Gagal Approve Jadwal Kelas');
                 }
             } elseif ($status == 'unapprove') {
-                $update = ['is_approve'=>'0','approve_by'=>'NULL','date_approve'=>'NULL'];
+                $update = ['is_approve' => '0', 'approve_by' => 'NULL', 'date_approve' => 'NULL'];
                 if ($jadwalKelas->update($update)) {
                     flash()->success('Berhasil Approve Jadwal Kelas');
                 } else {
@@ -325,6 +348,130 @@ class JadwalKelasController extends Controller
         } else {
             flash()->error('Maaf, Anda tidak mempunyai akses untuk Approval Kelas');
         }
-        return redirect()->route('jadwal-kelas.approve.view',['jadwal_kelas'=>$jadwalKelas]);
+        return redirect()->route('jadwal-kelas.approve.view', ['jadwal_kelas' => $jadwalKelas]);
+    }
+
+    /**
+     * Untuk modul Publish/Unpublish Jadwal kelas
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function publishIndex()
+    {
+        if (auth()->user()->can('Jadwal Kelas Publish')) {
+            return view('ManajemenAssessmen.JadwalKelasController.publish-index');
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Publish Kelas');
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Untuk feed datatable pada Modul Publish/Unpublish Jadwal Kelas
+     *
+     * @param DataTables $dataTables
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getJadwalKelasNotPublishData(DataTables $dataTables)
+    {
+        $jadwalKelas = ProgramSchedule::where('is_approve', 1)->where('status', 1)->where('registration_closed', 0)->orderBy('id', 'desc')->get();
+        $jadwalKelas->load('program', 'tuk');
+
+        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (ProgramSchedule $jadwalKelas) {
+            $action = "<a href='" . route('jadwal-kelas.show', ['jadwal_kela' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View " . $jadwalKelas->program->name . "' data-original-tooltip='View " . $jadwalKelas->program->name . "'>
+                              <i class='la la-search'></i>
+                            </a>";
+            if (auth()->user()->can('Jadwal Kelas Approve')) {
+                $action .= "<a href='" . route('jadwal-kelas.publish.view', ['jadwal_kelas' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Publish Kelas' data-original-tooltip='Publish Kelas'>
+                              <i class='la la-check'></i>
+                            </a>";
+            }
+
+            return $action;
+        })->escapeColumns([])->make(true);
+
+        return $jadwalKelasJson;
+    }
+
+    /**
+     * Untuk Modal pop up pada Modul Publish/Unpublish Jadwal Kelas
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function publishView(Request $request, $id)
+    {
+        if (auth()->user()->can('Jadwal Kelas Publish')) {
+            $jadwalKelas = ProgramSchedule::find($id);
+            return view('ManajemenAssessmen.JadwalKelasController.publish-view', compact('jadwalKelas'));
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Publish Kelas');
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Proses Publish/Unpublish Jadwal Kelas
+     *
+     * @param Request $request
+     * @param JadwalKelas $jadwalKelas
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function publishJadwalKelas(Request $request, ProgramSchedule $jadwalKelas, $status)
+    {
+        if (auth()->user()->can('Jadwal Kelas Publish')) {
+            if ($status == 'publish') {
+                $update = ['is_publish' => 1, 'date_publish' => date('Y-m-d H:i:s')];
+                if ($jadwalKelas->update($update)) {
+                    flash()->success('Berhasil Publish Jadwal Kelas');
+                } else {
+                    flash()->error('Gagal Publish Jadwal Kelas');
+                }
+            } elseif ($status == 'unpublish') {
+                $update = ['is_publish' => '0', 'date_publish' => 'NULL'];
+                if ($jadwalKelas->update($update)) {
+                    flash()->success('Berhasil Publish Jadwal Kelas');
+                } else {
+                    flash()->error('Gagal Publish Jadwal Kelas');
+                }
+            }
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Publish Kelas');
+        }
+        return redirect()->route('jadwal-kelas.publish.view', ['jadwal_kelas' => $jadwalKelas]);
+    }
+
+    public function registerIndex()
+    {
+        if (auth()->user()->can('Jadwal Kelas Close Register')) {
+            return view('ManajemenAssessmen.JadwalKelasController.register-index');
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Penutupan Pendaftaran Kelas');
+            return redirect('/');
+        }
+    }
+
+    public function getJadwalKelasNotCloseRegisterData(DataTables $dataTables)
+    {
+        $jadwalKelas = ProgramSchedule::where('is_approve', 1)->where('status', 1)->where('is_publish', 1)->orderBy('id', 'desc')->get();
+        $jadwalKelas->load('program', 'tuk');
+
+        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (ProgramSchedule $jadwalKelas) {
+            $action = "<a href='" . route('jadwal-kelas.show', ['jadwal_kela' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View " . $jadwalKelas->program->name . "' data-original-tooltip='View " . $jadwalKelas->program->name . "'>
+                              <i class='la la-search'></i>
+                            </a>";
+            if (auth()->user()->can('Jadwal Kelas Close Register')) {
+                $action .= "<a href='" . route('jadwal-kelas.register.view', ['jadwal_kelas' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Tutup Pendaftaran Kelas' data-original-tooltip='Tutup Pendaftaran Kelas'>
+                              <i class='la la-check'></i>
+                            </a>";
+            }
+
+            return $action;
+        })->escapeColumns([])->make(true);
+
+        return $jadwalKelasJson;
     }
 }

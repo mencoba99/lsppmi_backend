@@ -36,6 +36,11 @@ class JadwalKelas extends Revisionable
         return $this->belongsTo('App\Models\Program', 'program_id', 'id');
     }
 
+    public function asssessor()
+    {
+        return $this->belongsToMany('App\Models\Assessor','assessors')->using('App\Models\ProgramScheduleAssessor');
+    }
+
     public function tuk()
     {
         return $this->belongsTo('App\Models\TUK', 'competence_place_id', 'id');
