@@ -8,7 +8,7 @@
 <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
     <div class="kt-header-mobile__logo">
         <a href="demo7/index.html">
-            <img alt="Logo" src="<?php echo e(Storage::url('media/logos/logo-6.png')); ?>" />
+            <img alt="Logo" src="<?php echo e(Storage::url('assets/backend/media/logos/logo-6.png')); ?>" />
         </a>
     </div>
     <div class="kt-header-mobile__toolbar">
@@ -50,7 +50,6 @@
 <!-- end:: Page -->
 
 <?php echo $__env->make('layouts.widget', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->yieldPushContent('scripts'); ?>
 
 <?php echo Form::input('hidden','base_url',url('/')); ?>
 
@@ -58,14 +57,6 @@
 
 <!-- begin::Global Config(global config for global JS sciprts) -->
 <script>
-    $(function() {
-     KTApp.blockPage();
-
-    setTimeout(function() {
-        KTApp.unblockPage();
-    }, 2000);
-    });
-    
     var KTAppOptions = {
         "colors": {
             "state": {
@@ -86,39 +77,28 @@
     };
 </script>
 
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js" type="text/javascript"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/additional-methods.js" type="text/javascript"></script>
-
-
 <!-- end::Global Config -->
 
 <!--begin::Global Theme Bundle(used by all pages) -->
-
-
 <script src="<?php echo e(asset('assets/vendors/global/vendors.bundle.js')); ?>" type="text/javascript"></script>
-<script src="<?php echo e(Storage::url('js/scripts.bundle.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(Storage::url('assets/backend/js/scripts.bundle.js')); ?>" type="text/javascript"></script>
+
 
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors(used by this page) -->
-<script src="<?php echo e(Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.js')); ?>" type="text/javascript"></script>
-
-<script src="<?php echo e(Storage::url('vendors/custom/gmaps/gmaps.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(Storage::url('assets/backend/vendors/custom/fullcalendar/fullcalendar.bundle.js')); ?>" type="text/javascript"></script>
+<script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
+<script src="<?php echo e(Storage::url('assets/backend/vendors/custom/gmaps/gmaps.js')); ?>" type="text/javascript"></script>
 
 <!--end::Page Vendors -->
 
 <!--begin::Page Scripts(used by this page) -->
+<script src="<?php echo e(Storage::url('assets/backend/js/jstree.bundle.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(Storage::url('assets/backend/js/treeview.js')); ?>" type="text/javascript"></script>
 
 
-<script src="<?php echo e(Storage::url('js/dashboard.js')); ?>" type="text/javascript"></script>
-<script src="<?php echo e(Storage::url('js/datatables.bundle.js')); ?>" type="text/javascript"></script>
-<script src="<?php echo e(Storage::url('js/blockui.js')); ?>" type="text/javascript"></script>
-<script src="<?php echo e(Storage::url('js/select2.js')); ?>" type="text/javascript"></script>
-<script src="<?php echo e(Storage::url('js/jstree.bundle.js')); ?>" type="text/javascript"></script>
-<script src="<?php echo e(Storage::url('js/treeview.js')); ?>" type="text/javascript"></script>
-
-
-<script src="<?php echo e(Storage::url('js/pages/dashboard.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(Storage::url('assets/backend/js/pages/dashboard.js')); ?>" type="text/javascript"></script>
 <script src="<?php echo e(asset('assets/js/lsppmi-custom.js')); ?>" type="text/javascript"></script>
 
 <?php echo $__env->yieldPushContent('script'); ?>

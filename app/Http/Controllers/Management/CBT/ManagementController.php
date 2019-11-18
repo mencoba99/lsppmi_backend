@@ -71,7 +71,7 @@ class ManagementController extends Controller
         //         return "Non Aktif";
         //     }
 
-        // })->make(true);
+        // })->make(true); 
         
 
             return Datatables::of($program_dtl)->addIndexColumn()->addColumn('nama_program', function ($program_dtl) {
@@ -129,14 +129,7 @@ class ManagementController extends Controller
                                         </div>
                                     ";
                                     return $tree;
-                            })->addColumn('action', function (MgtProgram $MgtProgram) {
-                                        $action = "<div class='btn-group'>";
-                                        $action .= '<button id="edit"   data-code="'.$MgtProgram->code.'" data-id="'.$MgtProgram->id.'" data-nama="'.$MgtProgram->name.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $MgtProgram->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-                                        // $action .= '<button id="view"  data-id="'.$MgtProgram->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="View ' . $MgtProgram->name . '"><i class="flaticon2 flaticon2-search"></i></button>';
-                                    
-                                        $action .= "</div>";
-                                        return $action;
-                            })->rawColumns(['nama_program','action'])->make(true);
+                            })->rawColumns(['nama_program'])->make(true);
         
     // $mgtProgram = MgtProgram::with('program','modul','submodul')->get();
     

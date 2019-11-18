@@ -1,7 +1,8 @@
 <?php
-namespace App\Models\program_management;
+namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\Revisionable;
+
 class Komposisi_soal extends Revisionable
 {
     public $table                       = 'komposisi_soal';
@@ -16,10 +17,12 @@ class Komposisi_soal extends Revisionable
     }
     public function program_dtl()
     {
-        return $this->hasOne('App\Models\program_management\MgtProgram', 'program_dtl_id', 'program_dtl_id')->where('hapus', false);
+        return $this->hasOne('App\Models\program_management\MgtProgram', 'program_dtl_id', 'id')->where('status', 1);
     }
+
+    
     public function jenis_Soal()
     {
-        return $this->hasOne('App\Models\management_materi\SoalJenis', 'jenis_soal_id', 'jenis_soal_id');
+        return $this->hasOne('App\Models\management_materi\SoalJenis', 'jenis_soal_id', 'id');
     }
 }

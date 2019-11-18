@@ -8,9 +8,9 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class MgtProgram extends Model
 {
-    // use SoftDeletes;
+    use SoftDeletes;
 	
-    // protected $revisionCreationsEnabled = true;
+    protected $revisionCreationsEnabled = true;
     
     protected $table = 'program_mgt';
 

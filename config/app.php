@@ -161,10 +161,10 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        
 
 
-      
+
+
 
         /*
          * Application Service Providers...
@@ -177,9 +177,6 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Venturecraft\Revisionable\RevisionableServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
-
-        
-
     ],
 
     /*
@@ -233,7 +230,8 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         // 'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         // 'Flash' => Laracasts\Flash\Flash::class,
-
+        'Yajra_datatable' => App\Helpers\Yajra_datatable::class,
+        'Helper' => App\Helpers\Helper::class,
         'GeneralHelper' => App\Http\Helpers\GeneralHelper::class,
     ],
 

@@ -11,6 +11,14 @@ use DataTables;
 class PermissionController extends Controller
 {
     /**
+     * PermissionController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware(['permission:Permission']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -24,18 +32,24 @@ class PermissionController extends Controller
      * Untuk feeder data ke datatable manajemen permission
      *
      * @param \DataTables $dataTables
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getPermissionData(DataTables $dataTables)
     {
         $data = PermissionModel::with(['children'])->where('parent_id', 0)->get();
 
         $permissionJson = DataTables::collection($data)->addColumn('action', function (PermissionModel $permission) {
-            $action = "<a href='" . route('permission.edit', ['permission' => $permission]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm' title='Edit'>
-                          <i class='la la-edit'></i>
-                        </a>
-                        <a href='" . route('permission.delete', ['permission' => $permission]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' title='Hapus'>
-                          <i class='la la-trash'></i>
-                        </a>";
+            $action = '';
+            if (auth()->user()->can('Permission Edit')) {
+                $action .= "<a href='" . route('permission.edit', ['permission' => $permission]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm' title='Edit'>
+                              <i class='la la-edit'></i>
+                            </a>";
+            }
+            if (auth()->user()->can('Permission Delete')) {
+                $action .= "<a href='" . route('permission.delete', ['permission' => $permission]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' title='Hapus'>
+                              <i class='la la-trash'></i>
+                            </a>";
+            }
 
             return $action;
         })->editColumn('children', function (PermissionModel $permission) {
@@ -81,9 +95,15 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        $permission     = null;
-        $permissionList = Permission::where('parent_id', 0)->pluck('name', 'id')->put(0, 'Sebagai Parent')->sortKeys();
-        return view('PengaturanAplikasi.PermissionController.create', compact('permission', 'permissionList'));
+        /** Cek akses dahulu */
+        if (auth()->user()->can('Permission Add')) {
+            $permission     = null;
+            $permissionList = Permission::where('parent_id', 0)->pluck('name', 'id')->put(0, 'Sebagai Parent')->sortKeys();
+            return view('PengaturanAplikasi.PermissionController.create', compact('permission', 'permissionList'));
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk menambah Permission');
+            return redirect()->route('permission.index');
+        }
     }
 
     /**
@@ -94,17 +114,23 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-                               'name'       => 'required',
-                               'guard_name' => 'required'
-                           ]);
-        $role = Permission::create(['name' => $request->get('name'), 'parent_id' => $request->get('parent_id')]);
-        if ($role) {
-            flash()->success('Sukses menambah data Permission');
-            return redirect()->route('permission.index');
+        /** Cek akses dahulu */
+        if (auth()->user()->can('Permission Add')) {
+            $request->validate([
+                                   'name'       => 'required',
+                                   'guard_name' => 'required'
+                               ]);
+            $role = Permission::create(['name' => $request->get('name'), 'parent_id' => $request->get('parent_id')]);
+            if ($role) {
+                flash()->success('Sukses menambah data Permission');
+                return redirect()->route('permission.index');
+            } else {
+                flash()->error('Gagal menambah data Permission');
+                return redirect()->route('permission.create');
+            }
         } else {
-            flash()->error('Gagal menambah data Permission');
-            return redirect()->route('permission.create');
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk menambah Permission');
+            return redirect()->route('permission.index');
         }
     }
 
@@ -127,8 +153,13 @@ class PermissionController extends Controller
      */
     public function edit(PermissionModel $permission)
     {
-        $permissionList = Permission::where('parent_id', 0)->pluck('name', 'id')->put(0, 'Sebagai Parent')->sortKeys();
-        return view('PengaturanAplikasi.PermissionController.edit', compact('permission', 'permissionList'));
+        if (auth()->user()->can('Permission Edit')) {
+            $permissionList = Permission::where('parent_id', 0)->pluck('name', 'id')->put(0, 'Sebagai Parent')->sortKeys();
+            return view('PengaturanAplikasi.PermissionController.edit', compact('permission', 'permissionList'));
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk mengubah Permission');
+            return redirect()->route('permission.index');
+        }
     }
 
     /**
@@ -140,17 +171,23 @@ class PermissionController extends Controller
      */
     public function update(Request $request, PermissionModel $permission)
     {
-        $request->validate([
-                               'name'       => 'required',
-                               'guard_name' => 'required'
-                           ]);
-        $role = $permission->update(['name' => $request->get('name'), 'parent_id' => $request->get('parent_id')]);
-        if ($role) {
-            flash()->success('Sukses mengubah data Permission');
-            return redirect()->route('permission.index');
+        /** Cek akses terlebih dahulu */
+        if (auth()->user()->can('Permission Edit')) {
+            $request->validate([
+                                   'name'       => 'required',
+                                   'guard_name' => 'required'
+                               ]);
+            $role = $permission->update(['name' => $request->get('name'), 'parent_id' => $request->get('parent_id')]);
+            if ($role) {
+                flash()->success('Sukses mengubah data Permission');
+                return redirect()->route('permission.index');
+            } else {
+                flash()->error('Gagal mengubah data Permission');
+                return redirect()->route('permission.edit', ['permission' => $permission]);
+            }
         } else {
-            flash()->error('Gagal mengubah data Permission');
-            return redirect()->route('permission.edit', ['permission' => $permission]);
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk mengubah Permission');
+            return redirect()->route('permission.index');
         }
     }
 
@@ -163,10 +200,14 @@ class PermissionController extends Controller
      */
     public function delete(PermissionModel $permission)
     {
-        if ($permission->delete()) {
-            flash()->success('Berhasil menghapus Permission');
+        if (auth()->user()->can('Permission Delete')) {
+            if ($permission->delete()) {
+                flash()->success('Berhasil menghapus Permission');
+            } else {
+                flash()->error('Gagal menghapus permission');
+            }
         } else {
-            flash()->error('Gagal menghapus permission');
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk menghapus Permission');
         }
         return redirect()->route('permission.index');
     }

@@ -111,8 +111,8 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startPush('scripts'); ?>
-  
+<?php $__env->startPush('script'); ?>
+<script src="<?php echo e(Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js')); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
     

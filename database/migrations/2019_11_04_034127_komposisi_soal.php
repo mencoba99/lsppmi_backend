@@ -13,17 +13,16 @@ class KomposisiSoal extends Migration
      */
     public function up()
     {
-        Schema::create('modul_soal', function (Blueprint $table) {
+        Schema::create('komposisi_soal', function (Blueprint $table) {
            
-            $table->bigIncrements('modul_soal_id');
-            $table->integer('soal_id');
-            $table->integer('submodul_id');
-            $table->integer('modul_id');
+            $table->bigIncrements('komposisi_soal_id');
+            $table->integer('program_mgt_id');
+            $table->integer('jenis_soal_id');
+            $table->integer('jumlah_soal');
           
 
-            // $table->foreign('soal_id')->references('soal_id')->on('soal')->onDelete('cascade');
-            $table->foreign('submodul_id')->references('id')->on('submodul')->onDelete('cascade');
-            $table->foreign('modul_id')->references('id')->on('modul')->onDelete('cascade');
+            $table->foreign('program_mgt_id')->references('id')->on('program_mgt')->onDelete('cascade');
+            $table->foreign('jenis_soal_id')->references('id')->on('soal_jenis')->onDelete('cascade');
           
         });
     }
@@ -35,6 +34,6 @@ class KomposisiSoal extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('komposisi_soal');
     }
 }
