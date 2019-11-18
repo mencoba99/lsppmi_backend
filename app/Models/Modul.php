@@ -8,25 +8,15 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class Modul extends Model
 {
-      // use RevisionableTrait;
-    //   use SoftDeletes;
-	
-      // protected $revisionCreationsEnabled = true;
-      
-      protected $table = 'modul';
-  
-      protected $fillable = [
-          
-          'id',
-          'name',
-          'price',
-          'persentase',
-          'sing_eng',
-          'description',
-          'status'
-          
-         
-      ];
+    public $table                       = 'modul';
+    public $primaryKey                  = 'id';
+    public $timestamps                  = false;
+    protected $revisionCreationsEnabled = true;
+    
+    public static function boot()
+    {
+        parent::boot();
+    }
 
       public function submodul()
       {

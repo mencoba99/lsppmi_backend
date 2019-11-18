@@ -19,6 +19,7 @@ class Submodul extends Migration
             $table->string('id_modul',10);
             $table->string('description',255);
             $table->string('status',1);
+            $table->bool('aktif');
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
             $table->dateTime('deleted_at')->nullable();

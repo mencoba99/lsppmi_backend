@@ -79,7 +79,7 @@
 <!--begin::Global Theme Bundle(used by all pages) -->
 <script src="{{ asset('assets/vendors/global/vendors.bundle.js') }}" type="text/javascript"></script>
 <script src="{{ Storage::url('assets/backend/js/scripts.bundle.js') }}" type="text/javascript"></script>
-<script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
+{{-- <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script> --}}
 
 <!--end::Global Theme Bundle -->
 
@@ -91,8 +91,8 @@
 <!--end::Page Vendors -->
 
 <!--begin::Page Scripts(used by this page) -->
-<script src="http://static.jstree.com/3.0.0-beta3/assets/dist/jstree.min.js" type="text/javascript"></script>
-
+<script src="{{ Storage::url('assets/backend/js/jstree.bundle.js')}}" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/js/treeview.js')}}" type="text/javascript"></script>
 
 
 <script src="{{ Storage::url('assets/backend/js/pages/dashboard.js') }}" type="text/javascript"></script>
