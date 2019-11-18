@@ -9,40 +9,50 @@ use Venturecraft\Revisionable\Revisionable;
 
 class Program extends Revisionable
 {
-    
-     protected $revisionCreationsEnabled = true;
-     
-     protected $table = 'programs';
- 
-     protected $fillable = [
-         
-         'code',
-         'name',
-         'description',
-         'type',
-         'status',
-         'program_type_id',
-         'sing_ind',
-         'sing_int',
-         'harga',
-         'level',
-         'min_competence',
-         'opt_competence',
-         
-        
-     ];
 
-     public function kategori()
+    /** Untuk config Revision Log */
+    protected $revisionCleanup          = true;
+    protected $revisionCreationsEnabled = true;
+    protected $historyLimit             = 10000;
+    /** End */
+
+    protected $table = 'programs';
+
+    protected $fillable
+        = [
+
+            'code',
+            'name',
+            'description',
+            'type',
+            'status',
+            'program_type_id',
+            'sing_ind',
+            'sing_int',
+            'harga',
+            'level',
+
+
+        ];
+
+    public function kategori()
     {
-        return $this->belongsTo('\App\Models\Kategori','program_type_id','id');
+        return $this->belongsTo('\App\Models\Kategori', 'program_type_id', 'id');
     }
 
-    
-
-     public function mgt_program()
+    public function mgt_program()
     {
-        return $this->belongsTo('\App\Models\MgtProgram','id','program_id');
+        return $this->belongsTo('\App\Models\MgtProgram', 'id', 'program_id');
     }
 
-    
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
+    public function unit_kompetensi()
+    {
+        return $this->belongsToMany('App\Models\CompetenceUnit', 'program_competence_unit', 'program_id', 'competence_unit_id')
+                    ->using('App\Models\ProgramCompetenceUnit')->withPivot('is_required','id');
+    }
 }

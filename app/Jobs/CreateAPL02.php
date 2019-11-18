@@ -8,8 +8,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-use App\MemberCertification;
-use App\MemberCertificationAPL02 as APL02;
+use App\Models\MemberCertification;
+use App\Models\MemberCertificationAPL02 as APL02;
+
+use Illuminate\Support\Facades\Log;
 
 class CreateAPL02 implements ShouldQueue
 {
@@ -35,7 +37,7 @@ class CreateAPL02 implements ShouldQueue
     public function handle()
     {
         try {
-            $units = $this->cert->schedules->programs->units;
+            $units = $this->cert->schedules->programs->unit_kompetensi;
             foreach ($units as $key => $value) {
                 foreach ($value->kuk as $k => $v) {
                     APL02::create([
@@ -46,7 +48,7 @@ class CreateAPL02 implements ShouldQueue
                 }
             }
         } catch (\Exception $e) {
-
+            Log::error($e);
         }
     }
 }

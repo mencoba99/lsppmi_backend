@@ -4,10 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Venturecraft\Revisionable\Revisionable;
 
-class Assessor extends Model
+class Assessor extends Revisionable
 {
     use SoftDeletes;
+
+    /** Untuk config Revision Log */
+    protected $revisionCleanup          = true;
+    protected $revisionCreationsEnabled = true;
+    protected $historyLimit             = 10000;
+    /** End */
 
     protected $casts = [
         'assessment_ability' => 'array'
