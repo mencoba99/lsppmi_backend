@@ -37,10 +37,14 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -104,6 +108,18 @@
                                                 <div class="col-lg-6">
                                                     {!! Form::text('program_sing_eng',null,['id'=>'program_sing_eng','class'=>'form-control ','required'=>'required']) !!}
                                                 </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label">Min Competence:</label>
+                                            <div class="col-lg-6">
+                                                {!! Form::text('min_competence',null,['id'=>'min_competence','class'=>'form-control ','required'=>'required']) !!}
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label">Opt Competence:</label>
+                                            <div class="col-lg-6">
+                                                {!! Form::text('opt_competence',null,['id'=>'opt_competence','class'=>'form-control ','required'=>'required']) !!}
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Level:</label>
@@ -172,7 +188,7 @@
 @endsection
 
 @push('script')
-
+<script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
 
@@ -197,7 +213,7 @@
 }();
 
 //validate
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     KTBootstrapSelect.init();
     form = $("#form").validate({
         rules: {
@@ -216,23 +232,29 @@ jQuery(document).ready(function() {
             "program_sing_eng": {
                 required: true
             },
+            "min_competence": {
+                required: true
+            },
+            "opt_competence": {
+                required: true
+            },
             "level": {
                 required: true
             },
             "interview": {
                 required: function (element) {
-                if($("#type").prop("checked") == true) {
-                    if($("#cbt").prop("checked") == true){
+                    if ($("#type").prop("checked") == true) {
+                        if ($("#cbt").prop("checked") == true) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+
+
+                    } else {
                         return false;
-                    }else{
-                        return true;
                     }
-
-
-                }else{
-                    return false;
-                }
-            },
+                },
                 maxlength: 2
             },
             "status": {
@@ -256,6 +278,12 @@ jQuery(document).ready(function() {
             "program_sing_eng": {
                 required: "Silahkan tulis singkatan eng yang akan diinput"
             },
+            "min_competence": {
+                required: "Silahkan tulis min competence yang akan diinput"
+            },
+            "opt_competence": {
+                required: "Silahkan tulis opt competence yang akan diinput"
+            },
             "level": {
                 required: "Silahkan pilih level"
             },
@@ -267,20 +295,22 @@ jQuery(document).ready(function() {
             }
         },
         submitHandler: function (form) {
-              table = $('#datatable').DataTable().destroy();
+            table = $('#datatable').DataTable().destroy();
 
 
             $.ajax({
                 type: "post",
                 url: "{{ route('ujian-komputer.program.insert') }}",
-                dataType:"json",
+                dataType: "json",
                 data: {
                     id: $("#program_id").val(),
                     program_type_id: $("#kategori_id").val(),
                     code: $("#program_code").val(),
                     name: $("#program_name").val(),
                     sing_ind: $("#program_sing_ind").val(),
-                    sing_int: $("#program_sing_eng").val(),
+                    sing_ind: $("#program_sing_ind").val(),
+                    min_competence: $("#min_competence").val(),
+                    opt_competence: $("#opt_competence").val(),
                     level: $("#level").val(),
                     type: $("#type").data('direct'),
                     cbt: $("#cbt").data('cbt'),
@@ -288,28 +318,28 @@ jQuery(document).ready(function() {
                     status: $("#status").val(),
                     desc: $(".note-editable").html(),
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     KTApp.block('#add .modal-content', {
-                    overlayColor: '#000000',
-                    type: 'v2',
-                    state: 'primary',
-                    message: 'Processing...'
-                });
+                        overlayColor: '#000000',
+                        type: 'v2',
+                        state: 'primary',
+                        message: 'Processing...'
+                    });
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
                     // alert(JSON.stringify(response));
-                    if(response.status === 200) {
+                    if (response.status === 200) {
                         view();
-                        setTimeout(function() {
+                        setTimeout(function () {
                             KTApp.unblock('#add .modal-content');
                             $('#add').modal('hide');
                             $.notify({
                                 // options
                                 message: 'Berhasil disimpan'
-                            },{
+                            }, {
                                 // settings
                                 type: 'success',
                                 placement: {
@@ -319,25 +349,26 @@ jQuery(document).ready(function() {
                             });
                         }, 2000);
 
-            //
-                    } else if(response.status === 500) {
-                            KTApp.unblock('#add .modal-content');
-                            $('#add').modal('hide');
-                            $.notify({
-                                // options
-                                message: 'Tidak berhasil disimpan'
-                            },{
-                                // settings
-                                type: 'danger',
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                }
-                            });
+                        //          
+                    } else if (response.status === 500) {
+                        KTApp.unblock('#add .modal-content');
+                        $('#add').modal('hide');
+                        $.notify({
+                            // options
+                            message: 'Tidak berhasil disimpan'
+                        }, {
+                            // settings
+                            type: 'danger',
+                            placement: {
+                                from: "top",
+                                align: "right"
+                            }
+                        });
                     }
-                },error: function (jqXHR, exception) {
+                },
+                error: function (jqXHR, exception) {
 
-                     msg = '';
+                    msg = '';
                     if (jqXHR.status === 0) {
                         msg = 'Not connect.\n Verify Network.';
                     } else if (jqXHR.status == 404) {
@@ -354,20 +385,20 @@ jQuery(document).ready(function() {
                         msg = 'Uncaught Error.\n' + jqXHR.responseText;
                     }
 
-                            KTApp.unblock('#add .modal-content');
-                            $('#add').modal('hide');
+                    KTApp.unblock('#add .modal-content');
+                    $('#add').modal('hide');
 
-                            $.notify({
-                                // options
-                                message: msg
-                            },{
-                                // settings
-                                type: 'danger',
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                }
-                            });
+                    $.notify({
+                        // options
+                        message: msg
+                    }, {
+                        // settings
+                        type: 'danger',
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        }
+                    });
 
                 },
             })
@@ -394,6 +425,8 @@ jQuery(document).ready(function() {
                 { data: 'kategori.name', name: 'kategori.name' , title: 'Kategori' },
                 { data: 'abbreviation_id', name: 'abbreviation_en' , title: 'Singkatan Ind' },
                 { data: 'abbreviation_en', name: 'abbreviation_en' , title: 'Singkatan Eng' },
+                { data: 'min_competence', name: 'min_competence' , title: 'Min Competence' },
+                { data: 'opt_competence', name: 'opt_competence' , title: 'Opt Competence' },
                 { data: 'level', name: 'level' , title: 'Level', width : "3%" },
                 { data: 'keterangan', name: 'keterangan' , title: 'Keterangan' },
                 { data: 'status', name: 'status' , title: 'Status', width : "10%" },
@@ -403,16 +436,15 @@ jQuery(document).ready(function() {
 
     }
 
-    $(function() {
-
+    $(function () {
 
         view(); //call datatable view
 
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() {
-             $("input").val("");
-             form.resetForm();
-             $('#summernote').summernote('destroy');
+        $("#datatable").on("click", "tr #edit", function () {
+            $("input").val("");
+            form.resetForm();
+            $('#summernote').summernote('destroy');
 
             $("#program_id").val($(this).data('id'));
             $("select#kategori_id").val($(this).data('kategori'));
@@ -427,33 +459,33 @@ jQuery(document).ready(function() {
             $('.kt-selectpicker').selectpicker('refresh');
 
             $.ajax({
-            type: "post",
-            url: "{{ route('ujian-komputer.program.desc') }}",
-            dataType:"json",
-            data: {
-                id: $(this).data('id'),
-            },
-            beforeSend: function() {
-                KTApp.blockPage();
+                type: "post",
+                url: "{{ route('ujian-komputer.program.desc') }}",
+                dataType: "json",
+                data: {
+                    id: $(this).data('id'),
                 },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (response) {
+                beforeSend: function () {
+                    KTApp.blockPage();
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
 
-                if(response.status === 200) {
+                    if (response.status === 200) {
 
-                    $('.summernote').summernote('code', response.data);
-                    setTimeout(function() {
-                        KTApp.unblockPage(); //loading icon
-                    }, 2000);
-                    $('#add').modal('show');
+                        $('.summernote').summernote('code', response.data);
+                        setTimeout(function () {
+                            KTApp.unblockPage(); //loading icon
+                        }, 2000);
+                        $('#add').modal('show');
 
-                } else if(response.status === 500) {
-                    // do something with response.message or whatever other data on error
+                    } else if (response.status === 500) {
+                        // do something with response.message or whatever other data on error
+                    }
                 }
-            }
-        })
+            })
 
 
         });
@@ -461,50 +493,45 @@ jQuery(document).ready(function() {
 
 
         $('#type').change(function () {
-            if($(this).prop("checked") == true){
+            if ($(this).prop("checked") == true) {
                 $(".metode").show();
 
-                $(this).data('direct','direct');
+                $(this).data('direct', 'direct');
 
-            }
-            else if($(this).prop("checked") == false){
+            } else if ($(this).prop("checked") == false) {
                 $(".metode").hide();
-                $("#cbt").prop("checked",false).trigger("change");
-                $("#interview").prop("checked",false).trigger("change");
-                $(this).data('direct','');
+                $("#cbt").prop("checked", false).trigger("change");
+                $("#interview").prop("checked", false).trigger("change");
+                $(this).data('direct', '');
             }
 
         });
 
         $('#cbt').change(function () {
-            if($(this).prop("checked") == true){
-                $(this).data('cbt','cbt');
-           }else{
-                $(this).data('cbt','');
-           }
+            if ($(this).prop("checked") == true) {
+                $(this).data('cbt', 'cbt');
+            } else {
+                $(this).data('cbt', '');
+            }
         });
 
         $('#interview').change(function () {
-            if($(this).prop("checked") == true){
-                $(this).data('interview','interview');
-            }else{
-                $(this).data('interview','');
+            if ($(this).prop("checked") == true) {
+                $(this).data('interview', 'interview');
+            } else {
+                $(this).data('interview', '');
             }
         });
 
 
         /* New Data Button */
-        $('#new').click(function(event) {
+        $('#new').click(function (event) {
             $("input").val("");
             $('.summernote').summernote('reset');
             $("select#program_id").val("");
             $('.kt-selectpicker').selectpicker('refresh');
             form.resetForm();
         });
-
-
-
-
 
     });
 

@@ -1,6 +1,4 @@
-@extends('layouts.base')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
     <div class="kt-portlet kt-portlet--mobile">
@@ -10,19 +8,17 @@
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                  {{ucfirst(trans(end($crumbs)))}}
+                  <?php echo e(ucfirst(trans(end($crumbs)))); ?>
+
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah   {{ucfirst(trans(end($crumbs)))}}</button>
+                            Tambah   <?php echo e(ucfirst(trans(end($crumbs)))); ?></button>
                         &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
+                        
                     </div>
                 </div>
             </div>
@@ -65,7 +61,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah  <?php echo e(ucfirst(trans(end($crumbs)))); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -78,104 +74,120 @@
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Modul:</label>
                                             <div class="col-lg-6">
-                                                    {!! Form::select('modul_id',$modul,null,['id'=>'modul_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Modul']) !!}
-                                                    {!! Form::text('soal_id',null,['id'=>'soal_id','class'=>'form-control','hidden'=>'hidden']) !!}
+                                                    <?php echo Form::select('modul_id',$modul,null,['id'=>'modul_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Modul']); ?>
+
+                                                    <?php echo Form::text('soal_id',null,['id'=>'soal_id','class'=>'form-control','hidden'=>'hidden']); ?>
+
                                                
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Submodul:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::select('submodul_id',$submodul,null,['id'=>'submodul_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Submodul']) !!}
+                                                    <?php echo Form::select('submodul_id',['' => ''],null,['id'=>'submodul_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true"]); ?>
+
                                               
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Bobot:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::select('jenissoal_id',$bobot,null,['id'=>'jenissoal_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Bobot']) !!}
+                                                    <?php echo Form::select('jenissoal_id',$bobot,null,['id'=>'jenissoal_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Bobot']); ?>
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Parent:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::select('parent_id',['' => 'Parent'],null,['id'=>'parent_id','class'=>'form-control input-sm kt-selectpicker','data-live-search'=>"true"]) !!}
+                                                    <?php echo Form::select('parent_id',['' => 'Parent'],null,['id'=>'parent_id','class'=>'form-control input-sm kt-selectpicker','data-live-search'=>"true"]); ?>
+
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Nick:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('nick',null,['id'=>'nick','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('nick',null,['id'=>'nick','class'=>'form-control ','required'=>'required']); ?>
+
                                                  
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">soal:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('soal',null,['id'=>'soal','class'=>'form-control summernote']) !!}
+                                                    <?php echo Form::textarea('soal',null,['id'=>'soal','class'=>'form-control summernote']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">a:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('answer_a',null,['id'=>'answer_a','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('answer_a',null,['id'=>'answer_a','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">b:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('answer_b',null,['id'=>'answer_b','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('answer_b',null,['id'=>'answer_b','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">c:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('answer_c',null,['id'=>'answer_c','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('answer_c',null,['id'=>'answer_c','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">d:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('answer_d',null,['id'=>'answer_d','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('answer_d',null,['id'=>'answer_d','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">e:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('answer_e',null,['id'=>'answer_e','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('answer_e',null,['id'=>'answer_e','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Tag:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('tag',null,['id'=>'tag','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::text('tag',null,['id'=>'tag','class'=>'form-control ','required'=>'required']); ?>
+
                                                  
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Penjelasan:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('desc',null,['id'=>'desc','class'=>'form-control ','required'=>'required']) !!}
+                                                    <?php echo Form::textarea('desc',null,['id'=>'desc','class'=>'form-control ','required'=>'required']); ?>
+
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Jawaban:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::select('answer',['1' => 'a','2' => 'b','3' => 'c','4' => 'd','5' => 'e'],null,['id'=>'answer','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Jawaban']) !!}
+                                                    <?php echo Form::select('answer',['1' => 'a','2' => 'b','3' => 'c','4' => 'd','5' => 'e'],null,['id'=>'answer','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Jawaban']); ?>
+
                                                   
                                                 </div>
                                             </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Status:</label>
                                             <div class="col-lg-6">
-                                                {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
+                                                <?php echo Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']); ?>
+
                                               
                                             </div>
                                         </div>
@@ -196,17 +208,17 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('style')
+<?php $__env->startPush('style'); ?>
 <style>
         tfoot {
              display: table-header-group;
         }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
   
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
@@ -319,9 +331,10 @@ jQuery(document).ready(function() {
         },
         submitHandler: function (form) { 
             table = $('#datatable').DataTable().destroy();
+           
             $.ajax({
                 type: "post",
-                url: "{{ route('materi.pembuatan-soal.insert') }}",
+                url: "<?php echo e(route('materi.pembuatan-soal.insert')); ?>",
                 dataType:"json",
                 data: {
                     modul_id: $("#modul_id").val(),
@@ -341,18 +354,18 @@ jQuery(document).ready(function() {
                     desc: $("#desc").val(),
                 },
                 beforeSend: function() {
-                    KTApp.block('#add .modal-content', {
-                    overlayColor: '#000000',
-                    type: 'v2',
-                    state: 'primary',
-                    message: 'Processing...'
-                });
+                //     KTApp.block('#add .modal-content', {
+                //     overlayColor: '#000000',
+                //     type: 'v2',
+                //     state: 'primary',
+                //     message: 'Processing...'
+                // });
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    // alert(JSON.stringify(response));
+                    alert(JSON.stringify(response));
                     if(response.status === 200) {
                         view();
                         setTimeout(function() {
@@ -378,7 +391,7 @@ jQuery(document).ready(function() {
     $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('materi.pembuatan-soal.data') }}",
+            ajax: "<?php echo e(route('materi.pembuatan-soal.data')); ?>",
             columns: [
                 { data: 'soal_id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -415,19 +428,17 @@ jQuery(document).ready(function() {
     });
     }
 
-    $(function() {
-
+    $(function () {
 
         view(); //call datatable view
 
-
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
-            $("input").val(""); 
+        $("#datatable").on("click", "tr #edit", function () {
+            $("input").val("");
             form.resetForm();
-           
-            $("#modul_id").val($(this).data('modul'));
             $("#soal_id").val($(this).data('id'));
+            $("#modul_id").val($(this).data('modul'));
+
             $("#soal").val($(this).data('soal'));
             $("#submodul_id").val($(this).data('submodul'));
             $("#jenissoal_id").val($(this).data('bobot'));
@@ -441,28 +452,55 @@ jQuery(document).ready(function() {
             $("#answer").val($(this).data('jawaban'));
             $("#status").val($(this).data('status'));
             $("#desc").val($(this).data('desc'));
-           
+            $('.summernote').summernote('code', $(this).data('desc'));
             $('.kt-selectpicker').selectpicker('refresh');
-          
 
-           
-           
             $('#add').modal('show');
         });
 
         /* New Data Button */
-        $('#new').click(function(event) {
+        $('#new').click(function (event) {
             $("input").val("");
             $("select#status").val("");
             $('.kt-selectpicker').selectpicker('refresh');
             form.resetForm();
         });
 
-        
+        $('select#modul_id').on('change', function () {
 
-   
+            $.ajax({
+                type: "POST",
+                url: "<?php echo e(route('materi.pembuatan-soal.modul')); ?>",
+                data: {
+                    'id_modul': this.value
+                },
+                beforeSend: function () {
+                    KTApp.block();
+                    $('select#submodul_id').html("");
+                    $('.kt-selectpicker').selectpicker('refresh');
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+
+                    $.each(data, function (index, value) {
+                        KTApp.unblock();
+                        $('select#submodul_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        $('.kt-selectpicker').selectpicker('refresh');
+                    });
+
+                }
+            });
+
+        });
+
+
+
     });
     
 </script>   
    
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/management/cbt/materi/soal.blade.php ENDPATH**/ ?>

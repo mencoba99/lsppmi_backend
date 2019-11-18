@@ -25,3 +25,4 @@ RUN touch storage/logs/laravel.log \
 #&& ln -sf /dev/stdout /var/www/storage/logs/laravel.log
  
 RUN composer install
+

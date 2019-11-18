@@ -123,8 +123,10 @@ class ProgramController extends Controller
         $Program->program_type_id = $request->get('program_type_id');
         $Program->code = $request->get('code');
         $Program->name = $request->get('name');
-        $Program->sing_ind = $request->get('sing_ind');
-        $Program->sing_int = $request->get('sing_int');
+        $Program->abbreviation_id = $request->get('sing_ind');
+        $Program->abbreviation_en = $request->get('sing_int');
+        $Program->min_competence = $request->get('min_competence');
+        $Program->opt_competence = $request->get('opt_competence');
         $Program->status = $request->get('status');
         $Program->level = $request->get('level');
         $Program->type = json_encode(array(
@@ -141,8 +143,10 @@ class ProgramController extends Controller
             $update['program_type_id'] = $request->get('program_type_id');
             $update['code'] = $request->get('code');
             $update['name'] = $request->get('name');
-            $update['sing_ind'] = $request->get('sing_ind');
-            $update['sing_int'] = $request->get('sing_int');
+            $update['abbreviation_id'] = $request->get('sing_ind');
+            $update['abbreviation_en'] = $request->get('sing_int');
+            $update['min_competence'] = $request->get('min_competence');
+            $update['opt_competence'] = $request->get('opt_competence');
             $update['level'] = $request->get('level');
             $update['status'] = $request->get('status');
             $update['type'] = json_encode(array(

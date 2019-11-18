@@ -29,7 +29,7 @@ class PembuatanSubModulController extends Controller
 
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
 
-		return view('management.cbt.materi.submodul', compact('pageTitle','Title','pageHeader','crumbs','status','Modul'));
+		return view('ManajemenAssessmen.cbt.materi.submodul', compact('pageTitle','Title','pageHeader','crumbs','status','Modul'));
     }
 
     public function AjaxSubModulGetData()
@@ -43,6 +43,14 @@ class PembuatanSubModulController extends Controller
 
 			$action .= "</div>";
 			return $action;
+		})->addColumn('status_s', function (SubModul $SubModul) {
+            
+            if($SubModul->status==1){
+                return "Aktif";
+            }else{
+                return "Non Aktif";
+            }
+
 		})->make(true);
     }
 

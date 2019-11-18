@@ -20,6 +20,7 @@ class Modul extends Migration
             $table->string('sing_eng',150);
             $table->string('description',250);
             $table->string('status',1);
+            $table->bool('aktif');
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
             $table->dateTime('deleted_at')->nullable();

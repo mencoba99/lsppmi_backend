@@ -16,6 +16,7 @@ class Soal extends Revisionable
     {
         parent::boot();
     }
+    
     public function select_by_parent($id)
     {
     	$data = $this::where('parent',$id)->get();
