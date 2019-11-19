@@ -23,6 +23,11 @@ class MemberCertification extends Model
     	return $this->hasMany('App\Models\MemberCertificationAPL01');
     }
 
+    public function apl02()
+    {
+        return $this->hasMany('App\Models\MemberCertificationAPL02');
+    }
+
     public function payment()
     {
         return $this->hasOne('App\Models\MemberCertificationPayment');
