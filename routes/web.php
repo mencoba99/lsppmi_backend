@@ -49,7 +49,7 @@ Route::middleware(['auth'])->group(function (){
             Route::resource('permission', 'PermissionController');
             Route::post('permission/data','PermissionController@getPermissionData')->name('permission.getdata');
             Route::get('permission/{role}/delete','PermissionController@delete')->name('permission.delete');
-        });
+            });
     });
 
     /**
@@ -166,7 +166,11 @@ Route::middleware(['auth'])->group(function (){
             /** Pre Assessment Modul */
             Route::get('pre-assessment','PreAssessmentController@index')->name('pre-assessment.index');
             Route::post('pre-assessment/getdata','PreAssessmentController@getPreAssessmentData')->name('pre-assessment.getdata');
-            Route::get('pre-assessment/{jadwal_kelas}/view-peserta','PreAssessmentController@viewPeserta')->name('pre-assessment.viewpeserta');
+            Route::get('pre-assessment/{jadwal_kelas}/view-allpeserta','PreAssessmentController@viewAllPeserta')->name('pre-assessment.viewallpeserta');
+            Route::get('pre-assessment/{member_certification}/view-singlepeserta','PreAssessmentController@viewSinglePeserta')->name('pre-assessment.viewsinglepeserta');
+            Route::post('pre-assessment/{member_certification}/send-chat-apl02','PreAssessmentController@saveChatApl02')->name('pre-assessment.savechatapl02');
+            Route::get('pre-assessment/{member_certification}/approve-apl02/{status}','PreAssessmentController@approveAPL02')->name('pre-assessment.approveapl02');
+
         });
 
     });

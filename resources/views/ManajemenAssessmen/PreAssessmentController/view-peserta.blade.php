@@ -46,6 +46,97 @@
                         <td>Tempat Uji Kompetensi</td>
                         <td>:</td>
                         <td>{{ $jadwalKelas->tuk->name }} : {{ $jadwalKelas->tuk->address }}</td>
+                        <td>Jumlah Pendaftar</td>
+                        <td>:</td>
+                        <td>{{ $jadwalKelas->pendaftar->count() }} Pendaftar</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-striped- table-bordered table-hover table-checkable" id="">
+                    <thead>
+                    <tr>
+                        <th colspan="2">Data Assessor</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if ($jadwalKelas->assessor && $jadwalKelas->assessor->count() > 0)
+                        @php($no=1)
+                        @foreach($jadwalKelas->assessor as $item)
+                            <tr>
+                                <td width="20">{{ $no }}</td>
+                                <td>{{ $item->name }}</td>
+                            </tr>
+                            @php($no++)
+                        @endforeach
+                    @else
+                        <tr>
+                            <td><center>Belum Ada Assessor yang ditugaskan</center></td>
+                        </tr>
+                    @endif
+                    </tbody>
+                </table>
+
+                <table class="table table-striped- table-bordered table-hover table-checkable" id="">
+                    <thead>
+                    <tr>
+                        <th>Data Peserta</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <table class="table table-bordered" cellpadding="4" id="kt_table_1">
+                                <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>No HP</th>
+                                    <th>Perusahaan</th>
+                                    <th>Status Pendaftaran</th>
+                                    <th>Aksi</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="nosearch"></td>
+                                    <td class="nosearch"></td>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                @if ($jadwalKelas->pendaftar && $jadwalKelas->pendaftar->count() > 0)
+                                    @foreach($jadwalKelas->pendaftar as $item)
+                                        <tr>
+                                            <td>{{ $item->members->name }}</td>
+                                            <td>{{ $item->members->email }}</td>
+                                            <td>{{ !empty($item->members->home_phone) ? $item->members->home_phone:'-' }}</td>
+                                            <td>{{ !empty($item->members->company_name) ? $item->members->company_name:'-' }}</td>
+                                            <td>
+                                                @if ($item->status == 1)
+                                                    <span class="kt-badge kt-badge--inline kt-badge--primary">Pendaftaran Diterima</span>
+                                                @elseif($item->status == 2)
+                                                    <span class="kt-badge kt-badge--inline kt-badge--info">Menunggu Pembayaran</span>
+                                                @elseif($item->status == 3)
+                                                    <span class="kt-badge kt-badge--inline kt-badge--success">Menunggu APL02</span>
+                                                @else
+                                                    <span class="kt-badge kt-badge--inline kt-badge--danger">Ditolak</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href='{{ route('pre-assessment.viewsinglepeserta', ['member_certification' => $item]) }}' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View' data-original-tooltip='View'>
+                                                    <i class='la la-search'></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -55,3 +146,55 @@
 
     <!-- end:: Content -->
 @endsection
+
+@push('script')
+    <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('#kt_table_1').DataTable({
+                responsive: true,
+                lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
+                ordering: false,
+                columns: [
+                    {data: 'name'},
+                    {data: 'email'},
+                    {data: 'home_phone'},
+                    {data: 'company_name'},
+                    {data: 'status'},
+                    {data: 'action'},
+                ],
+                initComplete: function () {
+                    this.api().columns().every(function (i,e) {
+                        var column = this;
+                        var input = document.createElement("input");
+                        var wrapper = document.createElement('div');
+                        // $(wrapper).addClass('kt-input-icon kt-input-icon--right');
+                        $(input).addClass('form-control form-control-sm');
+                        // $(input).appendTo(wrapper);
+                        // $('<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-search"></i></span></span>').appendTo(wrapper);
+                        $(input).appendTo($(column.footer()).not('.nosearch').empty())
+                            .on('change', function () {
+                                column.search($(this).val(), false, false, true).draw();
+                            });
+                    });
+
+                    // Restore state
+                    var state = table.state.loaded();
+                    if ( state ) {
+                        table.columns().eq( 0 ).each( function ( colIdx ) {
+                            var colSearch = state.columns[colIdx].search;
+
+                            if ( colSearch.search ) {
+                                $( 'input', table.column( colIdx ).footer() ).val( colSearch.search );
+                            }
+                        } );
+
+                        table.draw();
+                    }
+                },
+            });
+
+
+        });
+    </script>
+@endpush

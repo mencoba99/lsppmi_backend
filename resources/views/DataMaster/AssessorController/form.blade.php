@@ -105,7 +105,7 @@
                                 @if ($program && $program->count() > 0)
                                     @foreach($program as $item)
                                         <label class="kt-checkbox">
-                                            {!! Form::checkbox('assessment_ability[]',$item->id,((!empty($assessor) && in_array($item->id,$assessor->assessment_ability)) ? 'checked':null)) !!} {{ $item->code }}
+                                            {!! Form::checkbox('assessment_ability[]',$item->id,((!empty($assessor) && in_array($item->id,$assessor->assessment_ability['ability'])) ? 'checked':null)) !!} {{ $item->code }}
                                             <span></span>
                                         </label>
                                     @endforeach

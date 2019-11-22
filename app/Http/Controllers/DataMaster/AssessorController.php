@@ -100,7 +100,12 @@ class AssessorController extends Controller
                                    'assessment_ability' => 'required'
                                ]);
 
+            $assessment_ability = $request->get('assessment_ability');
+            $jsonAbility['ability'] = $assessment_ability;
+
             $assessor = new Assessor($request->all());
+
+            $assessor->assessment_ability = $jsonAbility;
 
             /** Cek jika ada foto upload */
             $imgName = null;
@@ -186,6 +191,7 @@ class AssessorController extends Controller
      */
     public function edit(Assessor $assessor)
     {
+//        dd($assessor->assessment_ability['ability']);
         if (auth()->user()->can('Assessor Edit')) {
             $program = Program::all();
             return view('DataMaster.AssessorController.edit', compact('program', 'assessor'));
@@ -221,8 +227,13 @@ class AssessorController extends Controller
                 'position'           => $request->get('position'),
                 'status'             => $request->get('status'),
                 'profile'            => $request->get('profile'),
-                'assessment_ability' => $request->get('assessment_ability'),
+//                'assessment_ability' => $request->get('assessment_ability'),
             ];
+
+            $assessment_ability = $request->get('assessment_ability');
+            $jsonAbility['ability'] = $assessment_ability;
+
+            $update['assessment_ability'] = $jsonAbility;
 
             /** @var  $updateUser | Get updated data akun assessor */
             $updateUser = [

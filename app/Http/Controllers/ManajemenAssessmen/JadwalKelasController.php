@@ -110,6 +110,7 @@ class JadwalKelasController extends Controller
             $programs    = Program::selectRaw("CONCAT(name,'( ',code,' ) ',' ') AS name, id")->active()->get()->pluck('name', 'id')->prepend('', '');
             $tuk         = TUK::active()->get()->pluck('name', 'id')->prepend('', '');
             $assessor    = Assessor::active()->get()->pluck('name', 'id');
+
             return view('ManajemenAssessmen.JadwalKelasController.create', compact('jadwalKelas', 'programs', 'tuk', 'assessor'));
         } else {
             flash()->error("Maaf, Anda tidak mempunyai akses untuk menambah Jadwal Kelas");
@@ -125,7 +126,6 @@ class JadwalKelasController extends Controller
      */
     public function store(Request $request)
     {
-//        return $request->all();
         if (auth()->user()->can('Jadwal Kelas Add')) {
             $request->validate([
                                    'program_id'          => 'required',
@@ -176,10 +176,10 @@ class JadwalKelasController extends Controller
      * @param JadwalKelas $jadwalKelas
      * @return void
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, ProgramSchedule $jadwalKelas)
     {
         if (auth()->user()->can('Jadwal Kelas Edit')) {
-            $jadwalKelas = ProgramSchedule::find($id);
+//            $jadwalKelas = ProgramSchedule::find($id);
             $programs    = Program::selectRaw("CONCAT(name,'( ',code,' ) ',' ') AS name, id")->active()->get()->pluck('name', 'id')->prepend('', '');
             $tuk         = TUK::active()->get()->pluck('name', 'id')->prepend('', '');
             $assessor    = Assessor::active()->get()->pluck('name', 'id');
@@ -197,7 +197,7 @@ class JadwalKelasController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ProgramSchedule $jadwalKelas)
     {
         if (auth()->user()->can('Jadwal Kelas Edit')) {
             $request->validate([
@@ -219,7 +219,7 @@ class JadwalKelasController extends Controller
             $is_hidden           = $request->get('is_hidden');
             $update['is_hidden'] = empty($is_hidden) ? '0' : $is_hidden;
 
-            $jadwalKelas = ProgramSchedule::find($id);
+//            $jadwalKelas = ProgramSchedule::find($id);
 
             /** Get Assessor */
             $assessor_ids = $request->get('assessor_id');
