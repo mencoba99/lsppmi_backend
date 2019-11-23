@@ -30,8 +30,8 @@ Route::post('login-process', 'DashboardController@loginProcess')->name('login.pr
 Route::get('logout', 'DashboardController@logout')->name('logout');
 
 Route::post('ujian/perdana/password_ulang/{emp_id}', 'Ujian\Ujian_perdanaController@ajax_password_ulang');
-	Route::post('ujian/perdana/save_peserta_jawab', 'Ujian\Ujian_perdanaController@ajax_save_peserta_jawab');
-	Route::post('ujian/perdana/save_persentase_kelulusan', 'Ujian\Ujian_perdanaController@ajax_persentase_kelulusan');
+Route::post('ujian/perdana/save_peserta_jawab', 'Ujian\Ujian_perdanaController@ajax_save_peserta_jawab');
+Route::post('ujian/perdana/save_persentase_kelulusan', 'Ujian\Ujian_perdanaController@ajax_persentase_kelulusan');
 
 Route::middleware(['auth'])->group(function (){
 
@@ -107,7 +107,7 @@ Route::middleware(['auth'])->group(function (){
             Route::post('places/insert', 'PlacesController@AjaxInsertData')->name('master.places.insert');
 
 
-    });
+        });
 
 
     });

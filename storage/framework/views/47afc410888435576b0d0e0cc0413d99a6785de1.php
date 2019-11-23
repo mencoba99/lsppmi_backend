@@ -33,16 +33,16 @@
             <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
 
                 <!-- begin:: Content -->
-                <?php echo GeneralHelper::getBreadcrumb(); ?>
+            <?php echo GeneralHelper::getBreadcrumb(); ?>
 
-                <?php echo $__env->yieldContent('content', 'Default Content'); ?>
+            <?php echo $__env->yieldContent('content', 'Default Content'); ?>
 
-                <!-- end:: Content -->
+            <!-- end:: Content -->
             </div>
 
             <!-- begin:: Footer -->
-            <?php echo $__env->make('layouts.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-            <!-- end:: Footer -->
+        <?php echo $__env->make('layouts.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <!-- end:: Footer -->
         </div>
     </div>
 </div>
