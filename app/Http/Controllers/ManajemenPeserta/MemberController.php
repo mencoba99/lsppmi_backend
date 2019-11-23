@@ -125,8 +125,15 @@ class MemberController extends Controller
 
 	public function viewAPL01($token)
 	{
-		$c = MemberCertification::with(['members', 'apl01', 'schedules', 'schedules.programs'])->where('token', $token)->firstOrFail();	
-		return view('ManajemenPeserta.viewAPL01',compact('c'));
+		$c = MemberCertification::with(['members', 'apl01', 'schedules', 'schedules.programs', 'apl02'])->where('token', $token)->firstOrFail();
+		
+		$units = [];
+		if ($c->apl02->count() > 0) {
+			$units = $c->schedules->programs->unit_kompetensi;
+			//dd($units[0]->elements[0]->kuk[0]->kuk02);
+		}
+
+		return view('ManajemenPeserta.viewAPL01',compact('c', 'units'));
 	}
 
 	public function verifyAPL01()
@@ -138,6 +145,14 @@ class MemberController extends Controller
 			$cert->status = 2;
 			$cert->updated_at = date('Y-m-d H:i:s');
 			$cert->save();
+
+			Member::where('id', $cert->member_id)
+			->update([
+				'ktp_verified' => request('ktp_verified'),
+				'foto_verified' => request('foto_verified'),
+				'ijazah_verified' => request('ijazah_verified'),
+				'skb_verified' => request('skb_verified')
+			]);
 
 			DB::commit();
 
