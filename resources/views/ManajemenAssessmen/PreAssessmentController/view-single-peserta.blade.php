@@ -342,16 +342,15 @@
                                         <a href="#" class="btn btn-outline-brand btn-bold btn-sm" data-toggle="modal" data-target="#kt_chat_modals">
                                             <i class="la la-wechat"></i> Kirim Pesan
                                         </a>
-                                        {{ $memberCertification->apl02 }}
-{{--                                        @if ($memberCertification->apl02->status == 0)--}}
-{{--                                            <a href="{{ route('pre-assessment.approveapl02',['member_certification'=>$memberCertification,'status'=>'approve']) }}" class="btn btn-outline-success btn-sm btn-bold approveApl02">--}}
-{{--                                                <i class="la la-check-circle"></i> Approve APL-02--}}
-{{--                                            </a>--}}
-{{--                                        @elseif($memberCertification->apl02->status == 1)--}}
-{{--                                            <a href="{{ route('pre-assessment.approveapl02',['member_certification'=>$memberCertification,'status'=>'unapprove']) }}" class="btn btn-outline-danger btn-sm btn-bold approveApl02">--}}
-{{--                                                <i class="la la-check-circle"></i> Unapprove APL-02--}}
-{{--                                            </a>--}}
-{{--                                        @endif--}}
+                                        @if ($memberCertification->status == 2)
+                                            <a href="{{ route('pre-assessment.approveapl02',['member_certification'=>$memberCertification,'status'=>'approve']) }}" class="btn btn-outline-success btn-sm btn-bold approveApl02">
+                                                <i class="la la-check-circle"></i> Approve APL-02
+                                            </a>
+                                        @elseif($memberCertification->status == 3)
+                                            <a href="{{ route('pre-assessment.approveapl02',['member_certification'=>$memberCertification,'status'=>'unapprove']) }}" class="btn btn-outline-danger btn-sm btn-bold unapproveApl02">
+                                                <i class="la la-check-circle"></i> Unapprove APL-02
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -634,7 +633,31 @@
                         window.location.href = link;
                     }
                 });
-            })
+            });
+            $(document).on('click','.unapproveApl02', function (e) {
+                e.preventDefault();
+
+                var link = $(this).attr('href');
+                swal.fire({
+                    title: 'Unpprove Form APL-02?',
+                    text: 'Apakah Anda yakin untuk Unpprove Form APL-02 ini?',
+                    type: 'warning',
+                    allowOutsideClick: true,
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn-info',
+                    cancelButtonClass: 'btn-danger',
+                    // closeOnConfirm: true,
+                    // closeOnCancel: true,
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                }).then(function(result){
+                    if (result.value) {
+                        window.location.href = link;
+                    }
+                });
+            });
+
         });
 
 
