@@ -23,8 +23,15 @@ Route::get('/tt', function () {
 
 Route::get('/', 'DashboardController@index')->name('dashboard');
 Route::get('login', 'DashboardController@login')->name('login');
+Route::get('ujian/start/{id}', 'Ujian\Ujian_perdanaController@start_ujian')->name('start');
+Route::get('ujian/index/{id}', 'Ujian\Ujian_perdanaController@index')->name('index');
+Route::get('print_ujian', 'Ujian\Ujian_perdanaController@print_ujian')->name('print_ujian');
 Route::post('login-process', 'DashboardController@loginProcess')->name('login.proses');
 Route::get('logout', 'DashboardController@logout')->name('logout');
+
+Route::post('ujian/perdana/password_ulang/{emp_id}', 'Ujian\Ujian_perdanaController@ajax_password_ulang');
+	Route::post('ujian/perdana/save_peserta_jawab', 'Ujian\Ujian_perdanaController@ajax_save_peserta_jawab');
+	Route::post('ujian/perdana/save_persentase_kelulusan', 'Ujian\Ujian_perdanaController@ajax_persentase_kelulusan');
 
 Route::middleware(['auth'])->group(function (){
 
@@ -49,7 +56,7 @@ Route::middleware(['auth'])->group(function (){
             Route::resource('permission', 'PermissionController');
             Route::post('permission/data','PermissionController@getPermissionData')->name('permission.getdata');
             Route::get('permission/{role}/delete','PermissionController@delete')->name('permission.delete');
-            });
+        });
     });
 
     /**
@@ -75,21 +82,34 @@ Route::middleware(['auth'])->group(function (){
             Route::get('provinsi/data', 'ProvinsiController@AjaxProvinsiGetData')->name('master.provinsi.data');
             Route::get('provinsi/json', 'ProvinsiController@ProvinsiJson')->name('master.provinsi.json');
             Route::post('provinsi/insert', 'ProvinsiController@AjaxProvinsiInsertData')->name('master.provinsi.insert');
-            Route::post('provinsi/{provinsi}/delete', 'ProvinsiController@AjaxProvinsiDeleteData')->name('master.provinsi.delete');
+            Route::post('provinsi/delete', 'ProvinsiController@AjaxProvinsiDeleteData')->name('master.provinsi.delete');
+
 
             Route::get('kota', 'KotaController@kota')->name('master.kota');
             Route::get('kota/data', 'KotaController@AjaxKotaGetData')->name('master.kota.data');
             Route::post('kota/insert', 'KotaController@AjaxKotaInsertData')->name('master.kota.insert');
-            Route::post('kota/{kota}/delete', 'KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
+            Route::post('kota/delete', 'KotaController@AjaxKotaDeleteData')->name('master.kota.delete');
 
-            Route::resource('unit-kompetensi', 'UnitKompetensiController');
-            Route::post('unit-kompetensi/getdata', 'UnitKompetensiController@geUnitKompetensiData')->name('unit-kompetensi.getdata');
-            Route::post('unit-kompetensi/{unit_kompetensi}/delete', 'UnitKompetensiController@delete')->name('unit-kompetensi.delete');
+            Route::get('units', 'UnitsController@index')->name('master.units');
+            Route::get('units/data', 'UnitsController@AjaxGetData')->name('master.units.data');
+            Route::post('units/insert', 'UnitsController@AjaxInsertData')->name('master.units.insert');
 
-            Route::resource('elemen-kompetensi', 'ElemenKompetensiController');
+            Route::get('element', 'ElementController@index')->name('master.element');
+            Route::get('element/data', 'ElementController@AjaxGetData')->name('master.element.data');
+            Route::post('element/insert', 'ElementController@AjaxInsertData')->name('master.element.insert');
 
-            Route::resource('kuk', 'KukController');
-        });
+            Route::get('kuk', 'KUKController@index')->name('master.kuk');
+            Route::get('kuk/data', 'KUKController@AjaxGetData')->name('master.kuk.data');
+            Route::post('kuk/insert', 'KUKController@AjaxInsertData')->name('master.kuk.insert');
+
+            Route::get('places', 'PlacesController@index')->name('master.places');
+            Route::get('places/data', 'PlacesController@AjaxGetData')->name('master.places.data');
+            Route::post('places/insert', 'PlacesController@AjaxInsertData')->name('master.places.insert');
+
+
+    });
+
+
     });
 
     Route::group(['namespace'=>'ManajemenAssessmen', 'prefix'=>'management-assesmen'], function () {
@@ -129,6 +149,49 @@ Route::middleware(['auth'])->group(function (){
                 Route::get('submodul/data', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulGetData')->name('materi.pembuatan-submodul.data');
                 Route::post('submodul/insert', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulInsertData')->name('materi.pembuatan-submodul.insert');
                 Route::post('submodul/delete', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulDeleteData')->name('materi.pembuatan-submodul.delete');
+            });
+
+
+            Route::group(['prefix' => 'ujian'], function () {
+
+                Route::get('jadwal', 'CBT\Ujian\JadwalController@index')->name('ujian.jadwal');
+                Route::get('jadwal/batch', 'CBT\Ujian\JadwalController@ajax_get_batch_peserta')->name('ujian.jadwal.batch');
+                Route::get('jadwal/program', 'CBT\Ujian\JadwalController@ajax_get_batch')->name('ujian.jadwal.program');
+                Route::get('jadwal/peserta', 'CBT\Ujian\JadwalController@ajax_get_peserta')->name('ujian.jadwal.peserta');
+                Route::get('jadwal/create', 'CBT\Ujian\JadwalController@create')->name('ujian.jadwal.create');
+                Route::get('jadwal/data', 'CBT\Ujian\JadwalController@AjaxJadwalGetData')->name('ujian.jadwal.data');
+                Route::post('jadwal/insert', 'CBT\Ujian\JadwalController@AjaxJadwalInsertData')->name('ujian.jadwal.insert');
+                Route::get('jadwal/{id}/delete', 'CBT\Ujian\JadwalController@AjaxJadwalInsertData')->name('ujian.jadwal.delete');
+                Route::get('jadwal/{id}/edit', 'CBT\Ujian\JadwalController@AjaxJadwalInsertData')->name('ujian.jadwal.edit');
+                Route::get('jadwal/{id}/show', 'CBT\Ujian\JadwalController@show')->name('ujian.jadwal.edit');
+
+                Route::get('parameter', 'CBT\Ujian\ParameterController@index')->name('ujian.parameter');
+                Route::get('parameter/create', 'CBT\Ujian\ParameterController@create')->name('ujian.parameter.create');
+                Route::get('parameter/data', 'CBT\Ujian\ParameterController@data')->name('ujian.parameter.data');
+                Route::post('parameter/insert', 'CBT\Ujian\ParameterController@insert')->name('ujian.parameter.insert');
+                Route::get('parameter/{ujian_parameter_id}/delete', 'CBT\Ujian\ParameterController@delete')->name('ujian.parameter.delete');
+                Route::get('parameter/{ujian_parameter_id}/edit', 'CBT\Ujian\ParameterController@edit')->name('ujian.parameter.edit');
+                Route::get('parameter/{ujian_parameter_id}/show', 'CBT\Ujian\ParameterController@show')->name('ujian.parameter.show');
+
+                Route::get('jenis', 'CBT\Ujian\JenisController@index')->name('ujian.jenis');
+                Route::get('jenis/create', 'CBT\Ujian\JenisController@create')->name('ujian.jenis.create');
+                Route::get('jenis/data', 'CBT\Ujian\JenisController@data')->name('ujian.jenis.data');
+                Route::post('jenis/insert', 'CBT\Ujian\JenisController@insert')->name('ujian.jenis.insert');
+                Route::post('jenis/update', 'CBT\Ujian\JenisController@update')->name('ujian.jenis.update');
+                Route::get('jenis/{ujian_jenis_id}/delete', 'CBT\Ujian\JenisController@delete')->name('ujian.jenis.delete');
+                Route::get('jenis/{ujian_jenis_id}/edit', 'CBT\Ujian\JenisController@edit')->name('ujian.jenis.edit');
+                Route::get('jenis/{ujian_jenis_id}/show', 'CBT\Ujian\JenisController@show')->name('ujian.jenis.show');
+
+                Route::get('jenis', 'CBT\Ujian\JenisController@index')->name('ujian.jenis');
+                Route::get('jenis/create', 'CBT\Ujian\JenisController@create')->name('ujian.jenis.create');
+                Route::get('jenis/data', 'CBT\Ujian\JenisController@data')->name('ujian.jenis.data');
+                Route::post('jenis/insert', 'CBT\Ujian\JenisController@insert')->name('ujian.jenis.insert');
+                Route::post('jenis/update', 'CBT\Ujian\JenisController@update')->name('ujian.jenis.update');
+                Route::get('jenis/{ujian_jenis_id}/delete', 'CBT\Ujian\JenisController@delete')->name('ujian.jenis.delete');
+                Route::get('jenis/{ujian_jenis_id}/edit', 'CBT\Ujian\JenisController@edit')->name('ujian.jenis.edit');
+                Route::get('jenis/{ujian_jenis_id}/show', 'CBT\Ujian\JenisController@show')->name('ujian.jenis.show');
+
+
             });
         });
 
@@ -172,7 +235,6 @@ Route::middleware(['auth'])->group(function (){
             Route::get('pre-assessment/{member_certification}/approve-apl02/{status}','PreAssessmentController@approveAPL02')->name('pre-assessment.approveapl02');
 
         });
-
     });
 
     Route::group(['namespace' => 'ManajemenPeserta', 'prefix' => 'management-peserta'], function () {

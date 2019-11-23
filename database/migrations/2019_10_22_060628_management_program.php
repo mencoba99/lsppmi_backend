@@ -22,6 +22,7 @@ class ManagementProgram extends Migration
             $table->integer('submodul_id');
             $table->integer('user_created');
             $table->integer('total_soal');
+            $table->integer('status');
             $table->timestamps();
 
             $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade');

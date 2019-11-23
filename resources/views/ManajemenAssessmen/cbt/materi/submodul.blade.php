@@ -37,10 +37,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -71,7 +73,7 @@
                                             <div class="form-group row">
                                                     <label class="col-lg-3 col-form-label">Modul:</label>
                                                     <div class="col-lg-6">
-                                                        {!! Form::select('id_modul',$Modul,null,['id'=>'id_modul','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Kategori']) !!}
+                                                        {!! Form::select('id_modul',$Modul,null,['id'=>'id_modul','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Modul']) !!}
                                                         {!! Form::text('submodul_id',null,['id'=>'submodul_id','class'=>'form-control','hidden'=>'hidden']) !!}
                                                        
                                                     </div>
@@ -91,11 +93,20 @@
                                                 </div>
                                         </div>
                                         <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label">Status:</label>
-                                                <div class="col-lg-4">
-                                                    {!! Form::select('status',$status,null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
-                                                </div>
+                                            <label class="col-lg-3 col-form-label">Status:</label>
+                                            <div class="col-lg-6">
+                                                    <div class="kt-portlet__head-toolbar">
+                                                            <div class="kt-portlet__head-actions">
+                                                                <span class="kt-switch kt-switch--icon">
+                                                                    <label>
+                                                                        <input type="checkbox" data-url="" name="status" id="status" class="roleParentChange roleList">
+                                                                        <span></span>
+                                                                    </label>
+                                                                </span>
+                                                            </div>
+                                                        </div>
                                             </div>
+                                        </div>
                                     </div>
             
                                 </div>
@@ -114,8 +125,8 @@
 
 @endsection
 
-@push('scripts')
-  
+@push('script')
+<script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
  
 
@@ -124,7 +135,9 @@
     // Private functions
     var demos = function () {
         // minimum setup
-        $('.kt-selectpicker').selectpicker();
+        $('.kt-selectpicker').selectpicker().change(function(){
+            $(this).valid()
+        });
     }
 
     return {
@@ -139,37 +152,35 @@ jQuery(document).ready(function() {
     KTBootstrapSelect.init();
     form = $("#form").validate({
         rules: {
-            "kategori_nm": {
-                required: true
-            },
             "id_modul": {
                 required: true
             },
-            "kategori_code": {
+            "submodul_name": {
                 required: true
             },
-            "kategori_desc": {
+            "submodul_desc": {
                 required: true
             }
 
         },
         messages: {
-            "kategori_nm": {
-                required: "Silahkan tulis nama kategori yang akan diinput "
-            },
             "id_modul": {
-                required: "Silahkan pilih modul "
+                required: "Silahkan pilih modul"
             },
-            "kategori_code": {
-                required: "Silahkan tulis kode yang akan diinput"
+            "submodul_name": {
+                required: "Silahkan input nama submodul"
             },
-            "kategori_desc": {
-                required: "Silahkan tulis keterangan yang akan diinput"
+            "submodul_desc": {
+                required: "Silahkan input keterangan"
             }
         },
         submitHandler: function (form) { // for demo
-               table = $('#datatable').DataTable().destroy();
-        
+            table = $('#datatable').DataTable().destroy();
+                if($("#status").is(':checked')){
+                    cekstatus = 1;
+                }else{
+                    cekstatus = 0;
+                }
 
             $.ajax({
                 type: "post",
@@ -179,7 +190,7 @@ jQuery(document).ready(function() {
                     name: $("#submodul_name").val(),
                     modul: $("#id_modul").val(),
                     id: $("#submodul_id").val(),
-                    status: $("#status").val(),
+                    status: cekstatus,
                     desc: $("#submodul_desc").val(),
                 },
                 beforeSend: function() {
@@ -228,6 +239,7 @@ jQuery(document).ready(function() {
                 { data: 'name', name: 'name' , title: 'Nama Sub Modul' },
                 { data: 'modul.name', name: 'modul.name' , title: 'Modul ' },
                 { data: 'description', name: 'description' , title: 'Keterangan' },
+                { data: 'status_s', name: 'status_s' , title: 'Status', width : "5%" },
                 { data: 'action', name: 'action' , title: 'Action', width : "5%"  }
             ],
             initComplete: function () {

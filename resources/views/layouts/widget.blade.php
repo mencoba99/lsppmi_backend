@@ -36,12 +36,31 @@
                 </button>
             </div>
             <div class="modal-body">
+                    <div class="centerdiv" id="loader" style="width: 100%;height: 100%;background-color: white;">
+                            <div class="centerdiv">
+                                <h1>
+                                    <span>L</span>
+                                    <span>S</span>
+                                    <span>P</span>
+                                    <span>P</span>
+                                    <span>M</span>
+                                    <span>I</span>
+                                </h1>
+                                
+                                <div class="google-loader text-center">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
                 <iframe src="" id="iframeModalContent" style="" frameborder="0" height="100%" width="100%"></iframe>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            {{-- <div class="modal-footer"> --}}
+                {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
 {{--                <button type="button" class="btn btn-primary">Save changes</button>--}}
-            </div>
+            {{-- </div> --}}
         </div>
     </div>
 </div>

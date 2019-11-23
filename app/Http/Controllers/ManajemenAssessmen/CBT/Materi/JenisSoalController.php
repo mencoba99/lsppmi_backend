@@ -24,7 +24,7 @@ class JenisSoalController extends Controller
 
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
 
-		return view('management.cbt.materi.jenissoal', compact('pageTitle','Title','pageHeader','crumbs','status'));
+		return view('ManajemenAssessmen.cbt.materi.jenissoal', compact('pageTitle','Title','pageHeader','crumbs','status'));
     }
 
     public function AjaxJenisSoalGetData()

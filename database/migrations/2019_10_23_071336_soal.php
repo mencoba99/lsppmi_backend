@@ -38,6 +38,7 @@ class Soal extends Migration
             $table->timestamps();
 
             $table->foreign('program_type')->references('id')->on('program_types')->onDelete('cascade');
+            $table->foreign('kunci_id')->references('kunci_id')->on('kunci')->onDelete('cascade');
             $table->foreign('jenis_soal_id')->references('id')->on('soal_jenis')->onDelete('cascade');
           
         });

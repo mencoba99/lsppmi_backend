@@ -134,7 +134,7 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                 <span class="kt-hidden kt-header__topbar-welcome">Hi,</span>
                 <span class="kt-hidden kt-header__topbar-username">Nick</span>
-                <img class="kt-hidden" alt="Pic" src="{{ Storage::url('media/users/300_21.jpg') }}" />
+                <img class="kt-hidden" alt="Pic" src="" />
                 <span class="kt-header__topbar-icon"><i class="flaticon2-user-outline-symbol"></i></span>
             </div>
             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
@@ -142,7 +142,7 @@
                 <!--begin: Head -->
                 <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
                     <div class="kt-user-card__avatar">
-                        <img class="kt-hidden-" alt="Pic" src="{{ Storage::url('media/users/300_25.jpg') }}" />
+                        <img class="kt-hidden-" alt="Pic" src="" />
 
                         <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
                         <span class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold kt-hidden">S</span>

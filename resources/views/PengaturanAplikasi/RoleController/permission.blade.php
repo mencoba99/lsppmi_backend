@@ -76,6 +76,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $('#loader', parent.document).fadeOut();
             KTApp.block('.blocked', {
                 // overlayColor: '#000000',
                 state: 'primary',

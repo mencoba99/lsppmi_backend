@@ -230,7 +230,8 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         // 'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         // 'Flash' => Laracasts\Flash\Flash::class,
-
+        'Yajra_datatable' => App\Helpers\Yajra_datatable::class,
+        'Helper' => App\Helpers\Helper::class,
         'GeneralHelper' => App\Http\Helpers\GeneralHelper::class,
     ],
 

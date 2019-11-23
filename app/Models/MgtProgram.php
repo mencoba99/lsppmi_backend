@@ -8,9 +8,9 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class MgtProgram extends Model
 {
-    // use SoftDeletes;
+    use SoftDeletes;
 	
-    // protected $revisionCreationsEnabled = true;
+    protected $revisionCreationsEnabled = true;
     
     protected $table = 'program_mgt';
 
@@ -28,12 +28,12 @@ class MgtProgram extends Model
 
     public function program()
     {
-        return $this->hasMany('App\Models\Program','id','program_id');
+        return $this->belongsTo('App\Models\Program','program_id','id');
     }
 
     public function modul()
     {
-        return $this->hasMany('App\Models\Modul','id','modul_id');
+        return $this->belongsTo('App\Models\Modul','modul_id','id');
     }
 
     public function submodul()
