@@ -16,6 +16,8 @@ class Assessor extends Revisionable
     protected $historyLimit             = 10000;
     /** End */
 
+    protected $table = 'assessors';
+
     protected $casts = [
         'assessment_ability' => 'array'
     ];
@@ -23,4 +25,9 @@ class Assessor extends Revisionable
     protected $fillable = [
         'name', 'email' , 'profile', 'mobile_phone', 'company', 'position', 'status', 'assessment_ability'
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('status',1);
+    }
 }

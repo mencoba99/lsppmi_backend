@@ -17,4 +17,4 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 
 Broadcast::channel('interview-12-4-5', function () {
 	return true;
-})
+});

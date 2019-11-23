@@ -11,9 +11,10 @@
 |
 */
 Route::get('/tt', function () {
-    $cert = \App\MemberCertification::findOrFail(10);
-    \App\Jobs\CreateAPL02::dispatch($cert);
-    echo "string";
+    echo bcrypt('admin123');
+    // $cert = \App\MemberCertification::findOrFail(10);
+    // \App\Jobs\CreateAPL02::dispatch($cert);
+    // echo "string";
     // $units = $cert->schedules->programs->units;
     // foreach ($units as $k => $v) {
     //     dd($v->kuk);
@@ -56,8 +57,6 @@ Route::middleware(['auth'])->group(function (){
             Route::post('permission/data','PermissionController@getPermissionData')->name('permission.getdata');
             Route::get('permission/{role}/delete','PermissionController@delete')->name('permission.delete');
         });
-
-
     });
 
     /**
@@ -106,16 +105,14 @@ Route::middleware(['auth'])->group(function (){
             Route::get('places', 'PlacesController@index')->name('master.places');
             Route::get('places/data', 'PlacesController@AjaxGetData')->name('master.places.data');
             Route::post('places/insert', 'PlacesController@AjaxInsertData')->name('master.places.insert');
-           
-        
+
+
     });
 
-    
+
     });
 
     Route::group(['namespace'=>'ManajemenAssessmen', 'prefix'=>'management-assesmen'], function () {
-
-      
         Route::group(['prefix' => 'cbt'], function () {
             Route::get('kategori', 'CBT\KategoriController@Kategori')->name('ujian-komputer.kategori');
             Route::get('kategori/data', 'CBT\KategoriController@AjaxKategoriGetData')->name('ujian-komputer.kategori.data');
@@ -128,15 +125,10 @@ Route::middleware(['auth'])->group(function (){
             Route::post('program/insert', 'CBT\ProgramController@AjaxProgramInsertData')->name('ujian-komputer.program.insert');
             Route::post('program/delete', 'CBT\ProgramController@AjaxProgramDeleteData')->name('ujian-komputer.program.delete');
 
-            
             Route::get('management', 'CBT\ManagementController@index')->name('ujian-komputer.management');
-            Route::get('management/create', 'CBT\ManagementController@create')->name('ujian-komputer.management.create');
             Route::get('management/data', 'CBT\ManagementController@AjaxMgtProgramGetData')->name('ujian-komputer.management.data');
-            Route::post('management/modul', 'CBT\ManagementController@AjaxGetSubModul')->name('ujian-komputer.management.modul');
             Route::post('management/insert', 'CBT\ManagementController@AjaxMgtProgramInsertData')->name('ujian-komputer.management.insert');
-            Route::get('management/{mgtprogram}/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('ujian-komputer.management.delete');
-            Route::get('management/{mgtprogram}/show', 'CBT\ManagementController@show')->name('ujian-komputer.management.show');
-            Route::get('management/{mgtprogram}/edit', 'CBT\ManagementController@show')->name('ujian-komputer.management.edit');
+            Route::post('management/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('ujian-komputer.management.delete');
 
             Route::group(['prefix' => 'materi'], function () {
                 Route::get('jenis', 'CBT\Materi\JenisSoalController@index')->name('materi.jenis-soal');
@@ -145,28 +137,23 @@ Route::middleware(['auth'])->group(function (){
 
                 Route::get('soal', 'CBT\Materi\PembuatanSoalController@index')->name('materi.pembuatan-soal');
                 Route::get('soal/data', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalGetData')->name('materi.pembuatan-soal.data');
-                Route::post('soal/modul', 'CBT\Materi\PembuatanSoalController@AjaxGetSubmodul')->name('materi.pembuatan-soal.modul');
-                Route::post('soal/id', 'CBT\Materi\PembuatanSoalController@AjaxGetId')->name('materi.pembuatan-soal.findId');
                 Route::post('soal/insert', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalInsertData')->name('materi.pembuatan-soal.insert');
-                Route::post('soal/parent', 'CBT\Materi\PembuatanSoalController@AjaxGetParent')->name('materi.pembuatan-soal.parent');
                 Route::post('soal/delete', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalDeleteData')->name('materi.pembuatan-soal.delete');
-                Route::get('soal/{soal}/show', 'CBT\Materi\PembuatanSoalController@show')->name('materi.pembuatan-soal.show');
-                Route::get('soal/{soal}/edit', 'CBT\Materi\PembuatanSoalController@show')->name('materi.pembuatan-soal.edit');
 
                 Route::get('modul', 'CBT\Materi\PembuatanModulController@index')->name('materi.pembuatan-modul');
                 Route::get('modul/data', 'CBT\Materi\PembuatanModulController@AjaxModulGetData')->name('materi.pembuatan-modul.data');
                 Route::post('modul/insert', 'CBT\Materi\PembuatanModulController@AjaxModulInsertData')->name('materi.pembuatan-modul.insert');
                 Route::post('modul/delete', 'CBT\Materi\PembuatanModulController@AjaxModulDeleteData')->name('materi.pembuatan-modul.delete');
-            
+
                 Route::get('submodul', 'CBT\Materi\PembuatanSubModulController@index')->name('materi.pembuatan-submodul');
                 Route::get('submodul/data', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulGetData')->name('materi.pembuatan-submodul.data');
                 Route::post('submodul/insert', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulInsertData')->name('materi.pembuatan-submodul.insert');
                 Route::post('submodul/delete', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulDeleteData')->name('materi.pembuatan-submodul.delete');
-            
             });
 
+
             Route::group(['prefix' => 'ujian'], function () {
-               
+
                 Route::get('jadwal', 'CBT\Ujian\JadwalController@index')->name('ujian.jadwal');
                 Route::get('jadwal/batch', 'CBT\Ujian\JadwalController@ajax_get_batch_peserta')->name('ujian.jadwal.batch');
                 Route::get('jadwal/program', 'CBT\Ujian\JadwalController@ajax_get_batch')->name('ujian.jadwal.program');
@@ -195,12 +182,59 @@ Route::middleware(['auth'])->group(function (){
                 Route::get('jenis/{ujian_jenis_id}/edit', 'CBT\Ujian\JenisController@edit')->name('ujian.jenis.edit');
                 Route::get('jenis/{ujian_jenis_id}/show', 'CBT\Ujian\JenisController@show')->name('ujian.jenis.show');
 
-               
-            
-            });
+                Route::get('jenis', 'CBT\Ujian\JenisController@index')->name('ujian.jenis');
+                Route::get('jenis/create', 'CBT\Ujian\JenisController@create')->name('ujian.jenis.create');
+                Route::get('jenis/data', 'CBT\Ujian\JenisController@data')->name('ujian.jenis.data');
+                Route::post('jenis/insert', 'CBT\Ujian\JenisController@insert')->name('ujian.jenis.insert');
+                Route::post('jenis/update', 'CBT\Ujian\JenisController@update')->name('ujian.jenis.update');
+                Route::get('jenis/{ujian_jenis_id}/delete', 'CBT\Ujian\JenisController@delete')->name('ujian.jenis.delete');
+                Route::get('jenis/{ujian_jenis_id}/edit', 'CBT\Ujian\JenisController@edit')->name('ujian.jenis.edit');
+                Route::get('jenis/{ujian_jenis_id}/show', 'CBT\Ujian\JenisController@show')->name('ujian.jenis.show');
 
+
+            });
         });
 
+        Route::group(['prefix'=>'manajemen-kelas'], function () {
+            Route::resource('jadwal-kelas', 'JadwalKelasController');
+            Route::post('jadwal-kelas/getdata', 'JadwalKelasController@getJadwalKelasData')->name('jadwal-kelas.getdata');
+            Route::get('jadwal-kelas/{jadwal_kelas}/delete', 'JadwalKelasController@delete')->name('jadwal-kelas.delete');
+
+            /** Approve Jadwal Kelas */
+            Route::get('jadwal-kelas/approve/index', 'JadwalKelasController@approveIndex')->name('jadwal-kelas.approve.index');
+            Route::get('jadwal-kelas/approve/{jadwal_kelas}/view', 'JadwalKelasController@approveView')->name('jadwal-kelas.approve.view');
+            Route::post('jadwal-kelas/approve/getdata', 'JadwalKelasController@getJadwalKelasNotApproveData')->name('jadwal-kelas.approve.getdata');
+            Route::get('jadwal-kelas/approve/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@approveJadwalKelas')->name('jadwal-kelas.approve.set-approve');
+
+            /** Publish Jadwal Kelas */
+            Route::get('jadwal-kelas/publish/index', 'JadwalKelasController@publishIndex')->name('jadwal-kelas.publish.index');
+            Route::get('jadwal-kelas/publish/{jadwal_kelas}/view', 'JadwalKelasController@publishView')->name('jadwal-kelas.publish.view');
+            Route::post('jadwal-kelas/publish/getdata', 'JadwalKelasController@getJadwalKelasNotPublishData')->name('jadwal-kelas.publish.getdata');
+            Route::get('jadwal-kelas/publish/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@publishJadwalKelas')->name('jadwal-kelas.publish.set-approve');
+
+            /** Penutupan Pendaftaran Kelas */
+            Route::get('jadwal-kelas/register/index', 'JadwalKelasController@registerIndex')->name('jadwal-kelas.register.index');
+            Route::get('jadwal-kelas/register/{jadwal_kelas}/view', 'JadwalKelasController@registerView')->name('jadwal-kelas.register.view');
+            Route::post('jadwal-kelas/register/getdata', 'JadwalKelasController@getJadwalKelasNotCloseRegisterData')->name('jadwal-kelas.register.getdata');
+            Route::get('jadwal-kelas/register/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@registerJadwalKelas')->name('jadwal-kelas.register.set-approve');
+        });
+
+        Route::group(['prefix'=>'manajemen-asssessmen'], function () {
+            /** Pengaturan Kompetensi */
+            Route::resource('pengaturan-kompetensi', 'PengaturanKompetensiController');
+            Route::post('pengaturan-kompetensi/getdata', 'PengaturanKompetensiController@getPengaturanKompetensiData')->name('pengaturan-kompetensi.getdata');
+            Route::get('pengaturan-kompetensi/{pengaturan_kompetensi}/delete', 'PengaturanKompetensiController@delete')->name('pengaturan-kompetensi.delete');
+            Route::post('pengaturan-kompetensi/getprogramunitkompetensi', 'PengaturanKompetensiController@getProgramUnitKompetensi')->name('pengaturan-kompetensi.getunitkompetensi');
+
+            /** Pre Assessment Modul */
+            Route::get('pre-assessment','PreAssessmentController@index')->name('pre-assessment.index');
+            Route::post('pre-assessment/getdata','PreAssessmentController@getPreAssessmentData')->name('pre-assessment.getdata');
+            Route::get('pre-assessment/{jadwal_kelas}/view-allpeserta','PreAssessmentController@viewAllPeserta')->name('pre-assessment.viewallpeserta');
+            Route::get('pre-assessment/{member_certification}/view-singlepeserta','PreAssessmentController@viewSinglePeserta')->name('pre-assessment.viewsinglepeserta');
+            Route::post('pre-assessment/{member_certification}/send-chat-apl02','PreAssessmentController@saveChatApl02')->name('pre-assessment.savechatapl02');
+            Route::get('pre-assessment/{member_certification}/approve-apl02/{status}','PreAssessmentController@approveAPL02')->name('pre-assessment.approveapl02');
+
+        });
     });
     
     Route::group(['namespace' => 'ManajemenPeserta', 'prefix' => 'management-peserta'], function () {
@@ -218,4 +252,21 @@ Route::middleware(['auth'])->group(function (){
         });
     });
 
+    Route::group(['namespace' => 'ManajemenPeserta', 'prefix' => 'management-peserta'], function () {
+        Route::group(['prefipostx' => 'peserta'], function () {
+            Route::get('peserta', 'MemberController@index')->name('peserta.pendaftaran');
+            Route::get('peserta/email/{token}', 'MemberController@sendVerificationEmail')->name('peserta.email');
+            Route::get('peserta/data', 'MemberController@getPesertaData')->name('peserta.pendaftaran.data');
+            Route::get('peserta/sertifikasi', 'MemberController@APL01')->name('peserta.pendaftaran.sertifikasi');
+            Route::get('peserta/sertifikasi/apl01/data', 'MemberController@getAPL01Data')->name('peserta.pendaftaran.sertifikasi.data');
+            Route::get('peserta/sertifikasi/apl01/view/{token}', 'MemberController@viewAPL01')->name('peserta.pendaftaran.sertifikasi.apl01');
+            Route::get('peserta/sertifikasi/pembayaran', 'MemberController@viewPaymentList')->name('peserta.pendaftaran.sertifikasi.pembayaran');
+            Route::put('peserta/sertifikasi/pembayaran', 'MemberController@sendPaymentEmail');
+            Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment')->name('peserta.pendaftaran.sertifikasi.pembayaran.confirm');
+            //Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment');
+            Route::get('peserta/sertifikasi/pembayaran/data', 'MemberController@getPaymentData')->name('peserta.pendaftaran.sertifikasi.pembayaran.data');
+            Route::put('peserta/sertifikasi/apl01/verify', 'MemberController@verifyAPL01');
+            Route::put('peserta/sertifikasi/apl01/reject', 'MemberController@rejectAPL01');
+        });
+    });
 });

@@ -93,6 +93,62 @@
                             </div>
                         </div>
                     </div>
+                    <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+                    <h3 class="kt-section__title">Pemilihan Assessor</h3>
+                    <div class="kt-section__body">
+                        <div id="kt_repeater_1">
+                            <div class="form-group row" id="kt_repeater_1">
+                                <label class="col-3 col-form-label">Pilih Assessor:</label>
+                                <div data-repeater-list="assessor_id" class="col-lg-9">
+                                    @if (!empty($jadwalKelas) && !empty($jadwalKelas->assessor) && $jadwalKelas->assessor->count() > 0)
+                                        @foreach($jadwalKelas->assessor as $item)
+                                            <div data-repeater-item class="form-group row align-items-center">
+                                                <div class="col-sm-8">
+                                                    <div class="kt-form__group--inline">
+                                                        <div class="kt-form__control">
+                                                            {!! Form::select('',$assessor, $item->id,['class'=>'form-control','placeholder'=>'Pilih Assessor']) !!}
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-md-none kt-margin-b-10"></div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <a href="javascript:;" data-repeater-delete="" class="btn-sm btn btn-label-danger btn-bold">
+                                                        <i class="la la-trash-o"></i>
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div data-repeater-item class="form-group row align-items-center">
+                                            <div class="col-sm-8">
+                                                <div class="kt-form__group--inline">
+                                                    <div class="kt-form__control">
+                                                        {!! Form::select('',$assessor, null,['class'=>'form-control','placeholder'=>'Pilih Assessor']) !!}
+                                                    </div>
+                                                </div>
+                                                <div class="d-md-none kt-margin-b-10"></div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <a href="javascript:;" data-repeater-delete="" class="btn-sm btn btn-label-danger btn-bold">
+                                                    <i class="la la-trash-o"></i>
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label"></label>
+                                <div class="col-lg-4">
+                                    <a href="javascript:;" data-repeater-create="" class="btn btn-bold btn-sm btn-label-brand">
+                                        <i class="la la-plus"></i> Tambah Assessor
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,6 +172,7 @@
         $(document).ready(function() {
             $( "#form-kelas" ).validate({
                 // define validation rules
+                ignore: [],
                 rules: {
                     program_id: {
                         required: true
@@ -133,6 +190,9 @@
                         required: true
                     },
                     started_at: {
+                        required: true
+                    },
+                    'assessor_id[]': {
                         required: true
                     }
                 },
@@ -164,7 +224,8 @@
             /** untuk select provinsi */
             $('.kt-select2').select2({
                 // placeholder: "Pilih Program",
-                allowClear: true
+                allowClear: true,
+                width: '100%'
             });
 
             // datepicker minimum setup
@@ -176,6 +237,23 @@
                 todayHighlight: true,
                 orientation: "bottom left",
                 templates: 'arrows'
+            });
+
+            $('#kt_repeater_1').repeater({
+                initEmpty: false,
+
+                defaultValues: {
+                    'assessor_id': ''
+                },
+
+                show: function () {
+                    $(this).slideDown();
+                },
+
+                hide: function (deleteElement) {
+                    $(this).slideUp(deleteElement);
+                },
+                isFirstItemUndeletable: true
             });
         })
     </script>

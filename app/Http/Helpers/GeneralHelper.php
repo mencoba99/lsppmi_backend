@@ -3,6 +3,7 @@
 
 namespace App\Http\Helpers;
 
+use App\Models\MemberCertificationAPL02;
 use Route;
 
 /**
@@ -86,23 +87,60 @@ class GeneralHelper
         $prefix    = Route::current()->action['prefix'];
         $actionArr = explode('/', $prefix);
         if (count($actionArr) > 0) {
-            $text_1    = str_replace('-', ' ', $actionArr[0]);
-            $text_1    = ucwords($text_1);
-            $title .= $text_1;
+            $text_1 = str_replace('-', ' ', $actionArr[0]);
+            $text_1 = ucwords($text_1);
+            $title  .= $text_1;
         }
 
-        $title .= ' - ';
+        $title      .= ' - ';
         $subtext    = Route::currentRouteName();
         $subtextArr = explode('.', $subtext);
         foreach ($subtextArr as $item) {
-            $subtext_1  = str_replace('-', ' ', $item);
-            $subtext_1  = ucwords($subtext_1);
-            $title .= $subtext_1." ";
+            $subtext_1 = str_replace('-', ' ', $item);
+            $subtext_1 = ucwords($subtext_1);
+            $title     .= $subtext_1 . " ";
         }
 
         if (!empty($title))
             return $title;
         else
             return 'Dashboard';
+    }
+
+    /**
+     * Helper untuk cek Kompeten atau tidak KUK pada form APL02
+     *
+     * @param $memberCertificationId
+     * @param $competenceKukId
+     * @return bool
+     */
+    public static function getCompetentStatusAPL02($memberCertificationId, $competenceKukId)
+    {
+        $cek = MemberCertificationAPL02::where('member_certification_id', $memberCertificationId)->where('competence_kuk_id', $competenceKukId)->first();
+        if ($cek && $cek->count() > 0) {
+            if ($cek->is_competent) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param $proof
+     * @return array|bool
+     */
+    public static function getAPL01File($proof)
+    {
+        $trimProof = str_replace(['{','}'],'',$proof);
+
+        $arrProof = explode(',',$trimProof);
+        if ($arrProof && count($arrProof) > 0) {
+            return $arrProof;
+        } else {
+            return false;
+        }
     }
 }
