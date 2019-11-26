@@ -19,6 +19,11 @@ use DB;
 
 class PembuatanSoalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Pembuatan Soal']);
+    }
+    
     public function index()
     {
         $pageTitle = 'LSPPMI - Soal Program';
@@ -92,56 +97,36 @@ class PembuatanSoalController extends Controller
     public function AjaxPembuatanSoalGetData()
     {
         $dataSoal = Soal::with('modul','submodul')->get();
-        
-
-       return DataTables::of($dataSoal)->addColumn('action', function (Soal $Soal) {
-            // $action = "<div class='btn-group'>";
-            // $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($Soal->penjelasan).'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.Crypt::decryptString($Soal->e).'"   data-d="'.Crypt::decryptString($Soal->d).'"  data-c="'.Crypt::decryptString($Soal->c).'" data-b="'.Crypt::decryptString($Soal->b).'"  data-a="'.Crypt::decryptString($Soal->a).'" data-soal="'.Crypt::decryptString($Soal->soal).'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Soal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            // // $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Soal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-
-			// $action .= "</div>";
-            // // return $action;
-                                    $action = "<a href='" . route('materi.pembuatan-soal.show', ['soal' => $Soal]) . "' id='show' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View ".$Soal->name."' data-original-tooltip='View ".$Soal->name."'>
-                                    <i class='la la-search'></i>
-                                    </a>";
-                                    if (auth()->user()->can('Pembuatan Soal Edit')) {
-                                       $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($Soal->penjelasan).'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.Crypt::decryptString($Soal->e).'"   data-d="'.Crypt::decryptString($Soal->d).'"  data-c="'.Crypt::decryptString($Soal->c).'" data-b="'.Crypt::decryptString($Soal->b).'"  data-a="'.Crypt::decryptString($Soal->a).'" data-soal="'.Crypt::decryptString($Soal->soal).'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Soal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            
-                                    }
-                                    if (auth()->user()->can('Pembuatan Soal Delete')) {
-                                        $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Soal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-
-                                    }
-                                    return $action;
-
+        return DataTables::of($dataSoal)->addColumn('action', function (Soal $Soal) {
+            $action = "<a href='" . route('materi.pembuatan-soal.show', ['soal' => $Soal]) . "' id='show' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View ".$Soal->name."' data-original-tooltip='View ".$Soal->name."'>
+                    <i class='la la-search'></i>
+                    </a>";
+            if (auth()->user()->can('Pembuatan Soal Edit')) {
+                    $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($Soal->penjelasan).'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.Crypt::decryptString($Soal->e).'"   data-d="'.Crypt::decryptString($Soal->d).'"  data-c="'.Crypt::decryptString($Soal->c).'" data-b="'.Crypt::decryptString($Soal->b).'"  data-a="'.Crypt::decryptString($Soal->a).'" data-soal="'.Crypt::decryptString($Soal->soal).'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Soal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            }
+            if (auth()->user()->can('Pembuatan Soal Delete')) {
+                    $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Soal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
+            }
+            return $action;
 		})->addColumn('status', function (Soal $Soal) {
-
             if($Soal->status==1){
                 return "Aktif";
             }else{
                 return "Non Aktif";
             }
-
 		})->addColumn('modul', function (Soal $Soal) {
-
             if($Soal->modul_id){
                 $data = Modul::find($Soal->modul_id)->first();
                 return $data->name;
             }
-
-
 		})->addColumn('submodul', function (Soal $Soal) {
-
             if($Soal->submodul_id){
                 $data = SubModul::find($Soal->submodul_id)->first();
                 return $data->name;
             }
-
 		})->addColumn('bobot', function (Soal $Soal) {
-
             $data = SoalJenis::find($Soal->jenis_soal_id)->first();
             return $data->name;
-
 		})->make(true);
     }
 
@@ -150,18 +135,7 @@ class PembuatanSoalController extends Controller
        
         $submodul = [];
         $getsubModul = SubModul::where('id_modul',$request->id_modul)->get();
-        // foreach ($getsubModul as $key1 => $value1) {
-        //      return json_encode(array(
-        //     "id"=>$value1->id,
-        //     "name"=>$submvalue1odul->name
-        //     ));
-           
-        // }
         
-        // return json_encode(array(
-        //     "id"=>$submodul->id,
-        //     "name"=>$submodul->name
-        // ));
        return  $getsubModul;
     }
 

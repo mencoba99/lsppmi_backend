@@ -10,14 +10,14 @@
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                  {{ucfirst(trans(end($crumbs)))}}
+                  Soal
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah   {{ucfirst(trans(end($crumbs)))}}</button>
+                            Tambah   Data</button>
                         &nbsp;
                         {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
                             <i class="la la-plus"></i>
@@ -65,7 +65,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -343,12 +343,12 @@ jQuery(document).ready(function() {
                     desc: $("#desc").val(),
                 },
                 beforeSend: function() {
-                //     KTApp.block('#add .modal-content', {
-                //     overlayColor: '#000000',
-                //     type: 'v2',
-                //     state: 'primary',
-                //     message: 'Processing...'
-                // });
+                    KTApp.block('#add .modal-content', {
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'primary',
+                    message: 'Processing...'
+                });
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

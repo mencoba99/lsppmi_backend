@@ -14,7 +14,7 @@ use App\User;
 class KotaController extends Controller
 {
     /**
-     * ProvinsiController constructor.
+     * KotaController constructor.
      */
     public function __construct()
     {
@@ -38,32 +38,34 @@ class KotaController extends Controller
 
     public function kota()
     {
-        $pageTitle = 'LSPPMI - Master Kota';
-        $data = Provinsi::all();
-        $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-                    $provinsi             = [];
-				foreach ($data as $value) {
-					$provinsi[ $value->id ] = $value->name;
-				}
-
-		return view('DataMaster.KotaController.kota', compact('pageTitle','provinsi','crumbs'));
+        $provinsi     = Provinsi::orderBy('name', 'ASC')->pluck('name', 'id')->prepend('',''); //Dropdown Unit
+		return view('DataMaster.KotaController.kota', compact('provinsi'));
     }
 
     public function AjaxKotaInsertData(Request $request)
     {
-
+        /**
+         * Parameter for insert db
+         */
         $Kota = new Kota();
         $Kota->name = $request->get('nm_kota');
         $Kota->province_id = $request->get('id_provinsi');
 
-
+        /**
+         * Parameter for update db
+         */
         if($request->get('id_kota')){
 
             $update =[];
             $update['id'] = $request->get('id_kota');
             $update['name'] = $request->get('nm_kota');
-
+            /**
+             * Trigger Update
+             */
             if(Kota::whereId($request->get('id_kota'))->update($update)){
+                /**
+                 * Http Respond
+                 */
                 return json_encode(array(
                     "status"=>200,
                     "message"=>"sukses"
@@ -76,7 +78,9 @@ class KotaController extends Controller
             }
 
         }else{
-
+            /**
+             * Trigger Insert DB
+             */
             if ($Kota->save()) {
                 return json_encode(array(
                     "status"=>200
@@ -88,10 +92,7 @@ class KotaController extends Controller
             }
         }
 
-
-
     }
-
 
     public function AjaxKotaGetData()
     {
@@ -99,7 +100,9 @@ class KotaController extends Controller
 
         return DataTables::of($kota)->addColumn('action', function (Kota $kota) {
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit" data-id="'.$kota->id.'" data-nama="'.$kota->nm_kota.'" data-kode="'.$kota->kode_pos.'" data-provinsi="'.$kota->id_provinsi.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $kota->nm_kota . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            if (auth()->user()->can('Kota Edit')) {
+                $action .= '<button id="edit" data-id="'.$kota->id.'" data-nama="'.$kota->nm_kota.'" data-kode="'.$kota->kode_pos.'" data-provinsi="'.$kota->id_provinsi.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $kota->nm_kota . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            }
             $action .= "</div>";
 			return $action;
 		})->make(true);
@@ -107,8 +110,6 @@ class KotaController extends Controller
 
     public function AjaxKotaDeleteData(Request $request)
     {
-
-    //    return $request->get('nm_provinsi');
 
         $deleted = Kota::find($request->get('id'))->delete();
         if ($deleted) {
@@ -121,6 +122,5 @@ class KotaController extends Controller
                 ));
         }
     }
-
 
 }

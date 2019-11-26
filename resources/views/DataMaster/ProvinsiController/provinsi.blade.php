@@ -1,89 +1,80 @@
 @extends('layouts.base')
-
 @section('content')
-
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-        <div class="alert alert-light alert-elevate" role="alert">
-            <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
-            <div class="alert-text">
-                Ini adalah menu data provinsi.
-            </div>
-        </div>
-        <div class="kt-portlet kt-portlet--mobile">
-            <div class="kt-portlet__head kt-portlet__head--lg">
-                <div class="kt-portlet__head-label">
+<div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+            <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
-                    <h3 class="kt-portlet__head-title">
-                        Provinsi
-                    </h3>
-                </div>
-                @can('Provinsi Add')
-                <div class="kt-portlet__head-toolbar">
-                    <div class="kt-portlet__head-wrapper">
-                        <div class="kt-portlet__head-actions">
-                            <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm"
-                                    data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                                Tambah Data
-                            </button>
-                            &nbsp;
-                        </div>
+                <h3 class="kt-portlet__head-title">
+                    Provinsi
+                </h3>
+            </div>
+            @can('Provinsi Add')
+            <div class="kt-portlet__head-toolbar">
+                <div class="kt-portlet__head-wrapper">
+                    <div class="kt-portlet__head-actions">
+                        @can('Provinsi Add')
+                        <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal"
+                            data-target="#add"><i class="la la-plus"></i>
+                            Tambah Data
+                        </button>
+                        @endcan
+                        &nbsp;
                     </div>
                 </div>
-                @endcan
             </div>
-            <div class="kt-portlet__body tabel-provinsi">
-                <table
-                    class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline"
-                    id="datatable">
-                    <thead>
+            @endcan
+        </div>
+        <div class="kt-portlet__body tabel-provinsi">
+            <table
+                class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline"
+                id="datatable">
+                <thead>
                     <tr>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    </thead>
-                    <tfoot>
+                </thead>
+                <tfoot>
                     <tr>
                         <td class="nosearch"></td>
                         <td></td>
                         <td class="nosearch"></td>
                     </tr>
-                    </tfoot>
-                </table>
-
-            </div>
+                </tfoot>
+            </table>
         </div>
     </div>
-    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Data Baru</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form">
-                        <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Nama Provinsi:</label>
-                            <input type="text" class="form-control" name="provinsi_nm" id="provinsi_nm">
-                            <input type="text" class="form-control " style="display:none" name="id_provinsi[]"
-                                   id="provinsi_id">
-                        </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="simpan" class="submit btn btn-brand btn-elevate btn-icon-sm">Simpan
-                    </button>
-                </div>
-                </form>
+</div>
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Data Baru</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
             </div>
+            <div class="modal-body">
+                <form id="form">
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Nama Provinsi:</label>
+                        <input type="text" class="form-control" name="provinsi_nm" id="provinsi_nm">
+                        <input type="text" class="form-control " style="display:none" name="id_provinsi[]"
+                            id="provinsi_id">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" id="simpan" class="submit btn btn-brand btn-elevate btn-icon-sm">Simpan
+                </button>
+            </div>
+            </form>
         </div>
     </div>
+</div>
 
 @endsection
 

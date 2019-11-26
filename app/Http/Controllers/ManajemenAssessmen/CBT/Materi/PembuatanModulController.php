@@ -12,33 +12,29 @@ use Entrust;
 
 class PembuatanModulController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Modul']);
+    }
+    
     public function index()
     {
-        $pageTitle = 'LSPPMI - Modul Program';
-        $pageHeader = 'Modul';
-        $Title = 'ini adalah menu Modul';
-        $status       = [
-            '0'  => 'Non Aktif',
-            '1' => 'Aktif'
-        ];
-
-        $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-
-		return view('ManajemenAssessmen.cbt.materi.modul', compact('pageTitle','Title','pageHeader','crumbs','status'));
+       return view('ManajemenAssessmen.cbt.materi.modul');
     }
 
     public function AjaxModulGetData()
     {
        return DataTables::of(Modul::all())->addColumn('action', function (Modul $Modul) {
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit" data-status="'.$Modul->status.'" data-persen="'.$Modul->persentase.'" data-eng="'.$Modul->sing_eng.'"  data-harga="'.$Modul->price.'" data-id="'.$Modul->id.'" data-nama="'.$Modul->name.'" data-desc="'.$Modul->description.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Modul->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            // $action .= '<button id="hapus"  data-id="'.$Modul->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Modul->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-
+            if (auth()->user()->can('Modul Edit')) {
+                $action .= '<button id="edit" data-status="'.$Modul->status.'" data-persen="'.$Modul->persentase.'" data-eng="'.$Modul->sing_eng.'"  data-harga="'.$Modul->price.'" data-id="'.$Modul->id.'" data-nama="'.$Modul->name.'" data-desc="'.$Modul->description.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Modul->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+                // $action .= '<button id="hapus"  data-id="'.$Modul->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Modul->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
+            }
 			$action .= "</div>";
 			return $action;
 		})->addColumn('status', function (Modul $Modul) {
 
-            if($Modul->status==1){
+            if($Modul->aktif==true){
                 return "Aktif";
             }else{
                 return "Non Aktif";
@@ -69,9 +65,8 @@ class PembuatanModulController extends Controller
         $Modul->name = $request->get('name');
         $Modul->description = $request->get('desc');
         $Modul->persentase = $request->get('persen');
-        $Modul->sing_eng = $request->get('eng');
-        $Modul->status = $request->get('status');
-
+        $Modul->sing_eng = $request->get('sing_eng');
+        $Modul->aktif = $request->get('status') ? TRUE : FALSE;
 
         if($request->get('id')){ // for update
 
@@ -80,8 +75,8 @@ class PembuatanModulController extends Controller
             $update['name'] = $request->get('name');
             $update['description'] = $request->get('desc');
             $update['persentase'] = $request->get('persen');
-            $update['sing_eng'] = $request->get('eng');
-            $update['status'] = $request->get('status');
+            $update['sing_eng'] = $request->get('sing_eng');
+            $update['aktif'] = $request->get('status') ? TRUE : FALSE;
             if(Modul::whereId($request->get('id'))->update($update)){
                 return json_encode(array(
                     "status"=>200,
