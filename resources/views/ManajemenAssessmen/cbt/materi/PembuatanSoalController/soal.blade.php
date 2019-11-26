@@ -332,11 +332,11 @@ jQuery(document).ready(function() {
                     submodul: $("#submodul_id").val(),
                     bobot: $("#jenissoal_id").val(),
                     nick: $("#nick").val(),
-                    answer_a: $("#answer_a").val(),
-                    answer_b: $("#answer_b").val(),
-                    answer_c: $("#answer_c").val(),
-                    answer_d: $("#answer_d").val(),
-                    answer_e: $("#answer_e").val(),
+                    a: $("#answer_a").val(),
+                    b: $("#answer_b").val(),
+                    c: $("#answer_c").val(),
+                    d: $("#answer_d").val(),
+                    e: $("#answer_e").val(),
                     tag: $("#tag").val(),
                     answer: $("#answer").val(),
                     status: $("#status").val(),
@@ -446,7 +446,7 @@ jQuery(document).ready(function() {
             $("#answer").val($(this).data('jawaban'));
             $("#status").val($(this).data('status'));
             $("#desc").val($(this).data('desc'));
-            $('.summernote').summernote('code', $(this).data('desc'));
+            $('.summernote').summernote('code', $(this).data('soal'));
             $('.kt-selectpicker').selectpicker('refresh');
 
             $('#add').modal('show');

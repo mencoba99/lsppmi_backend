@@ -245,70 +245,70 @@ class JadwalController extends Controller
 
 
     public function ajax_get_peserta(Request $request){
-       echo "te4s";
-            // $sesi_id        = $request->sesi_id;
-            // $ujian_batch    = Ujian_batch::where('perdana_jadwal_id', $sesi_id)->get(['program_schedule_id','ujian_batch_id']);
-            // $batch_id       = Ujian_batch::where('perdana_jadwal_id', $sesi_id)->pluck('program_schedule_id');
-            // $ujian_batch_id = Ujian_batch::whereIn('program_schedule_id', $batch_id)->pluck('ujian_batch_id');
-            // $peserta        = array();
-            // foreach ($ujian_batch as $value) {
-            //     $nama_batch             = ProgramSchedule::find($value->program_schedule_id);
-            //     $arrb['id_batch']       = $value->id;
-            //     $arrb['nama_batch']     = $nama_batch->programs->name;
-            //     $arrb['ujian_batch_id'] = $value->ujian_batch_id;
-            //     return $value; exit;
-            //     $peserta_perdana        = Ujian_batch::select('perdana_peserta.peserta_id')
-            //                                          ->where('ujian_batch.batch_id', $value->batch_id)
-            //                                          ->join('perdana_peserta', 'perdana_peserta.ujian_batch_id', '=',
-            //                                                 'ujian_batch.ujian_batch_id')
-            //                                          ->get();
-            //     $peserta_pendaftar      = Pendaftaran_trx::where('pendaftaran_trx.batch_id', $value->batch_id)
-            //                                              ->whereNotIn('peserta_id', $peserta_perdana)
-            //                                              // ->join('perdana_peserta', 'perdana_peserta.ujian_batch_id', '=', 
-            //                                              //    'ujian_batch.ujian_batch_id')
-            //                                              // ->whereNotIn('peserta_id', function($query) use($value) {
-            //                                              //      $query->select(DB::raw('peserta_id'))
-            //                                              //            ->from('perdana_peserta')
-            //                                              //            ->where('ujian_batch_id', $value->ujian_batch_id);
-            //                                              //          })
-            //                                              ->whereNotIn('peserta_aktivasi_id', function($q){
-            //                                                     $q->select('peserta_aktivasi_id')
-            //                                                       ->from('peserta_cancel');
-            //                                                })
-            //                                              ->pluck('peserta_id');
-            //     $peserta_ujian         = Perdana_peserta::whereIn('ujian_batch_id', $ujian_batch_id)
-            //                                              ->pluck('peserta_id');
-            //     $list_peserta           = Peserta::select(['peserta.peserta_id AS _id', 'peserta.nama AS nama'])->orderBy('nama')->whereIn('peserta_id', $peserta_pendaftar)->get();
-            //     $m  = array();
-            //     foreach ($list_peserta as $data) {
-            //         $n = array();
-            //         $n['peserta_id'] = $data->_id;
-            //         $n['nama']       = $data->nama;
-            //         array_push($m, $n);
-            //     }
-            //     $arrb['peserta'] = $m;
-            //     $perdana_peserta        = Perdana_peserta::where('ujian_batch_id', $value->ujian_batch_id)
-            //                                              ->whereNotIn('perdana_peserta_id', function($query) {
-            //                                                         $query->select(DB::raw('perdana_peserta_id'))
-            //                                                               ->from('soal_peserta');
-            //                                                           })
-            //                                              ->pluck('peserta_id');
-            //     $list_peserta_selected  = Peserta::select(['peserta.peserta_id AS _id', 'peserta.nama AS nama'])->whereIn('peserta_id', $perdana_peserta)->get();
-            //     $o  = array();
-            //     foreach ($list_peserta_selected as $dataselected) {
-            //         $p = array();
-            //         $p['peserta_id'] = $dataselected->_id;
-            //         $p['nama']       = $dataselected->nama;
-            //         array_push($o, $p);
-            //     }
-            //     $arrb['peserta_selected'] = $o;
-            //     array_push($peserta, $arrb);
-            // }
-            // if(!empty($peserta)){
-            //     echo json_encode($peserta);
-            // }else{
-            //     echo json_encode(array());
-            // }
+      
+            $sesi_id        = $request->sesi_id;
+            $ujian_batch    = Ujian_batch::where('perdana_jadwal_id', $sesi_id)->get(['program_schedule_id','ujian_batch_id']);
+            $batch_id       = Ujian_batch::where('perdana_jadwal_id', $sesi_id)->pluck('program_schedule_id');
+            $ujian_batch_id = Ujian_batch::whereIn('program_schedule_id', $batch_id)->pluck('ujian_batch_id');
+            $peserta        = array();
+            foreach ($ujian_batch as $value) {
+                $nama_batch             = ProgramSchedule::find($value->program_schedule_id);
+                $arrb['id_batch']       = $value->id;
+                $arrb['nama_batch']     = $nama_batch->programs->name;
+                $arrb['ujian_batch_id'] = $value->ujian_batch_id;
+                return $value; exit;
+                $peserta_perdana        = Ujian_batch::select('perdana_peserta.peserta_id')
+                                                     ->where('ujian_batch.batch_id', $value->batch_id)
+                                                     ->join('perdana_peserta', 'perdana_peserta.ujian_batch_id', '=',
+                                                            'ujian_batch.ujian_batch_id')
+                                                     ->get();
+                $peserta_pendaftar      = Pendaftaran_trx::where('pendaftaran_trx.batch_id', $value->batch_id)
+                                                         ->whereNotIn('peserta_id', $peserta_perdana)
+                                                         // ->join('perdana_peserta', 'perdana_peserta.ujian_batch_id', '=', 
+                                                         //    'ujian_batch.ujian_batch_id')
+                                                         // ->whereNotIn('peserta_id', function($query) use($value) {
+                                                         //      $query->select(DB::raw('peserta_id'))
+                                                         //            ->from('perdana_peserta')
+                                                         //            ->where('ujian_batch_id', $value->ujian_batch_id);
+                                                         //          })
+                                                         ->whereNotIn('peserta_aktivasi_id', function($q){
+                                                                $q->select('peserta_aktivasi_id')
+                                                                  ->from('peserta_cancel');
+                                                           })
+                                                         ->pluck('peserta_id');
+                $peserta_ujian         = Perdana_peserta::whereIn('ujian_batch_id', $ujian_batch_id)
+                                                         ->pluck('peserta_id');
+                $list_peserta           = Peserta::select(['peserta.peserta_id AS _id', 'peserta.nama AS nama'])->orderBy('nama')->whereIn('peserta_id', $peserta_pendaftar)->get();
+                $m  = array();
+                foreach ($list_peserta as $data) {
+                    $n = array();
+                    $n['peserta_id'] = $data->_id;
+                    $n['nama']       = $data->nama;
+                    array_push($m, $n);
+                }
+                $arrb['peserta'] = $m;
+                $perdana_peserta        = Perdana_peserta::where('ujian_batch_id', $value->ujian_batch_id)
+                                                         ->whereNotIn('perdana_peserta_id', function($query) {
+                                                                    $query->select(DB::raw('perdana_peserta_id'))
+                                                                          ->from('soal_peserta');
+                                                                      })
+                                                         ->pluck('peserta_id');
+                $list_peserta_selected  = Peserta::select(['peserta.peserta_id AS _id', 'peserta.nama AS nama'])->whereIn('peserta_id', $perdana_peserta)->get();
+                $o  = array();
+                foreach ($list_peserta_selected as $dataselected) {
+                    $p = array();
+                    $p['peserta_id'] = $dataselected->_id;
+                    $p['nama']       = $dataselected->nama;
+                    array_push($o, $p);
+                }
+                $arrb['peserta_selected'] = $o;
+                array_push($peserta, $arrb);
+            }
+            if(!empty($peserta)){
+                echo json_encode($peserta);
+            }else{
+                echo json_encode(array());
+            }
     }
 
     public function AjaxJadwalInsertData(Request $request)
