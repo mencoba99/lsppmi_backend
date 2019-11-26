@@ -109,6 +109,31 @@ Route::middleware(['auth'])->group(function (){
 
         });
 
+        Route::group(['prefix'=>'daftar-pertanyaan'], function () {
+        
+            Route::resource('tertulis', 'TertulisController');
+            Route::post('tertulis/create', 'TertulisController@create')->name('tertulis.create');
+            Route::post('tertulis/update/{tertulis}', 'TertulisController@update')->name('tertulis.update');
+            Route::post('tertulis/data', 'TertulisController@Getdata')->name('tertulis.getdata');
+            Route::post('tertulis/getElement', 'TertulisController@getElement')->name('tertulis.getElement');
+            Route::post('tertulis/getKUK', 'TertulisController@getKUK')->name('tertulis.getKUK');
+            Route::get('tertulis/{tertulis}/delete', 'TertulisController@delete')->name('tertulis.delete');
+            Route::get('tertulis/{tertulis}/show', 'TertulisController@show')->name('tertulis.show');
+            Route::get('tertulis/{tertulis}/edit', 'TertulisController@edit')->name('tertulis.edit');
+            Route::get('lisan/data1', 'LisanController@Getdata')->name('tertulis.data');
+    
+            Route::resource('lisan', 'LisanController');
+            Route::post('lisan/create', 'LisanController@create')->name('lisan.create');
+            Route::post('lisan/data', 'LisanController@Getdata')->name('lisan.getdata');
+            Route::get('lisan/{lisan}/delete', 'LisanController@delete')->name('lisan.delete');
+            Route::post('lisan/update/{lisan}', 'LisanController@update')->name('lisan.update');
+            Route::get('lisan/{lisan}/show', 'LisanController@show')->name('lisan.show');
+            Route::get('lisan/{lisan}/edit', 'LisanController@edit')->name('lisan.edit');
+            Route::post('lisan/getElement', 'LisanController@getElement')->name('lisan.getElement');
+            Route::post('lisan/getKUK', 'LisanController@getKUK')->name('lisan.getKUK');
+        
+        });
+
 
     });
 

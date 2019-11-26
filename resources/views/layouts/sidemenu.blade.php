@@ -98,6 +98,16 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('master', $prefix) ? 'kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon2-map"><span></span></i><span class="kt-menu__link-text">Daftar Pertanyaan</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                    <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item {{ ($routeName == 'tertulis.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('tertulis.index') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Tertulis</span></a></li>
+                                        <li class="kt-menu__item {{ ($routeName == 'lisan.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('lisan.index') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Lisan</span></a></li>
+                                       
+                                       
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
