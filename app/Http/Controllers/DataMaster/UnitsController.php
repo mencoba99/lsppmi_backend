@@ -21,17 +21,8 @@ class UnitsController extends Controller
 
     public function index()
     {
-        $pageTitle = 'LSPPMI - Master Units';
-        $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-                 
-
-                $type = [];
-                $get = Kategori::all();
-                foreach ($get as $key2 => $value2) {
-                    $type[$value2->id]=$value2->name;
-                }
-
-		return view('DataMaster.UnitsController.index', compact('pageTitle','crumbs','type'));
+        $type     = Kategori::orderBy('name', 'ASC')->pluck('name', 'id')->prepend('',''); //Dropdown Type
+		return view('DataMaster.UnitsController.index', compact('type'));
     }
  
     public function AjaxInsertData(Request $request)
@@ -41,7 +32,7 @@ class UnitsController extends Controller
         $Units->name = $request->get('name');
         $Units->code = $request->get('code');
         $Units->status = $request->get('status');
-        $Units->type = $request->get('status');
+        $Units->type = $request->get('status') ? TRUE : FALSE;
         
 
         if($request->get('id')){
@@ -51,7 +42,7 @@ class UnitsController extends Controller
             $update['name'] = $request->get('name');
             $update['code'] = $request->get('code');
             $update['type'] = $request->get('type');
-            $update['status'] = $request->get('status');
+            $update['status'] = $request->get('status') ? TRUE : FALSE;
            
             if(Units::whereId($request->get('id'))->update($update)){
                 return json_encode(array(
@@ -90,7 +81,9 @@ class UnitsController extends Controller
         
         return DataTables::of($Units)->addColumn('action', function (Units $Units) {
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit" data-id="'.$Units->id.'" data-status="'.$Units->status.'"  data-name="'.$Units->name.'" data-code="'.$Units->code.'" data-type="'.$Units->type.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Units->nm_Units . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            if (auth()->user()->can('Unit Kompetensi Edit')) {
+                $action .= '<button id="edit" data-id="'.$Units->id.'" data-status="'.$Units->status.'"  data-name="'.$Units->name.'" data-code="'.$Units->code.'" data-type="'.$Units->type.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Units->nm_Units . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            }
             $action .= "</div>";
 			return $action;
 		})->addColumn('status', function (Units $Units) {
