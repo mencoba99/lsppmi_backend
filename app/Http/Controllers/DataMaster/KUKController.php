@@ -13,8 +13,10 @@ use App\User;
 
 class KUKController extends Controller
 {
-   
-
+    public function __construct()
+    {
+        $this->middleware(['permission:Kerangka Unjuk Kerja']);
+    }
 
     public function index()
     {
@@ -32,14 +34,18 @@ class KUKController extends Controller
  
     public function AjaxInsertData(Request $request)
     {
-       
+        /**
+         * Parameter for Insert DB
+         */
         $KUK = new KUK();
         $KUK->name = $request->get('name');
         $KUK->code = $request->get('code');
         $KUK->competence_element_id = $request->get('element');
         $KUK->status = $request->get('status');
         
-
+        /**
+         * Paremeter for Update DB
+         */
         if($request->get('id')){
             
             $update =[];
@@ -48,8 +54,13 @@ class KUKController extends Controller
             $update['code'] = $request->get('code');
             $update['competence_element_id'] = $request->get('element');
             $update['status'] = $request->get('status');
-           
+            /**
+             * Trigger Update
+             */
             if(KUK::whereId($request->get('id'))->update($update)){
+                /**
+                 * HTTP Response
+                 */
                 return json_encode(array(
                     "status"=>200,
                     "message"=>"sukses"
@@ -62,7 +73,9 @@ class KUKController extends Controller
             }
             
         }else{
-            
+            /**
+             * Trigger Insert
+             */
             if ($KUK->save()) {
                 return json_encode(array(
                     "status"=>200
@@ -73,23 +86,23 @@ class KUKController extends Controller
                 ));
             }
         }
-       
-       
-
+    
     }
 
 
     public function AjaxGetData()
     {
         $KUK = KUK::with(['element'])->get();
-       
-        
         return DataTables::of($KUK)->addColumn('action', function (KUK $KUK) {
+           
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit" data-id="'.$KUK->id.'" data-status="'.$KUK->status.'" data-name="'.$KUK->name.'" data-code="'.$KUK->code.'" data-element="'.$KUK->competence_element_id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $KUK->nm_KUK . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            if (auth()->user()->can('Kerangka Unjuk Kerja Edit')) {
+                $action .= '<button id="edit" data-id="'.$KUK->id.'" data-status="'.$KUK->status.'" data-name="'.$KUK->name.'" data-code="'.$KUK->code.'" data-element="'.$KUK->competence_element_id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $KUK->nm_KUK . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            }
             $action .= "</div>";
 			return $action;
-		})->addColumn('status', function (KUK $KUK) {
+        
+        })->addColumn('status', function (KUK $KUK) {
             
             if($KUK->status==1){
                 return "Aktif";

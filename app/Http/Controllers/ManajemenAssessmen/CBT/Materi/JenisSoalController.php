@@ -12,28 +12,26 @@ use Entrust;
 
 class JenisSoalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Jenis Soal']);
+    }
+    
     public function index()
     {
-        $pageTitle = 'LSPPMI - JenisSoal Program';
-        $pageHeader = 'JenisSoal';
-        $Title = 'ini adalah menu JenisSoal';
-        $status       = [
-            '0'  => 'Non Aktif',
-            '1' => 'Aktif'
-        ];
-
-        $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-
-		return view('ManajemenAssessmen.cbt.materi.jenissoal', compact('pageTitle','Title','pageHeader','crumbs','status'));
+		return view('ManajemenAssessmen.cbt.materi.jenissoal');
     }
 
     public function AjaxJenisSoalGetData()
     {
        return DataTables::of(SoalJenis::all())->addColumn('action', function (SoalJenis $JenisSoal) {
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit"  data-id="'.$JenisSoal->id.'" data-nama="'.$JenisSoal->name.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $JenisSoal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            // $action .= '<button id="hapus"  data-id="'.$JenisSoal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $JenisSoal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-
+            if (auth()->user()->can('Jenis Soal Edit')) {
+                $action .= '<button id="edit"  data-id="'.$JenisSoal->id.'" data-nama="'.$JenisSoal->name.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $JenisSoal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            }
+            if (auth()->user()->can('Jenis Soal Delete')) {
+                // $action .= '<button id="hapus" data-id="'.$JenisSoal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $JenisSoal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
+            }
 			$action .= "</div>";
 			return $action;
 		})->make(true);
@@ -41,16 +39,17 @@ class JenisSoalController extends Controller
 
     public function AjaxJenisSoalDeleteData(Request $request)
     {
-
-        $deleted = SoalJenis::find($request->get('id'))->delete();
-        if ($deleted) {
-            return json_encode(array(
-                    "status"=>200
-                ));
-        } else {
-            return json_encode(array(
-                    "status"=>500
-                ));
+        if (auth()->user()->can('Jenis Soal Delete')) {
+            $deleted = SoalJenis::find($request->get('id'))->delete();
+            if ($deleted) {
+                return json_encode(array(
+                        "status"=>200
+                    ));
+            } else {
+                return json_encode(array(
+                        "status"=>500
+                    ));
+            }
         }
     }
 
@@ -59,7 +58,6 @@ class JenisSoalController extends Controller
 
         $JenisSoal = new SoalJenis();
         $JenisSoal->name = $request->get('name');
-
 
         if($request->get('id')){ // for update
 

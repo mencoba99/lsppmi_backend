@@ -12,24 +12,15 @@ use Entrust;
 
 class PembuatanSubModulController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Submodul']);
+    }
+    
     public function index()
     {
-        $pageTitle = 'LSPPMI - SubModul Program';
-        $pageHeader = 'SubModul';
-        $Title = 'ini adalah menu SubModul';
-        $status       = [
-            '0'  => 'Non Aktif',
-            '1' => 'Aktif'
-        ];
-        $data = Modul::all();
-        $Modul             = [];
-        foreach ($data as $value) {
-            $Modul[ $value->id ] = $value->name;
-        }
-
-        $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
-
-		return view('ManajemenAssessmen.cbt.materi.submodul', compact('pageTitle','Title','pageHeader','crumbs','status','Modul'));
+        $Modul     = Modul::orderBy('name', 'ASC')->pluck('name', 'id')->prepend('',''); //Dropdown Unit
+		return view('ManajemenAssessmen.cbt.materi.submodul', compact('Modul'));
     }
 
     public function AjaxSubModulGetData()
@@ -38,14 +29,17 @@ class PembuatanSubModulController extends Controller
 
        return DataTables::of($Data)->addColumn('action', function (SubModul $SubModul) {
             $action = "<div class='btn-group'>";
-            $action .= '<button id="edit" data-status="'.$SubModul->status.'" data-modul="'.$SubModul->modul->id.'"  data-id="'.$SubModul->id.'" data-nama="'.$SubModul->name.'" data-desc="'.$SubModul->description.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $SubModul->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
-            // $action .= '<button id="hapus"  data-id="'.$SubModul->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $SubModul->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
-
+            if (auth()->user()->can('Submodul Edit')) {
+                $action .= '<button id="edit" data-aktif="'.$SubModul->aktif.'" data-modul="'.$SubModul->modul->id.'"  data-id="'.$SubModul->id.'" data-nama="'.$SubModul->name.'" data-desc="'.$SubModul->description.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $SubModul->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            }  
+            if (auth()->user()->can('Submodul Delete')) {
+                //  $action .= '<button id="hapus"  data-id="'.$SubModul->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $SubModul->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
+            }      
 			$action .= "</div>";
 			return $action;
 		})->addColumn('status_s', function (SubModul $SubModul) {
             
-            if($SubModul->status==1){
+            if($SubModul->aktif==true){
                 return "Aktif";
             }else{
                 return "Non Aktif";
@@ -56,7 +50,7 @@ class PembuatanSubModulController extends Controller
 
     public function AjaxSubModulDeleteData(Request $request)
     {
-
+        if (auth()->user()->can('Submodul Delete')) {
         $deleted = SubModul::find($request->get('id'))->delete();
         if ($deleted) {
             return json_encode(array(
@@ -67,6 +61,7 @@ class PembuatanSubModulController extends Controller
                     "status"=>500
                 ));
         }
+        }
     }
 
     public function AjaxSubModulInsertData(Request $request)
@@ -75,8 +70,8 @@ class PembuatanSubModulController extends Controller
         $SubModul = new SubModul();
         $SubModul->name = $request->get('name');
         $SubModul->description = $request->get('desc');
-        $SubModul->id_modul = $request->get('modul');
-        $SubModul->status = $request->get('status');
+        $SubModul->id_modul = $request->get('id_modul');
+        $SubModul->aktif = $request->get('status') ? TRUE : FALSE;
 
 
         if($request->get('id')){
@@ -84,9 +79,9 @@ class PembuatanSubModulController extends Controller
             $update =[];
             $update['id'] = $request->get('id');
             $update['name'] = $request->get('name');
-            $update['id_modul'] = $request->get('modul');
+            $update['id_modul'] = $request->get('id_modul');
             $update['description'] = $request->get('desc');
-            $update['status'] = $request->get('status');
+            $update['aktif'] = $request->get('status') ? TRUE : FALSE;
             if(SubModul::whereId($request->get('id'))->update($update)){
                 return json_encode(array(
                     "status"=>200,

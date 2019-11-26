@@ -3,12 +3,6 @@
 @section('content')
 
     <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-        <div class="alert alert-light alert-elevate" role="alert">
-            <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
-            <div class="alert-text">
-                Ini adalah menu data kota.
-            </div>
-        </div>
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--lg">
                 <div class="kt-portlet__head-label">
@@ -23,10 +17,12 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
+                                
                                 <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm"
                                         data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
                                     Tambah Data
                                 </button>
+                                
                             </div>
                         </div>
                     </div>
@@ -108,8 +104,7 @@
 
 @push('script')
 
-    <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}"
-            type="text/javascript"></script>
+    <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         var KTBootstrapSelect = function () {
 

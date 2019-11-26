@@ -11,19 +11,17 @@
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                  {{ucfirst(trans(end($crumbs)))}}
+                  Submodul
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
+                        @can('Submodul Add')
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah   {{ucfirst(trans(end($crumbs)))}}</button>
+                            Tambah Data</button>
                         &nbsp;
-                        {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
-                            <i class="la la-plus"></i>
-                            New Record
-                        </a> --}}
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -60,7 +58,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah  {{ucfirst(trans(end($crumbs)))}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah  Data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -73,22 +71,22 @@
                                             <div class="form-group row">
                                                     <label class="col-lg-3 col-form-label">Modul:</label>
                                                     <div class="col-lg-6">
-                                                        {!! Form::select('id_modul',$Modul,null,['id'=>'id_modul','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Modul']) !!}
-                                                        {!! Form::text('submodul_id',null,['id'=>'submodul_id','class'=>'form-control','hidden'=>'hidden']) !!}
+                                                        {!! Form::select('id_modul',$Modul,null,['id'=>'id_modul','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true"]) !!}
+                                                        {!! Form::text('id',null,['id'=>'id','class'=>'form-control','hidden'=>'hidden']) !!}
                                                        
                                                     </div>
                                                 </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Sub Modul:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::text('submodul_name',null,['id'=>'submodul_name','class'=>'form-control ','required'=>'required']) !!}
+                                                    {!! Form::text('name',null,['id'=>'name','class'=>'form-control ','required'=>'required']) !!}
                                                   
                                                 </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label class="col-lg-3 col-form-label">Keterangan:</label>
                                                 <div class="col-lg-6">
-                                                    {!! Form::textarea('submodul_desc',null,['id'=>'submodul_desc','class'=>'form-control ','required'=>'required']) !!}
+                                                    {!! Form::textarea('desc',null,['id'=>'desc','class'=>'form-control ','required'=>'required']) !!}
                                                    
                                                 </div>
                                         </div>
@@ -186,13 +184,7 @@ jQuery(document).ready(function() {
                 type: "post",
                 url: "{{ route('materi.pembuatan-submodul.insert') }}",
                 dataType:"json",
-                data: {
-                    name: $("#submodul_name").val(),
-                    modul: $("#id_modul").val(),
-                    id: $("#submodul_id").val(),
-                    status: cekstatus,
-                    desc: $("#submodul_desc").val(),
-                },
+                data: $("form").serialize(),
                 beforeSend: function() {
                     KTApp.block('#add .modal-content', {
                     overlayColor: '#000000',
@@ -275,12 +267,14 @@ jQuery(document).ready(function() {
         $("#datatable").on("click", "tr #edit", function() { 
              $("input").val(""); 
              form.resetForm();
-            $("#submodul_id").val($(this).data('id'));
+            $("#id").val($(this).data('id'));
             $("#id_modul").val($(this).data('modul'));
-            $("#submodul_name").val($(this).data('nama'));
-            $("#submodul_desc").val($(this).data('desc'));
-            $("#status").val($(this).data('status'));
-            $('.kt-selectpicker').selectpicker('refresh');
+            $("#name").val($(this).data('nama'));
+            $("#desc").val($(this).data('desc'));
+           if($(this).data('aktif')==1){
+            $("#status").prop("checked",true);
+           }
+            
            
            
             $('#add').modal('show');
@@ -291,7 +285,7 @@ jQuery(document).ready(function() {
         $('#new').click(function(event) {
             $("input").val("");
             $("textarea").val("");
-            $("select#status").val("");
+            $("select").val("");
             $('.kt-selectpicker').selectpicker('refresh');
             form.resetForm();
         });
