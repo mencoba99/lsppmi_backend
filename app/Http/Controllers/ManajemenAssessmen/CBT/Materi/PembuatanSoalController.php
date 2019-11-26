@@ -98,14 +98,14 @@ class PembuatanSoalController extends Controller
     {
         $dataSoal = Soal::with('modul','submodul')->get();
         return DataTables::of($dataSoal)->addColumn('action', function (Soal $Soal) {
-            $action = "<a href='" . route('materi.pembuatan-soal.show', ['soal' => $Soal]) . "' id='show' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View ".$Soal->name."' data-original-tooltip='View ".$Soal->name."'>
+            $action = "<a href='" . route('materi.pembuatan-soal.show', ['soal' => $Soal]) . "' id='show' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' >
                     <i class='la la-search'></i>
                     </a>";
             if (auth()->user()->can('Pembuatan Soal Edit')) {
-                    $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($Soal->penjelasan).'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.Crypt::decryptString($Soal->e).'"   data-d="'.Crypt::decryptString($Soal->d).'"  data-c="'.Crypt::decryptString($Soal->c).'" data-b="'.Crypt::decryptString($Soal->b).'"  data-a="'.Crypt::decryptString($Soal->a).'" data-soal="'.Crypt::decryptString($Soal->soal).'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Soal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+                    $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($Soal->penjelasan).'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.Crypt::decryptString($Soal->e).'"   data-d="'.Crypt::decryptString($Soal->d).'"  data-c="'.Crypt::decryptString($Soal->c).'" data-b="'.Crypt::decryptString($Soal->b).'"  data-a="'.Crypt::decryptString($Soal->a).'" data-soal="'.Crypt::decryptString($Soal->soal).'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" ><i class="flaticon2 flaticon2-pen"></i></button>';
             }
             if (auth()->user()->can('Pembuatan Soal Delete')) {
-                    $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Soal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
+                    // $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" ><i class="flaticon2 flaticon2-trash"></i></button>';
             }
             return $action;
 		})->addColumn('status', function (Soal $Soal) {
@@ -212,7 +212,8 @@ class PembuatanSoalController extends Controller
         
         $Soal = new Soal();
         $Soal->nick = $request->get('nick');
-        $Soal->soal = Crypt::encryptString((string)$request->get('soal'));
+        $soal = (string)$request->get('soal');
+        $Soal->soal = Crypt::encryptString($soal);
 
         $a = $request->get('a');
         $b = $request->get('b');
@@ -243,12 +244,12 @@ class PembuatanSoalController extends Controller
 
             $update =[];
             $update['nick'] = $request->get('nick');
-            $update['soal'] = Crypt::encryptString($request->get('soal'));
-            $update['a'] = Crypt::encryptString($request->get('answer_a'));
-            $update['b'] = Crypt::encryptString($request->get('answer_b'));
-            $update['c'] = Crypt::encryptString($request->get('answer_c'));
-            $update['d'] = Crypt::encryptString($request->get('answer_d'));
-            $update['e'] = Crypt::encryptString($request->get('answer_e'));
+            $update['soal'] = Crypt::encryptString($soal);
+            $update['a'] =  Crypt::encryptString($a);
+            $update['b'] =  Crypt::encryptString($b);
+            $update['c'] =  Crypt::encryptString($c);
+            $update['d'] =  Crypt::encryptString($d);
+            $update['e'] =  Crypt::encryptString($e);
             $update['tag'] = $request->get('tag');
             $update['penjelasan'] = Crypt::encryptString($request->get('desc'));
             $update['kunci_id'] = $request->get('answer');
