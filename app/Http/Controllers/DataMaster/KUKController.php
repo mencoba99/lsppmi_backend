@@ -27,11 +27,11 @@ class KUKController extends Controller
 				foreach ($data as $value) {
 					$element[ $value->id ] = $value->name;
                 }
-                
+
 
 		return view('master.kuk', compact('pageTitle','element','crumbs'));
     }
- 
+
     public function AjaxInsertData(Request $request)
     {
         /**
@@ -42,12 +42,12 @@ class KUKController extends Controller
         $KUK->code = $request->get('code');
         $KUK->competence_element_id = $request->get('element');
         $KUK->status = $request->get('status');
-        
+
         /**
          * Paremeter for Update DB
          */
         if($request->get('id')){
-            
+
             $update =[];
             $update['id'] = $request->get('id');
             $update['name'] = $request->get('name');
@@ -71,7 +71,7 @@ class KUKController extends Controller
                     "message"=>"error"
                 ));
             }
-            
+
         }else{
             /**
              * Trigger Insert
@@ -86,7 +86,7 @@ class KUKController extends Controller
                 ));
             }
         }
-    
+
     }
 
 
@@ -94,16 +94,16 @@ class KUKController extends Controller
     {
         $KUK = KUK::with(['element'])->get();
         return DataTables::of($KUK)->addColumn('action', function (KUK $KUK) {
-           
+
             $action = "<div class='btn-group'>";
-            if (auth()->user()->can('Kerangka Unjuk Kerja Edit')) {
+            if (auth()->user()->can('KUK Edit')) {
                 $action .= '<button id="edit" data-id="'.$KUK->id.'" data-status="'.$KUK->status.'" data-name="'.$KUK->name.'" data-code="'.$KUK->code.'" data-element="'.$KUK->competence_element_id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $KUK->nm_KUK . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             }
             $action .= "</div>";
 			return $action;
-        
+
         })->addColumn('status', function (KUK $KUK) {
-            
+
             if($KUK->status==1){
                 return "Aktif";
             }else{
@@ -113,7 +113,7 @@ class KUKController extends Controller
 		})->make(true);
     }
 
-   
+
 
 
 }

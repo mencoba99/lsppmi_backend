@@ -39,6 +39,11 @@ class ProgramSchedule extends Revisionable
         return $this->belongsTo('App\Models\Program', 'program_id', 'id');
     }
 
+    public function program()
+    {
+        return $this->belongsTo('App\Models\Program', 'program_id', 'id');
+    }
+
     public function assessor()
     {
         return $this->belongsToMany('App\Models\Assessor','program_schedule_assessor','program_schedule_id','assessor_id')->using('App\Models\ProgramScheduleAssessor');

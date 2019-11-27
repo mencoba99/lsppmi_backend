@@ -125,19 +125,19 @@ class PreAssessmentController extends Controller
         $apl02 = $memberCertification->apl02();
 
         if ($status == 'approve') {
-            if ($apl02->update(['status'=>1])) {
+            if ($apl02->update(['status'=>3])) {
                 flash()->success('Berhasil Approve APL-02');
             } else {
                 flash()->error('Gagal Approve APL-02');
             }
         } elseif ($status == 'unapprove') {
-            if ($apl02->update(['status'=>'0'])) {
+            if ($apl02->update(['status'=>2])) {
                 flash()->success('Berhasil Unapprove APL-02');
             } else {
                 flash()->error('Gagal Unapprove APL-02');
             }
         } elseif ($status == 'reject') {
-            if ($apl02->update(['status'=>2])) {
+            if ($apl02->update(['status'=>4])) {
                 flash()->success('Berhasil Reject APL-02');
             } else {
                 flash()->error('Gagal Reject APL-02');
@@ -153,9 +153,9 @@ class PreAssessmentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function savePaap(Request $request)
     {
-        //
+        return $request->all();
     }
 
     /**
