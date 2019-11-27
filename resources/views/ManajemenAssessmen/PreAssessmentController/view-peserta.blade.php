@@ -117,13 +117,13 @@
                                             <td>{{ !empty($item->members->company_name) ? $item->members->company_name:'-' }}</td>
                                             <td>
                                                 @if ($item->status == 1)
-                                                    <span class="kt-badge kt-badge--inline kt-badge--primary">Pendaftaran Diterima</span>
+                                                    <span class="kt-badge kt-badge--inline kt-badge--primary">Menunggu Pembayaran</span>
                                                 @elseif($item->status == 2)
-                                                    <span class="kt-badge kt-badge--inline kt-badge--info">Menunggu Pembayaran</span>
+                                                    <span class="kt-badge kt-badge--inline kt-badge--info">APL-02 Belum Komplit</span>
                                                 @elseif($item->status == 3)
-                                                    <span class="kt-badge kt-badge--inline kt-badge--success">Menunggu APL02</span>
+                                                    <span class="kt-badge kt-badge--inline kt-badge--success">APL02 Disetujui</span>
                                                 @else
-                                                    <span class="kt-badge kt-badge--inline kt-badge--danger">Ditolak</span>
+                                                    <span class="kt-badge kt-badge--inline kt-badge--danger">Revisi APL-01</span>
                                                 @endif
                                             </td>
                                             <td>
