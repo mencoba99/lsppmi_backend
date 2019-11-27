@@ -16,9 +16,10 @@
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
+                        @can('KUK Add')
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
                             Tambah Data</button>
-                        &nbsp;
+                        &nbsp;@endcan
                         {{-- <a href="#add" data-toggle="modal" class="btn btn-brand btn-elevate btn-icon-sm">
                             <i class="la la-plus"></i>
                             New Record
@@ -48,7 +49,7 @@
                 </tr>
                 </tfoot>
             </table>
-          
+
         </div>
     </div>
 </div>
@@ -65,7 +66,7 @@
                     <form id="form" class="kt-form kt-form--label-right">
                         <div class="kt-portlet__body">
                             <div class="kt-section kt-section--first">
-                                
+
                                 <div class="kt-section__body">
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label">Name :</label>
@@ -94,9 +95,9 @@
                                                     '1' => 'Aktif'
                                                 ],null,['id'=>'status','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Status']) !!}
                                         </div>
-                                    </div>		
+                                    </div>
                                 </div>
-        
+
                             </div>
                         </div>
             </div>
@@ -115,7 +116,7 @@
 <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     var KTBootstrapSelect = function () {
-    
+
     // Private functions
     var demos = function () {
         // minimum setup
@@ -125,7 +126,7 @@
     return {
         // public functions
         init: function() {
-            demos(); 
+            demos();
         }
     };
 }();
@@ -164,7 +165,7 @@ jQuery(document).ready(function() {
         },
         submitHandler: function (form) { // for demo
             table = $('#datatable').DataTable().destroy();
-        
+
 
         $.ajax({
             type: "post",
@@ -196,8 +197,8 @@ jQuery(document).ready(function() {
                         KTApp.unblock('#add .modal-content');
                         $('#add').modal('hide');
                     }, 2000);
-                    
-        //          
+
+        //
                 } else if(response.status === 500) {
                     // do something with response.message or whatever other data on error
                 }
@@ -235,7 +236,7 @@ jQuery(document).ready(function() {
         view(); //call datatable view
 
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
+        $("#datatable").on("click", "tr #edit", function() {
             $('form').trigger("reset");
             $("#id").val($(this).data('id'));
             $("#name").val($(this).data('name'));
@@ -253,11 +254,11 @@ jQuery(document).ready(function() {
             $('.kt-selectpicker').selectpicker('refresh');
         });
 
-       
 
-   
+
+
     });
-    
-</script>   
-   
+
+</script>
+
 @endpush

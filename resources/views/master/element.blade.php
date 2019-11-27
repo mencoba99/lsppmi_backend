@@ -132,7 +132,7 @@
     return {
         // public functions
         init: function() {
-            demos(); 
+            demos();
         }
     };
 }();
@@ -162,9 +162,9 @@ jQuery(document).ready(function() {
                 required: "Silahkan pilih unit"
             }
         },
-        submitHandler: function (form) { 
+        submitHandler: function (form) {
             table = $('#datatable').DataTable().destroy();
-        
+
             $.ajax({
             type: "post",
             url: "{{ route('master.element.insert') }}",
@@ -189,7 +189,7 @@ jQuery(document).ready(function() {
                         KTApp.unblock('#add .modal-content');
                         $('#add').modal('hide');
                     }, 2000);
-        //          
+        //
                 } else if(response.status === 500) {
                     // do something with response.message or whatever other data on error
                 }
@@ -203,11 +203,14 @@ jQuery(document).ready(function() {
 
   function view(){
     $('#datatable').DataTable().destroy(); // destroy datatable
-    /* Datatable View */
-    $('#datatable').DataTable({
+        /* Datatable View */
+        $('#datatable').DataTable({
             processing: true,
             serverSide: true,
+            searchDelay: 500,
+            ordering: false,
             ajax: "{{ route('master.element.data') }}",
+            lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
             columns: [
                 { data: 'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -218,7 +221,7 @@ jQuery(document).ready(function() {
                 { data: 'status', name: 'status' , title: 'Status' },
                 { data: 'action', name: 'action' , title: 'Action', width : "5%" }
             ]
-    });
+        });
     }
 
     $(function() {
@@ -227,7 +230,7 @@ jQuery(document).ready(function() {
         view(); //call datatable view
 
         /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function() { 
+        $("#datatable").on("click", "tr #edit", function() {
             $('form').trigger("reset");
             $("#id").val($(this).data('id'));
             $("#name").val($(this).data('name'));
@@ -245,11 +248,11 @@ jQuery(document).ready(function() {
             $('.kt-selectpicker').selectpicker('refresh');
         });
 
-       
 
-   
+
+
     });
-    
-</script>   
-   
+
+</script>
+
 @endpush

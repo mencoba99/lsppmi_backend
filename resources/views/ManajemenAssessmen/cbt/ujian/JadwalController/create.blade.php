@@ -285,19 +285,19 @@
                     dataType: "json",
                     data: $("form").serialize(),
                     beforeSend: function () {
-                        //     KTApp.block('.kt-portlet__body', {
-                        //     overlayColor: '#000000',
-                        //     type: 'v2',
-                        //     state: 'primary',
-                        //     message: 'Processing...'
-                        // });
+                            KTApp.block('.kt-portlet__body', {
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'primary',
+                            message: 'Processing...'
+                        });
 
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
-                        // alert(JSON.stringify(response));
+                        alert(JSON.stringify(response));
                         if (response.status === 200) {
                             view();
 

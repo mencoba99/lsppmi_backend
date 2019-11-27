@@ -109,6 +109,31 @@ Route::middleware(['auth'])->group(function (){
 
         });
 
+        Route::group(['prefix'=>'daftar-pertanyaan'], function () {
+        
+            Route::resource('tertulis', 'TertulisController');
+            Route::post('tertulis/create', 'TertulisController@create')->name('tertulis.create');
+            Route::post('tertulis/update/{tertulis}', 'TertulisController@update')->name('tertulis.update');
+            Route::post('tertulis/data', 'TertulisController@Getdata')->name('tertulis.getdata');
+            Route::post('tertulis/getElement', 'TertulisController@getElement')->name('tertulis.getElement');
+            Route::post('tertulis/getKUK', 'TertulisController@getKUK')->name('tertulis.getKUK');
+            Route::get('tertulis/{tertulis}/delete', 'TertulisController@delete')->name('tertulis.delete');
+            Route::get('tertulis/{tertulis}/show', 'TertulisController@show')->name('tertulis.show');
+            Route::get('tertulis/{tertulis}/edit', 'TertulisController@edit')->name('tertulis.edit');
+            Route::get('lisan/data1', 'LisanController@Getdata')->name('tertulis.data');
+    
+            Route::resource('lisan', 'LisanController');
+            Route::post('lisan/create', 'LisanController@create')->name('lisan.create');
+            Route::post('lisan/data', 'LisanController@Getdata')->name('lisan.getdata');
+            Route::get('lisan/{lisan}/delete', 'LisanController@delete')->name('lisan.delete');
+            Route::post('lisan/update/{lisan}', 'LisanController@update')->name('lisan.update');
+            Route::get('lisan/{lisan}/show', 'LisanController@show')->name('lisan.show');
+            Route::get('lisan/{lisan}/edit', 'LisanController@edit')->name('lisan.edit');
+            Route::post('lisan/getElement', 'LisanController@getElement')->name('lisan.getElement');
+            Route::post('lisan/getKUK', 'LisanController@getKUK')->name('lisan.getKUK');
+        
+        });
+
 
     });
 
@@ -126,20 +151,31 @@ Route::middleware(['auth'])->group(function (){
             Route::post('program/delete', 'CBT\ProgramController@AjaxProgramDeleteData')->name('ujian-komputer.program.delete');
 
             Route::get('management', 'CBT\ManagementController@index')->name('ujian-komputer.management');
+            Route::get('management/create', 'CBT\ManagementController@create')->name('ujian-komputer.management.create');
             Route::get('management/data', 'CBT\ManagementController@AjaxMgtProgramGetData')->name('ujian-komputer.management.data');
+            Route::post('management/modul', 'CBT\ManagementController@AjaxGetSubModul')->name('ujian-komputer.management.modul');
             Route::post('management/insert', 'CBT\ManagementController@AjaxMgtProgramInsertData')->name('ujian-komputer.management.insert');
-            Route::post('management/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('ujian-komputer.management.delete');
+            Route::get('management/{mgtprogram}/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('ujian-komputer.management.delete');
+            Route::get('management/{mgtprogram}/show', 'CBT\ManagementController@show')->name('ujian-komputer.management.show');
+            Route::get('management/{mgtprogram}/edit', 'CBT\ManagementController@show')->name('ujian-komputer.management.edit');
 
             Route::group(['prefix' => 'materi'], function () {
+                Route::get('soal', 'CBT\Materi\PembuatanSoalController@index')->name('materi.pembuatan-soal');
+                Route::get('soal/data', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalGetData')->name('materi.pembuatan-soal.data');
+                Route::post('soal/modul', 'CBT\Materi\PembuatanSoalController@AjaxGetSubmodul')->name('materi.pembuatan-soal.modul');
+                Route::post('soal/id', 'CBT\Materi\PembuatanSoalController@AjaxGetId')->name('materi.pembuatan-soal.findId');
+                Route::post('soal/insert', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalInsertData')->name('materi.pembuatan-soal.insert');
+                Route::post('soal/parent', 'CBT\Materi\PembuatanSoalController@AjaxGetParent')->name('materi.pembuatan-soal.parent');
+                Route::post('soal/delete', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalDeleteData')->name('materi.pembuatan-soal.delete');
+                Route::get('soal/{soal}/show', 'CBT\Materi\PembuatanSoalController@show')->name('materi.pembuatan-soal.show');
+                Route::get('soal/{soal}/edit', 'CBT\Materi\PembuatanSoalController@show')->name('materi.pembuatan-soal.edit');
+
+
                 Route::get('jenis', 'CBT\Materi\JenisSoalController@index')->name('materi.jenis-soal');
                 Route::get('jenis/data', 'CBT\Materi\JenisSoalController@AjaxJenisSoalGetData')->name('materi.jenis-soal.data');
                 Route::post('jenis/insert', 'CBT\Materi\JenisSoalController@AjaxJenisSoalInsertData')->name('materi.jenis-soal.insert');
 
-                Route::get('soal', 'CBT\Materi\PembuatanSoalController@index')->name('materi.pembuatan-soal');
-                Route::get('soal/data', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalGetData')->name('materi.pembuatan-soal.data');
-                Route::post('soal/insert', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalInsertData')->name('materi.pembuatan-soal.insert');
-                Route::post('soal/delete', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalDeleteData')->name('materi.pembuatan-soal.delete');
-
+               
                 Route::get('modul', 'CBT\Materi\PembuatanModulController@index')->name('materi.pembuatan-modul');
                 Route::get('modul/data', 'CBT\Materi\PembuatanModulController@AjaxModulGetData')->name('materi.pembuatan-modul.data');
                 Route::post('modul/insert', 'CBT\Materi\PembuatanModulController@AjaxModulInsertData')->name('materi.pembuatan-modul.insert');
@@ -153,6 +189,14 @@ Route::middleware(['auth'])->group(function (){
 
 
             Route::group(['prefix' => 'ujian'], function () {
+
+                Route::get('aktivasi', 'CBT\Ujian\AktivasiController@index')->name('ujian.aktivasi');
+                Route::get('aktivasi/peserta', 'CBT\Ujian\AktivasiController@ajax_get_peserta')->name('ujian.aktivasi.peserta');
+                Route::get('aktivasi/data', 'CBT\Ujian\AktivasiController@data')->name('ujian.aktivasi.data');
+                Route::post('aktivasi/insert', 'CBT\Ujian\AktivasiController@insert')->name('ujian.aktivasi.insert');
+                Route::get('aktivasi/{ujian_parameter_id}/delete', 'CBT\Ujian\AktivasiController@delete')->name('ujian.aktivasi.delete');
+                Route::get('aktivasi/{ujian_parameter_id}/edit', 'CBT\Ujian\AktivasiController@edit')->name('ujian.aktivasi.edit');
+                Route::get('aktivasi/{ujian_parameter_id}/show', 'CBT\Ujian\AktivasiController@show')->name('ujian.aktivasi.show');
 
                 Route::get('jadwal', 'CBT\Ujian\JadwalController@index')->name('ujian.jadwal');
                 Route::get('jadwal/batch', 'CBT\Ujian\JadwalController@ajax_get_batch_peserta')->name('ujian.jadwal.batch');
@@ -233,6 +277,7 @@ Route::middleware(['auth'])->group(function (){
             Route::get('pre-assessment/{member_certification}/view-singlepeserta','PreAssessmentController@viewSinglePeserta')->name('pre-assessment.viewsinglepeserta');
             Route::post('pre-assessment/{member_certification}/send-chat-apl02','PreAssessmentController@saveChatApl02')->name('pre-assessment.savechatapl02');
             Route::get('pre-assessment/{member_certification}/approve-apl02/{status}','PreAssessmentController@approveAPL02')->name('pre-assessment.approveapl02');
+            Route::post('pre-assessment/{member_certification}/save-paap','PreAssessmentController@savePaap')->name('pre-assessment.savepaap');
 
         });
     });
