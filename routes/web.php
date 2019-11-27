@@ -170,6 +170,7 @@ Route::middleware(['auth'])->group(function (){
             Route::get('pre-assessment/{member_certification}/view-singlepeserta','PreAssessmentController@viewSinglePeserta')->name('pre-assessment.viewsinglepeserta');
             Route::post('pre-assessment/{member_certification}/send-chat-apl02','PreAssessmentController@saveChatApl02')->name('pre-assessment.savechatapl02');
             Route::get('pre-assessment/{member_certification}/approve-apl02/{status}','PreAssessmentController@approveAPL02')->name('pre-assessment.approveapl02');
+            Route::post('pre-assessment/{member_certification}/save-paap','PreAssessmentController@savePaap')->name('pre-assessment.savepaap');
 
         });
 

@@ -34,6 +34,11 @@ class ProgramSchedule extends Revisionable
         return $query->where('is_approve', 1);
     }
 
+    public function programs()
+    {
+        return $this->belongsTo('App\Models\Program', 'program_id', 'id');
+    }
+
     public function program()
     {
         return $this->belongsTo('App\Models\Program', 'program_id', 'id');
