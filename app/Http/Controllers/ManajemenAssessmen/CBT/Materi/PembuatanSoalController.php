@@ -102,7 +102,7 @@ class PembuatanSoalController extends Controller
                     <i class='la la-search'></i>
                     </a>";
             if (auth()->user()->can('Pembuatan Soal Edit')) {
-                    $action .= '<button id="edit" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($Soal->penjelasan).'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.Crypt::decryptString($Soal->e).'"   data-d="'.Crypt::decryptString($Soal->d).'"  data-c="'.Crypt::decryptString($Soal->c).'" data-b="'.Crypt::decryptString($Soal->b).'"  data-a="'.Crypt::decryptString($Soal->a).'" data-soal="'.Crypt::decryptString($Soal->soal).'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" ><i class="flaticon2 flaticon2-pen"></i></button>';
+                    $action .= '<button id="edit" data-parent="'.$Soal->parent.'" data-jawaban="'.$Soal->kunci_id.'"  data-bobot="'.$Soal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($Soal->penjelasan).'"  data-status="'.$Soal->status.'"  data-tag="'.$Soal->tag.'"  data-e="'.Crypt::decryptString($Soal->e).'"   data-d="'.Crypt::decryptString($Soal->d).'"  data-c="'.Crypt::decryptString($Soal->c).'" data-b="'.Crypt::decryptString($Soal->b).'"  data-a="'.Crypt::decryptString($Soal->a).'" data-soal="'.Crypt::decryptString($Soal->soal).'" data-nick="'.$Soal->nick.'"  data-id="'.$Soal->soal_id.'"  data-modul="'.$Soal->modul_id.'" data-submodul="'.$Soal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" ><i class="flaticon2 flaticon2-pen"></i></button>';
             }
             if (auth()->user()->can('Pembuatan Soal Delete')) {
                     // $action .= '<button id="hapus"  data-id="'.$Soal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" ><i class="flaticon2 flaticon2-trash"></i></button>';
@@ -141,7 +141,7 @@ class PembuatanSoalController extends Controller
 
     public function AjaxPembuatanSoalDeleteData(Request $request)
     {
-
+        if (auth()->user()->can('Pembuatan Soal Delete')) {
         $deleted = Soal::find($request->get('id'))->delete();
         if ($deleted) {
             return json_encode(array(
@@ -151,6 +151,7 @@ class PembuatanSoalController extends Controller
             return json_encode(array(
                     "status"=>500
                 ));
+        }
         }
     }
 
@@ -164,7 +165,7 @@ class PembuatanSoalController extends Controller
             $soal_id       = $request->soal_id;
           
             $modul_soal    = Modul_soal::where('modul_id', $modul_id)->where('submodul_id', $submodul_id)->pluck('soal_id');
-           
+            // return $modul_soal; exit;
             /* jika proses create soal maka soal id null jika edit !null */
             if(!empty($soal_id))
             {
