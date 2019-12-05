@@ -153,11 +153,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<<<<<<< Updated upstream
                         <button type="submit" id="simpan" class=" btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
-=======
-                        <button type="submit" id="simpan" class="btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
->>>>>>> Stashed changes
                     </div>
                 </form>
                 </div>
@@ -360,11 +356,7 @@
                         list_batch = "<option value=''></option>";
                         if (obj_batch.length > 0) {
                             $.each(obj_batch, function (i, v) {
-<<<<<<< Updated upstream
                                 list_batch += "<option value='" + v.id + "'>" + v.name + "</option>";
-=======
-                                list_batch += "<option value='" + v._id + "'>" + v.name + "</option>";
->>>>>>> Stashed changes
                             });
                         } else {
                             list_batch = "<option></option>";
@@ -569,11 +561,7 @@
 
 
                 list_peserta = JSON.parse(msg);
-<<<<<<< Updated upstream
                 // alert(JSON.stringify(list_peserta));
-=======
-                
->>>>>>> Stashed changes
                 peserta = '';
                 peserta += '<div class="form-group form-peserta"> <table class="table table-siak borderless">';
                 peserta += '<tbody> <tr> <td> <div class="col-md-offset-2" style="margin-left: 25%;">';
@@ -583,7 +571,6 @@
                     $.each(list_peserta, function (i, v) {
                         
                         peserta += '<optgroup class="optgroup-peserta" batch-id="' + v.id_batch + '" ujian-batch="' + v.ujian_batch_id + '" label="' + v.nama_batch + '">';
-<<<<<<< Updated upstream
                 
                         $.each(v.peserta_selected, function (m, n) {
                             peserta += '<option class="opt-peserta" ujian-batch="' + v.ujian_batch_id + '" value="' + v.id_batch + '_' + n.peserta_id + '" disabled selected>' + n.nama + '</option>';
@@ -592,13 +579,6 @@
                         $.each(v.peserta, function (x, y) {
                             peserta += '<option class="opt-peserta" ujian-batch="' + v.ujian_batch_id + '" value="' + v.id_batch + '_' + y.peserta_id + '">' + y.nama + '</option>';
                         
-=======
-                        $.each(v.peserta, function (x, y) {
-                            peserta += '<option class="opt-peserta" ujian-batch="' + v.ujian_batch_id + '" value="' + v.id_batch + '_' + y.peserta_id + '">' + y.nama + '</option>';
-                        });
-                        $.each(v.peserta_selected, function (m, n) {
-                            peserta += '<option class="opt-peserta" ujian-batch="' + v.ujian_batch_id + '" value="' + v.id_batch + '_' + n.peserta_id + '" disabled selected>' + n.nama + '</option>';
->>>>>>> Stashed changes
                         });
                         peserta += '</optgroup>';
                     });
@@ -607,7 +587,6 @@
                     peserta += '<div class="form-group form-kapasitas"> <table class="table table-siak borderless"> <tbody> <tr> <td> <strong>Total Peserta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span id="total_kapasitas">0</span> Orang</strong> </td></tr></tbody> </table></div>';
                 } else {
                     peserta = "";
-<<<<<<< Updated upstream
                 }
                 $('.list_peserta').append(peserta);
                 $('#my_multi_select2').multiSelect();
@@ -708,20 +687,6 @@
             });
           }
         });
-=======
-                }
-                $('.list_peserta').append(peserta);
-                $('#my_multi_select2').multiSelect();
-                var count = $('#my_multi_select2 :selected').length;
-                alert(count);
-                $('#total_kapasitas').html(count);
-            },
-            error: function (err) {
-                console.log(JSON.stringify(err));
-            }
-            });
-            });
->>>>>>> Stashed changes
     });
 
 </script>

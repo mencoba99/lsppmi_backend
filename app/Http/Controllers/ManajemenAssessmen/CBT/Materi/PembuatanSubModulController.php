@@ -72,6 +72,7 @@ class PembuatanSubModulController extends Controller
         $SubModul->description = $request->get('desc');
         $SubModul->id_modul = $request->get('id_modul');
         $SubModul->aktif = $request->get('status');
+        $SubModul->status = 1;
 
 
         if($request->get('id')){
