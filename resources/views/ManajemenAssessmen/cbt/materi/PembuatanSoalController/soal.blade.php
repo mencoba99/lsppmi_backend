@@ -583,5 +583,5 @@ jQuery(document).ready(function() {
     });
     
 </script>   
-   
+    
 @endpush
