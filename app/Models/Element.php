@@ -18,5 +18,10 @@ class Element extends Revisionable
      {
          return $this->belongsTo('\App\Models\Units','competence_unit_id','id');
      }
+
+     public function kuk()
+     {
+         return $this->belongsTo('\App\Models\KUK','competence_element_id','id');
+     }
  
 }

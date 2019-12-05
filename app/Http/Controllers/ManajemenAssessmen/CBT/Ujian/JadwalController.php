@@ -11,7 +11,11 @@ use App\Models\Ujian\Ujian_batch;
 use App\Models\Ujian\Ujian_modul;
 use App\Models\Ujian\Perdana;
 use App\Models\ProgramSchedule;
+<<<<<<< Updated upstream
 use App\Models\Ujian\Pendaftaran_trx;
+=======
+use App\Models\Pendaftaran\Pendaftaran_trx;
+>>>>>>> Stashed changes
 use App\Models\Modul;
 use App\Models\SubModul;
 use App\Models\MgtProgram;
@@ -23,7 +27,10 @@ use DataTables;
 use Entrust;
 use DB;
 use PDF;
+<<<<<<< Updated upstream
 use Lang;
+=======
+>>>>>>> Stashed changes
 use Carbon\Carbon;
 
 
@@ -32,7 +39,11 @@ class JadwalController extends Controller
 {
     public function __construct()
     {
+<<<<<<< Updated upstream
         $this->middleware(['permission:Ujian Jadwal']);
+=======
+        $this->middleware(['permission:Jadwal Ujian']);
+>>>>>>> Stashed changes
     }
 
     public function index()
@@ -128,7 +139,11 @@ class JadwalController extends Controller
             // get 'all batch and not in ujian_batch' 
             $batch_peserta = array();
             $batch_in_ujian = Ujian_batch::select(['ujian_batch.program_schedule_id', 'ujian_batch.ujian_batch_id'])->where('perdana_jadwal_id', $jadwal_id)->get();
+<<<<<<< Updated upstream
             // return $batch_in_ujian; exit;
+=======
+            
+>>>>>>> Stashed changes
             foreach ($batch_in_ujian as $data) {
                 
                 // $data_batch = ProgramSchedule::select('program_schedules.id',DB::raw("CONCAT(programs.name,' - TUK ',competence_places.name,' (',to_char(started_at, 'DD-MM-YYYY'),')') AS name"))
@@ -316,13 +331,17 @@ class JadwalController extends Controller
             $batch_id       = Ujian_batch::where('perdana_jadwal_id', $sesi_id)->pluck('program_schedule_id');
             $ujian_batch_id = Ujian_batch::whereIn('program_schedule_id', $batch_id)->pluck('ujian_batch_id');
             $peserta        = array();
+<<<<<<< Updated upstream
 
             
+=======
+>>>>>>> Stashed changes
             foreach ($ujian_batch as $value) {
                 $nama_batch             = ProgramSchedule::find($value->program_schedule_id);
                 $arrb['id_batch']       = $value->ujian_batch_id;
                 $arrb['nama_batch']     = $nama_batch->programs->name;
                 $arrb['ujian_batch_id'] = $value->ujian_batch_id;
+<<<<<<< Updated upstream
                
                 $peserta_perdana        = Ujian_batch::select('perdana_peserta.peserta_id')
                                                      ->where('ujian_batch.program_schedule_id', $value->program_schedule_id)
@@ -359,6 +378,28 @@ class JadwalController extends Controller
                     $n = array();
                     $n['peserta_id'] = $data->id;
                     $n['nama']       = $data->members->name;
+=======
+                
+                $peserta_perdana        = Ujian_batch::select('perdana_peserta.peserta_id')
+                                                     ->where('ujian_batch.ujian_batch_id', $value->program_schedule_id)
+                                                     ->join('perdana_peserta', 'perdana_peserta.ujian_batch_id', '=',
+                                                            'ujian_batch.ujian_batch_id')
+                                                     ->get();
+                $peserta_pendaftar      = Pendaftaran_trx::where('pendaftaran_trx.batch_id', $value->program_schedule_id)
+                                                         ->whereNotIn('peserta_id', $peserta_perdana)
+                                                         ->pluck('peserta_id');
+                                                         
+                $peserta_ujian         = Perdana_peserta::whereIn('ujian_batch_id', $ujian_batch_id)
+                                                         ->pluck('peserta_id');
+                // return $peserta_pendaftar; exit;
+                $list_peserta           = Members::select(['members.id AS _id', 'members.name AS nama'])->orderBy('name')->whereIn('id', $peserta_pendaftar)->get();
+                
+                $m  = array();
+                foreach ($list_peserta as $data) {
+                    $n = array();
+                    $n['peserta_id'] = $data->_id;
+                    $n['nama']       = $data->nama;
+>>>>>>> Stashed changes
                     array_push($m, $n);
                 }
                 $arrb['peserta'] = $m;
@@ -368,6 +409,7 @@ class JadwalController extends Controller
                                                                           ->from('soal_peserta');
                                                                       })
                                                          ->pluck('peserta_id');
+<<<<<<< Updated upstream
 
                 // return $perdana_peserta; exit;
                 $list_peserta_selected  = MemberCertification::with('members')->whereIn('id', $perdana_peserta)->get();
@@ -377,17 +419,29 @@ class JadwalController extends Controller
                     $p = array();
                     $p['peserta_id'] = $dataselected->id;
                     $p['nama']       = $dataselected->members->name;
+=======
+                $list_peserta_selected  = Members::select(['members.id AS _id', 'members.name AS nama'])->whereIn('id', $perdana_peserta)->get();
+                $o  = array();
+                foreach ($list_peserta_selected as $dataselected) {
+                    $p = array();
+                    $p['peserta_id'] = $dataselected->_id;
+                    $p['nama']       = $dataselected->name;
+>>>>>>> Stashed changes
                     array_push($o, $p);
                 }
                 $arrb['peserta_selected'] = $o;
                 array_push($peserta, $arrb);
             }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
             if(!empty($peserta)){
                 echo json_encode($peserta);
             }else{
                 echo json_encode(array());
             }
+<<<<<<< Updated upstream
     }
 
 
@@ -615,6 +669,8 @@ class JadwalController extends Controller
             }
             echo json_encode($json);
         }
+=======
+>>>>>>> Stashed changes
     }
 
     public function AjaxJadwalInsertData(Request $request)

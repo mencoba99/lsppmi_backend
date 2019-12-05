@@ -48,6 +48,7 @@ class ManagementController extends Controller
     public function AjaxMgtProgramGetData()
     {
         
+<<<<<<< Updated upstream
         $program_dtl    = MgtProgram::where('status', 1)->distinct()->get(['name','program_id']);
         
 
@@ -116,6 +117,67 @@ class ManagementController extends Controller
         
                             })->addColumn('action', function ( $MgtProgram) {
                                 $btn_action = '';
+=======
+        $program_dtl    = MgtProgram::get(['name','program_id','id']);
+
+            return Datatables::of($program_dtl)->addIndexColumn()->addColumn('nama_program', function ($program_dtl) {
+                $id_modul = MgtProgram::where('program_id', '=', $program_dtl->program_id)->where('status', 1)->pluck('modul_id');
+                $moduls   = Modul::whereIn('id', $id_modul)->where('status', 1)->get();
+
+                $tree     = "<div class='tree' id='tree'>
+                                <ul>
+                                    <li>".$program_dtl->program->name."
+                                        <ul>";
+
+                                    foreach ($moduls as $modul) {
+                                    if (!empty($modul)) {
+                                        $tree.="<li>".$modul->name.
+                                                "<ul>";
+                                    }
+                                    
+                                    $id_submodul = MgtProgram::where('program_id', '=', $program_dtl->program_id)->where('modul_id', '=', $modul->id)->where('status', 1)->pluck('submodul_id');
+                                 
+                                    // get active row in table submodul where submodul_id = $id_submodul
+                                    $submoduls = SubModul::whereIn('id', $id_submodul)->where('status', 1)->get();
+                                   
+                                    foreach ($submoduls as $submodul) {
+                                        // get nama submodul where submodul_id = $submodul->submodul_id
+                                       
+                                        $namasubmodul = SubModul::where('id', $submodul->id)->where('status', 1)->value('name');
+                                        // $tree .= "cek-".$submodul;
+                                        if (!empty($namasubmodul)) {
+                                            
+                                            $tree.="<li id='submodul'>".$namasubmodul;
+                                            $tree.="<ul>";
+                                            $id_program_dtl = MgtProgram::where('program_id', '=', $program_dtl->program_id)->where('modul_id', '=', $submodul->id_modul)->where('submodul_id', $submodul->id)->where('status', 1)->value("id","");
+                                            // $persentase = MgtProgram::where('program_id', '=', $program_dtl->program_id)->where('modul_id', '=', $modul->modul_id)->where('submodul_id', $submodul->submodul_id)->where('hapus', false)->value("persentase_kelulusan","");
+                                            
+                                            $SoalJenis = SoalJenis::all();
+                                            if(Komposisi_soal::where('program_mgt_id',$id_program_dtl)->exists())
+                                            {
+                                                foreach ($SoalJenis as $jns) {
+                                                    $jumlah_soal = Komposisi_soal::where('program_mgt_id',$id_program_dtl)->where('jenis_soal_id',$jns->id)->value('jumlah_soal'); //value('jumlah_soal')
+                                                    $tree.="<li >".$jns->name."  : ".$jumlah_soal."</li>";
+                                                }
+                                                // $sign = $persentase == null ? '' : '%';
+                                                // $tree.="<li >Persentase Kelulusan : ".$persentase.$sign."</li>";
+                                            }            
+                                                $tree.="</ul></li>";
+                                        }
+                                    } //end foreach $submodul
+                                    $tree.="    </ul>
+                                                </li>";
+                                } //end foreach $modul
+                                            $tree.=
+                                            "
+                                              </ul>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                    ";
+                                    return $tree;
+                            })->addColumn('action', function (MgtProgram $MgtProgram) {
+>>>>>>> Stashed changes
                                 
                                     $btn_action .= '<a data-toggle="tooltip" title="Edit Program '.$MgtProgram->name.'" href="" class="la la-edit"></a>&nbsp;';
                                 

@@ -14,7 +14,6 @@ use App\Models\SoalJenis;
 use App\Helpers\Encryption_decryp_soal;
 use DataTables;
 use Entrust;
-use DB;
 
 
 class PembuatanSoalController extends Controller
@@ -61,42 +60,10 @@ class PembuatanSoalController extends Controller
 		return view('ManajemenAssessmen.cbt.materi.PembuatanSoalController.soal', compact('pageTitle','Title','pageHeader','crumbs','status','modul','submodul','bobot','parent'));
     }
 
-    public function show(Request $request, $soal_id)
-    {
-        $soal = DB::table('soal')
-                  ->select([
-                        'soal.soal_id AS soal_id',
-                        'modul.name AS nama_modul',
-                        'submodul.name AS nama_submodul',
-                        'soal.nick AS nick',
-                        'soal.soal AS soal',
-                        'soal.a AS a',
-                        'soal.b AS b',
-                        'soal.c AS c',
-                        'soal.d AS d',
-                        'kunci.name AS kunci',
-                        'soal.penjelasan AS penjelasan',
-                        'soal_jenis.name AS jenis',
-                        'soal.hit AS hit',
-                        'soal.program_type AS kategori',
-                        'soal.parent AS parent',
-                        'soal.aktif AS aktif',
-                        
-                        ])
-                  ->join('soal_jenis', 'soal_jenis.id', '=', 'soal.jenis_soal_id')
-                  ->join('kunci', 'kunci.kunci_id', '=', 'soal.kunci_id')
-                  ->leftJoin('modul_soal', 'modul_soal.soal_id', '=', 'soal.soal_id')
-                  ->leftJoin('modul', 'modul.id', '=', 'modul_soal.modul_id')
-                  ->leftJoin('submodul', 'submodul.id', '=', 'modul_soal.submodul_id')
-                  ->where('soal.soal_id', $soal_id)
-                  ->first();
-        
-        return view('ManajemenAssessmen.cbt.materi.PembuatanSoalController.show', compact('soal'));
-    }
-
     public function AjaxPembuatanSoalGetData()
     {
         $dataSoal = Soal::with('modul','submodul')->get();
+<<<<<<< Updated upstream
         return DataTables::of($dataSoal)->addColumn('action', function (Soal $Soal) {
             $action = "<a href='" . route('materi.pembuatan-soal.show', ['soal' => $Soal]) . "' id='show' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' >
                     <i class='la la-search'></i>
@@ -110,23 +77,48 @@ class PembuatanSoalController extends Controller
             return $action;
 		})->addColumn('status', function (Soal $Soal) {
             if($Soal->status==1){
+=======
+        // return  $dataSoal;
+        // // return  Crypt::decryptString($dataSoal);
+        // exit;
+
+       return DataTables::of($dataSoal)->addColumn('action', function ($dataSoal) {
+        // return  Crypt::decryptString($dataSoal->e);
+            $action = "<div class='btn-group'>";
+            $action .= '<button id="edit" data-jawaban="'.$dataSoal->kunci_id.'"  data-bobot="'.$dataSoal->jenis_soal_id.'"  data-desc="'.Crypt::decryptString($dataSoal->penjelasan).'"  data-status="'.$dataSoal->status.'"  data-tag="'.$dataSoal->tag.'"  data-e="'.Crypt::decryptString($dataSoal->e).'"   data-d="'.Crypt::decryptString($dataSoal->d).'"  data-c="'.Crypt::decryptString($dataSoal->c).'" data-b="'.Crypt::decryptString($dataSoal->b).'"  data-a="'.Crypt::decryptString($dataSoal->a).'" data-soal="'.Crypt::decryptString($dataSoal->soal).'" data-nick="'.$dataSoal->nick.'"  data-id="'.$dataSoal->soal_id.'"  data-modul="'.$dataSoal->modul_id.'" data-submodul="'.$dataSoal->submodul_id.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $dataSoal->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+            $action .= '<button id="hapus"  data-id="'.$dataSoal->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $dataSoal->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
+           
+			$action .= "</div>";
+			return $action;
+		})->addColumn('status', function ($dataSoal) {
+
+            if($dataSoal->status==1){
+>>>>>>> Stashed changes
                 return "Aktif";
             }else{
                 return "Non Aktif";
             }
-		})->addColumn('modul', function (Soal $Soal) {
-            if($Soal->modul_id){
-                $data = Modul::find($Soal->modul_id)->first();
+
+		})->addColumn('modul', function ($dataSoal) {
+
+            if($dataSoal->modul_id){
+                $data = Modul::find($dataSoal->modul_id)->first();
                 return $data->name;
             }
-		})->addColumn('submodul', function (Soal $Soal) {
-            if($Soal->submodul_id){
-                $data = SubModul::find($Soal->submodul_id)->first();
+
+
+		})->addColumn('submodul', function ( $dataSoal) {
+
+            if($dataSoal->submodul_id){
+                $data = SubModul::find($dataSoal->submodul_id)->first();
                 return $data->name;
             }
-		})->addColumn('bobot', function (Soal $Soal) {
-            $data = SoalJenis::find($Soal->jenis_soal_id)->first();
+
+		})->addColumn('bobot', function ( $dataSoal) {
+
+            $data = SoalJenis::find($dataSoal->jenis_soal_id)->first();
             return $data->name;
+
 		})->make(true);
     }
 
@@ -135,7 +127,18 @@ class PembuatanSoalController extends Controller
        
         $submodul = [];
         $getsubModul = SubModul::where('id_modul',$request->id_modul)->get();
+        // foreach ($getsubModul as $key1 => $value1) {
+        //      return json_encode(array(
+        //     "id"=>$value1->id,
+        //     "name"=>$submvalue1odul->name
+        //     ));
+           
+        // }
         
+        // return json_encode(array(
+        //     "id"=>$submodul->id,
+        //     "name"=>$submodul->name
+        // ));
        return  $getsubModul;
     }
 
@@ -155,6 +158,7 @@ class PembuatanSoalController extends Controller
         }
     }
 
+<<<<<<< Updated upstream
     
 
     public function AjaxGetParent(Request $request){
@@ -208,11 +212,20 @@ class PembuatanSoalController extends Controller
         
     }
 
+=======
+>>>>>>> Stashed changes
     public function AjaxPembuatanSoalInsertData(Request $request)
     {
-        
+       
+        $a = (string) $request->get('answer_a');
+        $b = (string) $request->get('answer_b');
+        $c = (string) $request->get('answer_c');
+        $d = (string) $request->get('answer_d');
+        $e = (string) $request->get('answer_e');
+
         $Soal = new Soal();
         $Soal->nick = $request->get('nick');
+<<<<<<< Updated upstream
         $soal = (string)$request->get('soal');
         $Soal->soal = Crypt::encryptString($soal);
 
@@ -222,6 +235,9 @@ class PembuatanSoalController extends Controller
         $d = $request->get('d');
         $e = $request->get('e');
 
+=======
+        $Soal->soal = Crypt::encryptString((string)$request->get('soal'));
+>>>>>>> Stashed changes
         $Soal->a = Crypt::encryptString($a);
         $Soal->b = Crypt::encryptString($b);
         $Soal->c = Crypt::encryptString($c);
@@ -237,10 +253,10 @@ class PembuatanSoalController extends Controller
         $Soal->parent = $request->get('parent');
         $Soal->modul_id = $request->get('modul_id');
         $Soal->submodul_id = $request->get('submodul');
-
-
-
-
+       
+        // exit;
+        
+        
         if($request->get('id')){ // for update
 
             $update =[];
@@ -257,8 +273,6 @@ class PembuatanSoalController extends Controller
             $update['jenis_soal_id'] = $request->get('bobot');
             $update['modul_id'] = $request->get('modul_id');
             $update['submodul_id'] = $request->get('submodul');
-            $update['hit'] = 0;
-            $update['parent'] = $Soal->parent = $request->get('parent');;
 
             $update['status'] = $request->get('status');
             $update['aktif'] = $request->get('aktif');

@@ -153,7 +153,11 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<<<<<<< Updated upstream
                         <button type="submit" id="simpan" class=" btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
+=======
+                        <button type="submit" id="simpan" class="btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
+>>>>>>> Stashed changes
                     </div>
                 </form>
                 </div>
@@ -356,7 +360,11 @@
                         list_batch = "<option value=''></option>";
                         if (obj_batch.length > 0) {
                             $.each(obj_batch, function (i, v) {
+<<<<<<< Updated upstream
                                 list_batch += "<option value='" + v.id + "'>" + v.name + "</option>";
+=======
+                                list_batch += "<option value='" + v._id + "'>" + v.name + "</option>";
+>>>>>>> Stashed changes
                             });
                         } else {
                             list_batch = "<option></option>";
@@ -479,6 +487,65 @@
                 });
         });
 
+        $('body').on('click', '.opt-peserta', function() {
+            var count = $('#my_multi_select2 :selected').length;
+            $('#total_kapasitas').html(count); 
+            if(kapasitas == count)
+            {
+                $('#modal_peserta').modal('toggle');
+                swal({ 
+                  title: "Peringatan",
+                   text: "Total Peserta Mencapai Kapasitas Ruang",
+                    type: "warning" 
+                  },
+                  function(){
+                    $('#modal_peserta').modal('toggle');
+                });
+            }
+        });
+
+        $('body').on('click', '.edit_modal_pengawas', function() {
+            jadwal_id = $(this).attr('data-jadwal');
+            $('.form-pengawas').removeAttr('data-jadwal');
+            $('.form-pengawas').attr('data-jadwal', jadwal_id);
+            $(".pengawas_opsi").hide();
+            $("select[name='pengawas']").html('');
+            $('#loading-modal-pengawas').css({'display': 'block'});
+            $('#modal_pengawas').modal('toggle');
+            $.ajax({
+                    method: 'GET',
+                    url: '{{ route('ujian.jadwal.pengawas') }}',
+                    data: {jadwal_id: jadwal_id},
+                    success: function(msg){
+                        obj_pengawas     = JSON.parse(msg);
+                        list_pengawas    = "<option value=''></option>";
+                        if(obj_pengawas.length > 0){
+                            $.each(obj_pengawas, function(i,v){
+                              if(v.hasOwnProperty("id")) {
+                                list_pengawas += "<option value='"+ v.id +"' "+ v.selected +">"+ v.name +"</option>";
+                              }
+                              if(v.hasOwnProperty("keyboard_lock")) {
+                                if(v.keyboard_lock == 't') {
+                                  $("select[name='keyboard_lock']").val('t').trigger('change');
+                                } else {
+                                  $("select[name='keyboard_lock']").val('f').trigger('change');
+                                }
+                              }
+                            });
+                        }else{
+                            list_pengawas = "<option></option>";
+                        }
+                        $('#loading-modal-pengawas').css({'display': 'none'});
+                        $(".pengawas_opsi").show();
+                        $("select[name='pengawas']").html(list_pengawas);
+                        
+                    },
+                    error: function(err){
+                        alert(JSON.stringify(err));
+                    }
+                });
+        });
+
         $('body').on('click', '.edit_modal_peserta', function() {
 
             
@@ -502,7 +569,11 @@
 
 
                 list_peserta = JSON.parse(msg);
+<<<<<<< Updated upstream
                 // alert(JSON.stringify(list_peserta));
+=======
+                
+>>>>>>> Stashed changes
                 peserta = '';
                 peserta += '<div class="form-group form-peserta"> <table class="table table-siak borderless">';
                 peserta += '<tbody> <tr> <td> <div class="col-md-offset-2" style="margin-left: 25%;">';
@@ -512,6 +583,7 @@
                     $.each(list_peserta, function (i, v) {
                         
                         peserta += '<optgroup class="optgroup-peserta" batch-id="' + v.id_batch + '" ujian-batch="' + v.ujian_batch_id + '" label="' + v.nama_batch + '">';
+<<<<<<< Updated upstream
                 
                         $.each(v.peserta_selected, function (m, n) {
                             peserta += '<option class="opt-peserta" ujian-batch="' + v.ujian_batch_id + '" value="' + v.id_batch + '_' + n.peserta_id + '" disabled selected>' + n.nama + '</option>';
@@ -520,6 +592,13 @@
                         $.each(v.peserta, function (x, y) {
                             peserta += '<option class="opt-peserta" ujian-batch="' + v.ujian_batch_id + '" value="' + v.id_batch + '_' + y.peserta_id + '">' + y.nama + '</option>';
                         
+=======
+                        $.each(v.peserta, function (x, y) {
+                            peserta += '<option class="opt-peserta" ujian-batch="' + v.ujian_batch_id + '" value="' + v.id_batch + '_' + y.peserta_id + '">' + y.nama + '</option>';
+                        });
+                        $.each(v.peserta_selected, function (m, n) {
+                            peserta += '<option class="opt-peserta" ujian-batch="' + v.ujian_batch_id + '" value="' + v.id_batch + '_' + n.peserta_id + '" disabled selected>' + n.nama + '</option>';
+>>>>>>> Stashed changes
                         });
                         peserta += '</optgroup>';
                     });
@@ -528,6 +607,7 @@
                     peserta += '<div class="form-group form-kapasitas"> <table class="table table-siak borderless"> <tbody> <tr> <td> <strong>Total Peserta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span id="total_kapasitas">0</span> Orang</strong> </td></tr></tbody> </table></div>';
                 } else {
                     peserta = "";
+<<<<<<< Updated upstream
                 }
                 $('.list_peserta').append(peserta);
                 $('#my_multi_select2').multiSelect();
@@ -628,6 +708,20 @@
             });
           }
         });
+=======
+                }
+                $('.list_peserta').append(peserta);
+                $('#my_multi_select2').multiSelect();
+                var count = $('#my_multi_select2 :selected').length;
+                alert(count);
+                $('#total_kapasitas').html(count);
+            },
+            error: function (err) {
+                console.log(JSON.stringify(err));
+            }
+            });
+            });
+>>>>>>> Stashed changes
     });
 
 </script>

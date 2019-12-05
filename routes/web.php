@@ -106,6 +106,7 @@ Route::middleware(['auth'])->group(function (){
             Route::get('places/data', 'PlacesController@AjaxGetData')->name('master.places.data');
             Route::post('places/insert', 'PlacesController@AjaxInsertData')->name('master.places.insert');
 
+<<<<<<< Updated upstream
 
         });
 
@@ -121,6 +122,30 @@ Route::middleware(['auth'])->group(function (){
             Route::get('tertulis/{tertulis}/show', 'TertulisController@show')->name('tertulis.show');
             Route::get('tertulis/{tertulis}/edit', 'TertulisController@edit')->name('tertulis.edit');
             Route::get('lisan/data1', 'LisanController@Getdata')->name('tertulis.data');
+=======
+    Route::group(['prefix'=>'daftar-pertanyaan'], function () {
+        
+        Route::resource('tertulis', 'TertulisController');
+        Route::post('tertulis/create', 'TertulisController@create')->name('tertulis.create');
+        Route::post('tertulis/update/{tertulis}', 'TertulisController@update')->name('tertulis.update');
+        Route::post('tertulis/data', 'TertulisController@Getdata')->name('tertulis.getdata');
+        Route::post('tertulis/getElement', 'TertulisController@getElement')->name('tertulis.getElement');
+        Route::post('tertulis/getKUK', 'TertulisController@getKUK')->name('tertulis.getKUK');
+        Route::get('tertulis/{tertulis}/delete', 'TertulisController@delete')->name('tertulis.delete');
+        Route::get('tertulis/{tertulis}/show', 'TertulisController@show')->name('tertulis.show');
+        Route::get('tertulis/{tertulis}/edit', 'TertulisController@edit')->name('tertulis.edit');
+        Route::get('lisan/data1', 'LisanController@Getdata')->name('tertulis.data');
+
+        Route::resource('lisan', 'LisanController');
+        Route::post('lisan/create', 'LisanController@create')->name('lisan.create');
+        Route::post('lisan/data', 'LisanController@Getdata')->name('lisan.getdata');
+        Route::get('lisan/{lisan}/delete', 'LisanController@delete')->name('lisan.delete');
+        Route::post('lisan/update/{lisan}', 'LisanController@update')->name('lisan.update');
+        Route::get('lisan/{lisan}/show', 'LisanController@show')->name('lisan.show');
+        Route::get('lisan/{lisan}/edit', 'LisanController@edit')->name('lisan.edit');
+        Route::post('lisan/getElement', 'LisanController@getElement')->name('lisan.getElement');
+        Route::post('lisan/getKUK', 'LisanController@getKUK')->name('lisan.getKUK');
+>>>>>>> Stashed changes
     
             Route::resource('lisan', 'LisanController');
             Route::post('lisan/create', 'LisanController@create')->name('lisan.create');
@@ -133,6 +158,9 @@ Route::middleware(['auth'])->group(function (){
             Route::post('lisan/getKUK', 'LisanController@getKUK')->name('lisan.getKUK');
         
         });
+
+
+    });
 
 
     });
@@ -196,7 +224,10 @@ Route::middleware(['auth'])->group(function (){
                 Route::get('jadwal/program', 'CBT\Ujian\JadwalController@ajax_get_batch')->name('ujian.jadwal.program');
                 Route::get('jadwal/submodul', 'CBT\Ujian\JadwalController@ajax_get_modsub')->name('ujian.jadwal.submodul');
                 Route::get('jadwal/peserta', 'CBT\Ujian\JadwalController@ajax_get_peserta')->name('ujian.jadwal.peserta');
+<<<<<<< Updated upstream
                 Route::post('jadwal/peserta_store', 'CBT\Ujian\JadwalController@ajax_insert_peserta')->name('ujian.jadwal.peserta_store');
+=======
+>>>>>>> Stashed changes
                 Route::get('jadwal/pengawas', 'CBT\Ujian\JadwalController@ajax_get_pengawas')->name('ujian.jadwal.pengawas');
                 Route::get('jadwal/print/{jadwal_id}', 'CBT\Ujian\JadwalController@ajax_print_perdana')->name('ujian.jadwal.print');
                 Route::get('jadwal/create', 'CBT\Ujian\JadwalController@create')->name('ujian.jadwal.create');

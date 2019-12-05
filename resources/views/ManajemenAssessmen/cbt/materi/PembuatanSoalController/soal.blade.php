@@ -422,8 +422,52 @@ jQuery(document).ready(function() {
         });
     }
 
+<<<<<<< Updated upstream
     function get_submodul(modul,submodul){
         $.ajax({
+=======
+    $(function () {
+
+        view(); //call datatable view
+
+        /* Edit Data */
+        $("#datatable").on("click", "tr #edit", function () {
+            $("input").val("");
+            form.resetForm();
+            $("#soal_id").val($(this).data('id'));
+            $("#modul_id").val($(this).data('modul'));
+
+            $("#soal").val($(this).data('soal'));
+            $("#submodul_id").val($(this).data('submodul'));
+            $("#jenissoal_id").val($(this).data('bobot'));
+            $("#nick").val($(this).data('nick'));
+            $("#answer_a").val($(this).data('a'));
+            $("#answer_b").val($(this).data('b'));
+            $("#answer_c").val($(this).data('c'));
+            $("#answer_d").val($(this).data('d'));
+            $("#answer_e").val($(this).data('e'));
+            $("#tag").val($(this).data('tag'));
+            $("#answer").val($(this).data('jawaban'));
+            $("#status").val($(this).data('status'));
+            $("#desc").val($(this).data('desc'));
+            $('.summernote').summernote('code', $(this).data('soal'));
+            $('.kt-selectpicker').selectpicker('refresh');
+
+            $('#add').modal('show');
+        });
+
+        /* New Data Button */
+        $('#new').click(function (event) {
+            $("input").val("");
+            $("select#status").val("");
+            $('.kt-selectpicker').selectpicker('refresh');
+            form.resetForm();
+        });
+
+        $('select#modul_id').on('change', function () {
+
+            $.ajax({
+>>>>>>> Stashed changes
                 type: "POST",
                 url: "{{ route('materi.pembuatan-soal.modul') }}",
                 data: {
