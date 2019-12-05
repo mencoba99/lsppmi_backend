@@ -158,6 +158,7 @@ Route::middleware(['auth'])->group(function (){
             Route::get('management/{mgtprogram}/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('ujian-komputer.management.delete');
             Route::get('management/{mgtprogram}/show', 'CBT\ManagementController@show')->name('ujian-komputer.management.show');
             Route::get('management/{mgtprogram}/edit', 'CBT\ManagementController@show')->name('ujian-komputer.management.edit');
+            Route::get('management/{program_id}/sebaran_soal', 'CBT\ManagementController@edit_komposisi_soal')->name('management.sebaran_soal');
 
             Route::group(['prefix' => 'materi'], function () {
                 Route::get('soal', 'CBT\Materi\PembuatanSoalController@index')->name('materi.pembuatan-soal');
@@ -190,21 +191,19 @@ Route::middleware(['auth'])->group(function (){
 
             Route::group(['prefix' => 'ujian'], function () {
 
-                Route::get('aktivasi', 'CBT\Ujian\AktivasiController@index')->name('ujian.aktivasi');
-                Route::get('aktivasi/peserta', 'CBT\Ujian\AktivasiController@ajax_get_peserta')->name('ujian.aktivasi.peserta');
-                Route::get('aktivasi/data', 'CBT\Ujian\AktivasiController@data')->name('ujian.aktivasi.data');
-                Route::post('aktivasi/insert', 'CBT\Ujian\AktivasiController@insert')->name('ujian.aktivasi.insert');
-                Route::get('aktivasi/{ujian_parameter_id}/delete', 'CBT\Ujian\AktivasiController@delete')->name('ujian.aktivasi.delete');
-                Route::get('aktivasi/{ujian_parameter_id}/edit', 'CBT\Ujian\AktivasiController@edit')->name('ujian.aktivasi.edit');
-                Route::get('aktivasi/{ujian_parameter_id}/show', 'CBT\Ujian\AktivasiController@show')->name('ujian.aktivasi.show');
-
                 Route::get('jadwal', 'CBT\Ujian\JadwalController@index')->name('ujian.jadwal');
                 Route::get('jadwal/batch', 'CBT\Ujian\JadwalController@ajax_get_batch_peserta')->name('ujian.jadwal.batch');
                 Route::get('jadwal/program', 'CBT\Ujian\JadwalController@ajax_get_batch')->name('ujian.jadwal.program');
+                Route::get('jadwal/submodul', 'CBT\Ujian\JadwalController@ajax_get_modsub')->name('ujian.jadwal.submodul');
                 Route::get('jadwal/peserta', 'CBT\Ujian\JadwalController@ajax_get_peserta')->name('ujian.jadwal.peserta');
+                Route::post('jadwal/peserta_store', 'CBT\Ujian\JadwalController@ajax_insert_peserta')->name('ujian.jadwal.peserta_store');
+                Route::get('jadwal/pengawas', 'CBT\Ujian\JadwalController@ajax_get_pengawas')->name('ujian.jadwal.pengawas');
+                Route::get('jadwal/print/{jadwal_id}', 'CBT\Ujian\JadwalController@ajax_print_perdana')->name('ujian.jadwal.print');
                 Route::get('jadwal/create', 'CBT\Ujian\JadwalController@create')->name('ujian.jadwal.create');
                 Route::get('jadwal/data', 'CBT\Ujian\JadwalController@AjaxJadwalGetData')->name('ujian.jadwal.data');
                 Route::post('jadwal/insert', 'CBT\Ujian\JadwalController@AjaxJadwalInsertData')->name('ujian.jadwal.insert');
+                Route::post('jadwal/pengawas_store', 'CBT\Ujian\JadwalController@ajax_insert_pengawas')->name('ujian.jadwal.pengawas_store');
+                Route::post('jadwal/submodul_store', 'CBT\Ujian\JadwalController@ajax_insert_modsub')->name('ujian.jadwal.submodul_store');
                 Route::get('jadwal/{id}/delete', 'CBT\Ujian\JadwalController@AjaxJadwalInsertData')->name('ujian.jadwal.delete');
                 Route::get('jadwal/{id}/edit', 'CBT\Ujian\JadwalController@AjaxJadwalInsertData')->name('ujian.jadwal.edit');
                 Route::get('jadwal/{id}/show', 'CBT\Ujian\JadwalController@show')->name('ujian.jadwal.edit');
@@ -216,15 +215,14 @@ Route::middleware(['auth'])->group(function (){
                 Route::get('parameter/{ujian_parameter_id}/delete', 'CBT\Ujian\ParameterController@delete')->name('ujian.parameter.delete');
                 Route::get('parameter/{ujian_parameter_id}/edit', 'CBT\Ujian\ParameterController@edit')->name('ujian.parameter.edit');
                 Route::get('parameter/{ujian_parameter_id}/show', 'CBT\Ujian\ParameterController@show')->name('ujian.parameter.show');
-
-                Route::get('jenis', 'CBT\Ujian\JenisController@index')->name('ujian.jenis');
-                Route::get('jenis/create', 'CBT\Ujian\JenisController@create')->name('ujian.jenis.create');
-                Route::get('jenis/data', 'CBT\Ujian\JenisController@data')->name('ujian.jenis.data');
-                Route::post('jenis/insert', 'CBT\Ujian\JenisController@insert')->name('ujian.jenis.insert');
-                Route::post('jenis/update', 'CBT\Ujian\JenisController@update')->name('ujian.jenis.update');
-                Route::get('jenis/{ujian_jenis_id}/delete', 'CBT\Ujian\JenisController@delete')->name('ujian.jenis.delete');
-                Route::get('jenis/{ujian_jenis_id}/edit', 'CBT\Ujian\JenisController@edit')->name('ujian.jenis.edit');
-                Route::get('jenis/{ujian_jenis_id}/show', 'CBT\Ujian\JenisController@show')->name('ujian.jenis.show');
+                
+                Route::get('aktivasi', 'CBT\Ujian\AktivasiController@index')->name('ujian.aktivasi');
+                Route::get('aktivasi/peserta', 'CBT\Ujian\AktivasiController@ajax_get_peserta')->name('ujian.aktivasi.peserta');
+                Route::get('aktivasi/data', 'CBT\Ujian\AktivasiController@data')->name('ujian.aktivasi.data');
+                Route::post('aktivasi/insert', 'CBT\Ujian\AktivasiController@insert')->name('ujian.aktivasi.insert');
+                Route::get('aktivasi/{ujian_parameter_id}/delete', 'CBT\Ujian\AktivasiController@delete')->name('ujian.aktivasi.delete');
+                Route::get('aktivasi/{ujian_parameter_id}/edit', 'CBT\Ujian\AktivasiController@edit')->name('ujian.aktivasi.edit');
+                Route::get('aktivasi/{ujian_parameter_id}/show', 'CBT\Ujian\AktivasiController@show')->name('ujian.aktivasi.show');
 
                 Route::get('jenis', 'CBT\Ujian\JenisController@index')->name('ujian.jenis');
                 Route::get('jenis/create', 'CBT\Ujian\JenisController@create')->name('ujian.jenis.create');
