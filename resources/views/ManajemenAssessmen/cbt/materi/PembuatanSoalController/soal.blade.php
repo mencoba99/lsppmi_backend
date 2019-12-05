@@ -417,7 +417,7 @@ jQuery(document).ready(function() {
     });
 
     $('#show').click(function(event) {
-            alert("a");
+            // alert("a");
             $('#loader').show();
         });
     }
@@ -488,7 +488,7 @@ jQuery(document).ready(function() {
                 },
                 success: function (data) {
                     // alert(JSON.stringify(response));
-                    alert(parent);
+                    // alert(parent);
                     KTApp.unblock('#add .modal-content');
                     
                     $.each(data, function (index, v) {
@@ -570,7 +570,7 @@ jQuery(document).ready(function() {
             
             if($('#submodul_id').val()!='' && $('#modul_id').val()!=''){
                 get_parent(this.value,null,$('#modul_id').val(),$('#submodul_id').val());
-                alert("bobot");
+                // alert("bobot");
 
             }
 
@@ -583,5 +583,6 @@ jQuery(document).ready(function() {
     });
     
 </script>   
-    
+   
 @endpush
+ 
