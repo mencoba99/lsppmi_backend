@@ -97,6 +97,7 @@
                                                             <div class="kt-portlet__head-actions">
                                                                 <span class="kt-switch kt-switch--icon">
                                                                     <label>
+                                                                        
                                                                         <input type="checkbox" data-url="" name="status" id="status" class="roleParentChange roleList">
                                                                         <span></span>
                                                                     </label>
@@ -175,16 +176,25 @@ jQuery(document).ready(function() {
         submitHandler: function (form) { // for demo
             table = $('#datatable').DataTable().destroy();
                 if($("#status").is(':checked')){
-                    cekstatus = 1;
+                    cekstatus = true;
                 }else{
-                    cekstatus = 0;
+                    cekstatus = false;
                 }
+
+                
 
             $.ajax({
                 type: "post",
                 url: "{{ route('materi.pembuatan-submodul.insert') }}",
                 dataType:"json",
-                data: $("form").serialize(),
+                data:{
+                    status: cekstatus,
+                    desc: $("#desc").val(),
+                    id_modul: $("#id_modul").val(),
+                    name: $("#name").val(),
+                    id: $("#id").val(),
+
+                },
                 beforeSend: function() {
                     KTApp.block('#add .modal-content', {
                     overlayColor: '#000000',
