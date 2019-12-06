@@ -1,7 +1,5 @@
 @extends('layouts.base')
 @section('content')
-
-
     <!-- begin:: Content -->
     <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
 
@@ -93,6 +91,7 @@
                                     <th>Email</th>
                                     <th>No HP</th>
                                     <th>Perusahaan</th>
+                                    <th>Asesor</th>
                                     <th>Status Pendaftaran</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -115,6 +114,7 @@
                                             <td>{{ $item->members->email }}</td>
                                             <td>{{ !empty($item->members->home_phone) ? $item->members->home_phone:'-' }}</td>
                                             <td>{{ !empty($item->members->company_name) ? $item->members->company_name:'-' }}</td>
+                                            <td>{{ is_object($item->assessor) ? $item->assessor->name:'Belum ada Asesor' }}</td>
                                             <td>
                                                 @if ($item->status == 1)
                                                     <span class="kt-badge kt-badge--inline kt-badge--primary">Menunggu Pembayaran</span>
@@ -127,9 +127,13 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href='{{ route('pre-assessment.viewsinglepeserta', ['member_certification' => $item]) }}' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View' data-original-tooltip='View'>
-                                                    <i class='la la-search'></i>
-                                                </a>
+                                                @if ($item->status >= 2 && empty($item->assessor_id))
+                                                    @can('Pemilihan Asesor')
+                                                        <a href='{{ route('pendaftaran.pemilihanasesor.setasesor', ['member_certification' => $item]) }}' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='Tentukan Asesor' data-original-tooltip='Tentukan Asesor'>
+                                                            <i class='fa fa-user-tie'></i>
+                                                        </a>
+                                                    @endcan
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -189,12 +193,10 @@
                             }
                         } );
 
-                        this.api().draw();
+                        table.draw();
                     }
                 },
             });
-
-
         });
     </script>
 @endpush

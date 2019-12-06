@@ -110,7 +110,7 @@ Route::middleware(['auth'])->group(function (){
         });
 
         Route::group(['prefix'=>'daftar-pertanyaan'], function () {
-        
+
             Route::resource('tertulis', 'TertulisController');
             Route::post('tertulis/create', 'TertulisController@create')->name('tertulis.create');
             Route::post('tertulis/update/{tertulis}', 'TertulisController@update')->name('tertulis.update');
@@ -121,7 +121,7 @@ Route::middleware(['auth'])->group(function (){
             Route::get('tertulis/{tertulis}/show', 'TertulisController@show')->name('tertulis.show');
             Route::get('tertulis/{tertulis}/edit', 'TertulisController@edit')->name('tertulis.edit');
             Route::get('lisan/data1', 'LisanController@Getdata')->name('tertulis.data');
-    
+
             Route::resource('lisan', 'LisanController');
             Route::post('lisan/create', 'LisanController@create')->name('lisan.create');
             Route::post('lisan/data', 'LisanController@Getdata')->name('lisan.getdata');
@@ -131,7 +131,7 @@ Route::middleware(['auth'])->group(function (){
             Route::get('lisan/{lisan}/edit', 'LisanController@edit')->name('lisan.edit');
             Route::post('lisan/getElement', 'LisanController@getElement')->name('lisan.getElement');
             Route::post('lisan/getKUK', 'LisanController@getKUK')->name('lisan.getKUK');
-        
+
         });
 
 
@@ -175,7 +175,7 @@ Route::middleware(['auth'])->group(function (){
                 Route::get('jenis/data', 'CBT\Materi\JenisSoalController@AjaxJenisSoalGetData')->name('materi.jenis-soal.data');
                 Route::post('jenis/insert', 'CBT\Materi\JenisSoalController@AjaxJenisSoalInsertData')->name('materi.jenis-soal.insert');
 
-               
+
                 Route::get('modul', 'CBT\Materi\PembuatanModulController@index')->name('materi.pembuatan-modul');
                 Route::get('modul/data', 'CBT\Materi\PembuatanModulController@AjaxModulGetData')->name('materi.pembuatan-modul.data');
                 Route::post('modul/insert', 'CBT\Materi\PembuatanModulController@AjaxModulInsertData')->name('materi.pembuatan-modul.insert');
@@ -281,21 +281,21 @@ Route::middleware(['auth'])->group(function (){
 
         });
     });
-    
-    Route::group(['namespace' => 'ManajemenPeserta', 'prefix' => 'management-peserta'], function () {
-        Route::group(['prefipostx' => 'peserta'], function () {
-            Route::get('peserta', 'MemberController@index')->name('peserta.pendaftaran');
-            Route::get('peserta/data', 'MemberController@getPesertaData')->name('peserta.pendaftaran.data');
-            Route::get('peserta/sertifikasi', 'MemberController@APL01')->name('peserta.pendaftaran.sertifikasi');
-            Route::get('peserta/sertifikasi/apl01/data', 'MemberController@getAPL01Data')->name('peserta.pendaftaran.sertifikasi.data');
-            Route::get('peserta/sertifikasi/apl01/view/{token}', 'MemberController@viewAPL01')->name('peserta.pendaftaran.sertifikasi.apl01');
-            Route::get('peserta/sertifikasi/pembayaran', 'MemberController@viewPaymentList')->name('peserta.pendaftaran.sertifikasi.pembayaran');
-            Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment')->name('peserta.pendaftaran.sertifikasi.pembayaran.confirm');
-            //Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment');
-            Route::get('peserta/sertifikasi/pembayaran/data', 'MemberController@getPaymentData')->name('peserta.pendaftaran.sertifikasi.pembayaran.data');
-            Route::put('peserta/sertifikasi/apl01/verify', 'MemberController@verifyAPL01');
-        });
-    });
+
+//    Route::group(['namespace' => 'ManajemenPeserta', 'prefix' => 'management-peserta'], function () {
+//        Route::group(['prefipostx' => 'peserta'], function () {
+//            Route::get('peserta', 'MemberController@index')->name('peserta.pendaftaran');
+//            Route::get('peserta/data', 'MemberController@getPesertaData')->name('peserta.pendaftaran.data');
+//            Route::get('peserta/sertifikasi', 'MemberController@APL01')->name('peserta.pendaftaran.sertifikasi');
+//            Route::get('peserta/sertifikasi/apl01/data', 'MemberController@getAPL01Data')->name('peserta.pendaftaran.sertifikasi.data');
+//            Route::get('peserta/sertifikasi/apl01/view/{token}', 'MemberController@viewAPL01')->name('peserta.pendaftaran.sertifikasi.apl01');
+//            Route::get('peserta/sertifikasi/pembayaran', 'MemberController@viewPaymentList')->name('peserta.pendaftaran.sertifikasi.pembayaran');
+//            Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment')->name('peserta.pendaftaran.sertifikasi.pembayaran.confirm');
+//            //Route::get('peserta/sertifikasi/pembayaran/confirm/{id}', 'MemberController@verifyAPL01Payment');
+//            Route::get('peserta/sertifikasi/pembayaran/data', 'MemberController@getPaymentData')->name('peserta.pendaftaran.sertifikasi.pembayaran.data');
+//            Route::put('peserta/sertifikasi/apl01/verify', 'MemberController@verifyAPL01');
+//        });
+//    });
 
     Route::group(['namespace' => 'ManajemenPeserta', 'prefix' => 'management-peserta'], function () {
         Route::group(['prefipostx' => 'peserta'], function () {
@@ -312,6 +312,14 @@ Route::middleware(['auth'])->group(function (){
             Route::get('peserta/sertifikasi/pembayaran/data', 'MemberController@getPaymentData')->name('peserta.pendaftaran.sertifikasi.pembayaran.data');
             Route::put('peserta/sertifikasi/apl01/verify', 'MemberController@verifyAPL01');
             Route::put('peserta/sertifikasi/apl01/reject', 'MemberController@rejectAPL01');
+        });
+
+        Route::group(['prefix'=>'pendaftaran'], function (){
+            Route::get('pemilihan-asesor', 'PendaftaranController@pemilihanAsesorIndex')->name('pendaftaran.pemilihanasesor');
+            Route::post('pemilihan-asesor/getdata', 'PendaftaranController@getPemilihanAsesorData')->name('pendaftaran.pemilihanasesor.getdata');
+            Route::get('pemilihan-asesor/{jadwal_kelas}/view-allpeserta', 'PendaftaranController@viewAllPeserta')->name('pendaftaran.viewallpeserta');
+            Route::get('pemilihan-asesor/{member_certification}/set-asesor','PendaftaranController@setAsesor')->name('pendaftaran.pemilihanasesor.setasesor');
+            Route::post('pemilihan-asesor/{member_certification}/save-asesor', 'PendaftaranController@saveAsesor')->name('pendaftaran.pemilihanasesor.saveasesor');
         });
     });
 });
