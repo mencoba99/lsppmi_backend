@@ -11,8 +11,8 @@ use App\User;
 
 class ElementController extends Controller
 {
-    
-    /** 
+
+    /**
      *  ElementController Contruct
      */
     public function __construct()
@@ -23,9 +23,9 @@ class ElementController extends Controller
     public function index()
     {
         $unit     = Units::orderBy('name', 'ASC')->pluck('name', 'id')->prepend('',''); //Dropdown Unit
-        return view('master.Element',compact('unit'));
+        return view('master.element',compact('unit'));
     }
- 
+
     public function AjaxInsertData(Request $request)
     {
         /** Parameter Insert to DB */
