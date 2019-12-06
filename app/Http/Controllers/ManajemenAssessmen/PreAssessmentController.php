@@ -7,7 +7,10 @@ use App\Models\JadwalKelas;
 use App\Models\MemberCertification;
 use App\Models\MemberCertificationAPL02;
 use App\Models\MemberCertificationChat;
+use App\Models\MemberCertificationPaap;
+use App\Models\Pendaftaran_trx;
 use App\Models\ProgramSchedule;
+use Arr;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -88,7 +91,21 @@ class PreAssessmentController extends Controller
     public function viewSinglePeserta(MemberCertification $memberCertification)
     {
         $chatApl02 = MemberCertificationChat::apl02Chat($memberCertification->id)->get();
-        return view('ManajemenAssessmen.PreAssessmentController.view-single-peserta', compact('memberCertification', 'chatApl02'));
+
+        $direct = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
+            return ($value['type'] == 'direct');
+        });
+        $direct = Arr::get($direct, '0.methods');
+
+        $indirect = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
+            return ($value['type'] == 'indirect');
+        });
+//        return $indirect;
+        $indirect = Arr::get($indirect, '1.methods');
+
+//        return $indirect;
+
+        return view('ManajemenAssessmen.PreAssessmentController.view-single-peserta', compact('memberCertification', 'chatApl02', 'direct', 'indirect'));
     }
 
     public function saveChatApl02(Request $request, MemberCertification $memberCertification)
@@ -102,12 +119,12 @@ class PreAssessmentController extends Controller
         $chat->message                 = $message;
         $chat->chat_type               = 2;
 
-        $result = ['status'=>false,'data'=>null];
+        $result = ['status' => false, 'data' => null];
 
         if ($chat->save()) {
             $chat->load('asesor');
             $result['status'] = true;
-            $result['data'] = $chat;
+            $result['data']   = $chat;
         }
 
         echo json_encode($result);
@@ -122,40 +139,87 @@ class PreAssessmentController extends Controller
      */
     public function approveAPL02(Request $request, MemberCertification $memberCertification, $status)
     {
-        $apl02 = $memberCertification->apl02();
+        \DB::beginTransaction();
+        try {
+            $apl02 = $memberCertification->apl02();
 
-        if ($status == 'approve') {
-            if ($apl02->update(['status'=>3])) {
-                flash()->success('Berhasil Approve APL-02');
-            } else {
-                flash()->error('Gagal Approve APL-02');
+            if ($status == 'approve') {
+                if ($apl02->update(['status' => 3])) {
+                    /**
+                     * Insert data peserta ke table pendaftaran_trx
+                     */
+                    $pendaftaran_trx = new Pendaftaran_trx();
+
+                    $pendaftaran_trx->pendaftaran_id    = $memberCertification->id;
+                    $pendaftaran_trx->batch_id          = $memberCertification->program_schedule_id;
+                    $pendaftaran_trx->nama_batch        = $memberCertification->schedules->program->name;
+                    $pendaftaran_trx->peserta_id        = $memberCertification->member_id;
+                    $pendaftaran_trx->nama_peserta      = $memberCertification->members->name;
+                    $pendaftaran_trx->tgl_daftar        = $memberCertification->created_at;
+                    $pendaftaran_trx->harga_pendaftaran = $memberCertification->schedules->price;
+
+                    $pendaftaran_trx->save();
+
+                    flash()->success('Berhasil Approve APL-02');
+                } else {
+                    flash()->error('Gagal Approve APL-02');
+                }
+            } elseif ($status == 'unapprove') {
+                if ($apl02->update(['status' => 2])) {
+                    flash()->success('Berhasil Unapprove APL-02');
+                } else {
+                    flash()->error('Gagal Unapprove APL-02');
+                }
+            } elseif ($status == 'reject') {
+                if ($apl02->update(['status' => 4])) {
+                    flash()->success('Berhasil Reject APL-02');
+                } else {
+                    flash()->error('Gagal Reject APL-02');
+                }
             }
-        } elseif ($status == 'unapprove') {
-            if ($apl02->update(['status'=>2])) {
-                flash()->success('Berhasil Unapprove APL-02');
-            } else {
-                flash()->error('Gagal Unapprove APL-02');
-            }
-        } elseif ($status == 'reject') {
-            if ($apl02->update(['status'=>4])) {
-                flash()->success('Berhasil Reject APL-02');
-            } else {
-                flash()->error('Gagal Reject APL-02');
-            }
+            \DB::commit();
+        } catch (\Exception $exception) {
+            \DB::rollBack();
         }
 
-        return redirect()->route('pre-assessment.viewsinglepeserta',['member_certification'=>$memberCertification]);
+        return redirect()->route('pre-assessment.viewsinglepeserta', ['member_certification' => $memberCertification]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
+     * @param MemberCertification $memberCertification
      * @return \Illuminate\Http\Response
      */
-    public function savePaap(Request $request)
+    public function savePaap(Request $request, MemberCertification $memberCertification)
     {
-        return $request->all();
+        if (auth()->user()->can('Validasi APL-02')) {
+            $paap = new MemberCertificationPaap();
+
+            $paap->member_certification_id = $memberCertification->id;
+            $paap->member_id               = $memberCertification->member_id;
+            $paap->pa_asesi                = $request->get('pa_asesi');
+            $paap->pa_tujuan_asesmen       = $request->get('pa_tujuan_asesmen');
+            $paap->pa_konteks_asesmen      = $request->get('pa_konteks_asesmen');
+            $paap->pa_orang_relevan        = $request->get('pa_orang_relevan');
+            $paap->pa_tolak_ukur           = $request->get('pa_tolak_ukur');
+            $paap->metode_asesmen          = $request->get('metode_asesmen');
+            $paap->mk_1                    = $request->get('mk_1');
+            $paap->mk_2                    = $request->get('mk_1');
+            $paap->mk_3                    = $request->get('mk_1');
+            $paap->mk_4                    = $request->get('mk_1');
+
+            if ($paap->save()) {
+                flash()->success('Berhasil simpan form PAAP');
+            } else {
+                flash()->error('Gagal simpan form PAAP');
+            }
+
+        } else {
+            flash()->error('Maaf Anda tidak mempunyai akses untuk Approval APL02');
+        }
+        return redirect()->route('pre-assessment.viewsinglepeserta', ['member_certification' => $memberCertification]);
     }
 
     /**

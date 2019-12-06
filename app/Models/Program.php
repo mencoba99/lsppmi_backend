@@ -35,6 +35,10 @@ class Program extends Revisionable
 
         ];
 
+    protected $casts = [
+        'type' => 'json'
+    ];
+
     public function kategori()
     {
         return $this->belongsTo('\App\Models\Kategori', 'program_type_id', 'id');
