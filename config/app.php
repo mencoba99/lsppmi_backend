@@ -177,6 +177,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Venturecraft\Revisionable\RevisionableServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -233,6 +234,7 @@ return [
         'Yajra_datatable' => App\Helpers\Yajra_datatable::class,
         'Helper' => App\Helpers\Helper::class,
         'GeneralHelper' => App\Http\Helpers\GeneralHelper::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

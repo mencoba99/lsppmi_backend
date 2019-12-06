@@ -71,3 +71,11 @@
     <!-- end:: Content -->
 
 @endsection
+@push('modal-script')
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#loader', parent.document).fadeOut();
+        });
+    </script>
+@endpush

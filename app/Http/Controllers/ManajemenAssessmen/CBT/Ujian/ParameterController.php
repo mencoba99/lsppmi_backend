@@ -18,7 +18,10 @@ use Carbon\Carbon;
 
 class ParameterController extends Controller
 {
-    
+    public function __construct()
+    {
+        $this->middleware(['permission:Parameter Ujian']);
+    }
 
     public function index()
     {

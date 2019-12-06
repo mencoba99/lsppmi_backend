@@ -71,7 +71,8 @@ class PembuatanSubModulController extends Controller
         $SubModul->name = $request->get('name');
         $SubModul->description = $request->get('desc');
         $SubModul->id_modul = $request->get('id_modul');
-        $SubModul->aktif = $request->get('status') ? TRUE : FALSE;
+        $SubModul->aktif = $request->get('status');
+        $SubModul->status = 1;
 
 
         if($request->get('id')){
@@ -81,7 +82,7 @@ class PembuatanSubModulController extends Controller
             $update['name'] = $request->get('name');
             $update['id_modul'] = $request->get('id_modul');
             $update['description'] = $request->get('desc');
-            $update['aktif'] = $request->get('status') ? TRUE : FALSE;
+            $update['aktif'] = $request->get('status');
             if(SubModul::whereId($request->get('id'))->update($update)){
                 return json_encode(array(
                     "status"=>200,
