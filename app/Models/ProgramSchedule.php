@@ -35,14 +35,6 @@ class ProgramSchedule extends Revisionable
     }
 
     public function programs()
-<<<<<<< HEAD
-=======
-    {
-        return $this->belongsTo('App\Models\Program', 'program_id', 'id');
-    }
-
-    public function program()
->>>>>>> Update modul Pre Asesmen
     {
         return $this->belongsTo('App\Models\Program', 'program_id', 'id');
     }
