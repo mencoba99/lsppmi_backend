@@ -105,7 +105,7 @@
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors(used by this page) -->
-<script src="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
+{{--<script src="{{ Storage::url('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>--}}
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
 <script src="{{ Storage::url('assets/backend/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
 
@@ -116,8 +116,13 @@
 <script src="{{ asset('assets/js/lsppmi-custom.js') }}" type="text/javascript"></script>
 
 @stack('modal-script')
-
 <!--end::Page Scripts -->
+
+<script type="text/javascript">
+    window.onload = function () {
+        $("#loader",parent.document).fadeOut(1230)
+    }
+</script>
 </body>
 
 <!-- end::Body -->

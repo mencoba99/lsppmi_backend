@@ -30,6 +30,9 @@
                     </tr>
                     </tbody>
                 </table>
+
+{{--                {{ array_search('direct', array_column($memberCertification->schedules->program->type,'type')) }}--}}
+{{--                {{ var_dump(array_column($memberCertification->schedules->program->type,'type')) }}--}}
             </div>
         </div>
 
@@ -403,8 +406,7 @@
                                                         @php($nokuk=1)
                                                         @foreach($element->kuk as $kuk)
                                                             <tr>
-                                                                <td style="padding-left: 30px;">{{ $noElemen }}
-                                                                    .{{ $nokuk }} {{ $kuk->name }}</td>
+                                                                <td style="padding-left: 30px;">{{ $noElemen }}.{{ $nokuk }} {{ $kuk->name }}</td>
                                                                 @if (GeneralHelper::getCompetentStatusAPL02($memberCertification->id, $kuk->id))
                                                                     <td><i class="la la-check"></i></td>
                                                                     <td></td>
@@ -445,6 +447,9 @@
                                 </div>
                                 <div class="kt-portlet__head-toolbar" style="align-items: center!important;">
                                     <div class="kt-portlet__head-actions">
+                                        <a href="#" class="btn btn-outline-brand btn-bold btn-sm" data-toggle="modal" data-target="#kt_chat_modals">
+                                            <i class="la la-wechat"></i> Kirim Pesan
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -632,34 +637,62 @@
                                     <tr>
                                         <td rowspan="4">Orang yang relevan untuk dikonfirmasi</td>
                                         <td colspan="3">
-                                            <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_orang_relevan[]" value="1"> Manajer sertifikasi LSP
-                                                <span></span>
-                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                        <input type="checkbox" name="pa_orang_relevan[1][key]" value="1"> Manajer sertifikasi LSP
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pa_orang_relevan[1][value]" class="form-control">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_orang_relevan[]" value="2"> Master Assessor / Master Trainer / Asesor Utama kompetensi
-                                                <span></span>
-                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                        <input type="checkbox" name="pa_orang_relevan[2][key]" value="2"> Master Assessor / Master Trainer / Asesor Utama kompetensi
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pa_orang_relevan[2][value]" class="form-control">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_orang_relevan[]" value="3"> Manajer pelatihan Lembaga Training terakreditasi / Lembaga Training terdaftar
-                                                <span></span>
-                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                        <input type="checkbox" name="pa_orang_relevan[3][key]" value="3"> Manajer pelatihan Lembaga Training terakreditasi / Lembaga Training terdaftar
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pa_orang_relevan[3][value]" class="form-control">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_orang_relevan[]" value="4"> Lainnya :
-                                                <span></span>
-                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                        <input type="checkbox" name="pa_orang_relevan[4][key]" value="4"> Lainnya :
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pa_orang_relevan[4][value]" class="form-control">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -667,7 +700,7 @@
                                         <td rowspan="5">Tolak Ukur Asesmen</td>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Standar Kompetensi
+                                                <input type="radio" name="pa_tolak_ukur" value="1"> Standar Kompetensi
                                                 <span></span>
                                             </label>
                                         </td>
@@ -675,7 +708,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Kriteria asesmen dari kurikulum pelatihan
+                                                <input type="radio" name="pa_tolak_ukur" value="2"> Kriteria asesmen dari kurikulum pelatihan
                                                 <span></span>
                                             </label>
                                         </td>
@@ -683,7 +716,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Spesifikasi kinerja suatu perusahaan atau industri:
+                                                <input type="radio" name="pa_tolak_ukur" value="3"> Spesifikasi kinerja suatu perusahaan atau industri:
                                                 <span></span>
                                             </label>
                                         </td>
@@ -691,7 +724,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Spesifikasi Produk:
+                                                <input type="radio" name="pa_tolak_ukur" value="4"> Spesifikasi Produk:
                                                 <span></span>
                                             </label>
                                         </td>
@@ -699,7 +732,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Pedoman Khusus
+                                                <input type="radio" name="pa_tolak_ukur" value="5"> Pedoman Khusus
                                                 <span></span>
                                             </label>
                                         </td>
@@ -761,18 +794,37 @@
                                                                 <td style="padding-left: 30px;">{{ $noElemen }} .{{ $nokuk }} {{ $kuk->name }}</td>
                                                                 <td></td>
                                                                 @if ($noUk == 1 && $noElemen == 1 && $nokuk == 1)
-                                                                    <td class="text-center">
-                                                                        <label class="kt-radio kt-radio--success">
-                                                                            <input type="radio" class="paap_metode" name="metode_asesmen" value="L">&nbsp;
-                                                                            <span></span>
-                                                                        </label>
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <label class="kt-radio kt-radio--success">
-                                                                            <input type="radio" class="paap_metode" name="metode_asesmen" value="TL">&nbsp;
-                                                                            <span></span>
-                                                                        </label>
-                                                                    </td>
+
+                                                                    @if (is_array($direct) && !empty($direct))
+                                                                        <td class="text-center">
+                                                                            <label class="kt-radio kt-radio--success">
+                                                                                <input type="radio" class="paap_metode" name="metode_asesmen" value="L">&nbsp;
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    @else
+                                                                        <td class="text-center">
+                                                                            <label class="kt-radio kt-radio--success">
+                                                                                <input type="radio" class="paap_metode" disabled name="metode_asesmen" value="L">&nbsp;
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    @endif
+                                                                    @if (is_array($indirect) && !empty($indirect))
+                                                                        <td class="text-center">
+                                                                            <label class="kt-radio kt-radio--success">
+                                                                                <input type="radio" class="paap_metode" name="metode_asesmen" value="TL">&nbsp;
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    @else
+                                                                        <td class="text-center">
+                                                                            <label class="kt-radio kt-radio--success">
+                                                                                <input type="radio" class="paap_metode" disabled name="metode_asesmen" value="TL">&nbsp;
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    @endif
                                                                     <td class="text-center">
                                                                         <label class="kt-radio kt-radio--success">
                                                                             <input type="radio" class="paap_metode" name="metode_asesmen" value="T">&nbsp;
@@ -784,10 +836,10 @@
                                                                     <td class="text-center"><span class="for_tl"></span></td>
                                                                     <td class="text-center"><span class="for_t"></span></td>
                                                                 @endif
+                                                                <td><span class="for_cbt"></span></td>
                                                                 <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
+                                                                <td><span class="for_interview"></span></td>
+                                                                <td><span class="for_portfolio"></span></td>
                                                                 <td></td>
                                                                 <td></td>
                                                             </tr>
@@ -921,7 +973,7 @@
                             </div>
                         </div>
                         <div class="kt-portlet__body">
-                            <div class="kt-scroll kt-scroll--pull" data-height="410" data-mobile-height="300">
+                            <div class="kt-scroll kt-scroll--pull" data-height="350" data-mobile-height="300">
                                 <div class="kt-chat__messages kt-chat__messages kt-chat__messages--modal">
                                     @if ($chatApl02 && $chatApl02->count() > 0)
                                         @foreach($chatApl02 as $chat)
@@ -1096,14 +1148,34 @@
                 var val = $(this).val();
 
                 if (val == 'L') {
+                    /**
+                     * Metode Langsung
+                     */
+                    @if(in_array('cbt', $direct))
+                        $('span.for_cbt').html('<i class="la la-check"></i>');
+                    @endif
+                    @if(in_array('interview', $direct))
+                        $('span.for_interview').html('<i class="la la-check"></i>');
+                    @endif
+                    $('span.for_portfolio').html('');
                     $('span.for_l').html('<i class="la la-check"></i>');
                     $('span.for_tl').html('');
                     $('span.for_t').html('');
                 } else if (val == 'TL') {
+                    @if(in_array('observasi', $indirect))
+                        $('span.for_portfolio').html('<i class="la la-check"></i>');
+                    @endif
+                    @if(in_array('wawancara', $indirect))
+                        $('span.for_interview').html('<i class="la la-check"></i>');
+                    @endif
+                    $('span.for_cbt').html('');
                     $('span.for_l').html('');
                     $('span.for_tl').html('<i class="la la-check"></i>');
                     $('span.for_t').html('');
                 } else if (val == 'T') {
+                    $('span.for_cbt').html('');
+                    $('span.for_portfolio').html('');
+                    $('span.for_interview').html('');
                     $('span.for_l').html('');
                     $('span.for_tl').html('');
                     $('span.for_t').html('<i class="la la-check"></i>');
