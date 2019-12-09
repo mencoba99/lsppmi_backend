@@ -261,6 +261,9 @@ Route::middleware(['auth'])->group(function (){
             Route::get('jadwal-kelas/register/{jadwal_kelas}/view', 'JadwalKelasController@registerView')->name('jadwal-kelas.register.view');
             Route::post('jadwal-kelas/register/getdata', 'JadwalKelasController@getJadwalKelasNotCloseRegisterData')->name('jadwal-kelas.register.getdata');
             Route::get('jadwal-kelas/register/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@registerJadwalKelas')->name('jadwal-kelas.register.set-approve');
+
+            /** Transfer Kelas */
+            Route::post('jadwal-kelas/transfer', 'JadwalKelasController@transfer')->name('jadwal-kelas.transfer');
         });
 
         Route::group(['prefix'=>'manajemen-asssessmen'], function () {

@@ -218,7 +218,8 @@ class MemberController extends Controller
 			$pay->save();
 
 			$cert = MemberCertification::findOrFail($pay->member_certification_id);
-			$cert->status = 3;
+			$cert->status = 2;
+			$cert->is_paid = 1;
 			$cert->updated_at = date('Y-m-d H:i:s');
 			$cert->save();
 

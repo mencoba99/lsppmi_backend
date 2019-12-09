@@ -8,6 +8,8 @@ class MemberCertificationAPL01 extends Model
 {
     protected $table = 'member_certification_apl_01';
 
+    protected $guarded = [];
+
 //    protected $casts = [
 //        'proof' => 'json'
 //    ];

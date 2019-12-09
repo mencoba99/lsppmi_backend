@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MemberCertificationPayment extends Model
 {
     protected $table = 'member_certification_payments';
+    protected $guarded = [];
 
     public function certification()
     {

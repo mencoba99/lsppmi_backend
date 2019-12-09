@@ -8,10 +8,17 @@ use App\Models\JadwalKelas;
 use App\Models\Program;
 use App\Models\ProgramSchedule;
 use App\Models\TUK;
+use App\Models\MemberCertification;
+use App\Models\MemberCertificationAPL01;
+use App\Models\MemberCertificationAPL02;
+use App\Models\MemberCertificationPayment;
+
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Yajra\DataTables\DataTables;
 use function GuzzleHttp\Psr7\str;
+use DB;
 
 class JadwalKelasController extends Controller
 {
@@ -20,7 +27,7 @@ class JadwalKelasController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['permission:Jadwal Kelas']);
+        //$this->middleware(['permission:Jadwal Kelas']);
     }
 
     /**
@@ -167,6 +174,17 @@ class JadwalKelasController extends Controller
      */
     public function show(ProgramSchedule $jadwalKelas)
     {
+        $classes = DB::table('program_schedules as ps')
+        ->join('programs as p', 'ps.program_id', '=', 'p.id')
+        ->join('competence_places as cp', 'ps.competence_place_id', '=', 'cp.id')
+        ->where('p.code', $jadwalKelas->program->code)
+        ->where('ps.is_publish', 1)
+        ->where('ps.is_hidden', 0)
+        ->where('ps.registration_closed', 0)
+        ->select('ps.id as schedule_id', 'p.code', 'p.name', 'cp.name as place', 'ps.started_at')
+        ->get();
+        
+        $jadwalKelas->classes = $classes;
         return view('ManajemenAssessmen.JadwalKelasController.show', compact('jadwalKelas'));
     }
 
@@ -473,5 +491,96 @@ class JadwalKelasController extends Controller
         })->escapeColumns([])->make(true);
 
         return $jadwalKelasJson;
+    }
+
+    public function transfer()
+    {
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        DB::beginTransaction();
+
+        try {
+            $scheduleFrom = ProgramSchedule::findOrFail(request('program_schedule_id'));
+            $scheduleTo = ProgramSchedule::findOrFail(request('program_schedule_id_to'));
+            
+            $certFrom = MemberCertification::findOrFail(request('member_certification_id'));
+            $apl01From = MemberCertificationAPL01::where('member_certification_id', request('member_certification_id'))->get();
+            $apl02From = MemberCertificationAPL02::where('member_certification_id', request('member_certification_id'))->get();
+
+            // Update member_certification lama
+            $certFrom->status = 5;
+            $certFrom->save();
+
+            // Insert member_certification baru
+            $certNewData = [
+                'member_id' => $certFrom->member_id,
+                'program_schedule_id' => request('program_schedule_id_to'),
+                'payment_method_id' => $certFrom->payment_method_id,
+                'status' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'token' => substr(str_shuffle($permitted_chars), 0, 32),
+                'is_paid' => $certFrom->is_paid
+            ];
+
+            //dd($certNewData);
+
+            $certNew = MemberCertification::create($certNewData);
+
+
+            // copy payment dari lama ke baru
+            $paymentNewData = [
+                'member_certification_id' => $certNew->id,
+                'account_no' => $certFrom->payment->account_no,
+                'account_name' => $certFrom->payment->account_name,
+                'payment_file' => $certFrom->payment->payment_file,
+                'transfer_date' => $certFrom->payment->transfer_date,
+                'status' => $certFrom->payment->status,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            MemberCertificationPayment::create($paymentNewData);
+
+            // Looping buat insert data APL01 lama ke yang baru
+            foreach ($apl01From as $key => $value) {
+                $apl01 = [
+                    'member_certification_id' => $certNew->id,
+                    'program_competence_unit_id' => $value->program_competence_unit_id,
+                    'proof' => $value->proof,
+                    'status' => $value->status,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+
+                MemberCertificationAPL01::create($apl01);
+            }
+
+            // looping buat insert data APL02 lama ke yang baru
+            foreach ($apl02From as $key => $value) {
+                $apl02 = [
+                    'member_certification_id' => $certNew->id,
+                    'competence_kuk_id' => $value->competence_kuk_id,
+                    'is_competent' => $value->is_competent,
+                    'proof' => $value->proof,
+                    'status' => $value->status,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+
+                MemberCertificationAPL02::create($apl02);
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+
+            flash()->error('Terjadi kesalahan transfer kelas.');
+            return redirect()->back();
+        }
+
+        DB::commit();
+
+        flash()->success('Transfer kelas berhasil.');
+        return redirect()->back();
     }
 }

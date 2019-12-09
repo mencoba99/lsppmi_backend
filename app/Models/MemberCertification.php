@@ -16,6 +16,8 @@ class MemberCertification extends Revisionable
 
     protected $table = 'member_certification';
 
+    protected $guarded = [];
+
     /**
      * Undocumented function
      *
