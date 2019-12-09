@@ -150,9 +150,6 @@
                     },
                     "type": {
                         required: true
-                    },
-                    "status": {
-                        required: true
                     }
 
                 },
@@ -246,7 +243,7 @@
                 $("#id").val($(this).data('id'));
                 $("#name").val($(this).data('name'));
                 $("#code").val($(this).data('code'));
-                $("input#type").val($(this).data('type'));
+                $("select#type").val($(this).data('type'));
                 if($(this).data('status') == 1) {
                     console.log('checked');
                     $("input#status").prop('checked', true);

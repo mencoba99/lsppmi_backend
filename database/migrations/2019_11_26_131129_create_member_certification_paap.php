@@ -18,10 +18,10 @@ class CreateMemberCertificationPaap extends Migration
             $table->unsignedInteger('member_certification_id')->nullable();
             $table->unsignedInteger('member_id')->nullable();
             $table->jsonb('pa_asesi')->nullable()->comment('Untuk Pendekatan Asesmen > Asesi');
-            $table->jsonb('pa_tujuan_asesmen')->nullable()->comment('Untuk Pendekatan Asesmen > Tujuan Asesmen');
+            $table->tinyInteger('pa_tujuan_asesmen')->nullable()->comment('Untuk Pendekatan Asesmen > Tujuan Asesmen');
             $table->jsonb('pa_konteks_asesmen')->nullable()->comment('Untuk Pendekatan Asesmen > Konteks Asesmen');
             $table->jsonb('pa_orang_relevan')->nullable()->comment('Untuk Pendekatan Asesmen > Orang yang relevan untuk dikonfirmasi');
-            $table->jsonb('pa_tolak_ukur')->nullable()->comment('Untuk Pendekatan Asesmen > Tolak ukur Asesmen');
+            $table->tinyInteger('pa_tolak_ukur')->nullable()->comment('Untuk Pendekatan Asesmen > Tolak ukur Asesmen');
             $table->tinyInteger('metode_asesmen')->nullable()->comment('Untuk pilihan metode asesmen yang akan digunakan : 1 = Langsung ; 2 = Tidak Langsung ; 3 = Tidak ada metode');
             $table->text('mk_1')->nullable()->comment('Untuk Modifikasi dan Kontektualisasi pertanyaan 1');
             $table->text('mk_2')->nullable()->comment('Untuk Modifikasi dan Kontektualisasi pertanyaan 2');
