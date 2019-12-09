@@ -83,7 +83,7 @@
             serverSide: true,
             ajax: "{{ route('ujian-komputer.management.data') }}",
             columns: [
-                { data: 'id', render: function (data, type, row, meta) {
+                { data: 'program_id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 } , title: 'No.', width : "3%" },
                 { data: 'nama_program', name: 'nama_program' , title: 'Program ' },

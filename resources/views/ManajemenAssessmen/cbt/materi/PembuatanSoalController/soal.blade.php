@@ -62,7 +62,7 @@
 </div>
 
 <div class="modal fade" id="add"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg"   style="min-width: 100%;margin: 0;" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Data</h5>
@@ -417,56 +417,17 @@ jQuery(document).ready(function() {
     });
 
     $('#show').click(function(event) {
-            alert("a");
+            // alert("a");
             $('#loader').show();
         });
     }
 
-    $(function () {
-
-        view(); //call datatable view
-
-        /* Edit Data */
-        $("#datatable").on("click", "tr #edit", function () {
-            $("input").val("");
-            form.resetForm();
-            $("#soal_id").val($(this).data('id'));
-            $("#modul_id").val($(this).data('modul'));
-
-            $("#soal").val($(this).data('soal'));
-            $("#submodul_id").val($(this).data('submodul'));
-            $("#jenissoal_id").val($(this).data('bobot'));
-            $("#nick").val($(this).data('nick'));
-            $("#answer_a").val($(this).data('a'));
-            $("#answer_b").val($(this).data('b'));
-            $("#answer_c").val($(this).data('c'));
-            $("#answer_d").val($(this).data('d'));
-            $("#answer_e").val($(this).data('e'));
-            $("#tag").val($(this).data('tag'));
-            $("#answer").val($(this).data('jawaban'));
-            $("#status").val($(this).data('status'));
-            $("#desc").val($(this).data('desc'));
-            $('.summernote').summernote('code', $(this).data('soal'));
-            $('.kt-selectpicker').selectpicker('refresh');
-
-            $('#add').modal('show');
-        });
-
-        /* New Data Button */
-        $('#new').click(function (event) {
-            $("input").val("");
-            $("select#status").val("");
-            $('.kt-selectpicker').selectpicker('refresh');
-            form.resetForm();
-        });
-
-        $('select#modul_id').on('change', function () {
-
-            $.ajax({
+    function get_submodul(modul,submodul){
+        $.ajax({
                 type: "POST",
                 url: "{{ route('materi.pembuatan-soal.modul') }}",
                 data: {
-                    'id_modul': this.value
+                    'id_modul': modul
                 },
                 beforeSend: function () {
                     KTApp.block('#add .modal-content', {
@@ -486,52 +447,132 @@ jQuery(document).ready(function() {
                     $.each(data, function (index, value) {
                         
                         $('select#submodul_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        if(submodul!=null){
+                             $('select#submodul_id').val(submodul);
+                        }
                         $('.kt-selectpicker').selectpicker('refresh');
                         KTApp.unblock('#add .modal-content');
                         $('.bobot').show();
-                        $('.parent').show();
+                        // $('.parent').show();
                     });
 
                 }
             });
+    }
 
-        });
-
-        $('select#jenissoal_id').on('change', function () {
-            alert(this.value);
-            $.ajax({
+    function get_parent(jenis_soal_id,parent,modul,submodul){
+       
+        $.ajax({
                 type: "POST",
                 url: "{{ route('materi.pembuatan-soal.parent') }}",
                 data: {
-                    'jenis_soal_id': this.value,
-                    'modul_id'     : $('#modul_id').val(),
-                    'submodul_id'  : $('#submodul_id').val(),
+                    'jenis_soal_id': jenis_soal_id,
+                    'modul_id'     : modul,
+                    'submodul_id'  : submodul,
                     'soal_id'      : $('#soal_id').val(),
                 },
                 beforeSend: function () {
-                    // KTApp.block('#add .modal-content', {
-                    // overlayColor: '#000000',
-                    // type: 'v2',
-                    // state: 'primary',
-                    // message: 'Processing...'
-                    // });
-                    $('select#parent_id').html("<option value='0'>Pilih Parent</option>");
-                    $('.kt-selectpicker').selectpicker('refresh');
+                    KTApp.block('#add .modal-content', {
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'primary',
+                    message: 'Processing...'
+                    });
+                   
+                    $('select#parent_id').html("<option value='0'>-- Parent --</option>");
+                    $('select#parent_id').selectpicker('refresh');
+                   
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
                     // alert(JSON.stringify(response));
-                    $.each(data, function (index, value) {
+                    // alert(parent);
+                    KTApp.unblock('#add .modal-content');
+                    
+                    $.each(data, function (index, v) {
                         
-                        $('select#parent_id').append('<option value="' + value.soal_id + '">' + value.nick + '</option>');
-                        $('.kt-selectpicker').selectpicker('refresh');
-                        KTApp.unblock('#add .modal-content');
+                        $('select#parent_id').append( "<option value='"+ v.soal_id +"' >"+ v.soal_id +" - "+ v.nick +"</option>");
+                        if(parent!=null){
+                             $('#parent_id').val(parent);
+                        }
+                        $('select#parent_id').selectpicker('refresh');
+                      
                     });
 
                 }
             });
+    }
+
+    $(function () {
+
+        view(); //call datatable view
+
+        /* Edit Data */
+        $("#datatable").on("click", "tr #edit", function () {
+            get_submodul($(this).data('modul'),$(this).data('submodul'));
+            get_parent($(this).data('bobot'),$(this).data('parent'),$(this).data('modul'),$(this).data('submodul'));
+            
+
+           
+            $("#soal_id").val($(this).data('id'));
+            $("#modul_id").val($(this).data('modul'));
+
+            $("#soal").val($(this).data('soal'));
+            $("#jenissoal_id").val($(this).data('bobot'));
+            $("#nick").val($(this).data('nick'));
+            $("#answer_a").val($(this).data('a'));
+            $("#answer_b").val($(this).data('b'));
+            $("#answer_c").val($(this).data('c'));
+            $("#answer_d").val($(this).data('d'));
+            $("#answer_e").val($(this).data('e'));
+            $("#tag").val($(this).data('tag'));
+            $("#answer").val($(this).data('jawaban'));
+            $("#status").val($(this).data('status'));
+            $("#desc").val($(this).data('desc'));
+            // $("#parent_id").val();
+            $('.summernote').summernote('code', $(this).data('soal'));
+            $('.kt-selectpicker').selectpicker('refresh');
+
+            $('#add').modal('show');
+            $('.bobot').show();
+            $('.parent').show();
+        });
+
+        /* New Data Button */
+        $('#new').click(function (event) {
+            $('form')[0].reset();
+            $('.summernote').summernote('code', '');
+            $("select#status").val("");
+            $('.kt-selectpicker').selectpicker('refresh');
+            
+        });
+
+        $('select#modul_id').on('change', function () {
+            $('select#jenissoal_id').val("").selectpicker('refresh');
+            get_submodul(this.value,null);
+
+           
+
+        });
+
+        $('select#submodul_id').on('change', function () {
+            $('select#jenissoal_id').val("").selectpicker('refresh');
+            // $('select#parent_id').remove("").selectpicker('refresh');
+            $('.parent').show();
+        });
+            
+        $('select#jenissoal_id').on('change', function () {
+            $('select#parent_id').children().remove();
+            $('select#parent_id').selectpicker('refresh');
+           
+            
+            if($('#submodul_id').val()!='' && $('#modul_id').val()!=''){
+                get_parent(this.value,null,$('#modul_id').val(),$('#submodul_id').val());
+                // alert("bobot");
+
+            }
 
         });
 
@@ -544,3 +585,4 @@ jQuery(document).ready(function() {
 </script>   
    
 @endpush
+ 

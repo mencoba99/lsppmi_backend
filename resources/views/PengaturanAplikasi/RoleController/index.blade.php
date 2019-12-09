@@ -77,9 +77,9 @@
                 ],
             });
 
-            $('#mod-iframe-large').on('hide.bs.modal', function (e) {
-                table.ajax.reload();
-            });
+            // $('#mod-iframe-large').on('hide.bs.modal', function (e) {
+            //     table.ajax.reload();
+            // });
         })
     </script>
 @endpush

@@ -19,6 +19,10 @@ use Carbon\Carbon;
 class JenisController extends Controller
 {
     
+    public function __construct()
+    {
+        $this->middleware(['permission:Ujian Jenis']);
+    }
 
     public function index()
     {
@@ -84,14 +88,12 @@ class JenisController extends Controller
        
         $deleted = Jenis::find($request->ujian_jenis_id)->delete();
         if ($deleted) {
-            return json_encode(array(
-                    "status"=>200
-                ));
+          
         } else {
-            return json_encode(array(
-                    "status"=>500
-                ));
+            
         }
+
+        return redirect()->route('ujian.jenis');
     }
 
     
