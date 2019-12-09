@@ -17,7 +17,7 @@ class TUK extends Revisionable
 
     protected $fillable
         = [
-            'regency_id', 'name', 'description', 'address', 'contact', 'latitude', 'longitude', 'status'
+            'regency_id', 'name', 'description', 'address', 'contact', 'latitude', 'longitude', 'status','pic','capacity'
         ];
 
     public function regency()

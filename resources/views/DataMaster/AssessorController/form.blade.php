@@ -62,6 +62,18 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-3 col-form-label">No.Reg. MET</label>
+                        <div class="col-9">
+                            {!! Form::text('no_reg',(!empty($assessor) ? $assessor->no_reg:null),['class'=>'form-control','placeholder'=>'No.Reg. MET']) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">Masa Berlaku Izin Sampai ?</label>
+                        <div class="col-9">
+                            {!! Form::text('license_date',(!empty($assessor) ? $assessor->license_date:null),['class'=>'form-control','placeholder'=>'Masa Berlaku Izin Sampai ?', 'id'=>'kt_datepicker_1']) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-3 col-form-label">Nomor Telepon Genggam</label>
                         <div class="col-9">
                             {!! Form::text('mobile_phone',(!empty($assessor) ? $assessor->mobile_phone:null),['class'=>'form-control','placeholder'=>'Nomor Telepon Genggam']) !!}
@@ -167,6 +179,16 @@
                     $('.btn-loading').addClass('kt-spinner kt-spinner--sm kt-spinner--light');
                     form[0].submit(); // submit the form
                 }
+            });
+
+            $('#kt_datepicker_1').datepicker({
+                rtl: KTUtil.isRTL(),
+                todayBtn: "linked",
+                clearBtn: true,
+                format: "yyyy-mm-dd",
+                todayHighlight: true,
+                orientation: "bottom left",
+                templates: 'arrows'
             });
 
             // $('#remove_image').on('click', function (e) {

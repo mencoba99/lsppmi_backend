@@ -55,7 +55,7 @@ class JadwalKelasController extends Controller
                             </a>";
             }
             if (auth()->user()->can('Jadwal Kelas Delete')) {
-                $action .= "<a href='" . route('jadwal-kelas.delete', ['jadwal_kela' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' data-toggle='kt-tooltip' title='Hapus' data-original-tooltip='Hapus'>
+                $action .= "<a href='" . route('jadwal-kelas.delete', ['jadwal_kelas' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' data-toggle='kt-tooltip' title='Hapus' data-original-tooltip='Hapus'>
                               <i class='la la-trash'></i>
                             </a>";
             }

@@ -148,17 +148,25 @@ class PreAssessmentController extends Controller
                     /**
                      * Insert data peserta ke table pendaftaran_trx
                      */
-                    $pendaftaran_trx = new Pendaftaran_trx();
+                    $cek = Pendaftaran_trx::wherePendaftaranId($memberCertification->id)->where('batch_id', $memberCertification->program_schedule_id)->get();
+                    if ($cek && $cek->count() == 0) {
+                        $pendaftaran_trx = new Pendaftaran_trx();
 
-                    $pendaftaran_trx->pendaftaran_id    = $memberCertification->id;
-                    $pendaftaran_trx->batch_id          = $memberCertification->program_schedule_id;
-                    $pendaftaran_trx->nama_batch        = $memberCertification->schedules->program->name;
-                    $pendaftaran_trx->peserta_id        = $memberCertification->member_id;
-                    $pendaftaran_trx->nama_peserta      = $memberCertification->members->name;
-                    $pendaftaran_trx->tgl_daftar        = $memberCertification->created_at;
-                    $pendaftaran_trx->harga_pendaftaran = $memberCertification->schedules->price;
+                        $pendaftaran_trx->pendaftaran_id    = $memberCertification->id;
+                        $pendaftaran_trx->batch_id          = $memberCertification->program_schedule_id;
+                        $pendaftaran_trx->nama_batch        = $memberCertification->schedules->program->name;
+                        $pendaftaran_trx->peserta_id        = $memberCertification->member_id;
+                        $pendaftaran_trx->nama_peserta      = $memberCertification->members->name;
+                        $pendaftaran_trx->tgl_daftar        = $memberCertification->created_at;
+                        $pendaftaran_trx->harga_pendaftaran = $memberCertification->schedules->price;
 
-                    $pendaftaran_trx->save();
+                        $pendaftaran_trx->save();
+                    }
+
+                    /**
+                     * Udate table member certification set status = 3
+                     */
+                    $memberCertification->update(['status'=>3]);
 
                     flash()->success('Berhasil Approve APL-02');
                 } else {
@@ -166,12 +174,28 @@ class PreAssessmentController extends Controller
                 }
             } elseif ($status == 'unapprove') {
                 if ($apl02->update(['status' => 2])) {
+                    $pendaftaran_trx = Pendaftaran_trx::wherePendaftaranId($memberCertification->id)->where('batch_id', $memberCertification->program_schedule_id);
+                    $pendaftaran_trx->delete();
+
+                    /**
+                     * Udate table member certification set status = 2
+                     */
+                    $memberCertification->update(['status'=>2]);
+
                     flash()->success('Berhasil Unapprove APL-02');
                 } else {
                     flash()->error('Gagal Unapprove APL-02');
                 }
             } elseif ($status == 'reject') {
                 if ($apl02->update(['status' => 4])) {
+                    $pendaftaran_trx = Pendaftaran_trx::wherePendaftaranId($memberCertification->id)->where('batch_id', $memberCertification->program_schedule_id);
+                    $pendaftaran_trx->delete();
+
+                    /**
+                     * Udate table member certification set status = 2
+                     */
+                    $memberCertification->update(['status'=>4]);
+
                     flash()->success('Berhasil Reject APL-02');
                 } else {
                     flash()->error('Gagal Reject APL-02');
@@ -199,10 +223,10 @@ class PreAssessmentController extends Controller
 
             $paap->member_certification_id = $memberCertification->id;
             $paap->member_id               = $memberCertification->member_id;
-            $paap->pa_asesi                = $request->get('pa_asesi');
+            $paap->pa_asesi                = json_encode($request->get('pa_asesi'));
             $paap->pa_tujuan_asesmen       = $request->get('pa_tujuan_asesmen');
-            $paap->pa_konteks_asesmen      = $request->get('pa_konteks_asesmen');
-            $paap->pa_orang_relevan        = $request->get('pa_orang_relevan');
+            $paap->pa_konteks_asesmen      = json_encode($request->get('pa_konteks_asesmen'));
+            $paap->pa_orang_relevan        = json_encode($request->get('pa_orang_relevan'));
             $paap->pa_tolak_ukur           = $request->get('pa_tolak_ukur');
             $paap->metode_asesmen          = $request->get('metode_asesmen');
             $paap->mk_1                    = $request->get('mk_1');

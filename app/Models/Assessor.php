@@ -23,7 +23,7 @@ class Assessor extends Revisionable
     ];
 
     protected $fillable = [
-        'name', 'email' , 'profile', 'mobile_phone', 'company', 'position', 'status', 'assessment_ability'
+        'name', 'email' , 'profile', 'mobile_phone', 'company', 'position', 'status', 'assessment_ability', 'no_reg', 'license_date'
     ];
 
     public function scopeActive($query)
