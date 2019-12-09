@@ -39,12 +39,14 @@
                     <tr>
                         <th>Nama</th>
                         <th>Email</th>
+                        <th>No.Reg. MET</th>
                         <th>No HP</th>
                         <th>Instansi</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tfoot>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -83,6 +85,7 @@
                 columns: [
                     {data: 'name', name: 'name', title: 'Nama Assessor'},
                     {data: 'email', name: 'email', title: 'Email'},
+                    {data: 'no_reg', name: 'no_reg', title: 'No.Reg. MET'},
                     {data: 'mobile_phone', name: 'mobile_phone', title: 'No HP'},
                     {data: 'company', name: 'company', title: 'Instansi'},
                     {data: 'action', responsivePriority: -1},

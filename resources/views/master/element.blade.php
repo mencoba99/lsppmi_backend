@@ -236,7 +236,14 @@ jQuery(document).ready(function() {
             $("#name").val($(this).data('name'));
             $("#code").val($(this).data('code'));
             $("select#unit").val($(this).data('unit'));
-            $("select#status").val($(this).data('status'));
+            // $("select#status").val($(this).data('status'));
+            if($(this).data('status') == 1) {
+                console.log('checked');
+                $("input#status").prop('checked', true);
+            } else {
+                console.log('not checked');
+                $("input#status").prop('checked', false);
+            }
             $('.kt-selectpicker').selectpicker('refresh');
             $('#add').modal('show');
         });

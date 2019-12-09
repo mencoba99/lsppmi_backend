@@ -45,7 +45,7 @@ class AssessorController extends Controller
         $assessor = Assessor::query();
 
         $assessorJson = $dataTables->eloquent($assessor)->addColumn('action', function (Assessor $assessor) {
-            $action = "<a href='" . route('assessor.show', ['assessor' => $assessor]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View ".$assessor->name."' data-original-tooltip='View ".$assessor->name."'>
+            $action = "<a href='" . route('assessor.show', ['assessor' => $assessor]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View " . $assessor->name . "' data-original-tooltip='View " . $assessor->name . "'>
                               <i class='la la-search'></i>
                             </a>";
             if (auth()->user()->can('Assessor Edit')) {
@@ -97,10 +97,12 @@ class AssessorController extends Controller
             $request->validate([
                                    'name'               => 'required',
                                    'password'           => 'required|confirmed',
-                                   'assessment_ability' => 'required'
+                                   'assessment_ability' => 'required',
+                                   'no_reg'             => 'required',
+                                   'license_date'       => 'required',
                                ]);
 
-            $assessment_ability = $request->get('assessment_ability');
+            $assessment_ability     = $request->get('assessment_ability');
             $jsonAbility['ability'] = $assessment_ability;
 
             $assessor = new Assessor($request->all());
@@ -216,21 +218,25 @@ class AssessorController extends Controller
             $request->validate([
                                    'name'               => 'required',
                                    'password'           => 'confirmed',
-                                   'assessment_ability' => 'required'
+                                   'assessment_ability' => 'required',
+                                   'no_reg'             => 'required',
+                                   'license_date'       => 'required',
                                ]);
 
             /** Get Updated data Assessor */
             $update = [
-                'name'               => $request->get('name'),
-                'mobile_phone'       => $request->get('mobile_phone'),
-                'company'            => $request->get('company'),
-                'position'           => $request->get('position'),
-                'status'             => $request->get('status'),
-                'profile'            => $request->get('profile'),
-//                'assessment_ability' => $request->get('assessment_ability'),
+                'name'         => $request->get('name'),
+                'mobile_phone' => $request->get('mobile_phone'),
+                'company'      => $request->get('company'),
+                'position'     => $request->get('position'),
+                'status'       => $request->get('status'),
+                'profile'      => $request->get('profile'),
+                'no_reg'       => $request->get('no_reg'),
+                'license_date' => $request->get('license_date'),
+                //                'assessment_ability' => $request->get('assessment_ability'),
             ];
 
-            $assessment_ability = $request->get('assessment_ability');
+            $assessment_ability     = $request->get('assessment_ability');
             $jsonAbility['ability'] = $assessment_ability;
 
             $update['assessment_ability'] = $jsonAbility;
@@ -247,7 +253,8 @@ class AssessorController extends Controller
             }
 
             /** Cek jika ada foto upload */
-            $imgName = null; $imgOldName = $assessor->foto;
+            $imgName    = null;
+            $imgOldName = $assessor->foto;
             if ($request->hasFile('pasfoto')) {
                 $image = $request->file('pasfoto');
 
@@ -270,8 +277,8 @@ class AssessorController extends Controller
                         Storage::makeDirectory($uploadPath);
                     }
                     /** Cek file yang sebelumnya, jika ada maka hapus */
-                    if (Storage::exists($uploadPath.'/'.$imgOldName)) {
-                        Storage::delete($uploadPath.'/'.$imgOldName);
+                    if (Storage::exists($uploadPath . '/' . $imgOldName)) {
+                        Storage::delete($uploadPath . '/' . $imgOldName);
                     }
                     /** @var  $imageResize | Proses resize image yang diupload, setelah itu upload ke cloud */
                     $imageResize = Image::make($image)->resize(800, null, function ($constraint) {
@@ -287,11 +294,10 @@ class AssessorController extends Controller
                 if ($assessorAkun->update($updateUser)) {
                     $message .= "<br/>Berhasil update data akun '{$assessorAkun->email}'";
                 }
-                flash()->success('Berhasil melakukan perubahan data Assessor '.$message);
+                flash()->success('Berhasil melakukan perubahan data Assessor ' . $message);
             } else {
                 flash()->error('Gagal melakukan perubahan data Assessor');
             }
-
 
 
         } else {
