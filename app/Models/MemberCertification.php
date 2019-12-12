@@ -51,6 +51,11 @@ class MemberCertification extends Revisionable
         return $this->hasMany('App\Models\MemberCertificationAPL02');
     }
 
+    public function paap()
+    {
+        return $this->hasOne('App\Models\MemberCertificationPaap', 'member_certification_id', 'id');
+    }
+
     public function payment()
     {
         return $this->hasOne('App\Models\MemberCertificationPayment');

@@ -97,7 +97,7 @@
                                             <div class="kt-portlet__head-actions">
                                                 <span class="kt-switch kt-switch--icon">
                                                     <label>
-                                                        <input type="checkbox" data-url="" name="status" id="status"
+                                                        <input type="checkbox" data-url="" value="1" name="status" id="status"
                                                             class="roleParentChange roleList">
                                                         <span></span>
                                                     </label>
