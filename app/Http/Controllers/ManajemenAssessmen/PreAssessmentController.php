@@ -91,6 +91,7 @@ class PreAssessmentController extends Controller
     public function viewSinglePeserta(MemberCertification $memberCertification)
     {
         $chatApl02 = MemberCertificationChat::apl02Chat($memberCertification->id)->get();
+        $paap = $memberCertification->paap;
 
         $direct = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
             return ($value['type'] == 'direct');
@@ -100,12 +101,9 @@ class PreAssessmentController extends Controller
         $indirect = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
             return ($value['type'] == 'indirect');
         });
-//        return $indirect;
         $indirect = Arr::get($indirect, '1.methods');
 
-//        return $indirect;
-
-        return view('ManajemenAssessmen.PreAssessmentController.view-single-peserta', compact('memberCertification', 'chatApl02', 'direct', 'indirect'));
+        return view('ManajemenAssessmen.PreAssessmentController.view-single-peserta', compact('memberCertification', 'chatApl02', 'direct', 'indirect', 'paap'));
     }
 
     public function saveChatApl02(Request $request, MemberCertification $memberCertification)
@@ -166,7 +164,7 @@ class PreAssessmentController extends Controller
                     /**
                      * Udate table member certification set status = 3
                      */
-                    $memberCertification->update(['status'=>3]);
+                    $memberCertification->update(['status' => 3]);
 
                     flash()->success('Berhasil Approve APL-02');
                 } else {
@@ -180,7 +178,7 @@ class PreAssessmentController extends Controller
                     /**
                      * Udate table member certification set status = 2
                      */
-                    $memberCertification->update(['status'=>2]);
+                    $memberCertification->update(['status' => 2]);
 
                     flash()->success('Berhasil Unapprove APL-02');
                 } else {
@@ -194,7 +192,7 @@ class PreAssessmentController extends Controller
                     /**
                      * Udate table member certification set status = 2
                      */
-                    $memberCertification->update(['status'=>4]);
+                    $memberCertification->update(['status' => 4]);
 
                     flash()->success('Berhasil Reject APL-02');
                 } else {
@@ -218,26 +216,58 @@ class PreAssessmentController extends Controller
      */
     public function savePaap(Request $request, MemberCertification $memberCertification)
     {
+        $result = [
+            'status' => false,
+            'message' => 'Gagal menyimpan data PAAP'
+        ];
         if (auth()->user()->can('Validasi APL-02')) {
-            $paap = new MemberCertificationPaap();
+            /**
+             * Cek apakah Paap Sudah ada atau belum
+             */
+            if (is_object($memberCertification->paap) && $memberCertification->paap()->count() > 0) {
+                $update = [
+                    'pa_asesi'          => json_encode($request->get('pa_asesi')),
+                    'pa_tujuan_asesmen' => $request->get('pa_tujuan_asesmen'),
+                    'pa_konteks_asesmen' => json_encode($request->get('pa_konteks_asesmen')),
+                    'pa_orang_relevan' => json_encode($request->get('pa_orang_relevan')),
+                    'pa_tolak_ukur' => $request->get('pa_tolak_ukur'),
+                    'metode_asesmen' => $request->get('metode_asesmen'),
+                    'mk_1' => $request->get('mk_1'),
+                    'mk_2' => $request->get('mk_2'),
+                    'mk_3' => $request->get('mk_3'),
+                    'mk_4' => $request->get('mk_4'),
+                ];
 
-            $paap->member_certification_id = $memberCertification->id;
-            $paap->member_id               = $memberCertification->member_id;
-            $paap->pa_asesi                = json_encode($request->get('pa_asesi'));
-            $paap->pa_tujuan_asesmen       = $request->get('pa_tujuan_asesmen');
-            $paap->pa_konteks_asesmen      = json_encode($request->get('pa_konteks_asesmen'));
-            $paap->pa_orang_relevan        = json_encode($request->get('pa_orang_relevan'));
-            $paap->pa_tolak_ukur           = $request->get('pa_tolak_ukur');
-            $paap->metode_asesmen          = $request->get('metode_asesmen');
-            $paap->mk_1                    = $request->get('mk_1');
-            $paap->mk_2                    = $request->get('mk_1');
-            $paap->mk_3                    = $request->get('mk_1');
-            $paap->mk_4                    = $request->get('mk_1');
-
-            if ($paap->save()) {
-                flash()->success('Berhasil simpan form PAAP');
+                if ($memberCertification->paap()->update($update)) {
+                    flash()->success('Berhasil memperbarui form PAAP');
+//                    $result['status'] = true;
+//                    $result['message'] = "Berhasil memperbarui form PAAP";
+                } else {
+                    flash()->error('Gagal memperbarui form PAAP');
+//                    $result['message'] = "Berhasil memperbarui form PAAP";
+                }
             } else {
-                flash()->error('Gagal simpan form PAAP');
+                $paap = new MemberCertificationPaap();
+
+                $paap->member_certification_id = $memberCertification->id;
+                $paap->member_id               = $memberCertification->member_id;
+                $paap->pa_asesi                = json_encode($request->get('pa_asesi'));
+                $paap->pa_tujuan_asesmen       = $request->get('pa_tujuan_asesmen');
+                $paap->pa_konteks_asesmen      = json_encode($request->get('pa_konteks_asesmen'));
+                $paap->pa_orang_relevan        = json_encode($request->get('pa_orang_relevan'));
+                $paap->pa_tolak_ukur           = $request->get('pa_tolak_ukur');
+                $paap->metode_asesmen          = $request->get('metode_asesmen');
+                $paap->mk_1                    = $request->get('mk_1');
+                $paap->mk_2                    = $request->get('mk_2');
+                $paap->mk_3                    = $request->get('mk_3');
+                $paap->mk_4                    = $request->get('mk_4');
+                $paap->asesor_id               = auth()->user()->id;
+
+                if ($paap->save()) {
+                    flash()->success('Berhasil simpan form PAAP');
+                } else {
+                    flash()->error('Gagal simpan form PAAP');
+                }
             }
 
         } else {

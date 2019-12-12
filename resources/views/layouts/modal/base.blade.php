@@ -120,7 +120,7 @@
 
 <script type="text/javascript">
     window.onload = function () {
-        $("#loader",parent.document).fadeOut(1230)
+        $("#loader",parent.document).fadeOut(1230);
     }
 </script>
 </body>

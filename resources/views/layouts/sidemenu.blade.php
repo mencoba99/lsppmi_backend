@@ -190,6 +190,7 @@
                                             @can('Validasi APL-02')
                                                 <li class="kt-menu__item {{ ($routeName == 'pre-assessment.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('pre-assessment.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Pre Assessment</span></a></li>
                                             @endcan
+                                                <li class="kt-menu__item {{ ($routeName == 'asesmen.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('asesmen.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Assessment</span></a></li>
                                         </ul>
                                     </div>
                                 </li>
