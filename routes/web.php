@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function (){
             /** Untuk manajemen Permission */
             Route::resource('permission', 'PermissionController');
             Route::post('permission/data','PermissionController@getPermissionData')->name('permission.getdata');
-            Route::get('permission/{role}/delete','PermissionController@delete')->name('permission.delete');
+            Route::get('permission/{permission}/delete','PermissionController@delete')->name('permission.delete');
         });
     });
 
@@ -188,7 +188,6 @@ Route::middleware(['auth'])->group(function (){
                 Route::post('submodul/delete', 'CBT\Materi\PembuatanSubModulController@AjaxSubModulDeleteData')->name('materi.pembuatan-submodul.delete');
             });
 
-
             Route::group(['prefix' => 'ujian'], function () {
 
                 Route::get('jadwal', 'CBT\Ujian\JadwalController@index')->name('ujian.jadwal');
@@ -280,6 +279,11 @@ Route::middleware(['auth'])->group(function (){
             Route::get('pre-assessment/{member_certification}/approve-apl02/{status}','PreAssessmentController@approveAPL02')->name('pre-assessment.approveapl02');
             Route::post('pre-assessment/{member_certification}/save-paap','PreAssessmentController@savePaap')->name('pre-assessment.savepaap');
 
+            /** Modul Asesmen */
+            Route::get('asesmen', 'AssessmentController@index')->name('asesmen.index');
+            Route::post('asesmen/getdata', 'AssessmentController@getAssessmentData')->name('asesmen.getdata');
+            Route::get('asesmen/{jadwal_kelas}/view-allpeserta','AssessmentController@viewAllPeserta')->name('asesmen.viewallpeserta');
+            Route::get('asesmen/{member_certification}/view-singlepeserta','AssessmentController@viewSinglePeserta')->name('asesmen.viewsinglepeserta');
         });
     });
 

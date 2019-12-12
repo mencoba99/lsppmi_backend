@@ -190,6 +190,7 @@
                                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Validasi APL-02')): ?>
                                                 <li class="kt-menu__item <?php echo e(($routeName == 'pre-assessment.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('pre-assessment.index')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Pre Assessment</span></a></li>
                                             <?php endif; ?>
+                                                <li class="kt-menu__item <?php echo e(($routeName == 'asesmen.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('asesmen.index')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Assessment</span></a></li>
                                         </ul>
                                     </div>
                                 </li>
