@@ -24,7 +24,7 @@
                                     <div class="kt-widget2__item kt-widget2__item--brand">
                                         <div class="kt-widget2__info" style="padding: 1rem 0 0 2.2rem;">
                                             <span class="kt-widget2__title">
-                                                {{ $soal->nama_modul }}
+                                                {{ $soal->nama_modul ? $soal->nama_modul : ' - ' }}
                                             </span>
                                             <span class="kt-widget2__username">
                                                 Modul
@@ -35,7 +35,7 @@
                                     <div class="kt-widget2__item kt-widget2__item--danger">
                                             <div class="kt-widget2__info" style="padding: 1rem 0 0 2.2rem;">
                                                 <span class="kt-widget2__title">
-                                                        {{ $soal->nama_submodul }}
+                                                        {{ $soal->nama_submodul ? $soal->nama_submodul : ' - ' }}
                                                 </span>
                                                 <span class="kt-widget2__username">
                                                    Sub Modul

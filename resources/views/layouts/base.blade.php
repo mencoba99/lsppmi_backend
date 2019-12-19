@@ -7,7 +7,7 @@
 <!-- begin:: Header Mobile -->
 <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
     <div class="kt-header-mobile__logo">
-        <a href="demo7/index.html">
+        <a href="">
             <img alt="Logo" src="{{ Storage::url('assets/backend/media/logos/logo-6.png') }}" />
         </a>
     </div>
@@ -84,7 +84,7 @@
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors(used by this page) -->
-<script src="{{ Storage::url('assets/backend/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
+{{-- <script src="{{ Storage::url('assets/backend/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script> --}}
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
 <script src="{{ Storage::url('assets/backend/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
 

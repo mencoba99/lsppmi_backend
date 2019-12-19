@@ -26,7 +26,7 @@ class PembuatanSubModulController extends Controller
     public function AjaxSubModulGetData()
     {
         $Data = SubModul::with(['modul'])->get();
-
+       
        return DataTables::of($Data)->addColumn('action', function (SubModul $SubModul) {
             $action = "<div class='btn-group'>";
             if (auth()->user()->can('Submodul Edit')) {
@@ -39,7 +39,7 @@ class PembuatanSubModulController extends Controller
 			return $action;
 		})->addColumn('status_s', function (SubModul $SubModul) {
             
-            if($SubModul->aktif==true){
+            if($SubModul->aktif==1){
                 return "Aktif";
             }else{
                 return "Non Aktif";

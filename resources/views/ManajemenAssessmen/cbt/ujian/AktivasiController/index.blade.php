@@ -135,13 +135,14 @@
               var obj_batch     = JSON.parse(msg);
               var app = '';
               if(obj_batch.length > 0){
-                app += '<div class="panel-group accordion" id="accordion'+jadwal_id+'">';
+                app += '<div class="accordion accordion-solid accordion-toggle-plus" id="accordion'+jadwal_id+'">';
                 $.each(obj_batch, function(i, v) {
-                    app += '<div class="panel panel-default" data-ujian-batch="'+v.ujian_batch_id+'" data-batch="'+v.id_batch+'"><div class="panel-heading"> <h4 class="panel-title" style="text-align:left"> <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion'+v.id_batch+'" href="#collapse_3_'+v.id_batch+'" aria-expanded="false"> '+v.nama_batch+' </a> </h4> </div><div id="collapse_3_'+v.id_batch+'" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">';
-                    app +='<div class="panel-body">';
+                    app += '<div class="card card-default " data-ujian-batch="'+v.ujian_batch_id+'" data-batch="'+v.id_batch+'"><div class="card-header"> <div class="card-title collapsed" data-toggle="collapse" data-parent="#collapse_3_'+v.id_batch+'" href="#collapse_3_'+v.id_batch+'" aria-expanded="true" aria-controls="collapseOne6">  <i class="flaticon-pie-chart-1"></i>'+v.nama_batch+' </div> </div><div id="collapse_3_'+v.id_batch+'" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">';
+                    // app += '<div class="card " data-ujian-batch="'+v.ujian_batch_id+'" data-batch="'+v.id_batch+'"><div class="card-header"> <h4 class="card-title" style="text-align:left"> <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#collapse_3_'+v.id_batch+'" href="#collapse_3_'+v.id_batch+'" aria-expanded="false"> '+v.nama_batch+' </a> </h4> </div><div id="collapse_3_'+v.id_batch+'" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">';
+                    app +='<div class="card-body">';
                     app += '<h4><strong>Peserta Ujian</strong></h4>';
                     app += '<table class="table table-bordered table-hover"> <thead> <tr>';
-                    app += '<th><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">';
+                    app += '<th><label class="kt-checkbox kt-checkbox--brand" style="margin-bottom: 13px;">';
                     app += '<input type="checkbox" class="group-checkable" value="'+v.id_batch+'"/>';
                     app += '<span></span></label></th>';
                     app += '<th> Nama </th> <th class="text-left"> Email </th> </tr></thead> <tbody>';
@@ -154,7 +155,7 @@
                       }
                     $.each(peserta, function(x, y) {
                         app += '<tr data-batch="'+v.id_batch+'">';
-                        app += '<td cols="1"><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">';
+                        app += '<td cols="1"><label style="margin-bottom: 13px;" class="kt-checkbox kt-checkbox--brand">';
                         app += '<input type="checkbox" class="checkboxes" value="'+y.peserta_id+'" />';
                         app += '<span></span></label></td>';
                         app += '<td> '+y.nama_peserta+' </td>';
@@ -194,9 +195,9 @@
             {
                 alert('Mohon Centang Salah Satu Peserta');
             } else {
-                $('#loading-aktivasi').css({'display': 'block'});
-                $('.simpan_aktivasi').attr('disabled', 'disabled');
-                all_batch = $('.panel-default');
+              
+             
+                all_batch = $('.card-default');
                 arr = []; 
                 $.each(all_batch, function(i,v) {
                     batch_id        = $(this).attr('data-batch');
@@ -216,6 +217,7 @@
                     arr.push(ar);
                 })
                 var data = arr;
+               
                 $.ajax({
                   type: "POST",
                   headers: {
@@ -224,21 +226,60 @@
                   url: '{{ route('ujian.aktivasi.insert') }}',
                   data: {data: data},
                   dataType: 'json',
-                  success: function(msg){
-                    if(msg.status = "Data Updated")
-                    {
-                        $('#loading-aktivasi').css({'display': 'none'});
-                        $('.simpan_aktivasi').removeAttr('disabled');
-                        $('.modal-aktivasi').modal('toggle');
-                        swal("Data Updated!", "", "success");
+                  beforeSend: function () {
+                            KTApp.block('.modal-content', {
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'primary',
+                            message: 'Processing...'
+                        });
+
+                    },
+                  success: function(response){
+                    if (response.status === 'db.updated') {
+                            view();
+                            // alert(JSON.stringify(response.status));
+                            KTApp.unblock('.modal-content');
+                            $.when(setTimeout(function () {
+                               
+                                $.notify({
+                                    // options
+                                    message: 'Berhasil disimpan'
+                                }, {
+                                    // settings
+                                    type: 'success',
+                                    placement: {
+                                        from: "top",
+                                        align: "right"
+                                    }
+                                });
+                            }, 2000)).then(function () {
+                                // parent.$('#mod-iframe-large').modal('hide');
+                                setTimeout(function () {
+                                    $('#modal_aktivasi').modal(
+                                        'hide');
+                                }, 4000);
+                            });
+
+                            $('#datatable').DataTable().ajax.reload();
+
+                        } else {
+                            $.notify({
+                                // options
+                                message: 'Error'
+                            }, {
+                                // settings
+                                type: 'danger',
+                                placement: {
+                                    from: "top",
+                                    align: "right"
+                                }
+                            });
+                        }
+
                         $('#datatable').DataTable().ajax.reload();
-                    } else {
-                        $('#loading-aktivasi').css({'display': 'none'});
-                        $('.simpan_aktivasi').removeAttr('disabled');
-                        $('.modal-aktivasi').modal('toggle');
-                        swal("Data Failed to Updated!", "", "error");
-                        $('#datatable').DataTable().ajax.reload();
-                    }
+
+
                   },
                   error: function(err){
                     alert(JSON.stringify(err));
