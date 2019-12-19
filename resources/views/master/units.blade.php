@@ -109,7 +109,7 @@
                                                 <div class="kt-portlet__head-actions">
                                                 <span class="kt-switch kt-switch--icon">
                                                     <label>
-                                                        <input type="checkbox" data-url="" name="status" id="status" class="roleParentChange roleList">
+                                                        <input type="checkbox" data-url="" value="1" name="status" id="status" class="roleParentChange roleList">
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -161,9 +161,6 @@
                         required: true
                     },
                     "type": {
-                        required: true
-                    },
-                    "status": {
                         required: true
                     }
 
@@ -258,7 +255,7 @@
                 $("#id").val($(this).data('id'));
                 $("#name").val($(this).data('name'));
                 $("#code").val($(this).data('code'));
-                $("input#type").val($(this).data('type'));
+                $("select#type").val($(this).data('type'));
                 if($(this).data('status') == 1) {
                     console.log('checked');
                     $("input#status").prop('checked', true);

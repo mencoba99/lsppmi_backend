@@ -40,6 +40,22 @@
                 </div>
                 <div class="kt-section__body">
                     <div class="form-group row">
+                        <label class="col-3 col-form-label">Penanggung Jawab TUK</label>
+                        <div class="col-9">
+                            {!! Form::text('pic',(!empty($tuk) ? $tuk->pic:null),['class'=>'form-control','placeholder'=>'Penanggung Jawab TUK']) !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-section__body">
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">Kapasitas Peserta TUK</label>
+                        <div class="col-9">
+                            {!! Form::text('capacity',(!empty($tuk) ? $tuk->capacity:null),['class'=>'form-control','placeholder'=>'Kapasitas Peserta TUK']) !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-section__body">
+                    <div class="form-group row">
                         <label class="col-3 col-form-label">Latitude</label>
                         <div class="col-3">
                             {!! Form::text('latitude',(!empty($tuk) ? $tuk->latitude:null),['class'=>'form-control','placeholder'=>'Posisi Latitude']) !!}

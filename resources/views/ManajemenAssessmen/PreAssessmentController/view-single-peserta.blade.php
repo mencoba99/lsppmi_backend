@@ -30,6 +30,9 @@
                     </tr>
                     </tbody>
                 </table>
+
+{{--                {{ array_search('direct', array_column($memberCertification->schedules->program->type,'type')) }}--}}
+{{--                {{ var_dump(array_column($memberCertification->schedules->program->type,'type')) }}--}}
             </div>
         </div>
 
@@ -403,8 +406,7 @@
                                                         @php($nokuk=1)
                                                         @foreach($element->kuk as $kuk)
                                                             <tr>
-                                                                <td style="padding-left: 30px;">{{ $noElemen }}
-                                                                    .{{ $nokuk }} {{ $kuk->name }}</td>
+                                                                <td style="padding-left: 30px;">{{ $noElemen }}.{{ $nokuk }} {{ $kuk->name }}</td>
                                                                 @if (GeneralHelper::getCompetentStatusAPL02($memberCertification->id, $kuk->id))
                                                                     <td><i class="la la-check"></i></td>
                                                                     <td></td>
@@ -435,7 +437,7 @@
                         </div>
                     </div>
                     <div class="tab-pane active" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
-                        {!! Form::open(['url'=>route('pre-assessment.savepaap',['member_certification'=>$memberCertification]),'onsubmit'=>'return false','class'=>'formPAAP']) !!}
+                        {!! Form::open(['url'=>route('pre-assessment.savepaap',['member_certification'=>$memberCertification]),'onsubmit'=>'return false','class'=>'formPAAP','name'=>'formPAAP']) !!}
                         <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">
@@ -445,6 +447,9 @@
                                 </div>
                                 <div class="kt-portlet__head-toolbar" style="align-items: center!important;">
                                     <div class="kt-portlet__head-actions">
+                                        <a href="#" class="btn btn-outline-brand btn-bold btn-sm" data-toggle="modal" data-target="#kt_chat_modals">
+                                            <i class="la la-wechat"></i> Kirim Pesan
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -458,7 +463,7 @@
                                         <td rowspan="3" width="15%">Asesi</td>
                                         <td colspan="3">
                                             <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_asesi[]" value="1"> Hasil pelatihan dan / atau pendidikan:
+                                                <input type="checkbox" name="pa_asesi[]" {{ is_object($paap) ? (in_array(1,$paap->pa_asesi) ? 'checked':''):'' }} value="1"> Hasil pelatihan dan / atau pendidikan:
                                                 <span></span>
                                             </label>
                                         </td>
@@ -466,7 +471,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_asesi[]" value="2"> Pekerja berpengalaman
+                                                <input type="checkbox" name="pa_asesi[]" {{ is_object($paap) ? (in_array(2,$paap->pa_asesi) ? 'checked':''):'' }} value="2"> Pekerja berpengalaman
                                                 <span></span>
                                             </label>
                                         </td>
@@ -474,7 +479,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_asesi[]" value="3"> Pelatihan / belajar mandiri
+                                                <input type="checkbox" name="pa_asesi[]" {{ is_object($paap) ? (in_array(3,$paap->pa_asesi) ? 'checked':''):'' }} value="3"> Pelatihan / belajar mandiri
                                                 <span></span>
                                             </label>
                                         </td>
@@ -484,23 +489,23 @@
                                         <td colspan="3">
                                             <div class="kt-radio-inline">
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_tujuan_asesmen" value="1"> Sertifikasi
+                                                    <input type="radio" name="pa_tujuan_asesmen" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 1) ? 'checked':''):'' }} value="1"> Sertifikasi
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_tujuan_asesmen" value="2"> RCC
+                                                    <input type="radio" name="pa_tujuan_asesmen" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 2) ? 'checked':''):'' }} value="2"> RCC
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_tujuan_asesmen" value="3"> RPL
+                                                    <input type="radio" name="pa_tujuan_asesmen" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 3) ? 'checked':''):'' }} value="3"> RPL
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_tujuan_asesmen" value="4"> Hasil pelatihan / proses pembelajaran
+                                                    <input type="radio" name="pa_tujuan_asesmen" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 4) ? 'checked':''):'' }} value="4"> Hasil pelatihan / proses pembelajaran
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_tujuan_asesmen" value="5"> Lainnya
+                                                    <input type="radio" name="pa_tujuan_asesmen" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 5) ? 'checked':''):'' }} value="5"> Lainnya
                                                     <span></span>
                                                 </label>
                                             </div>
@@ -511,13 +516,13 @@
                                         <td width="20%">Lingkungan</td>
                                         <td>
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_konteks_asesmen[1]" value="1"> Tempat kerja nyata
+                                                <input type="radio" name="pa_konteks_asesmen[1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[1] == 1) ? 'checked':''):'' }} value="1"> Tempat kerja nyata
                                                 <span></span>
                                             </label>
                                         </td>
                                         <td>
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_konteks_asesmen[1]" value="2"> Tempat kerja simulasi
+                                                <input type="radio" name="pa_konteks_asesmen[1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[1] == 2) ? 'checked':''):'' }} value="2"> Tempat kerja simulasi
                                                 <span></span>
                                             </label>
                                         </td>
@@ -526,13 +531,13 @@
                                         <td>Peluang untuk mengumpulkan bukti dalam sejumlah situasi</td>
                                         <td>
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_konteks_asesmen[2]" value="1"> Tersedia
+                                                <input type="radio" name="pa_konteks_asesmen[2]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[2] == 1) ? 'checked':''):'' }} value="1"> Tersedia
                                                 <span></span>
                                             </label>
                                         </td>
                                         <td>
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_konteks_asesmen[2]" value="2"> Terbatas
+                                                <input type="radio" name="pa_konteks_asesmen[2]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[2] == 2) ? 'checked':''):'' }} value="2"> Terbatas
                                                 <span></span>
                                             </label>
                                         </td>
@@ -542,41 +547,19 @@
                                         <td colspan="2">
                                             <div class="kt-radio-inline">
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][0]" value="1"> Bukti untuk mendukung asesmen / RPL:
+                                                    <input type="radio" name="pa_konteks_asesmen[3][0]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 1) ? 'checked':''):'' }} value="1"> Bukti untuk mendukung asesmen / RPL:
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="1"> <i class="la la-smile-o" style="font-size: 1.6rem;"></i>
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 1 && $paap->pa_konteks_asesmen[3][1] == 1) ? 'checked':''):'' }} value="1"> <i class="la la-smile-o" style="font-size: 1.6rem;"></i>
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="2"> <i class="la la-meh-o" style="font-size: 1.6rem;"></i>
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 1 && $paap->pa_konteks_asesmen[3][1] == 2) ? 'checked':''):'' }} value="2"> <i class="la la-meh-o" style="font-size: 1.6rem;"></i>
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="3"> <i class="la la-frown-o" style="font-size: 1.6rem;"></i>
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <div class="kt-radio-inline">
-                                                <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][0]" value="2"> Aktivitas kerja di tempat kerja kandidat:
-                                                    <span></span>
-                                                </label>
-                                                <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="1"> <i class="la la-smile-o" style="font-size: 1.6rem;"></i>
-                                                    <span></span>
-                                                </label>
-                                                <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="2"> <i class="la la-meh-o" style="font-size: 1.6rem;"></i>
-                                                    <span></span>
-                                                </label>
-                                                <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="3"> <i class="la la-frown-o" style="font-size: 1.6rem;"></i>
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 1 && $paap->pa_konteks_asesmen[3][1] == 3) ? 'checked':''):'' }} value="3"> <i class="la la-frown-o" style="font-size: 1.6rem;"></i>
                                                     <span></span>
                                                 </label>
                                             </div>
@@ -586,19 +569,41 @@
                                         <td colspan="2">
                                             <div class="kt-radio-inline">
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][0]" value="3"> Kegiatan Pembelajaran:
+                                                    <input type="radio" name="pa_konteks_asesmen[3][0]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 2) ? 'checked':''):'' }} value="2"> Aktivitas kerja di tempat kerja kandidat:
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="1"> <i class="la la-smile-o" style="font-size: 1.6rem;"></i>
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 2 && $paap->pa_konteks_asesmen[3][1] == 1) ? 'checked':''):'' }} value="1"> <i class="la la-smile-o" style="font-size: 1.6rem;"></i>
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="2"> <i class="la la-meh-o" style="font-size: 1.6rem;"></i>
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 2 && $paap->pa_konteks_asesmen[3][1] == 2) ? 'checked':''):'' }} value="2"> <i class="la la-meh-o" style="font-size: 1.6rem;"></i>
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" value="3"> <i class="la la-frown-o" style="font-size: 1.6rem;"></i>
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 2 && $paap->pa_konteks_asesmen[3][1] == 3) ? 'checked':''):'' }} value="3"> <i class="la la-frown-o" style="font-size: 1.6rem;"></i>
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio kt-radio--success">
+                                                    <input type="radio" name="pa_konteks_asesmen[3][0]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 3) ? 'checked':''):'' }} value="3"> Kegiatan Pembelajaran:
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio kt-radio--success">
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 3 && $paap->pa_konteks_asesmen[3][1] == 1) ? 'checked':''):'' }} value="1"> <i class="la la-smile-o" style="font-size: 1.6rem;"></i>
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio kt-radio--success">
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 3 && $paap->pa_konteks_asesmen[3][1] == 2) ? 'checked':''):'' }} value="2"> <i class="la la-meh-o" style="font-size: 1.6rem;"></i>
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio kt-radio--success">
+                                                    <input type="radio" name="pa_konteks_asesmen[3][1]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[3][0] == 3 && $paap->pa_konteks_asesmen[3][1] == 3) ? 'checked':''):'' }} value="3"> <i class="la la-frown-o" style="font-size: 1.6rem;"></i>
                                                     <span></span>
                                                 </label>
                                             </div>
@@ -608,7 +613,7 @@
                                         <td rowspan="3">Siapa yang melakukan asesmen / RPL</td>
                                         <td colspan="2">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_konteks_asesmen[4]" value="1"> Oleh Lembaga Sertifikasi
+                                                <input type="radio" name="pa_konteks_asesmen[4]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[4] == 1) ? 'checked':''):'' }} value="1"> Oleh Lembaga Sertifikasi
                                                 <span></span>
                                             </label>
                                         </td>
@@ -616,7 +621,7 @@
                                     <tr>
                                         <td colspan="2">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_konteks_asesmen[4]" value="2"> Oleh Organisasi Pelatihan
+                                                <input type="radio" name="pa_konteks_asesmen[4]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[4] == 2) ? 'checked':''):'' }} value="2"> Oleh Organisasi Pelatihan
                                                 <span></span>
                                             </label>
                                         </td>
@@ -624,7 +629,7 @@
                                     <tr>
                                         <td colspan="2">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_konteks_asesmen[4]" value="3"> Oleh asesor perusahaan
+                                                <input type="radio" name="pa_konteks_asesmen[4]" {{ is_object($paap) ? (($paap->pa_konteks_asesmen[4] == 3) ? 'checked':''):'' }} value="3"> Oleh asesor perusahaan
                                                 <span></span>
                                             </label>
                                         </td>
@@ -632,34 +637,62 @@
                                     <tr>
                                         <td rowspan="4">Orang yang relevan untuk dikonfirmasi</td>
                                         <td colspan="3">
-                                            <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_orang_relevan[]" value="1"> Manajer sertifikasi LSP
-                                                <span></span>
-                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                        <input type="checkbox" name="pa_orang_relevan[1][key]" {{ is_object($paap) ? ((isset($paap->pa_orang_relevan[1]['key']) && $paap->pa_orang_relevan[1]['key'] == 1) ? 'checked':''):'' }} value="1"> Manajer sertifikasi LSP
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pa_orang_relevan[1][value]" value="{{ is_object($paap) ? (!empty($paap->pa_orang_relevan[1]['value']) ? $paap->pa_orang_relevan[1]['value']:''):'' }}" class="form-control">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_orang_relevan[]" value="2"> Master Assessor / Master Trainer / Asesor Utama kompetensi
-                                                <span></span>
-                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                        <input type="checkbox" name="pa_orang_relevan[2][key]" {{ is_object($paap) ? ((isset($paap->pa_orang_relevan[2]['key']) && $paap->pa_orang_relevan[2]['key'] == 2) ? 'checked':''):'' }} value="2"> Master Assessor / Master Trainer / Asesor Utama kompetensi
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pa_orang_relevan[2][value]" value="{{ is_object($paap) ? (!empty($paap->pa_orang_relevan[2]['value']) ? $paap->pa_orang_relevan[2]['value']:''):'' }}" class="form-control">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_orang_relevan[]" value="3"> Manajer pelatihan Lembaga Training terakreditasi / Lembaga Training terdaftar
-                                                <span></span>
-                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                        <input type="checkbox" name="pa_orang_relevan[3][key]" {{ is_object($paap) ? ((isset($paap->pa_orang_relevan[3]['key']) && $paap->pa_orang_relevan[3]['key'] == 3) ? 'checked':''):'' }} value="3"> Manajer pelatihan Lembaga Training terakreditasi / Lembaga Training terdaftar
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pa_orang_relevan[3][value]" value="{{ is_object($paap) ? (!empty($paap->pa_orang_relevan[3]['value']) ? $paap->pa_orang_relevan[3]['value']:''):'' }}" class="form-control">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <label class="kt-checkbox kt-checkbox--success">
-                                                <input type="checkbox" name="pa_orang_relevan[]" value="4"> Lainnya :
-                                                <span></span>
-                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                        <input type="checkbox" name="pa_orang_relevan[4][key]" {{ is_object($paap) ? ((isset($paap->pa_orang_relevan[4]['key']) && $paap->pa_orang_relevan[4]['key'] == 4) ? 'checked':''):'' }} value="4"> Lainnya :
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pa_orang_relevan[4][value]" value="{{ is_object($paap) ? (!empty($paap->pa_orang_relevan[4]['value']) ? $paap->pa_orang_relevan[4]['value']:''):'' }}" class="form-control">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -667,7 +700,7 @@
                                         <td rowspan="5">Tolak Ukur Asesmen</td>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Standar Kompetensi
+                                                <input type="radio" name="pa_tolak_ukur" {{ is_object($paap) ? (($paap->pa_tolak_ukur == 1) ? 'checked':''):'' }} value="1"> Standar Kompetensi
                                                 <span></span>
                                             </label>
                                         </td>
@@ -675,7 +708,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Kriteria asesmen dari kurikulum pelatihan
+                                                <input type="radio" name="pa_tolak_ukur" {{ is_object($paap) ? (($paap->pa_tolak_ukur == 2) ? 'checked':''):'' }} value="2"> Kriteria asesmen dari kurikulum pelatihan
                                                 <span></span>
                                             </label>
                                         </td>
@@ -683,7 +716,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Spesifikasi kinerja suatu perusahaan atau industri:
+                                                <input type="radio" name="pa_tolak_ukur" {{ is_object($paap) ? (($paap->pa_tolak_ukur == 3) ? 'checked':''):'' }} value="3"> Spesifikasi kinerja suatu perusahaan atau industri:
                                                 <span></span>
                                             </label>
                                         </td>
@@ -691,7 +724,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Spesifikasi Produk:
+                                                <input type="radio" name="pa_tolak_ukur" {{ is_object($paap) ? (($paap->pa_tolak_ukur == 4) ? 'checked':''):'' }} value="4"> Spesifikasi Produk:
                                                 <span></span>
                                             </label>
                                         </td>
@@ -699,7 +732,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <label class="kt-radio kt-radio--success">
-                                                <input type="radio" name="pa_tolak_ukur"> Pedoman Khusus
+                                                <input type="radio" name="pa_tolak_ukur" {{ is_object($paap) ? (($paap->pa_tolak_ukur == 5) ? 'checked':''):'' }} value="5"> Pedoman Khusus
                                                 <span></span>
                                             </label>
                                         </td>
@@ -761,21 +794,40 @@
                                                                 <td style="padding-left: 30px;">{{ $noElemen }} .{{ $nokuk }} {{ $kuk->name }}</td>
                                                                 <td></td>
                                                                 @if ($noUk == 1 && $noElemen == 1 && $nokuk == 1)
+
+                                                                    @if (is_array($direct) && !empty($direct))
+                                                                        <td class="text-center">
+                                                                            <label class="kt-radio kt-radio--success">
+                                                                                <input type="radio" class="paap_metode" {{ is_object($paap) ? (($paap->metode_asesmen == 1) ? 'checked':''):'' }} name="metode_asesmen" value="1">&nbsp;
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    @else
+                                                                        <td class="text-center">
+                                                                            <label class="kt-radio kt-radio--success">
+                                                                                <input type="radio" class="paap_metode" disabled name="metode_asesmen" value="1">&nbsp;
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    @endif
+                                                                    @if (is_array($indirect) && !empty($indirect))
+                                                                        <td class="text-center">
+                                                                            <label class="kt-radio kt-radio--success">
+                                                                                <input type="radio" class="paap_metode" {{ is_object($paap) ? (($paap->metode_asesmen == 2) ? 'checked':''):'' }} name="metode_asesmen" value="2">&nbsp;
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    @else
+                                                                        <td class="text-center">
+                                                                            <label class="kt-radio kt-radio--success">
+                                                                                <input type="radio" class="paap_metode" disabled name="metode_asesmen" value="2">&nbsp;
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    @endif
                                                                     <td class="text-center">
                                                                         <label class="kt-radio kt-radio--success">
-                                                                            <input type="radio" class="paap_metode" name="metode_asesmen" value="L">&nbsp;
-                                                                            <span></span>
-                                                                        </label>
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <label class="kt-radio kt-radio--success">
-                                                                            <input type="radio" class="paap_metode" name="metode_asesmen" value="TL">&nbsp;
-                                                                            <span></span>
-                                                                        </label>
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <label class="kt-radio kt-radio--success">
-                                                                            <input type="radio" class="paap_metode" name="metode_asesmen" value="T">&nbsp;
+                                                                            <input type="radio" class="paap_metode" {{ is_object($paap) ? (($paap->metode_asesmen == 3) ? 'checked':''):'' }} name="metode_asesmen" value="3">&nbsp;
                                                                             <span></span>
                                                                         </label>
                                                                     </td>
@@ -784,10 +836,10 @@
                                                                     <td class="text-center"><span class="for_tl"></span></td>
                                                                     <td class="text-center"><span class="for_t"></span></td>
                                                                 @endif
+                                                                <td><span class="for_cbt"></span></td>
                                                                 <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
+                                                                <td><span class="for_interview"></span></td>
+                                                                <td><span class="for_portfolio"></span></td>
                                                                 <td></td>
                                                                 <td></td>
                                                             </tr>
@@ -819,25 +871,25 @@
                                     <tr>
                                         <td width="35%">3.1 Karakteristik Kandidat</td>
                                         <td>
-                                            <input type="text" name="mk_1" class="form-control">
+                                            <input type="text" name="mk_1" value="{{ is_object($paap) ? (!empty($paap->mk_1) ? $paap->mk_1:''):'' }}" class="form-control">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>3.2 Kebutuhan kontekstualisasi</td>
                                         <td>
-                                            <input type="text" name="mk_2" class="form-control">
+                                            <input type="text" name="mk_2" value="{{ is_object($paap) ? (!empty($paap->mk_2) ? $paap->mk_2:''):'' }}" class="form-control">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>3.3 Saran yang diberikan oleh paket pelatihan atau pengembang pelatihan</td>
                                         <td>
-                                            <input type="text" name="mk_3" class="form-control">
+                                            <input type="text" name="mk_3" value="{{ is_object($paap) ? (!empty($paap->mk_3) ? $paap->mk_3:''):'' }}" class="form-control">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>3.4 Peluang untuk kegiatan asesmen terintegrasi dan mencatat setiap perubahan yang diperlukan untuk alat asesmen</td>
                                         <td>
-                                            <input type="text" name="mk_4" class="form-control">
+                                            <input type="text" name="mk_4" value="{{ is_object($paap) ? (!empty($paap->mk_4) ? $paap->mk_4:''):'' }}" class="form-control">
                                         </td>
                                     </tr>
                                 </table>
@@ -921,7 +973,7 @@
                             </div>
                         </div>
                         <div class="kt-portlet__body">
-                            <div class="kt-scroll kt-scroll--pull" data-height="410" data-mobile-height="300">
+                            <div class="kt-scroll kt-scroll--pull" data-height="350" data-mobile-height="300">
                                 <div class="kt-chat__messages kt-chat__messages kt-chat__messages--modal">
                                     @if ($chatApl02 && $chatApl02->count() > 0)
                                         @foreach($chatApl02 as $chat)
@@ -1095,20 +1147,63 @@
                 // e.preventDefault();
                 var val = $(this).val();
 
-                if (val == 'L') {
+                if (val == 1) {
+                    /**
+                     * Metode Langsung
+                     */
+                    @if(in_array('cbt', $direct))
+                        $('span.for_cbt').html('<i class="la la-check"></i>');
+                    @endif
+                    @if(in_array('interview', $direct))
+                        $('span.for_interview').html('<i class="la la-check"></i>');
+                    @endif
+                    $('span.for_portfolio').html('');
                     $('span.for_l').html('<i class="la la-check"></i>');
                     $('span.for_tl').html('');
                     $('span.for_t').html('');
-                } else if (val == 'TL') {
+                } else if (val == 2) {
+                    @if(in_array('observasi', $indirect))
+                        $('span.for_portfolio').html('<i class="la la-check"></i>');
+                    @endif
+                    @if(in_array('wawancara', $indirect))
+                        $('span.for_interview').html('<i class="la la-check"></i>');
+                    @endif
+                    $('span.for_cbt').html('');
                     $('span.for_l').html('');
                     $('span.for_tl').html('<i class="la la-check"></i>');
                     $('span.for_t').html('');
-                } else if (val == 'T') {
+                } else if (val == 3) {
+                    $('span.for_cbt').html('');
+                    $('span.for_portfolio').html('');
+                    $('span.for_interview').html('');
                     $('span.for_l').html('');
                     $('span.for_tl').html('');
                     $('span.for_t').html('<i class="la la-check"></i>');
                 }
             });
+
+            /**
+             *  Untuk proses checked saat edit
+             */
+            @if(is_object($paap) && $paap->metode_asesmen == 3)
+                $('span.for_t').html('<i class="la la-check"></i>');
+            @elseif(is_object($paap) && $paap->metode_asesmen == 2)
+                $('span.for_tl').html('<i class="la la-check"></i>');
+                @if(in_array('observasi', $indirect))
+                    $('span.for_portfolio').html('<i class="la la-check"></i>');
+                @endif
+                @if(in_array('wawancara', $indirect))
+                    $('span.for_interview').html('<i class="la la-check"></i>');
+                @endif
+            @elseif(is_object($paap) && $paap->metode_asesmen == 1)
+                $('span.for_l').html('<i class="la la-check"></i>');
+                @if(in_array('cbt', $direct))
+                    $('span.for_cbt').html('<i class="la la-check"></i>');
+                @endif
+                @if(in_array('interview', $direct))
+                    $('span.for_interview').html('<i class="la la-check"></i>');
+                @endif
+            @endif
 
             /**
              * Event menyimpan PAAP
@@ -1135,11 +1230,22 @@
                     cancelButtonText: 'Tidak',
                 }).then(function(result){
                     // console.log(form.serializeArray());
+                    KTApp.blockPage({
+                        overlayColor: '#000000',
+                        type: 'v2',
+                        size: 'lg',
+                        state: 'primary',
+                        message: 'Processing...'
+                    });
                     _this.text('Loading...').addClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
-                    $.post(url, form.serializeArray(), function (data) {
-                        console.log(data);
-                        _this.text('Simpan PAAP').removeClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
-                    })
+
+                    /** Simpan PAAP */
+                    document.formPAAP.submit();
+                    // $.post(url, form.serializeArray(), function (data) {
+                    //     console.log(data);
+                    //     _this.text('Simpan PAAP').removeClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
+                    //     KTApp.unblockPage();
+                    // },'json');
                 });
             });
 

@@ -15,7 +15,7 @@
                         <label class="col-3 col-form-label">Email</label>
                         <div class="col-9">
                             {!! Form::email('email',(is_object($user) ? $user->email:''),['class'=>'form-control','placeholder'=>'Email',(is_object($user) ? 'readonly':'')]) !!}
-                            @if (is_object($assessor))
+                            @if (is_object($user))
                                 <small class="form-text text-muted">Untuk akun user email tidak bisa diubah</small>
                             @else
                                 <small class="form-text text-muted">Pastikan email yang digunakan aktif dan dapat diakses</small>
@@ -26,7 +26,7 @@
                         <label class="col-3 col-form-label">Password</label>
                         <div class="col-9">
                             {!! Form::password('password',['class'=>'form-control','id'=>'password','placeholder'=>'Password']) !!}
-                            @if (is_object($assessor))
+                            @if (is_object($user))
                                 <small class="form-text text-muted">Biarkan kosong jika tidak ingin melakukan perubahan password</small>
                             @endif
                         </div>

@@ -26,9 +26,10 @@
                             <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open <?php echo e(in_array('cbt', $prefix) ? 'kt-menu__item--here':''); ?>" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-event-calendar-symbol"><span></span></i><span class="kt-menu__link-text">Pendaftaran</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                     <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item <?php echo e(($routeName == 'ujian-komputer.kategori') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('peserta.pendaftaran')); ?>" class="kt-menu__link "><span class="kt-menu__link-text" >Peserta</span></a></li>
-                                        <li class="kt-menu__item <?php echo e(($routeName == 'ujian-komputer.program') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('peserta.pendaftaran.sertifikasi')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Sertifikasi</span></a></li>
-                                        <li class="kt-menu__item <?php echo e(($routeName == 'ujian-komputer.management') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('peserta.pendaftaran.sertifikasi.pembayaran')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Pembayaran</span></a></li>
+                                        <li class="kt-menu__item <?php echo e(($routeName == 'peserta.pendaftaran') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('peserta.pendaftaran')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Peserta</span></a></li>
+                                        <li class="kt-menu__item <?php echo e(($routeName == 'peserta.pendaftaran.sertifikasi') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('peserta.pendaftaran.sertifikasi')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Sertifikasi</span></a></li>
+                                        <li class="kt-menu__item <?php echo e(($routeName == 'peserta.pendaftaran.sertifikasi.pembayaran') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('peserta.pendaftaran.sertifikasi.pembayaran')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Pembayaran</span></a></li>
+                                        <li class="kt-menu__item <?php echo e(($routeName == 'pendaftaran.pemilihanasesor') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('pendaftaran.pemilihanasesor')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Pemilihan Asesor</span></a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -80,30 +81,27 @@
                             <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open <?php echo e(in_array('manajemen-kelas', $prefix) ? 'kt-menu__item--here':''); ?>" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Manajemen Kelas</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                     <ul class="kt-menu__subnav">
-
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Assessor')): ?>
-                                            <li class="kt-menu__item <?php echo e(($routeName == 'assessor.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('assessor.index')); ?>" class="kt-menu__link " style="padding-left: 20px !important;"><span class="kt-menu__link-text">Assessor</span></a></li>
+                                            <li class="kt-menu__item <?php echo e(($routeName == 'assessor.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('assessor.index')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Assessor</span></a></li>
                                         <?php endif; ?>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Tempat Uji Kompetensi (TUK)')): ?>
-                                            <li class="kt-menu__item <?php echo e(($routeName == 'tuk.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('tuk.index')); ?>" class="kt-menu__link " style="padding-left: 20px !important;"><span class="kt-menu__link-text">TUK</span></a></li>
+                                            <li class="kt-menu__item <?php echo e(($routeName == 'tuk.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('tuk.index')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">TUK</span></a></li>
                                         <?php endif; ?>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Provinsi')): ?>
-                                            <li class="kt-menu__item <?php echo e(($routeName == 'master.provinsi') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.provinsi')); ?>" class="kt-menu__link " style="padding-left: 20px !important;"><span class="kt-menu__link-text">Provinsi</span></a></li>
+                                            <li class="kt-menu__item <?php echo e(($routeName == 'master.provinsi') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.provinsi')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Provinsi</span></a></li>
                                         <?php endif; ?>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Kota')): ?>
-                                            <li class="kt-menu__item <?php echo e(($routeName == 'master.kota') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.kota')); ?>" class="kt-menu__link " style="padding-left: 20px !important;"><span class="kt-menu__link-text">Kabupaten/Kota</span></a></li>
+                                            <li class="kt-menu__item <?php echo e(($routeName == 'master.kota') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.kota')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Kabupaten/Kota</span></a></li>
                                         <?php endif; ?>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Unit Kompetensi')): ?>
-                                                <li class="kt-menu__item <?php echo e(($routeName == 'master.units') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.units')); ?>" class="kt-menu__link " style="padding-left: 20px !important;"><span class="kt-menu__link-text">Unit Kompetensi</span></a></li>
+                                                <li class="kt-menu__item <?php echo e(($routeName == 'master.units') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.units')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Unit Kompetensi</span></a></li>
                                         <?php endif; ?>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Elemen Kompetensi')): ?>
-                                                <li class="kt-menu__item <?php echo e(($routeName == 'master.element') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.element')); ?>" class="kt-menu__link " style="padding-left: 20px !important;"><span class="kt-menu__link-text">Elemen Kompetensi</span></a></li>
+                                                <li class="kt-menu__item <?php echo e(($routeName == 'master.element') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.element')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Elemen Kompetensi</span></a></li>
                                         <?php endif; ?>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Kerangka Unjuk Kerja')): ?>
-                                                <li class="kt-menu__item <?php echo e(($routeName == 'master.kuk') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.kuk')); ?>" class="kt-menu__link " style="padding-left: 20px !important;"><span class="kt-menu__link-text">Kriteria Unjuk Kerja</span></a></li>
+                                                <li class="kt-menu__item <?php echo e(($routeName == 'master.kuk') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('master.kuk')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Kriteria Unjuk Kerja</span></a></li>
                                         <?php endif; ?>
-                              
-                                       
 
                                     </ul>
                                 </div>
@@ -129,6 +127,7 @@
                             <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open <?php echo e(in_array('cbt', $prefix) ? 'kt-menu__item--here':''); ?>" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-event-calendar-symbol"><span></span></i><span class="kt-menu__link-text">Manajemen Program</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                     <ul class="kt-menu__subnav">
+
                                         <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Management</span></span></li>
                                         <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open <?php echo e(in_array('cbt', $prefix) ? 'kt-menu__item--here':''); ?>" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-imac"><span></span></i><span class="kt-menu__link-text">Program</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                             <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
@@ -161,10 +160,20 @@
                                             </div>
                                         </li>
 
+
                                     </ul>
                                 </div>
                             </li>
-                            
+                            <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open <?php echo e(in_array('materi', $prefix) ? 'kt-menu__item--here':''); ?>" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-file-1"><span></span></i><span class="kt-menu__link-text">Materi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                    <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item <?php echo e(($routeName == 'materi.pembuatan-modul') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('materi.pembuatan-modul')); ?>" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pembuatan Modul</span></a></li>
+                                        <li class="kt-menu__item <?php echo e(($routeName == 'materi.pembuatan-submodul') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('materi.pembuatan-submodul')); ?>" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pembuatan Submodul</span></a></li>
+                                        <li class="kt-menu__item <?php echo e(($routeName == 'materi.jenis-soal') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('materi.jenis-soal')); ?>" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Jenis Soal</span></a></li>
+                                        <li class="kt-menu__item <?php echo e(($routeName == 'materi.pembuatan-soal') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('materi.pembuatan-soal')); ?>" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Pembuatan Soal</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -202,6 +211,7 @@
                                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Validasi APL-02')): ?>
                                                 <li class="kt-menu__item <?php echo e(($routeName == 'pre-assessment.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('pre-assessment.index')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Pre Assessment</span></a></li>
                                             <?php endif; ?>
+                                                <li class="kt-menu__item <?php echo e(($routeName == 'asesmen.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('asesmen.index')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Assessment</span></a></li>
                                         </ul>
                                     </div>
                                 </li>

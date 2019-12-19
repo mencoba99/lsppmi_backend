@@ -12,7 +12,7 @@
                         <i class="kt-font-brand flaticon2-line-chart"></i>
                     </span>
                     <h3 class="kt-portlet__head-title">
-                        Manajemen Assessor
+                        Manajemen Assessmen - Assessmen
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
@@ -21,11 +21,6 @@
                             <i class="la la-long-arrow-left"></i>
                             Back
                         </a>
-                        @can('Assessor Add')
-                        <a href="{{ route('assessor.create') }}" class="btn btn-brand btn-icon-sm">
-                            <i class="flaticon2-plus"></i> Tambah Assessor
-                        </a>
-                        @endcan
                     </div>
                 </div>
             </div>
@@ -37,21 +32,21 @@
                 <table class="table table-striped- table-bordered table-hover table-checkable" id="kt_table_1">
                     <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>No.Reg. MET</th>
-                        <th>No HP</th>
-                        <th>Instansi</th>
+                        <th>Tanggal</th>
+                        <th>Program</th>
+                        <th>TUK</th>
+                        <th>Harga</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tfoot>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="nosearch"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="nosearch"></td>
+                    <td class="nosearch"></td>
                     </tfoot>
                 </table>
 
@@ -62,6 +57,7 @@
 
     <!-- end:: Content -->
 @endsection
+
 
 @push('script')
     <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
@@ -76,19 +72,27 @@
                 ordering: false,
                 lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
                 ajax: {
-                    'url': '{{ route('assessor.getdata') }}',
+                    'url': '{{ route('asesmen.getdata') }}',
                     'type': 'POST',
                     'headers': {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 },
                 columns: [
-                    {data: 'name', name: 'name', title: 'Nama Assessor'},
-                    {data: 'email', name: 'email', title: 'Email'},
-                    {data: 'no_reg', name: 'no_reg', title: 'No.Reg. MET'},
-                    {data: 'mobile_phone', name: 'mobile_phone', title: 'No HP'},
-                    {data: 'company', name: 'company', title: 'Instansi'},
+                    {data: 'started_at', name: 'started_at', title: 'Tanggal'},
+                    {data: 'tuk.name', name: 'tuk.name', title: 'Tempat Uji Kompetensi'},
+                    {data: 'program.name', name: 'program.name', title: 'Program'},
+                    {data: 'price', name: 'price', title: 'Harga'},
+                    {data: 'status', name: 'status', title: 'Status'},
                     {data: 'action', responsivePriority: -1},
+                ],
+                columnDefs: [
+                    {
+                        render: function (data, type, row) {
+                            return "Rp" + data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+                        },
+                        targets: 3
+                    }
                 ],
                 initComplete: function () {
                     this.api().columns().every(function (i,e) {

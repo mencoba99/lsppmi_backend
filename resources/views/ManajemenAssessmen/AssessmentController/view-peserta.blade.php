@@ -1,10 +1,8 @@
 @extends('layouts.base')
 @section('content')
 
-
     <!-- begin:: Content -->
     <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-
 
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--lg">
@@ -13,12 +11,12 @@
                         <i class="kt-font-brand flaticon2-line-chart"></i>
                     </span>
                     <h3 class="kt-portlet__head-title">
-                        Manajemen Assessmen - Pre Assessmen - Data Peserta
+                        Manajemen Assessmen - Assessmen - Data Peserta
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
                     <div class="kt-portlet__head-wrapper">
-                        <a href="{{ route('pre-assessment.index') }}" class="btn btn-clean btn-icon-sm">
+                        <a href="{{ route('asesmen.index') }}" class="btn btn-clean btn-icon-sm">
                             <i class="la la-long-arrow-left"></i>
                             Back
                         </a>
@@ -111,7 +109,11 @@
                                 @if ($jadwalKelas->pendaftar && $jadwalKelas->pendaftar->count() > 0)
                                     @foreach($jadwalKelas->pendaftar as $item)
                                         <tr>
-                                            <td>{{ $item->members->name }}</td>
+                                            <td>
+                                                <a href='{{ route('asesmen.viewsinglepeserta', ['member_certification' => $item]) }}' class='modalIframe' data-toggle='kt-tooltip' title='View' data-original-tooltip='View'>
+                                                    {{ $item->members->name }}
+                                                </a>
+                                            </td>
                                             <td>{{ $item->members->email }}</td>
                                             <td>{{ !empty($item->members->home_phone) ? $item->members->home_phone:'-' }}</td>
                                             <td>{{ !empty($item->members->company_name) ? $item->members->company_name:'-' }}</td>
@@ -127,7 +129,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href='{{ route('pre-assessment.viewsinglepeserta', ['member_certification' => $item]) }}' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View' data-original-tooltip='View'>
+                                                <a href='{{ route('asesmen.viewsinglepeserta', ['member_certification' => $item]) }}' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View' data-original-tooltip='View'>
                                                     <i class='la la-search'></i>
                                                 </a>
                                             </td>
