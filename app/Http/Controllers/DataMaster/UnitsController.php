@@ -32,8 +32,13 @@ class UnitsController extends Controller
         $Units->name = $request->get('name');
         $Units->code = $request->get('code');
         $Units->status = $request->get('status');
-        $Units->type = $request->get('status') ? TRUE : FALSE;
-
+        $Units->persentase_kelulusan = $request->get('persentase_kelulusan');
+        if($request->get('status')==1){
+            $Units->type = 1;
+        }else{
+            $Units->type =0;
+        }
+         
 
         if($request->get('id')){
 
@@ -42,7 +47,8 @@ class UnitsController extends Controller
             $update['name'] = $request->get('name');
             $update['code'] = $request->get('code');
             $update['type'] = $request->get('type');
-            $update['status'] = $request->get('status') ? TRUE : FALSE;
+            $update['persentase_kelulusan'] = $request->get('persentase_kelulusan');
+            $update['status'] = $request->get('status') ? 1 : 0;
 
             if(Units::whereId($request->get('id'))->update($update)){
                 return json_encode(array(

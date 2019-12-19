@@ -12,6 +12,8 @@ use App\Models\Ujian\Ujian_modul;
 use App\Models\Ujian\Perdana;
 use App\Models\ProgramSchedule;
 use App\Models\Ujian\Pendaftaran_trx;
+use App\Models\CompetenceUnit;
+use App\Models\CompetenceKUK;
 use App\Models\Modul;
 use App\Models\SubModul;
 use App\Models\MgtProgram;
@@ -42,7 +44,7 @@ class JadwalController extends Controller
 
     public function create()
     {
-        $ruang       = DB::table('competence_places')->select(DB::raw("CONCAT(competence_places.name,' - Kapasitas ', ' Orang') AS nama"),'competence_places.id')                             ->where('competence_places.status', '=', 1)
+        $ruang       = DB::table('competence_places')->select(DB::raw("CONCAT(competence_places.name,' - Kapasitas ',competence_places.capacity, ' Orang') AS nama"),'competence_places.id')                             ->where('competence_places.status', '=', 1)
                                          ->where('status', '=', 1)
                                          ->orderBy('name', 'ASC')
                                          ->pluck('nama', 'competence_places.id');
@@ -147,13 +149,13 @@ class JadwalController extends Controller
                 /* GET MODUL SUBMODUL BY BATCH ID */
                 $data_modul = Ujian_modul::select(['ujian_modul.modul_id'])->where('ujian_batch_id', $data->ujian_batch_id)->distinct()->get();
                 foreach ($data_modul as $value_mod) {
-                    $nama_m            = Modul::where('id', $value_mod->modul_id)->value('name');
+                    $nama_m            = CompetenceUnit::where('id', $value_mod->modul_id)->value('name');
                     $arrmodsub['modul_id']   = $value_mod->modul_id;
                     $arrmodsub['nama_modul'] = $nama_m;
                     $arrmodsub['submodul']   = [];
                     $data_submodul           = Ujian_modul::where('ujian_batch_id', $data->ujian_batch_id)->where('modul_id', $value_mod->modul_id)->get(['submodul_id']);
                     foreach ($data_submodul as $key => $value_sub) {
-                        $nama_s   = SubModul::where('id', $value_sub->submodul_id)->value('name');
+                        $nama_s   = CompetenceKUK::where('id', $value_sub->submodul_id)->value('name');
                         $nest_arr = array('submodul_id'     => $value_sub->submodul_id,
                                           'nama_submodul'   => $nama_s
                       );
@@ -236,7 +238,8 @@ class JadwalController extends Controller
                 'perdana_jadwal.name AS nama',
                 'perdana_jadwal.tgl_perdana AS tgl_perdana',
                 'competence_places.name AS nama_ruang',
-                'perdana_jadwal.hari_id AS nama_hari',
+                'hari.name AS nama_hari',
+                // 'perdana_jadwal.hari_id AS nama_hari',
                 'jam.name AS nama_jam'
                 ])
         ->join('perdana', 'perdana.perdana_id', '=', 'perdana_jadwal.perdana_id')
@@ -259,8 +262,8 @@ class JadwalController extends Controller
             $action = "<div class='btn-group'>";
             $action .= '<button data-jadwal="'.$jadwal->_id.'" class="edit_modal_batch btn btn-sm btn-icon btn-clean btn-icon-sm" title="Edit"><i class="fa fa-tasks"></i></button>';
             $action .= '<button data-jadwal="'.$jadwal->_id.'" class="edit_modal_peserta btn btn-sm btn-icon btn-clean btn-icon-sm" title="Edit"><i class="fa fa-users"></i></button>';
-            $action .= '<button data-jadwal="'.$jadwal->_id.'" class="edit_modal_pengawas btn btn-sm btn-icon btn-clean btn-icon-sm" title="Edit"><i class="fa fa-user-secret"></i></button>';
-            $action .= '<a target="_blank" href="'.route('ujian.jadwal.print', ['jadwal_id' => $jadwal->_id]) .'" title="Print Peserta Ujian" class="btn btn-sm btn-icon btn-clean btn-icon-sm"><i class="fa fa-file-pdf"></a>';
+            // $action .= '<button data-jadwal="'.$jadwal->_id.'" class="edit_modal_pengawas btn btn-sm btn-icon btn-clean btn-icon-sm" title="Edit"><i class="fa fa-user-secret"></i></button>';
+            // $action .= '<a target="_blank" href="'.route('ujian.jadwal.print', ['jadwal_id' => $jadwal->_id]) .'" title="Print Peserta Ujian" class="btn btn-sm btn-icon btn-clean btn-icon-sm"><i class="fa fa-file-pdf"></a>';
            
 			$action .= "</div>";
             return $action;
@@ -347,13 +350,14 @@ class JadwalController extends Controller
                                                         //          ->from('peserta_cancel');
                                                         //   })
                                                         ->pluck('peserta_id');
+                                                      
                                                                              
                 $peserta_ujian         = Perdana_peserta::whereIn('ujian_batch_id', $ujian_batch_id)
                                                          ->pluck('peserta_id');
                
                 $list_peserta           = MemberCertification::with('members')->whereIn('id', $peserta_pendaftar)->get();
                 // $list_peserta           = Members::select(['members.id AS _id', 'members.name AS nama'])->orderBy('name')->whereIn('id', $peserta_pendaftar)->get();
-               
+                
                 $m  = array();
                 foreach ($list_peserta as $data) {
                     $n = array();
@@ -405,7 +409,7 @@ class JadwalController extends Controller
             ->get();
             $my_arr = [];
             foreach ($program_mgmt as $value) {
-                $nama_m            = Modul::where('id', $value->modul_id)->value('name');
+                $nama_m            = CompetenceUnit::where('id', $value->modul_id)->value('name');
                 $arr['modul_id']   = $value->modul_id;
                 $arr['nama_modul'] = $nama_m;
                 $arr['submodul']   = [];
@@ -420,7 +424,7 @@ class JadwalController extends Controller
                 // return $modsub; exit;                                  
                 foreach ($modsub as $key => $value_sub) {
                   
-                    $nama_s   = SubModul::where('id', $value_sub->submodul_id)->value('name');
+                    $nama_s   = CompetenceKUK::where('id', $value_sub->submodul_id)->value('name');
                     $nest_arr = array('submodul_id'     => $value_sub->submodul_id,
                                       'nama_submodul'   => $nama_s
                   );

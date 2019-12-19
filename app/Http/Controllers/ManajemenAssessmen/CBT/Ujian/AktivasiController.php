@@ -14,7 +14,13 @@ use App\Models\Ujian\Jenis;
 use App\Models\StartUjian\Soal_peserta;
 use App\Models\StartUjian\Perdana_peserta;
 use App\Models\TUK;
+use App\Models\Modul_soal;
+use App\Models\Soal;
+use App\Models\StartUjian\Peserta_jawab;
+use App\Models\StartUjian\Waktu_persoal;
+use App\Models\Komposisi_soal;
 use App\Models\ProgramSchedule;
+use App\Models\MgtProgram;
 use App\Models\MemberCertification ;
 use DataTables;
 use Entrust;
@@ -145,7 +151,7 @@ class AktivasiController extends Controller
         
         if ($request->ajax()) {
             $data = $request->data;
-            // return $data; exit;
+            
             DB::beginTransaction();
             $success_trans = false;
             try {
@@ -188,13 +194,13 @@ class AktivasiController extends Controller
                             
                             foreach($data_ujian as $ujian) {
                                 // get program_dtl_id by modul_id & submodul_id & program_id
-                                $program_dtl_id = Program_management::where('program_id', $program_id)
+                                $program_dtl_id = MgtProgram::where('program_id', $program_id)
                                                                     ->where('modul_id', $ujian->modul_id)
                                                                     ->where('submodul_id', $ujian->submodul_id)
-                                                                    ->where('hapus', FALSE)
-                                                                    ->value('program_dtl_id');
+                                                                    ->where('status', 1)
+                                                                    ->value('id');
                                 // get komposisi soal
-                                $komposisis     = Komposisi_soal::where('program_dtl_id', $program_dtl_id)
+                                $komposisis     = Komposisi_soal::where('program_mgt_id', $program_dtl_id)
                                                                 ->whereNotNull('jumlah_soal')
                                                                 ->get();
                                 $soal_peserta                     = new Soal_peserta;
@@ -216,11 +222,11 @@ class AktivasiController extends Controller
                                         $modul_soal = Modul_soal::where('modul_id', $ujian->modul_id)
                                                                         ->where('submodul_id', $ujian->submodul_id)
                                                                         ->pluck('soal_id');
-                                        $bank_soal  = Pembuatan_soal::whereIn('soal_id', $modul_soal)
+                                        $bank_soal  = Soal::whereIn('soal_id', $modul_soal)
                                                                             ->where('aktif', TRUE)
                                                                             ->where('jenis_soal_id', $komposisi->jenis_soal_id)
                                                                             ->pluck('soal_id');
-                                        $parents    = Pembuatan_soal::whereIn('soal_id', $bank_soal)
+                                        $parents    = Soal::whereIn('soal_id', $bank_soal)
                                                                             ->where('aktif', TRUE)
                                                                             ->where('parent', '=', '0')
                                                                             ->inRandomOrder()
@@ -231,7 +237,7 @@ class AktivasiController extends Controller
                                             for ($i = 1; $i <= $kebutuhan; $i++) {
                                                 if($parents->count() > 1){
                                                     $parents_popped     = $parents->pop();
-                                                    $family     = Pembuatan_soal::where('parent', $parents_popped)->pluck('soal_id')->push($parents_popped);
+                                                    $family     = Soal::where('parent', $parents_popped)->pluck('soal_id')->push($parents_popped);
                                                     $family_shuffled   = $family->shuffle();
                                                     $family_popped     = $family_shuffled->pop();
                                                     $hasil_soal->push($family_popped);
@@ -243,18 +249,18 @@ class AktivasiController extends Controller
                                             for ($i = 1; $i <= $kebutuhan; $i++) {
                                                 if($parents->count() > 1){
                                                     $parents_popped    = $parents->pop();
-                                                    $family            = Pembuatan_soal::where('parent', $parents_popped)->pluck('soal_id')->push($parents_popped);
+                                                    $family            = Soal::where('parent', $parents_popped)->pluck('soal_id')->push($parents_popped);
                                                     $family_shuffled   = $family->shuffle();
                                                     $family_popped     = $family_shuffled->pop();
                                                     $hasil_soal->push($family_popped);
                                                 }elseif($parents->count() == 0){
-                                                    $new_parents    = Pembuatan_soal::whereIn('soal_id', $bank_soal)
+                                                    $new_parents    = Soal::whereIn('soal_id', $bank_soal)
                                                                     ->where('parent', '=', '0')
                                                                     ->where('aktif', TRUE)
                                                                     ->inRandomOrder()
                                                                     ->pluck('soal_id');
                                                     $sisa   = $kebutuhan - $hasil_soal->count();
-                                                    $childs = Pembuatan_soal::whereIn('parent', $new_parents)->whereNotIn('soal_id',$hasil_soal)->inRandomOrder()->take($sisa)->pluck('soal_id');
+                                                    $childs = Soal::whereIn('parent', $new_parents)->whereNotIn('soal_id',$hasil_soal)->inRandomOrder()->take($sisa)->pluck('soal_id');
                                                     foreach ($childs as $child) {
                                                         $hasil_soal->push($child);
                                                     }
@@ -306,8 +312,8 @@ class AktivasiController extends Controller
                                 $durasi_ujian = DB::table('ujian_parameter')
                                                   ->where('ujian_parameter_id', function($q) use($batch_id){
                                                     $q->select('ujian_parameter_id')
-                                                      ->from('batch')
-                                                      ->where('batch_id', $batch_id);
+                                                      ->from('program_schedules')
+                                                      ->where('id', $batch_id);
                                                   })
                                                   ->value('durasi_default_ujian');
                                 $total_soal   = Peserta_jawab::whereIn('soal_peserta_id', function($q) use($perdana_peserta_id){
@@ -319,7 +325,7 @@ class AktivasiController extends Controller
                                 $waktu                   = new Waktu_persoal;
                                 $waktu->batch_id         = $batch_id;
                                 $waktu->durasi_ujian     = $durasi_ujian*60;
-                                $waktu->nama_batch       = Batch::find($batch_id)->nama;
+                                $waktu->nama_batch       = ProgramSchedule::find($batch_id)->programs->name;
                                 $waktu->total_soal_ujian = $total_soal;
                                 $waktu->waktu_persoal    = $waktu->durasi_ujian/$total_soal;
                                 $waktu->aktivasi         = TRUE;

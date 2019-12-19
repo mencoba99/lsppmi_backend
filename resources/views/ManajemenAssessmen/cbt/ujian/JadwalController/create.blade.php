@@ -297,14 +297,13 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
-                        alert(JSON.stringify(response));
+                        
                         if (response.status === 200) {
                             view();
-
-
+                            // alert(JSON.stringify(response.status));
+                            KTApp.unblock('.kt-portlet__body');
                             $.when(setTimeout(function () {
-                                KTApp.unblock('.kt-portlet__body');
-
+                               
                                 $.notify({
                                     // options
                                     message: 'Berhasil disimpan'
@@ -387,32 +386,23 @@
         /* Datatable View */
         parent.$('#datatable').DataTable({
             processing: true,
+            searchDelay: 500,
             serverSide: true,
+            responsive: true,
             ajax: "{{ route('ujian.jadwal.data') }}",
-            columns: [{
-                    data: 'id',
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    title: 'No.',
-                    width: "3%"
-                },
-                {
-                    data: 'name_program',
-                    name: 'name_program',
-                    title: 'Program '
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    title: 'Action',
-                    width: "15%"
-                },
+            columns: [
+                {data: 'rownum', searchable: false, width : "3%"},
+                { data: 'nama', name: 'perdana_jadwal.nama' , title: 'Nama ' },
+                { data: 'tgl_perdana', name: 'tgl_perdana' , title: 'Tgl Perdana ' },
+                { data: 'nama_ruang', name: 'nama_ruang' , title: 'Nama TUK ' },
+                { data: 'nama_hari', name: 'nama_hari' , title: 'Hari ' },
+                { data: 'nama_jam', name: 'nama_jam' , title: 'Jam ' },
+                { data: 'action', name: 'action' , title: 'Action', width : "15%" },
             ],
-            "drawCallback": function (settings) {
-                parent.$('.tree').jstree();
-            },
-        });
+            "drawCallback": function(settings) {
+				//
+            }, 
+    });
     }
 
     $(function () {

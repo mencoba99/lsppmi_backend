@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Assessor;
 use App\Models\JadwalKelas;
 use App\Models\Program;
+use App\Models\Batch_modul_dtl;
 use App\Models\ProgramSchedule;
 use App\Models\TUK;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Yajra\DataTables\DataTables;
+use DB;
 use function GuzzleHttp\Psr7\str;
 
 class JadwalKelasController extends Controller
@@ -146,7 +148,25 @@ class JadwalKelasController extends Controller
             $assessor_ids = $request->get('assessor_id');
             $assessor_ids = Arr::flatten($assessor_ids);
 
+           
+            
+
             if ($jadwalKelas->save()) {
+                /** Save to  */
+                $last_batch_id = $jadwalKelas->id;
+                $program_id = $request->program_id;
+                $modul_id   = DB::table('program_mgt')->where('program_id', $program_id)->where('status', 1)->pluck('modul_id')->unique();
+                $moduls     = DB::table('competence_units')->whereIn('id', $modul_id)->get();
+                // @insert tbl:batch_modul_dtl
+                foreach ($moduls as $modul) {
+                    $modul_dtl                             = new Batch_modul_dtl;
+                    $modul_dtl->batch_id                   = $last_batch_id;
+                    $modul_dtl->modul_id                   = $modul->id;
+                    $modul_dtl->nama_modul                 = $modul->name;
+                    $modul_dtl->persentase_kelulusan_modul = $modul->persentase_kelulusan;
+                    $modul_dtl->save();
+                }
+
                 /** Save Assessor */
                 $jadwalKelas->assessor()->sync($assessor_ids);
                 flash()->success('Berhasil menambahkan Jadwal Kelas');

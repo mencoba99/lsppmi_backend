@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Models\MgtProgram;
 use App\Models\Program;
-use App\Models\Modul;
-use App\Models\SubModul;
+use App\Models\CompetenceUnit;
+use App\Models\CompetenceKUK;
 use App\Models\SoalJenis;
 use App\Models\Komposisi_soal;
 use DataTables;
@@ -36,10 +36,11 @@ class ManagementController extends Controller
 
     public function create()
     {
-        $dtl_id      = MgtProgram::distinct()->get(['program_id']);
+        $dtl_id      = MgtProgram::distinct()->get(['program_id']); 
         $Program     = Program::whereNotIn('id', $dtl_id)->pluck('name', 'id')->prepend('',''); //Dropdown program
-        $modul       = Modul::orderBy('name', 'ASC')->where('aktif', 'true')->where('status', 1)->get(); // dropdown all modul
-        $submodul    = SubModul::orderBy('name', 'ASC')->where('aktif', 'true')->pluck('name', 'id'); // dropdown all submodul
+        $modul       = CompetenceUnit::orderBy('name', 'ASC')->where('status', 1)->get(); // dropdown all modul
+        $submodul    = CompetenceKUK::orderBy('name', 'ASC')->pluck('name', 'id'); // dropdown all submodul
+        
         $role = null;
         
         return view('ManajemenAssessmen.cbt.ManagementController.create', compact('Program', 'modul', 'submodul','role'));
@@ -57,9 +58,10 @@ class ManagementController extends Controller
         ->addColumn('nama_program', function ($program_dtl) {
             // get id modul by program id after distinct nama in program_dtl
             $id_modul = MgtProgram::where('program_id', '=', $program_dtl->program_id)->where('status', 1)->pluck('modul_id');
+            
             // get row in table modul where modul_id = $id_modul
-            $moduls   = Modul::whereIn('id', $id_modul)->where('status', 1)->get();
-           
+            $moduls   = CompetenceUnit::whereIn('id', $id_modul)->where('status', 1)->get();
+            
             // create tree JStree
             $tree =
             "
@@ -73,14 +75,16 @@ class ManagementController extends Controller
                     $tree.="<li>".$modul->name.
                             "<ul>";
                 }
+                
                 // get submodul_id in program_dtl by program_id and modul_id
                 $id_submodul = MgtProgram::where('program_id', '=', $program_dtl->program_id)->where('modul_id', '=', $modul->id)->where('status', 1)->pluck('submodul_id');
                 // get active row in table submodul where submodul_id = $id_submodul
-                $submoduls = SubModul::whereIn('id', $id_submodul)->where('aktif', true)->get();
-                // return $id_submodul;
+                // $element = CompetenceElement::whereIn('id', $id_submodul)->where('status', 1)->get();
+                $submoduls = CompetenceKUK::whereIn('id', $id_submodul)->where('status', 1)->get();
+               
                 foreach ($submoduls as $submodul) {
                     // get nama submodul where submodul_id = $submodul->submodul_id
-                    $namasubmodul = SubModul::where('id', $submodul->id)->where('aktif', true)->value('name');
+                    $namasubmodul = CompetenceKUK::where('id', $submodul->id)->where('status', 1)->value('name');
                    
                     if (!empty($namasubmodul)) {
                         $tree.="<li> ".$namasubmodul;
@@ -117,11 +121,11 @@ class ManagementController extends Controller
                             })->addColumn('action', function ( $MgtProgram) {
                                 $btn_action = '';
                                 
-                                    $btn_action .= '<a data-toggle="tooltip" title="Edit Program '.$MgtProgram->name.'" href="" class="la la-edit"></a>&nbsp;';
+                                    // $btn_action .= '<a data-toggle="tooltip" title="Edit Program '.$MgtProgram->name.'" href=""  class="la la-edit modalIframe"></a>&nbsp;';
+                                     
                                 
-                                
-                                    $btn_action .= '<a data-toggle="tooltip" title="Edit Komposisi Soal '.$MgtProgram->name.'"
-                                    href="'.route('management.sebaran_soal', ['program_id' => $MgtProgram->program_id]) .'" class="la la-cog"></a>';
+                                    $btn_action .= '<a data-toggle="tooltip" url="" title="Edit Komposisi Soal '.$MgtProgram->name.'"  class="modalIframe la la-cog" id="clearIframe" data-toggle="kt-tooltip"
+                                    href="'.route('management.sebaran_soal', ['program_id' => $MgtProgram->program_id]) .'"></a>';
                                 
                                     
                                     return $btn_action;
@@ -148,7 +152,7 @@ class ManagementController extends Controller
     public function AjaxGetSubModul(Request $request)
     {
        
-        return SubModul::where('id_modul',$request->get('modul_id'))->get();
+        return CompetenceKUK::where('id_modul',$request->get('modul_id'))->get();
        
     }
 
@@ -162,6 +166,41 @@ class ManagementController extends Controller
         return view('ManajemenAssessmen.cbt.ManagementController.sebaran_soal', compact('program_dtl', 'total_soal'));
     }
 
+
+    public function ajax_update_komposisi_soal(Request $request)
+    {
+        if ($request->ajax()) {
+            $datas          = $request->data;
+            DB::beginTransaction();
+            $success_trans = false;
+            try {
+                foreach ($datas as $data) {
+                    $program_dtl             = MgtProgram::find($data['program_dtl_id']);
+                    $program_dtl->total_soal = !empty($data['total_soal']) ? $data['total_soal'] : null;
+                    $program_dtl->save();
+                   
+                    foreach ($data['jenis_soal'] as $jenis) {
+                        $komposisi = Komposisi_soal::updateOrCreate(
+                             ['program_mgt_id' => $data['program_dtl_id'],
+                             'jenis_soal_id'   => $jenis['jenis_soal_id']], 
+                             ['jumlah_soal'    => !empty($jenis['jumlah_soal']) ? $jenis['jumlah_soal'] : null]
+                        );
+                    }
+                }
+                DB::commit();
+                $success_trans = true;
+            } catch (\Exception $e) {
+                DB::rollback();
+                // error page
+                abort(403, $e->getMessage());
+            }
+            if ($success_trans == true) {
+                print json_encode($komposisi);
+                print json_encode($data);
+            }
+        }
+    }
+
     public function AjaxMgtProgramInsertData(Request $request)
     {
 
@@ -171,12 +210,14 @@ class ManagementController extends Controller
         
         $arrtree      = array_filter($arrtree, function($value) { return !is_null($value) && $value !== ''; });
         $nama_program = Program::where('id', $program_id)->first(); //Nama Program
-        $submodul = SubModul::find($arrtree);
+        $submodul = CompetenceKUK::with('element')->whereIn('id',$arrtree)->get();
+      
         try {
             foreach ($submodul as $value) {
+                
                 $program_dtl               = new MgtProgram;
                 $program_dtl->name         = $nama_program->name;
-                $program_dtl->modul_id     = $value->id_modul;
+                $program_dtl->modul_id     = $value->element->unit->id;
                 $program_dtl->submodul_id  = $value->id;
                 $program_dtl->program_id   = $program_id;
                 $program_dtl->status       = $request->status;

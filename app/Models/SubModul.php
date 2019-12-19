@@ -13,7 +13,7 @@ class SubModul extends Model
 	
      // protected $revisionCreationsEnabled = true;
      
-     protected $table = 'submodul';
+     protected $table = 'competence_kuk';
  
      protected $fillable = [
          
@@ -27,7 +27,7 @@ class SubModul extends Model
 
      public function modul()
     {
-        return $this->belongsTo('App\Models\Modul','id_modul','id');
+         $this->belongsTo('App\Models\CompetenceElement','competence_element_id','id');
     }
 
     public function program_mgt()
