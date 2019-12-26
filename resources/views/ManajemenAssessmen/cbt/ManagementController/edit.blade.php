@@ -22,7 +22,7 @@
                                 <label class="col-lg-3 col-form-label">Program:</label>
                                 <div class="col-lg-6">
                                     {!!  Form::text('program_id',$modul_program->first()->name,['id'=>'program_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required', 'readonly']) !!}
-                                    {!!  Form::text('mgt_id',$modul_program->first()->program_id,['id'=>'mgt_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required', 'readonly']) !!}
+                                    {!!  Form::text('mgt_id',$modul_program->first()->program_id,['id'=>'mgt_id','class'=>'form-control input-sm kt-selectpicker','style'=>'display:none', 'readonly']) !!}
                                    
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                                             @endforeach
                                         </ul>
                                     </div>
-                                    <input type="text" name="checktree" style="display:block" id="checktree" value="">
+                                    <input type="text" name="checktree" style="display:none" id="checktree" value="">
                                 </div>
                             </div>
                             <div class="form-group row">
