@@ -12,7 +12,7 @@
         "barryvdh/laravel-dompdf": "^0.8.5",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "^6.4",
+        "guzzlehttp/guzzle": "^6.5",
         "intervention/image": "^2.5",
         "laracasts/flash": "^3.0",
         "laravel/framework": "^6.0",

@@ -106,8 +106,14 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                @if ($jadwalKelas->pendaftar && $jadwalKelas->pendaftar->count() > 0)
-                                    @foreach($jadwalKelas->pendaftar as $item)
+                                @role('Assessor')
+                                    @php($pendaftar = $jadwalKelas->pendaftar->where('assessor_id', $asesor->id)->where('status',3))
+                                @else
+                                    @php($pendaftar = $jadwalKelas->pendaftar->where('status',3))
+                                @endrole
+
+                                @if ($pendaftar && $pendaftar->count() > 0)
+                                    @foreach($pendaftar as $item)
                                         <tr>
                                             <td>
                                                 <a href='{{ route('asesmen.viewsinglepeserta', ['member_certification' => $item]) }}' class='modalIframe' data-toggle='kt-tooltip' title='View' data-original-tooltip='View'>

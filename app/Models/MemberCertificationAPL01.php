@@ -8,9 +8,9 @@ class MemberCertificationAPL01 extends Model
 {
     protected $table = 'member_certification_apl_01';
 
-//    protected $casts = [
-//        'proof' => 'json'
-//    ];
+    protected $casts = [
+        'proof' => 'json'
+    ];
 
     public function puk()
     {

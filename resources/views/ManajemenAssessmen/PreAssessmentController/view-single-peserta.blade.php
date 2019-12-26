@@ -41,7 +41,7 @@
                 <div class="kt-portlet__head-toolbar">
                     <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-success nav-tabs-line-2x" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_1_tab_content"
+                            <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_1_tab_content"
                                role="tab" aria-selected="false">
                                 <i class="la la-check-circle"></i> FR APL-01
                             </a>
@@ -53,7 +53,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content"
+                            <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content"
                                role="tab" aria-selected="true">
                                 <i class="la la-bell-o"></i> FR PAAP-01
                             </a>
@@ -63,7 +63,8 @@
             </div>
             <div class="kt-portlet__body">
                 <div class="tab-content">
-                    <div class="tab-pane" id="kt_portlet_base_demo_1_1_tab_content" role="tabpanel">
+                    <!-- Tab Pertama --->
+                    <div class="tab-pane active" id="kt_portlet_base_demo_1_1_tab_content" role="tabpanel">
                         <div class="kt-portlet kt-portlet--bordered">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">
@@ -253,9 +254,15 @@
                                     <tbody>
                                     <tr>
                                         <td>1</td>
-                                        <td>KTP</td>
+                                        <td>
+                                            @if (Storage::exists($memberCertification->members->ktp_file))
+                                                <a href="{{ Storage::url($memberCertification->members->ktp_file) }}" class="showDocument" title="KTP">KTP</a>
+                                            @else
+                                                KTP
+                                            @endif
+                                        </td>
                                         @if ($memberCertification->members->ktp_file)
-                                            @if ($memberCertification->apl01->status == 1)
+                                            @if ($memberCertification->members->ktp_verified == 1)
                                                 <td><i class="la la-check"></i></td>
                                                 <td></td>
                                                 <td></td>
@@ -272,9 +279,15 @@
                                     </tr>
                                     <tr>
                                         <td>2</td>
-                                        <td>Foto</td>
+                                        <td>
+                                            @if (Storage::exists($memberCertification->members->foto_file))
+                                                <a href="{{ Storage::url($memberCertification->members->foto_file) }}" class="showDocument" title="Foto">Foto</a>
+                                            @else
+                                                Foto
+                                            @endif
+                                        </td>
                                         @if ($memberCertification->members->foto_file)
-                                            @if ($memberCertification->apl01->status == 1)
+                                            @if ($memberCertification->members->foto_verified == 1)
                                                 <td><i class="la la-check"></i></td>
                                                 <td></td>
                                                 <td></td>
@@ -291,9 +304,15 @@
                                     </tr>
                                     <tr>
                                         <td>3</td>
-                                        <td>Ijazah</td>
+                                        <td>
+                                            @if (Storage::exists($memberCertification->members->ijazah_file))
+                                                <a href="{{ Storage::url($memberCertification->members->ijazah_file) }}" class="showDocument" title="Ijazah">Ijazah</a>
+                                            @else
+                                                Ijazah
+                                            @endif
+                                        </td>
                                         @if ($memberCertification->members->ijazah_file)
-                                            @if ($memberCertification->apl01->status == 1)
+                                            @if ($memberCertification->members->ijazah_verified == 1)
                                                 <td><i class="la la-check"></i></td>
                                                 <td></td>
                                                 <td></td>
@@ -310,9 +329,16 @@
                                     </tr>
                                     <tr>
                                         <td>4</td>
-                                        <td>Surat Keterangan Kerja</td>
+                                        <td>
+                                            @if (Storage::exists($memberCertification->members->skb_file))
+                                                <a href="{{ Storage::url($memberCertification->members->skb_file) }}" class="showDocument" title="Surat Keterangan Kerja">Surat Keterangan Kerja</a>
+                                            @else
+                                                Surat Keterangan Kerja
+                                            @endif
+
+                                        </td>
                                         @if ($memberCertification->members->skb_file)
-                                            @if ($memberCertification->apl01->status == 1)
+                                            @if ($memberCertification->members->skb_verified == 1)
                                                 <td><i class="la la-check"></i></td>
                                                 <td></td>
                                                 <td></td>
@@ -332,7 +358,19 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Tab kedua --->
                     <div class="tab-pane" id="kt_portlet_base_demo_1_2_tab_content" role="tabpanel">
+                        <div class="alert alert-info" role="alert">
+                            <div class="alert-text">
+                                <h4 class="alert-heading">Perhatian!</h4>
+                                <p>
+                                    Dengan menyetujui Form APL-02 ini maka Anda sudah menyetujui bahwa semua dokumen yang dilampirkan oleh Asesi
+                                    sudah memiliki sifat <strong>Valid, Asli, Terkini dan Memadai</strong>.
+                                </p>
+                                <hr>
+                                <p class="mb-0">Pastikan semua dokumen terlampir sudah bersifat <strong>Valid, Asli, Terkini dan Memadai</strong>.</p>
+                            </div>
+                        </div>
                         <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">
@@ -390,17 +428,26 @@
                                                         <td>Elemen {{ $noElemen }} : {{ $element->name }} <br> KUK</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td rowspan="{{ ($element->kuk->count() + 1) }}">
-                                                            @if ($item->proof)
-                                                                @php($arrProof=GeneralHelper::getAPL01File($item->proof))
-                                                                @if ($arrProof)
-                                                                    @foreach($arrProof as $proof)
-                                                                        <a href="{{ Storage::url('apl/'.$memberCertification->members->id.'/'.$proof) }}"
-                                                                           class="showDocument">{{ $proof }}</a>
+                                                        @if ($noElemen == 1)
+                                                            <td rowspan="{{ ($element->kuk->count() + 1) }}">
+                                                                @if ($item->proof)
+                                                                    @php($noFile=1)
+                                                                    @foreach($item->proof['files'] as $file)
+                                                                        <a href="{{ Storage::url($file) }}" class="showDocument">{{ $noFile }}. {{ $item->proof['filename'] }}</a>
+                                                                        @php($noFile++)
                                                                     @endforeach
+                                                                    {{--                                                                @php($arrProof=GeneralHelper::getAPL01File($item->proof))--}}
+                                                                    {{--                                                                @if ($arrProof)--}}
+                                                                    {{--                                                                    @foreach($arrProof as $proof)--}}
+                                                                    {{--                                                                        <a href="{{ Storage::url('apl/'.$memberCertification->members->id.'/'.$proof) }}"--}}
+                                                                    {{--                                                                           class="showDocument">{{ $proof }}</a>--}}
+                                                                    {{--                                                                    @endforeach--}}
+                                                                    {{--                                                                @endif--}}
                                                                 @endif
-                                                            @endif
-                                                        </td>
+                                                            </td>
+                                                        @else
+                                                            <td rowspan="{{ ($element->kuk->count() + 1) }}">&nbsp;</td>
+                                                        @endif
                                                     </tr>
                                                     @if ($element->kuk)
                                                         @php($nokuk=1)
@@ -436,7 +483,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane active" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
+                    <!-- Tab Pertama --->
+                    <div class="tab-pane" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
                         {!! Form::open(['url'=>route('pre-assessment.savepaap',['member_certification'=>$memberCertification]),'onsubmit'=>'return false','class'=>'formPAAP','name'=>'formPAAP']) !!}
                         <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
                             <div class="kt-portlet__head">
@@ -903,7 +951,11 @@
                                 <div class="kt-form__actions">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <button type="button" class="btn btn-success btn-loading savePAAP pull-right">Simpan PAAP</button>
+                                            @if ($memberCertification->status == 3)
+                                                <button type="button" class="btn btn-success btn-loading savePAAP pull-right">Simpan PAAP</button>
+                                            @else
+                                                <button type="button" class="btn btn-success btn-loading pull-right" disabled>Approve APL-02 Dahulu</button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -940,7 +992,7 @@
                 </div>
                 <div class="container"></div>
                 <div class="modal-body">
-                    <img src="" alt="" width="100%" height="100%">
+                    <img src="" alt="" width="80%" height="100%">
                 </div>
                 <div class="modal-footer">
                     <a href="#" data-dismiss="modal" class="btn">Close</a>
@@ -959,7 +1011,7 @@
                             <div class="kt-chat__head ">
                                 <div class="kt-chat__left">
                                     <div class="kt-chat__label">
-                                        <a href="#" class="kt-chat__title">Jason Muller</a>
+                                        <a href="#" class="kt-chat__title">{{ $memberCertification->members->name }}</a>
                                         <span class="kt-chat__status">
 												<span class="kt-badge kt-badge--dot kt-badge--success"></span> Active
 											</span>

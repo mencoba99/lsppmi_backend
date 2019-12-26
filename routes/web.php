@@ -284,6 +284,9 @@ Route::middleware(['auth'])->group(function (){
             Route::post('asesmen/getdata', 'AssessmentController@getAssessmentData')->name('asesmen.getdata');
             Route::get('asesmen/{jadwal_kelas}/view-allpeserta','AssessmentController@viewAllPeserta')->name('asesmen.viewallpeserta');
             Route::get('asesmen/{member_certification}/view-singlepeserta','AssessmentController@viewSinglePeserta')->name('asesmen.viewsinglepeserta');
+            Route::post('asesmen/get_pertanyaan_data','AssessmentController@getPertanyaanData')->name('asesmen.getpertanyaandata');
+            Route::get('asesmen/{interview_id}/delete/{member_certification}', 'AssessmentController@destoryInterview')->name('asesmen.interview.delete');
+            Route::post('asesmen/{member_certification}/saveInterview', 'AssessmentController@saveInterview')->name('asesmen.interview.save');
         });
     });
 
