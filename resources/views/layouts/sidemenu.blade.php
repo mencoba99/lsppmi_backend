@@ -163,7 +163,7 @@
                         <div class="kt-menu__wrapper">
                             <ul class="kt-menu__subnav">
                                 <li class="kt-menu__item  kt-menu__item--parent kt-menu__item--submenu-fullheight" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Manajemen Asesmen</span></span></li>
-                                <li class="kt-menu__item  kt-menu__item--submenu {{ in_array('manajemen-kelas', $prefix) ? ' kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-event-calendar-symbol"><span></span></i><span class="kt-menu__link-text">Manajemen Kelas</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('manajemen-kelas', $prefix) ? ' kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-event-calendar-symbol"><span></span></i><span class="kt-menu__link-text">Manajemen Kelas</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                     <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                         <ul class="kt-menu__subnav">
                                             @can('Jadwal Kelas')
@@ -181,7 +181,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                                <li class="kt-menu__item  kt-menu__item--submenu {{ in_array('manajemen-assessmen', $prefix) ? ' kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-customer"><span></span></i><span class="kt-menu__link-text">Manajemen Assessmen</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open {{ in_array('manajemen-assessmen', $prefix) ? ' kt-menu__item--open kt-menu__item--here':'' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="click" data-ktmenu-submenu-mode="accordion"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-icon flaticon-customer"><span></span></i><span class="kt-menu__link-text">Manajemen Assessmen</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                                     <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                         <ul class="kt-menu__subnav">
                                             @can('Pengaturan Kompetensi')

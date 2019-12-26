@@ -30,7 +30,7 @@
             {!! Form::open(['url'=>'','id'=>'form-apl01','method'=> 'PUT']) !!}
             <div class="row">
                 <div class="col-6">
-                    
+
                     {!! Form::hidden('token', $c->token) !!}
                         <div class="row">
                             <div class="col-xl-2"></div>
@@ -134,19 +134,19 @@
                             </div>
                         </div>
                         <div class="kt-portlet__foot">
-                            @if ($c->status == 1)
+                            @if ($c->status == 0)
                             <button type="submit" class="btn btn-success btn-loading" id="approveAPL01">Verifikasi</button>
                             <a href="{{ route('peserta.pendaftaran.sertifikasi') }}" id="rejectAPL01" class="btn btn-secondary">Tolak</a>
-                            @elseif ($c->status == 2)
+                            @elseif ($c->status == 1)
                             <button type="submit" class="btn btn-success btn-loading" id="sendAPL01Payment">Kirim Tagihan Pembayaran</button>
                             <!-- <a href="{{ route('peserta.pendaftaran.sertifikasi') }}" id="rejectAPL01" class="btn btn-secondary">Tolak</a> -->
                             @else
-                            <button type="submit" class="btn btn-success btn-loading" id="approveAPL01">Verifikasi</button>
-                            <a href="{{ route('peserta.pendaftaran.sertifikasi') }}" class="btn btn-secondary">Tolak</a>
+{{--                            <button type="submit" class="btn btn-success btn-loading" id="approveAPL01">Verifikasi</button>--}}
+{{--                            <a href="{{ route('peserta.pendaftaran.sertifikasi') }}" class="btn btn-secondary">Tolak</a>--}}
                             @endif
-                            
+
                         </div>
-                            
+
                 </div>
                 <div class="col-6">
                     <h5 class="black">Unit Kompetensi Dipilih</h5>
@@ -278,7 +278,7 @@
         });
 
         $( "#form-role" ).validate({
-            
+
             submitHandler: function (form) {
                 $('.btn-loading').addClass('kt-spinner kt-spinner--sm kt-spinner--light');
                 form[0].submit(); // submit the form

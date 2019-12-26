@@ -19,7 +19,7 @@ class PreAssessmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -35,7 +35,7 @@ class PreAssessmentController extends Controller
             $action = "<a href='" . route('jadwal-kelas.show', ['jadwal_kela' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm modalIframe' data-toggle='kt-tooltip' title='View " . $jadwalKelas->program->name . "' data-original-tooltip='View " . $jadwalKelas->program->name . "'>
                               <i class='la la-search'></i>
                             </a>";
-            if (auth()->user()->can('Jadwal Kelas Edit')) {
+            if (auth()->user()->can('Validasi APL-02')) {
                 $action .= "<a href='" . route('pre-assessment.viewallpeserta', ['jadwal_kelas' => $jadwalKelas]) . "' class='btn btn-sm btn-icon btn-clean btn-icon-sm' data-toggle='kt-tooltip' title='Data Peserta Assesmen' data-original-tooltip='Data Peserta Assesmen'>
                               <i class='la la-users'></i>
                             </a>";
@@ -133,7 +133,8 @@ class PreAssessmentController extends Controller
      *
      * @param Request $request
      * @param MemberCertification $memberCertification
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function approveAPL02(Request $request, MemberCertification $memberCertification, $status)
     {
@@ -226,10 +227,10 @@ class PreAssessmentController extends Controller
              */
             if (is_object($memberCertification->paap) && $memberCertification->paap()->count() > 0) {
                 $update = [
-                    'pa_asesi'          => json_encode($request->get('pa_asesi')),
+                    'pa_asesi'          => $request->get('pa_asesi'),
                     'pa_tujuan_asesmen' => $request->get('pa_tujuan_asesmen'),
-                    'pa_konteks_asesmen' => json_encode($request->get('pa_konteks_asesmen')),
-                    'pa_orang_relevan' => json_encode($request->get('pa_orang_relevan')),
+                    'pa_konteks_asesmen' => $request->get('pa_konteks_asesmen'),
+                    'pa_orang_relevan' => $request->get('pa_orang_relevan'),
                     'pa_tolak_ukur' => $request->get('pa_tolak_ukur'),
                     'metode_asesmen' => $request->get('metode_asesmen'),
                     'mk_1' => $request->get('mk_1'),
@@ -251,10 +252,10 @@ class PreAssessmentController extends Controller
 
                 $paap->member_certification_id = $memberCertification->id;
                 $paap->member_id               = $memberCertification->member_id;
-                $paap->pa_asesi                = json_encode($request->get('pa_asesi'));
+                $paap->pa_asesi                = $request->get('pa_asesi');
                 $paap->pa_tujuan_asesmen       = $request->get('pa_tujuan_asesmen');
-                $paap->pa_konteks_asesmen      = json_encode($request->get('pa_konteks_asesmen'));
-                $paap->pa_orang_relevan        = json_encode($request->get('pa_orang_relevan'));
+                $paap->pa_konteks_asesmen      = $request->get('pa_konteks_asesmen');
+                $paap->pa_orang_relevan        = $request->get('pa_orang_relevan');
                 $paap->pa_tolak_ukur           = $request->get('pa_tolak_ukur');
                 $paap->metode_asesmen          = $request->get('metode_asesmen');
                 $paap->mk_1                    = $request->get('mk_1');
