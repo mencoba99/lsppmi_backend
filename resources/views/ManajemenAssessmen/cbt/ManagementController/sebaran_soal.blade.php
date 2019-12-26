@@ -49,20 +49,21 @@ use App\Models\Komposisi_soal;
                                                                 ++$i;
                                                                 // get submodul by id 
                                                                 $submodul  = MgtProgram::where('program_id', $prog->program_id)
-                                                                    ->where('modul_id', $prog->modul_id)
+                                                                 ->where('modul_id', $prog->modul_id)
                                                                     ->where('status', 1)
                                                                     ->whereIn('modul_id', function($q){
                                                                         $q->select('id')
-                                                                          ->from('modul')
-                                                                          ->where('aktif', TRUE);
+                                                                          ->from('competence_units')
+                                                                          ->where('status', 1);
                                                                     })
                                                                     ->whereIn('submodul_id', function($r){
                                                                         $r->select('id')
-                                                                          ->from('submodul')
-                                                                          ->where('aktif', TRUE);
+                                                                          ->from('competence_kuk')
+                                                                          ->where('status', 1);
                                                                     })
                                                                     ->orderBy('modul_id')
                                                                     ->get();
+                                                                     
                                                                 $id_program_dtl = MgtProgram::where('program_id', $prog->program_id)
                                                                     ->where('modul_id', $prog->modul_id)
                                                                     ->where('submodul_id', $prog->submodul_id)
@@ -70,12 +71,13 @@ use App\Models\Komposisi_soal;
                                                                     ->orderBy('modul_id')
                                                                     ->value('id');
                                                                 ?>
+                                                                
                                                                 <!-- Jika modul sama tidak melakukan perulangan -->
                                                                 @if($var_temp != $prog->modul_id)
                                                                 <div class="accordion accordion-solid accordion-toggle-plus" id="accordion{{ $i }}" data-id="{{$prog->modul_id}}">
                                                                     <div class="card">
                                                                         <div class="card-header">
-                                                                                <div class="card-title collapsed" data-toggle="collapse" data-parent="#accordion{{ $i }}" href="#collapse_{{ $i }}" aria-expanded="true" aria-controls="collapseOne6"> {{ $prog->modul->name }} (<span class="result"></span> soal) 
+                                                                                <div class="card-title " data-toggle="collapse" data-parent="#accordion{{ $i }}" href="#collapse_{{ $i }}" aria-expanded="true" aria-controls="collapseOne6"> {{ $prog->modul->name }} (<span class="result"></span> soal) 
                                                                                 </div>
                                                                         </div>
         
@@ -85,7 +87,7 @@ use App\Models\Komposisi_soal;
                                                                                 $total_soal_modul = 0;
                                                                                 ?>
                                                                                 @foreach ($submodul as $key => $val_submodul)
-                                                                                
+                                                                              
                                                                                 <div class="kt-checkbox-list">
                                                                                     
         
@@ -99,7 +101,7 @@ use App\Models\Komposisi_soal;
                                                                                            
                                                                                         <span></span>
                                                                                     </label>
-                                                                                    <div class="row komposisi-soal">
+                                                                                    <div class="row komposisi-soal" {{ !empty($val_submodul->total_soal) ? "style=display:block" : "style=display:none"}}>
                                                                                     <div class="col-md-8">
                                                                                         <table class="table table-siak borderless">
                                                                                             <tbody>
@@ -113,10 +115,12 @@ use App\Models\Komposisi_soal;
                                                                                                 $Modul = Modul_soal::where('modul_id', $val_submodul->modul_id)
                                                                                                     ->where('submodul_id', $val_submodul->submodul_id)
                                                                                                     ->pluck('soal_id');
+                                                                                                
                                                                                                 // total soal yang menjadi parent soal
                                                                                                 $jumlah_parent = Soal::whereIn('soal_id', $Modul)
                                                                                                     ->where('jenis_soal_id', $val_soal->id)
                                                                                                     ->where('aktif', true)->where('parent', '=', '0')->count();
+                                                                                                
                                                                                                 // total soal yang menjadi anak soal
                                                                                                 $jumlah_anak   = Soal::whereIn('soal_id', $Modul)
                                                                                                     ->where('jenis_soal_id', $val_soal->id)
@@ -127,7 +131,10 @@ use App\Models\Komposisi_soal;
                                                                                                     ->where('jenis_soal_id',$val_soal->id)
                                                                                                     ->value('jumlah_soal');
                                                                                                 $total_soal_submodul += $jumlah_soal;
+                                                                                              
                                                                                                 ?>
+
+                                                                                                
                                                                                                     <tr>
                                                                                                         <td> Soal <strong>{{ $val_soal->name }}</strong> {{$jumlah_parent}}
                                                                                                         </td>
@@ -171,7 +178,7 @@ use App\Models\Komposisi_soal;
                                                                                 </div>
                                                                                 <?php $total_soal_modul += $total_soal_submodul; ?>
                                                                                 @endforeach
-                                                                                {{ Form::text('total_soal_modul', $total_soal_modul, ['class' => 'form-control total_soal_modul hidden']) }}
+                                                                                {{ Form::text('total_soal_modul', $total_soal_modul, ['class' => 'form-control total_soal_modul hidden','style'=>'display:none']) }}
                                                                             </div>                     
                                                                         </div>
                                                                     </div>
@@ -196,7 +203,7 @@ use App\Models\Komposisi_soal;
         </div>
         <div class="modal-footer">
             <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" id="simpan" class=" btn btn-brand btn-elevate btn-icon-sm">Simpan</button>
+            <button type="button" id="simpan" name="simpan" class=" btn btn-brand btn-elevate btn-icon-sm simpan">Simpan</button>
         </div>
         </form>
     </div>
@@ -209,6 +216,8 @@ use App\Models\Komposisi_soal;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
+
+    
 
      function getAllSelectedNodesText(jsTree) {
          var selectedNodes = jsTree.jstree("get_selected");
@@ -271,7 +280,7 @@ jQuery(document).ready(function() {
             serverSide: true,
             ajax: "{{ route('ujian-komputer.management.data') }}",
             columns: [
-                { data: 'id', render: function (data, type, row, meta) {
+                { data: 'program_id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 } , title: 'No.', width : "3%" },
                 { data: 'nama_program', name: 'nama_program' , title: 'Program ' },
@@ -402,9 +411,16 @@ jQuery(document).ready(function() {
                 $(this).parent().next('.komposisi-soal').find('.total_soal').val('').trigger('change');
             }
         });
+
+        $('#close').click(function (event) {
+            parent.$('#mod-iframe-large').modal('hide');
+            parent.$('#iframeModalContent').attr('src', "about:blank");
+            // $('#mod-iframe-large', parent.document).modal('hide');
+        });
+
         $('.simpan').on('click', function() {
             // disable button
-            $('button[name="simpan"]').attr('disabled', 'disabled');
+            // $('button[name="simpan"]').attr('disabled', 'disabled');
             $('#execute-loading').css({'visibility': 'visible'});
             var data         = [];
             var submoduls    = $('input[name="check_modul"]');
@@ -426,10 +442,57 @@ jQuery(document).ready(function() {
                 data.push({program_dtl_id: program_dtl_id,modul_id: modul_id, submodul_id: submodul_id,total_soal:total_soal,jenis_soal: jenis});
             });
             console.log(data);
-           
+            $.ajax({
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('management.komposisi_store') }}",
+                data: {
+                    data: data
+                },
+                beforeSend: function () {
+                            KTApp.block('.kt-portlet__body', {
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'primary',
+                            message: 'Processing...'
+                        });
+
+                    },
+                //dataType: 'json',
+                success: function (data) {
+                    // alert(JSON.stringify(data));
+                    view();
+                    $.when(setTimeout(function () {
+                        KTApp.unblock('.kt-portlet__body');
+                        $.notify({
+                            // options
+                            message: 'Berhasil disimpan'
+                        }, {
+                            // settings
+                            type: 'success',
+                            placement: {
+                                from: "top",
+                                align: "right"
+                            }
+                        });
+                    }, 2000)).then(function () {
+                        // parent.$('#mod-iframe-large').modal('hide');
+                        setTimeout(function () {
+                            parent.$('#mod-iframe-large').modal('hide');
+                        }, 4000);
+                    });
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                }
+            });
             
         });
     });
+
+
 
 </script>
 

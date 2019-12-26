@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\Revisionable;
 
-class Soal extends Revisionable
+class SoalTmp extends Revisionable
 {
-    public $table                       = 'soal';
+    public $table                       = 'soal_tmp';
     public $primaryKey                  = 'soal_id';
     public $timestamps                  = false;
     protected $revisionCreationsEnabled = true;

@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
-
+@include('flash::message')
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--lg">
@@ -16,6 +16,8 @@
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
+                        <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#upload"><i class="la la-file-excel-o"></i>
+                            Upload   Excel</button>
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
                             Tambah   Data</button>
                         &nbsp;
@@ -196,6 +198,41 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="upload" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Import Soal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+             
+            <form id="form-import" method="post" action="{{ route('materi.pembuatan-soal.import') }}" enctype="multipart/form-data">
+               
+                        {{ csrf_field() }}
+
+                     
+                        <div class="form-group">
+						<label>File Browser</label>
+						<div></div>
+						<div class="custom-file">
+						  	<input type="file" name="file" required="required" class="custom-file-input" id="customFile">
+						  	<label class="custom-file-label" for="customFile">Choose file</label>
+						</div>
+					</div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-brand import btn-elevate">Import</button>
+                    </div>
+              
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('style')
@@ -203,6 +240,8 @@
         tfoot {
              display: table-header-group;
         }
+
+        
 </style>
 @endpush
 
@@ -416,9 +455,30 @@ jQuery(document).ready(function() {
         }
     });
 
-    $('#show').click(function(event) {
-            alert("a");
-            $('#loader').show();
+        $('#show').click(function(event) {
+           $('#loader').show();
+        });
+
+        // $('.import').click(function(event) {
+        //     KTApp.block('#upload .modal-content', {
+        //             overlayColor: '#000000',
+        //             type: 'v2',
+        //             state: 'primary',
+        //             message: 'Processing...'
+        //     });
+           
+           
+        // });
+
+        $('#form-import').submit(function() {
+            KTApp.block('#upload .modal-content', {
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'primary',
+                    message: 'Processing...'
+            });
+           
+            return true; // allow regular form submission
         });
     }
 
@@ -487,11 +547,7 @@ jQuery(document).ready(function() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
-                    // alert(JSON.stringify(response));
-                    alert(parent);
-                    KTApp.unblock('#add .modal-content');
-                    
-                    $.each(data, function (index, v) {
+                    $.each(JSON.parse(data), function (index, v) {
                         
                         $('select#parent_id').append( "<option value='"+ v.soal_id +"' >"+ v.soal_id +" - "+ v.nick +"</option>");
                         if(parent!=null){
@@ -500,6 +556,7 @@ jQuery(document).ready(function() {
                         $('select#parent_id').selectpicker('refresh');
                       
                     });
+                    KTApp.unblock('#add .modal-content');
 
                 }
             });

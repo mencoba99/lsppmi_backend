@@ -83,6 +83,18 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Persentase Kelulusan:</label>
+                                        <div class="col-lg-2">
+                                            <div class="input-group right-text">
+                                                {!!
+                                                Form::number('persen',null,['id'=>'persen','class'=>'form-control
+                                                ','required'=>'required']) !!}
+                                                <div class="input-group-prepend"><span class="input-group-text"
+                                                        id="btnGroupAddon2">%.</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-lg-3 col-form-label">Type Program:</label>
                                         <div class="col-lg-6">
                                             {!! Form::select('type',$type,null,['id'=>'type','class'=>'form-control input-sm
