@@ -15,16 +15,14 @@
         </div>
         <div class="kt-portlet__body">
             <form id="form" class="kt-form kt-form--label-right">
-                <div class="kt-portlet__body">
+                <div class="">
                     <div class="kt-section kt-section--first">
                         <div class="kt-section__body">
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Program:</label>
                                 <div class="col-lg-6">
-                                    {!!
-                                    Form::select('program_id',$Program,null,['id'=>'program_id','class'=>'form-control
-                                    input-sm
-                                    kt-selectpicker','required'=>'required','data-live-search'=>"true"]) !!}
+                                    {!!  Form::text('program_id',$modul_program->first()->name,['id'=>'program_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required', 'readonly']) !!}
+                                    {!!  Form::text('mgt_id',$modul_program->first()->program_id,['id'=>'mgt_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required', 'readonly']) !!}
                                    
                                 </div>
                             </div>
@@ -37,9 +35,13 @@
                                             <li dataid="">{{ $moduls->name }}
                                                 <ul>
                                                     @foreach ($moduls->elements as $com_element)
-                                                    @foreach ($com_element->kuk as $submoduls)
-                                                    <li class="no_checkbox" dataid="{{ $submoduls->id }}">
-                                                        {{ $submoduls->name }}</li>
+                                                    @foreach ($com_element->kuk as $kuk)
+                                                   
+                                                         @if(in_array($kuk->id, $submodul_id) AND in_array($moduls->id, $modul_id))
+                                                                            <li data-jstree='{"selected":true}' dataid="{{ $kuk->id }}"> {{ $kuk->name }}</li>
+                                                                        @else
+                                                                            <li dataid="{{ $kuk->id }}"> {{ $kuk->name }}</li>
+                                                                        @endif
                                                     @endforeach
                                                     @endforeach
                                                 </ul>
@@ -47,7 +49,7 @@
                                             @endforeach
                                         </ul>
                                     </div>
-                                    <input type="text" name="checktree" style="display:none" id="checktree" value="">
+                                    <input type="text" name="checktree" style="display:block" id="checktree" value="">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -113,6 +115,13 @@
                  "plugins": ["wholerow", "checkbox"],
              });
 
+             var allSelectedText = getAllSelectedNodesText($(".tree"));
+                
+                 $('#checktree').val(allSelectedText);
+                //  $('#checktree').valid();
+
+             
+
              $(".tree").click(function (jsTree) {
                  var allSelectedText = getAllSelectedNodesText($(".tree"));
                  console.log(allSelectedText);
@@ -141,6 +150,9 @@ jQuery(document).ready(function() {
             "program_id": {
                 required: true
             },
+            "id": {
+                required: true
+            },
             "checktree": {
                 required: true
             }
@@ -165,16 +177,15 @@ jQuery(document).ready(function() {
 
                 $.ajax({
                 type: "post",
-                url: "{{ route('ujian-komputer.management.insert') }}",
+                url: "{{ route('ujian-komputer.management.update') }}",
                 dataType:"json",
                 data: {
                     checktree: $("#checktree").val(),
-                    program: $("#program_id").val(),
-                    status: cekstatus,
-                    id: $("#mgt_id").val()
+                    program: $("#mgt_id").val(),
+                    status: cekstatus
                 },
                 beforeSend: function() {
-                    KTApp.block('.kt-portlet__body', {
+                    KTApp.block('.kt-form', {
                     overlayColor: '#000000',
                     type: 'v2',
                     state: 'primary',
@@ -192,7 +203,7 @@ jQuery(document).ready(function() {
                             
                         
                             $.when(setTimeout(function () {
-                                KTApp.unblock('.kt-portlet__body');
+                                KTApp.unblock('.kt-form');
                                 
                                 $.notify({
                                     // options
