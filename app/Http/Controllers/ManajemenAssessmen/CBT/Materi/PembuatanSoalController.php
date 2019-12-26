@@ -340,7 +340,9 @@ class PembuatanSoalController extends Controller
 
                   if($submodul!=null){
 
-                  $value['jenis_soal_id'] = SoalJenis::where('name',$value['jenis_soal'])->value('id');
+                  $value['jenis_soal_id'] = SoalJenis::where('id',$value['jenis_soal'])->value('id');
+
+
                   $element = CompetenceKUK::where('id',$submodul)->value('competence_element_id');
                   $unit = CompetenceElement::where('id',$element)->value('competence_unit_id');
                   $value['modul_id'] = CompetenceUnit::where('id',$unit)->value('id');

@@ -41,6 +41,18 @@ class MgtProgram extends Model
         return $this->hasMany('App\Models\SubModul','id','submodul_id');
     }
 
+    // public function submodul()
+    // {
+    //     return $this->belongsTo('App\Models\CompetenceKUK','id','submodul_id');
+    // }
+
+    public function mgt_kuk()
+    {
+        return $this->belongsToMany('App\Models\CompetenceKUK', 'program_mgt_kuk','program_id','submodul_id')->using('App\Models\MgtProgramKUK');
+
+    }
+
+    
     
 
 

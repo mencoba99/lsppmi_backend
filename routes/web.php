@@ -155,10 +155,11 @@ Route::middleware(['auth'])->group(function (){
             Route::get('management/data', 'CBT\ManagementController@AjaxMgtProgramGetData')->name('ujian-komputer.management.data');
             Route::post('management/modul', 'CBT\ManagementController@AjaxGetSubModul')->name('ujian-komputer.management.modul');
             Route::post('management/insert', 'CBT\ManagementController@AjaxMgtProgramInsertData')->name('ujian-komputer.management.insert');
+            Route::post('management/update', 'CBT\ManagementController@update')->name('ujian-komputer.management.update');
             Route::post('management/komposisi/insert', 'CBT\ManagementController@ajax_update_komposisi_soal')->name('management.komposisi_store');
             Route::get('management/{mgtprogram}/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('ujian-komputer.management.delete');
             Route::get('management/{mgtprogram}/show', 'CBT\ManagementController@show')->name('ujian-komputer.management.show');
-            Route::get('management/{mgtprogram}/edit', 'CBT\ManagementController@show')->name('ujian-komputer.management.edit');
+            Route::get('management/{program_id}/edit', 'CBT\ManagementController@edit')->name('ujian-komputer.management.edit');
             Route::get('management/{program_id}/sebaran_soal', 'CBT\ManagementController@edit_komposisi_soal')->name('management.sebaran_soal');
 
             Route::group(['prefix' => 'materi'], function () {
