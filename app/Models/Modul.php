@@ -8,7 +8,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class Modul extends Model
 {
-    public $table                       = 'modul';
+    public $table                       = 'competence_units';
     public $primaryKey                  = 'id';
     public $timestamps                  = false;
     protected $revisionCreationsEnabled = true;
@@ -37,5 +37,6 @@ class Modul extends Model
       {
           return $this->belongsTo('App\Models\Soal','id','modul_id');
       }
+      
  }
 

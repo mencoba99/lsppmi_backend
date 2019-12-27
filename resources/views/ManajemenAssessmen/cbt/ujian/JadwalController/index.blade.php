@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-<link href="https://siak.ticmi.co.id/assets/theme/global/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css">
+
 @section('content')
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
     <div class="kt-portlet kt-portlet--mobile">
@@ -162,10 +162,12 @@
 
           <!-- MODAL PENGAWAS-->
 @endsection
-
+@push('style')
+<link href="{{ Storage::url('assets/backend/css/multi-select.css') }}" rel="stylesheet" type="text/css">
+@endpush
 @push('script')
 <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
-<script src="https://siak.ticmi.co.id/assets/theme/global/plugins/jquery-multi-select/js/jquery.multi-select.js" type="text/javascript"></script>
+<script src="{{ Storage::url('assets/backend/js/jquery.multi-select.js') }}" type="text/javascript"></script>
 
 <script type="text/javascript">
     var KTBootstrap = function () {
@@ -231,6 +233,7 @@
             url: '{{ route('ujian.jadwal.batch') }}',
             data: {jadwal_id: jadwal_id},
             success: function(msg){
+
               var obj_batch     = JSON.parse(msg);
               var app = '<tr> <td colspan="7"> <div class="accordion accordion-solid accordion-toggle-plus" id="accordion'+jadwal_id+'">';
               $.each(obj_batch, function(i, v) {
@@ -263,6 +266,7 @@
               $(button).removeClass('fa-ban');
               $(button).addClass('fa-minus-circle');
               $(app).insertAfter(uptr);
+             
             },
             error: function(err){
               alert(JSON.stringify(err));
@@ -304,6 +308,15 @@
                 url: '{{ route('ujian.jadwal.submodul') }}',
                 data: {batch: batch,
                         jadwal_id:jadwal_id},
+                beforeSend: function () {
+                            KTApp.block('#modal_batch .modal-body', {
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'primary',
+                            message: 'Processing...'
+                        });
+
+                    },
                 success: function(msg){
                   $('.modsub').empty();
                   $('#loading-batch').css({'display': 'none'});
@@ -328,6 +341,7 @@
                     app = "";
                   }
                   $('.modsub').append(app);
+                  KTApp.unblock('#modal_batch .modal-body');
                 },
                 error: function(err){
                   console.log(JSON.stringify(err));
@@ -338,7 +352,7 @@
         });
 
         $('body').on('click', '.edit_modal_batch', function() {
-           
+        
             jadwal_id = $(this).attr('data-jadwal');
             $('.modsub').removeAttr('data-jadwal');
             $('.modsub').attr('data-jadwal', jadwal_id);
@@ -366,6 +380,7 @@
                         $(".batch_opsi").show();
                         $("select[name='batch']").html(list_batch);
                         $('.kt-selectpicker').selectpicker('refresh');
+                        
                         
                     },
                     error: function(err){
@@ -423,12 +438,59 @@
                      ujian_batch_id: ujian_batch_id
                  },
               dataType: 'json',
-              success: function(msg){
-                loading.css({'display': 'none'});
-                tombol.removeAttr('disabled');
-                $('#modal_peserta').modal('toggle');
-                swal("Data Updated!", "", "success");
-                // $('#perdana-table').DataTable().ajax.reload();
+              beforeSend: function () {
+                            KTApp.block('#modal_peserta .modal-content', {
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'primary',
+                            message: 'Processing...'
+                        });
+
+              },
+              success: function(response){
+                
+               
+                if (response.status === 'db.updated') {
+                            view();
+                            KTApp.unblock('#modal_peserta .modal-content');
+                            $.when(setTimeout(function () {
+                               
+                                $.notify({
+                                    // options
+                                    message: 'Berhasil disimpan'
+                                }, {
+                                    // settings
+                                    type: 'success',
+                                    placement: {
+                                        from: "top",
+                                        align: "right"
+                                    }
+                                });
+                            }, 2000)).then(function () {
+                                // parent.$('#mod-iframe-large').modal('hide');
+                                setTimeout(function () {
+                                    $('.modal').modal(
+                                        'hide');
+                                }, 4000);
+                            });
+
+                            // Promise.all([notify]).then(function() {
+                            //   parent.$('#mod-iframe-large').modal('hide');
+                            //});
+
+                        } else if (response.status === 500) {
+                            $.notify({
+                                // options
+                                message: 'Error'
+                            }, {
+                                // settings
+                                type: 'danger',
+                                placement: {
+                                    from: "top",
+                                    align: "right"
+                                }
+                            });
+                        }
               },
               error: function(err){
                 alert(JSON.stringify(err));
@@ -634,12 +696,63 @@
                             jadwal_id: jadwal_id, 
                         },
                     dataType: 'json',
-                    success: function(msg){
-                        loading.css({'display': 'none'});
-                        tombol.removeAttr('disabled');
-                        modalhead.modal('toggle');
-                        swal("Data Updated!", "", "success");
+                    beforeSend: function () {
+                            KTApp.block('#modal_batch .modal-content', {
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'primary',
+                            message: 'Processing...'
+                        });
+
+                    },
+                    success: function(response){
+                      
+                      if (response.status === 'db.updated') {
+                            view();
+                            KTApp.unblock('#modal_batch .modal-content');
+                            $.when(setTimeout(function () {
+                               
+                                $.notify({
+                                    // options
+                                    message: 'Berhasil disimpan'
+                                }, {
+                                    // settings
+                                    type: 'success',
+                                    placement: {
+                                        from: "top",
+                                        align: "right"
+                                    }
+                                });
+                            }, 2000)).then(function () {
+                                // parent.$('#mod-iframe-large').modal('hide');
+                                setTimeout(function () {
+                                    $('.modal').modal(
+                                        'hide');
+                                }, 4000);
+                            });
+
+                            // Promise.all([notify]).then(function() {
+                            //   parent.$('#mod-iframe-large').modal('hide');
+                            //});
+
+                        } else if (response.status === 500) {
+                            $.notify({
+                                // options
+                                message: 'Error'
+                            }, {
+                                // settings
+                                type: 'danger',
+                                placement: {
+                                    from: "top",
+                                    align: "right"
+                                }
+                            });
+                        }
+                     
+                        // loading.css({'display': 'none'});
+                       
                         $('#dataTable').DataTable().ajax.reload();
+                      
                     },
                     error: function(err){
                         alert(JSON.stringify(err));

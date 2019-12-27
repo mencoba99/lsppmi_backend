@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\User;
+use App\Imports\SoalImport;
 use App\Models\Soal;
+use App\Models\SoalTmp;
+use App\Models\CompetenceKUK;
+use App\Models\CompetenceElement;
+use App\Models\CompetenceUnit;
 use App\Models\Modul;
 use App\Models\Modul_soal;
 use App\Models\SubModul;
 use App\Models\SoalJenis;
 use App\Helpers\Encryption_decryp_soal;
+use Excel;
+
 use DataTables;
 use Entrust;
 use DB;
@@ -26,9 +33,7 @@ class PembuatanSoalController extends Controller
     
     public function index()
     {
-        $pageTitle = 'LSPPMI - Soal Program';
-        $pageHeader = 'Soal';
-        $Title = 'ini adalah menu Soal';
+        
         $status       = [
             '0'  => 'Non Aktif',
             '1' => 'Aktif'
@@ -58,7 +63,7 @@ class PembuatanSoalController extends Controller
 
         $crumbs = explode("/",$_SERVER["REQUEST_URI"]);
 
-		return view('ManajemenAssessmen.cbt.materi.PembuatanSoalController.soal', compact('pageTitle','Title','pageHeader','crumbs','status','modul','submodul','bobot','parent'));
+		return view('ManajemenAssessmen.cbt.materi.PembuatanSoalController.soal', compact('status','modul','submodul','bobot','parent'));
     }
 
     public function show(Request $request, $soal_id)
@@ -66,14 +71,15 @@ class PembuatanSoalController extends Controller
         $soal = DB::table('soal')
                   ->select([
                         'soal.soal_id AS soal_id',
-                        'modul.name AS nama_modul',
-                        'submodul.name AS nama_submodul',
+                        'competence_units.name AS nama_modul',
+                        'competence_kuk.name AS nama_submodul',
                         'soal.nick AS nick',
                         'soal.soal AS soal',
                         'soal.a AS a',
                         'soal.b AS b',
                         'soal.c AS c',
                         'soal.d AS d',
+                        'soal.e AS e',
                         'kunci.name AS kunci',
                         'soal.penjelasan AS penjelasan',
                         'soal_jenis.name AS jenis',
@@ -86,11 +92,11 @@ class PembuatanSoalController extends Controller
                   ->join('soal_jenis', 'soal_jenis.id', '=', 'soal.jenis_soal_id')
                   ->join('kunci', 'kunci.kunci_id', '=', 'soal.kunci_id')
                   ->leftJoin('modul_soal', 'modul_soal.soal_id', '=', 'soal.soal_id')
-                  ->leftJoin('modul', 'modul.id', '=', 'modul_soal.modul_id')
-                  ->leftJoin('submodul', 'submodul.id', '=', 'modul_soal.submodul_id')
+                  ->leftJoin('competence_units', 'competence_units.id', '=', 'modul_soal.modul_id')
+                  ->leftJoin('competence_kuk', 'competence_kuk.id', '=', 'modul_soal.submodul_id')
                   ->where('soal.soal_id', $soal_id)
                   ->first();
-        
+        // return response()->json($soal) ; exit;
         return view('ManajemenAssessmen.cbt.materi.PembuatanSoalController.show', compact('soal'));
     }
 
@@ -115,13 +121,13 @@ class PembuatanSoalController extends Controller
                 return "Non Aktif";
             }
 		})->addColumn('modul', function (Soal $Soal) {
-            if($Soal->modul_id){
-                $data = Modul::find($Soal->modul_id)->first();
+            $data = Modul::where('id',$Soal->modul_id)->first();
+            if($data){
                 return $data->name;
             }
 		})->addColumn('submodul', function (Soal $Soal) {
-            if($Soal->submodul_id){
-                $data = SubModul::find($Soal->submodul_id)->first();
+            $data = SubModul::where('id',$Soal->submodul_id)->first();
+            if($data){
                 return $data->name;
             }
 		})->addColumn('bobot', function (Soal $Soal) {
@@ -134,7 +140,13 @@ class PembuatanSoalController extends Controller
     {
        
         $submodul = [];
-        $getsubModul = SubModul::where('id_modul',$request->id_modul)->get();
+        // $getsubModul = SubModul::with('modul')->where('modul.id',$request->id_modul)->get();
+
+        $getsubModul = SubModul::select('competence_kuk.id','competence_kuk.name')
+        ->join('competence_elements', 'competence_elements.id', '=', 'competence_kuk.competence_element_id')
+        ->join('competence_units', 'competence_units.id', '=', 'competence_elements.competence_unit_id')
+        ->where('competence_units.id',$request->id_modul)->get();
+        
         
        return  $getsubModul;
     }
@@ -185,6 +197,8 @@ class PembuatanSoalController extends Controller
                                     ->where('parent', 0)
                                     ->get()
                                     ->toArray();
+
+                                    // return $soal; exit;
                 }
             } else {
                 $soal = Soal::select('soal.soal_id', 'soal.nick')->where('aktif',true)->whereIn('soal_id',$modul_soal)->where('jenis_soal_id',$jenis_soal_id)->where('parent',0)->get()->toArray();
@@ -195,9 +209,11 @@ class PembuatanSoalController extends Controller
                 //                     ->where('parent', 0)
                 //                     ->get()
                 //                     ->toArray();
-                return $soal; exit;
+                // return $soal; exit;
                                    
             }
+            // return $soal; exit;
+            
             if(!empty($soal)){
                 echo json_encode($soal);
             }else{
@@ -299,5 +315,99 @@ class PembuatanSoalController extends Controller
 
 
 
+    }
+
+    public function ImportExcel(Request $request){
+
+        $this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+
+        if (auth()->user()->can('Pembuatan Soal Add')) {
+          
+            $success_trans = false;
+
+            $data = Excel::toArray(new SoalImport, request()->file('file')); 
+            $array = collect(head($data))
+            ->filter(function ($row, $key) {
+                return $row['code_kuk'] != null;
+            });
+
+           
+            foreach($array as $value){
+                  $submodul = CompetenceKUK::where('code',$value['code_kuk'])->value('id');
+
+                  if($submodul!=null){
+
+                  $value['jenis_soal_id'] = SoalJenis::where('id',$value['jenis_soal'])->value('id');
+
+
+                  $element = CompetenceKUK::where('id',$submodul)->value('competence_element_id');
+                  $unit = CompetenceElement::where('id',$element)->value('competence_unit_id');
+                  $value['modul_id'] = CompetenceUnit::where('id',$unit)->value('id');
+
+
+                  $soal = new Soal();
+                  $soal->modul_id = $value['modul_id'];
+                  $soal->submodul_id = $submodul;
+                  $soal->nick = $value['nama_soal'];
+                  $soal->soal = Crypt::encryptString($value['soal']);
+                  $soal->a = Crypt::encryptString($value['pilihan_a']);
+                  $soal->b = Crypt::encryptString($value['pilihan_b']);
+                  $soal->c = Crypt::encryptString($value['pilihan_c']);
+                  $soal->d = Crypt::encryptString($value['pilihan_d']);
+                  $soal->e = Crypt::encryptString($value['pilihan_e']);
+                  $soal->tag = $value['tag'];
+                  $soal->penjelasan = Crypt::encryptString($value['penjelasan']);
+                  $soal->kunci_id = $value['jawaban'];
+                  $soal->jenis_soal_id = $value['jenis_soal_id'];
+                  $soal->parent = 0;
+                  $soal->hit = 0;
+
+                    if ($soal->save()) {
+                    $Modul_soal                       = new Modul_soal();
+                    $Modul_soal->modul_id        = $value['modul_id'];
+                    $Modul_soal->submodul_id          = $submodul;
+                    $Modul_soal->soal_id              = $soal->soal_id;
+                    $Modul_soal->save();
+                    } 
+                   
+                
+                  }else{
+                    $soalTmp = new SoalTmp();
+                    $soalTmp->code_kuk = $value['code_kuk'];
+                    $soalTmp->nick = $value['nama_soal'];
+                    $soalTmp->soal = Crypt::encryptString($value['soal']);
+                    $soalTmp->a = Crypt::encryptString($value['pilihan_a']);
+                    $soalTmp->b = Crypt::encryptString($value['pilihan_b']);
+                    $soalTmp->c = Crypt::encryptString($value['pilihan_c']);
+                    $soalTmp->d = Crypt::encryptString($value['pilihan_d']);
+                    $soalTmp->e = Crypt::encryptString($value['pilihan_e']);
+                    $soalTmp->tag = $value['tag'];
+                    $soalTmp->penjelasan = Crypt::encryptString($value['penjelasan']);
+                    $soalTmp->kunci_id = $value['jawaban'];
+                    $soalTmp->jenis_soal_id = $value['jenis_soal'];
+                    $soalTmp->parent = 0;
+                    $soalTmp->hit = 0;
+                    $soalTmp->save();
+                  }
+
+                  $success_trans = true;
+                 
+            }
+       
+
+            if ($success_trans == true) {
+                flash()->success('Berhasil import soal');
+            }
+
+        } else {
+            flash()->error("Maaf, Anda tidak mempunyai akses untuk Upload Soal");
+        }
+    
+        return redirect()->route('materi.pembuatan-soal');  
+        
+     
     }
 }

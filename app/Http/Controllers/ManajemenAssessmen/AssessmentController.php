@@ -3,8 +3,17 @@
 namespace App\Http\Controllers\ManajemenAssessmen;
 
 use App\Http\Controllers\Controller;
+use App\Models\Assessor;
+use App\Models\DataMaster\Lisan;
+use App\Models\DataMaster\Tertulis;
 use App\Models\MemberCertification;
+use App\Models\MemberCertificationInterview;
 use App\Models\ProgramSchedule;
+use App\Models\StartUjian\Peserta_jawab;
+use App\Models\StartUjian\Soal_peserta;
+use App\Models\Ujian\Perdana_peserta;
+use App\Models\Ujian\Ujian_batch;
+use Arr;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -26,13 +35,15 @@ class AssessmentController extends Controller
      *
      * @param DataTables $dataTables
      * @return void
+     * @throws \Exception
      */
     public function getAssessmentData(DataTables $dataTables)
     {
-        $jadwalKelas = ProgramSchedule::with(['tuk','program'])->where('is_publish', 1)->where('status', 1);
+        $jadwalKelas = ProgramSchedule::with(['tuk', 'program'])->where('is_publish', 1)->where('status', 1);
         if (auth()->user()->hasRole('Assessor')) {
-            $jadwalKelas->whereHas('assessor',function (Builder $query) {
-                $query->where('assessor_id', auth()->user()->id);
+            $asesor = Assessor::where('email', auth()->user()->email)->first();
+            $jadwalKelas->whereHas('assessor', function (Builder $query) use ($asesor) {
+                $query->where('assessor_id', $asesor->id);
             })->get();
         } else {
             $jadwalKelas->get();
@@ -92,12 +103,18 @@ class AssessmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param ProgramSchedule $jadwalKelas
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function viewAllPeserta(Request $request, ProgramSchedule $jadwalKelas)
     {
-        return view('ManajemenAssessmen.AssessmentController.view-peserta', compact('jadwalKelas'));
+        $asesor = null;
+        if (auth()->user()->hasRole('Assessor')) {
+            $asesor = Assessor::where('email', auth()->user()->email)->first();
+        }
+
+        return view('ManajemenAssessmen.AssessmentController.view-peserta', compact('jadwalKelas', 'asesor'));
     }
 
     /**
@@ -108,40 +125,166 @@ class AssessmentController extends Controller
      */
     public function viewSinglePeserta(MemberCertification $memberCertification)
     {
-        return view('ManajemenAssessmen.AssessmentController.view-peserta', compact('memberCertification'));
+        $paap   = $memberCertification->paap;
+        $direct = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
+            return ($value['type'] == 'direct');
+        });
+        $direct = Arr::get($direct, '0.methods');
+
+        $indirect = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
+            return ($value['type'] == 'indirect');
+        });
+        $indirect = Arr::get($indirect, '1.methods');
+
+        /**
+         * Get Data Hasil Ujian CBT
+         */
+        $peserta_id = $memberCertification->members->id;
+        $batch_id   = $memberCertification->schedules->id;
+
+        $ujian_detail = \DB::table('ujian_detail')
+                           ->whereIn('ujian_id', function ($q) use ($peserta_id, $batch_id) {
+                               $q->select('ujian_id')
+                                 ->from('ujian')
+                                 ->where('peserta_id', $peserta_id)
+                                 ->where('program_id', $batch_id);
+                           })
+                           ->whereNotNull('perdana_jadwal_id')
+                           ->get();
+
+        $ujian_batch_id = Ujian_batch::where('program_schedule_id', $batch_id)->pluck('ujian_batch_id');
+//		return $ujian_batch_id;
+        $ujian_batch_id  = [$ujian_batch_id->max()];
+        $perdana_peserta = Perdana_peserta::where('peserta_id', $peserta_id)
+                                          ->whereIn('ujian_batch_id', $ujian_batch_id)
+                                          ->first();
+
+        $perdana_peserta_id = Perdana_peserta::where('peserta_id', $peserta_id)->whereIn('ujian_batch_id', $ujian_batch_id)->pluck('perdana_peserta_id');
+        $soal_peserta_id    = Soal_peserta::whereIn('perdana_peserta_id', $perdana_peserta_id)->get();
+
+        $total_soal = Peserta_jawab::whereIn('soal_peserta_id', $soal_peserta_id->pluck('soal_peserta_id'))->get();
+
+        /**
+         * Untuk Interview & Wawancara
+         */
+        $pertanyaan_lisan    = Lisan::where('status', 1)->get();
+        $pertanyaan_tertulis = Tertulis::where('status', 1)->get();
+
+        return view('ManajemenAssessmen.AssessmentController.view-single-peserta', compact('memberCertification', 'direct', 'indirect', 'paap', 'ujian_detail', 'total_soal'
+            , 'pertanyaan_lisan', 'pertanyaan_tertulis'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function getPertanyaanData(Request $request)
     {
-        //
+        $id_pertanyaan           = $request->get('id_pertanyaan');
+        $tipe_pertanyaan         = $request->get('tipe_pertanyaan');
+        $member_certification_id = $request->get('member_certification_id');
+        $member_id               = $request->get('member_id');
+
+        $result = ['status' => false, 'message' => null, 'data' => ''];
+
+        $memberCertification = MemberCertification::find($member_certification_id);
+        /** Cek apakah MemberCertification ada atau tidak */
+        if ($memberCertification && $memberCertification->count() > 0) {
+            if ($tipe_pertanyaan == 'lisan') {
+                $pertanyaan = Lisan::find($id_pertanyaan);
+                if ($pertanyaan && $pertanyaan->count() > 0) {
+                    /**
+                     * Cek pertanyaan sudah ada atau belum
+                     */
+                    $cekPertanyaan   = MemberCertificationInterview::where('member_certification_id', $member_certification_id);
+                    $totalPertanyaan = $cekPertanyaan->count() + 1;
+                    $cekPertanyaan->where('pertanyaan_lisan_id', $id_pertanyaan)->first();
+                    if ($cekPertanyaan && $cekPertanyaan->count() > 0) {
+                        $result['status']  = false;
+                        $result['message'] = 'Pertanyaan sudah dipilih sebelumnya';
+                    } else {
+                        $result['status']  = true;
+                        $result['message'] = 'Sukses pertanyaan ditemukan';
+                        $interview                          = new MemberCertificationInterview();
+                        $interview->member_certification_id = $member_certification_id;
+                        $interview->pertanyaan_lisan_id     = $id_pertanyaan;
+                        $interview->urutan                  = $totalPertanyaan;
+                        $interview->save();
+
+                        $data           = "<tr>
+                                <td>" . $totalPertanyaan . "</td>
+                                <td>
+                                    <table class='table table-bordered'>
+                                        <tbody>
+                                        <tr>
+                                            <td>Pertanyaan : " . $pertanyaan->pertanyaan . "</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jawaban yang diharapkan : " . $pertanyaan->jawaban . "</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kesimpulan jawaban asesi : <textarea name='kesimpulan_" . $id_pertanyaan . "' id='' class='form-control' cols='30' rows='10'></textarea></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td><input type='radio' name='is_kompeten_" . $id_pertanyaan . "' value='kompeten'></td>
+                                <td><input type='radio' name='is_kompeten_" . $id_pertanyaan . "' value='belum_kompeten'></td>
+                                <td><a href='".route('asesmen.interview.delete',['interview_id'=>$interview->id,'member_certification'=>$member_certification_id])."' class='btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm' title='Delete Pertanyaan'><i class='la la-trash'></i></a></td>
+                            </tr>";
+                        $result['data'] = $data;
+                    }
+
+                } else {
+                    $result['message'] = 'Pertanyaan tidak ditemukan';
+                }
+            } elseif ($tipe_pertanyaan == 'tertulis') {
+
+            }
+        } else {
+            /** Jika MemberCertification tidak ditemukan */
+            $result['message'] = 'Data pendaftaran tidak ditemukan';
+        }
+
+        echo json_encode($result);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param $interview_id
+     * @param MemberCertification $memberCertification
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
-    public function update(Request $request, $id)
+    public function destoryInterview(Request $request, $interview_id, MemberCertification $memberCertification)
     {
-        //
+        $interview = MemberCertificationInterview::find($interview_id);
+        if ($interview && $interview->count() > 0) {
+            if ($interview->delete()) {
+                flash()->success('Sukses, Data interview sukses dihapus');
+            } else {
+                flash()->error('Gagal, Data interview/wawancara gagal dihapus');
+            }
+        } else {
+            flash()->error('Maaf Data interview/wawancara tidak ditemukan');
+        }
+
+        return redirect()->route('asesmen.viewsinglepeserta',['member_certification'=>$memberCertification]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param MemberCertification $memberCertification
+     * @return void
      */
-    public function destroy($id)
+    public function saveInterview(Request $request, MemberCertification $memberCertification)
     {
-        //
+
     }
 }

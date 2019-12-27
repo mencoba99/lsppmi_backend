@@ -178,6 +178,8 @@ return [
         Venturecraft\Revisionable\RevisionableServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        
     ],
 
     /*
@@ -235,6 +237,7 @@ return [
         'Helper' => App\Helpers\Helper::class,
         'GeneralHelper' => App\Http\Helpers\GeneralHelper::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

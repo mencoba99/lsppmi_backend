@@ -25,9 +25,7 @@
                                     Form::select('program_id',$Program,null,['id'=>'program_id','class'=>'form-control
                                     input-sm
                                     kt-selectpicker','required'=>'required','data-live-search'=>"true"]) !!}
-                                    {!!
-                                    Form::text('mgt_id',null,['id'=>'mgt_id','class'=>'form-control','hidden'=>'hidden'])
-                                    !!}
+                                   
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -38,9 +36,11 @@
                                             @foreach ($modul as $moduls)
                                             <li dataid="">{{ $moduls->name }}
                                                 <ul>
-                                                    @foreach ($moduls->submodul as $submoduls)
+                                                    @foreach ($moduls->elements as $com_element)
+                                                    @foreach ($com_element->kuk as $submoduls)
                                                     <li class="no_checkbox" dataid="{{ $submoduls->id }}">
                                                         {{ $submoduls->name }}</li>
+                                                    @endforeach
                                                     @endforeach
                                                 </ul>
                                             </li>
@@ -186,11 +186,11 @@ jQuery(document).ready(function() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                        // alert(JSON.stringify(response));
+                       
                         if (response.status === 200) {
                             view();
                             
-                            
+                        
                             $.when(setTimeout(function () {
                                 KTApp.unblock('.kt-portlet__body');
                                 
@@ -211,6 +211,7 @@ jQuery(document).ready(function() {
                                     parent.$('#mod-iframe-large').modal('hide');
                                  }, 4000);
                             });
+                        
 
                            // Promise.all([notify]).then(function() {
                              //   parent.$('#mod-iframe-large').modal('hide');
@@ -277,7 +278,7 @@ jQuery(document).ready(function() {
             serverSide: true,
             ajax: "{{ route('ujian-komputer.management.data') }}",
             columns: [
-                { data: 'id', render: function (data, type, row, meta) {
+                { data: 'program_id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 } , title: 'No.', width : "3%" },
                 { data: 'nama_program', name: 'nama_program' , title: 'Program ' },

@@ -155,9 +155,11 @@ Route::middleware(['auth'])->group(function (){
             Route::get('management/data', 'CBT\ManagementController@AjaxMgtProgramGetData')->name('ujian-komputer.management.data');
             Route::post('management/modul', 'CBT\ManagementController@AjaxGetSubModul')->name('ujian-komputer.management.modul');
             Route::post('management/insert', 'CBT\ManagementController@AjaxMgtProgramInsertData')->name('ujian-komputer.management.insert');
+            Route::post('management/update', 'CBT\ManagementController@update')->name('ujian-komputer.management.update');
+            Route::post('management/komposisi/insert', 'CBT\ManagementController@ajax_update_komposisi_soal')->name('management.komposisi_store');
             Route::get('management/{mgtprogram}/delete', 'CBT\ManagementController@AjaxMgtProgramDeleteData')->name('ujian-komputer.management.delete');
             Route::get('management/{mgtprogram}/show', 'CBT\ManagementController@show')->name('ujian-komputer.management.show');
-            Route::get('management/{mgtprogram}/edit', 'CBT\ManagementController@show')->name('ujian-komputer.management.edit');
+            Route::get('management/{program_id}/edit', 'CBT\ManagementController@edit')->name('ujian-komputer.management.edit');
             Route::get('management/{program_id}/sebaran_soal', 'CBT\ManagementController@edit_komposisi_soal')->name('management.sebaran_soal');
 
             Route::group(['prefix' => 'materi'], function () {
@@ -168,6 +170,7 @@ Route::middleware(['auth'])->group(function (){
                 Route::post('soal/insert', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalInsertData')->name('materi.pembuatan-soal.insert');
                 Route::post('soal/parent', 'CBT\Materi\PembuatanSoalController@AjaxGetParent')->name('materi.pembuatan-soal.parent');
                 Route::post('soal/delete', 'CBT\Materi\PembuatanSoalController@AjaxPembuatanSoalDeleteData')->name('materi.pembuatan-soal.delete');
+                Route::post('soal/import', 'CBT\Materi\PembuatanSoalController@ImportExcel')->name('materi.pembuatan-soal.import');
                 Route::get('soal/{soal}/show', 'CBT\Materi\PembuatanSoalController@show')->name('materi.pembuatan-soal.show');
                 Route::get('soal/{soal}/edit', 'CBT\Materi\PembuatanSoalController@show')->name('materi.pembuatan-soal.edit');
 
@@ -284,6 +287,9 @@ Route::middleware(['auth'])->group(function (){
             Route::post('asesmen/getdata', 'AssessmentController@getAssessmentData')->name('asesmen.getdata');
             Route::get('asesmen/{jadwal_kelas}/view-allpeserta','AssessmentController@viewAllPeserta')->name('asesmen.viewallpeserta');
             Route::get('asesmen/{member_certification}/view-singlepeserta','AssessmentController@viewSinglePeserta')->name('asesmen.viewsinglepeserta');
+            Route::post('asesmen/get_pertanyaan_data','AssessmentController@getPertanyaanData')->name('asesmen.getpertanyaandata');
+            Route::get('asesmen/{interview_id}/delete/{member_certification}', 'AssessmentController@destoryInterview')->name('asesmen.interview.delete');
+            Route::post('asesmen/{member_certification}/saveInterview', 'AssessmentController@saveInterview')->name('asesmen.interview.save');
         });
     });
 

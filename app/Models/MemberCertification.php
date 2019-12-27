@@ -25,7 +25,7 @@ class MemberCertification extends Revisionable
     /**
      * Undocumented function
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function schedules()
     {
@@ -35,7 +35,7 @@ class MemberCertification extends Revisionable
     /**
      * Relation to model members
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function members()
     {
@@ -65,5 +65,10 @@ class MemberCertification extends Revisionable
     public function assessor()
     {
         return $this->belongsTo('App\Models\Assessor');
+    }
+
+    public function interview()
+    {
+        return $this->hasMany('App\Models\MemberCertificationInterview');
     }
 }

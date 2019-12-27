@@ -10,15 +10,17 @@
                     <i class="kt-font-brand flaticon2-line-chart"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
-                        {{ucfirst(trans(end($crumbs)))}}
+                      Program
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
+                        @can('Program Add')
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah  {{ucfirst(trans(end($crumbs)))}}</button>
-
+                            Tambah Data 
+                        </button>
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -307,7 +309,7 @@ jQuery(document).ready(function () {
                     program_type_id: $("#kategori_id").val(),
                     code: $("#program_code").val(),
                     name: $("#program_name").val(),
-                    sing_ind: $("#program_sing_ind").val(),
+                    sing_int: $("#program_sing_eng").val(),
                     sing_ind: $("#program_sing_ind").val(),
                     min_competence: $("#min_competence").val(),
                     opt_competence: $("#opt_competence").val(),

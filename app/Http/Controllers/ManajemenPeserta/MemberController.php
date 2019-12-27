@@ -100,7 +100,7 @@ class MemberController extends Controller
 
 	public function getPaymentData(DataTables $dataTables)
 	{
-		$data = MemberCertificationPayment::with(['certification', 'certification.schedules.programs']);
+		$data = MemberCertificationPayment::with(['certification', 'certification.schedules.programs'])->orderBy('id','DESC');
 
 		return $dataTables->eloquent($data)
 		->editColumn('payment_file', function ($c) {
@@ -108,7 +108,13 @@ class MemberController extends Controller
 		})
 		->editColumn('status', function ($c) {
 			return $c->status == 2 ? 'Diverifikasi' : 'Diterima';
-		})
+		})->editColumn('certification.schedules.programs.name', function ($c) {
+		    if (!empty($c->certification->schedules->program->name)) {
+		        return $c->certification->schedules->program->name;
+            } else {
+		        return 'No Data';
+            }
+        })
 		->addColumn('actions', function ($c) {
 			if ($c->status == 1) {
 			$action = "<a href='".route('peserta.pendaftaran.sertifikasi.pembayaran.confirm', ['id' => $c->id])."' class='btn btn-sm btn-icon btn-clean btn-icon-sm' title='Approve' data-original-tooltip='Approve'>
@@ -126,7 +132,7 @@ class MemberController extends Controller
 	public function viewAPL01($token)
 	{
 		$c = MemberCertification::with(['members', 'apl01', 'schedules', 'schedules.programs', 'apl02'])->where('token', $token)->firstOrFail();
-		
+
 		$units = [];
 		if ($c->apl02->count() > 0) {
 			$units = $c->schedules->programs->unit_kompetensi;
@@ -142,7 +148,7 @@ class MemberController extends Controller
 			DB::beginTransaction();
 
 			$cert = MemberCertification::where('token', request('token'))->firstOrFail();
-			$cert->status = 2;
+			$cert->status = 1;
 			$cert->updated_at = date('Y-m-d H:i:s');
 			$cert->save();
 
@@ -202,7 +208,7 @@ class MemberController extends Controller
 	public function sendPaymentEmail()
 	{
 		$cert = MemberCertification::where('token', request('token'))->firstOrFail();
-		Mail::to($cert->members->email)->send(new SendPaymentEmail($cert));
+		Mail::to($cert->members->email)->sendNow(new SendPaymentEmail($cert));
 
 		return redirect()->route('peserta.pendaftaran.sertifikasi');
 	}
@@ -233,7 +239,7 @@ class MemberController extends Controller
 			dd($e);
 		}
 
-		return redirect()->route('peserta.pendaftaran.sertifikasi');
+		return redirect()->route('peserta.pendaftaran.sertifikasi.pembayaran');
 	}
 
 	public function sendVerificationEmail()
