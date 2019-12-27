@@ -93,9 +93,12 @@ class PreAssessmentController extends Controller
         $chatApl02 = MemberCertificationChat::apl02Chat($memberCertification->id)->get();
         $paap = $memberCertification->paap;
 
+//        return count($memberCertification->schedules->program->type);
         $direct = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
+//            return $value;
             return ($value['type'] == 'direct');
         });
+//        return $direct['type'];
         $direct = Arr::get($direct, '0.methods');
 
         $indirect = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
