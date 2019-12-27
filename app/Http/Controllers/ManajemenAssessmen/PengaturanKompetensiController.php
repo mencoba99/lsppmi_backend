@@ -120,6 +120,7 @@ class PengaturanKompetensiController extends Controller
             $programKompetensi = null;
             $programs          = Program::selectRaw("CONCAT(code,'( ',name,' ) ',' ') AS name, id")->active()->get()->pluck('name', 'id')->prepend('', '');
             $unitKompetensi    = CompetenceUnit::selectRaw("CONCAT(code,' - ',name,' ') AS name, id")->pluck('name', 'id')->prepend('', '');
+//            return $unitKompetensi;
             return view('ManajemenAssessmen.PengaturanKompetensiController.create', compact('programKompetensi', 'programs', 'unitKompetensi'));
         } else {
             flash()->error('Maaf, Anda tidak mempunyai akses untuk menambah data Pengaturan Kompetensi');
@@ -242,7 +243,7 @@ class PengaturanKompetensiController extends Controller
         $program_id            = $request->get('program_id');
         $programUnitKompetensi = ProgramCompetenceUnit::where('program_id', $program_id)->get()->pluck('id');
 
-        $unitKompetensi = CompetenceUnit::whereNotIn('id', $programUnitKompetensi)->get();
+        $unitKompetensi = CompetenceUnit::whereNotIn('id', $programUnitKompetensi->program_id)->get();
 
         $result = [];
         if ($unitKompetensi && $unitKompetensi->count() > 0) {
