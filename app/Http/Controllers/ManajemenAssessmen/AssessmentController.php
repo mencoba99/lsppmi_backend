@@ -35,6 +35,7 @@ class AssessmentController extends Controller
      *
      * @param DataTables $dataTables
      * @return void
+     * @throws \Exception
      */
     public function getAssessmentData(DataTables $dataTables)
     {
