@@ -35,7 +35,7 @@ class JadwalKelasController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -155,8 +155,8 @@ class JadwalKelasController extends Controller
             $assessor_ids = $request->get('assessor_id');
             $assessor_ids = Arr::flatten($assessor_ids);
 
-           
-            
+
+
 
             if ($jadwalKelas->save()) {
                 /** Save to  */

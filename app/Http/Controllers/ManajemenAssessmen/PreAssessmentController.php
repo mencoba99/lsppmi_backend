@@ -99,9 +99,11 @@ class PreAssessmentController extends Controller
         $direct = Arr::get($direct, '0.methods');
 
         $indirect = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
-            return ($value['type'] == 'indirect');
+            if (!empty($value['type'])) {
+                return ($value['type'] == 'indirect');
+            } else return null;
         });
-        $indirect = Arr::get($indirect, '1.methods');
+        $indirect = !empty($indirect) ? Arr::get($indirect, '1.methods'):[];
 
         return view('ManajemenAssessmen.PreAssessmentController.view-single-peserta', compact('memberCertification', 'chatApl02', 'direct', 'indirect', 'paap'));
     }
