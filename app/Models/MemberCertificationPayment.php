@@ -14,6 +14,7 @@ class MemberCertificationPayment extends Revisionable
     /** End */
 
     protected $table = 'member_certification_payments';
+    protected $guarded = [];
 
     public function certification()
     {

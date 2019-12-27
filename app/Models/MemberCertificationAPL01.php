@@ -12,6 +12,8 @@ class MemberCertificationAPL01 extends Model
         'proof' => 'json'
     ];
 
+    protected $guarded = [];
+
     public function puk()
     {
     	return $this->belongsTo('App\Models\ProgramCompetenceUnit', 'program_competence_unit_id', 'id');

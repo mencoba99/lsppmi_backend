@@ -627,7 +627,7 @@ jQuery(document).ready(function() {
             
             if($('#submodul_id').val()!='' && $('#modul_id').val()!=''){
                 get_parent(this.value,null,$('#modul_id').val(),$('#submodul_id').val());
-                alert("bobot");
+                // alert("bobot");
 
             }
 
@@ -642,3 +642,4 @@ jQuery(document).ready(function() {
 </script>   
    
 @endpush
+ 
