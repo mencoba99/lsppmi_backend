@@ -200,6 +200,9 @@
                                             @can('Jadwal Kelas Close Register')
                                                 <li class="kt-menu__item {{ ($routeName == 'jadwal-kelas.register.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('jadwal-kelas.register.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Tutup Pendaftaran Kelas</span></a></li>
                                             @endcan
+                                            @can('Jadwal Kelas Open Ujian')
+                                                <li class="kt-menu__item {{ ($routeName == 'jadwal-kelas.ujian.index') ? 'kt-menu__item--active':'' }}" aria-haspopup="true"><a href="{{ route('jadwal-kelas.ujian.index') }}" class="kt-menu__link "><span class="kt-menu__link-text">Buka Ujian Kelas</span></a></li>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </li>

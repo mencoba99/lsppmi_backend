@@ -20,7 +20,6 @@ use Illuminate\Support\Arr;
 use Yajra\DataTables\DataTables;
 use DB;
 use function GuzzleHttp\Psr7\str;
-use DB;
 
 class JadwalKelasController extends Controller
 {
@@ -603,4 +602,70 @@ class JadwalKelasController extends Controller
         flash()->success('Transfer kelas berhasil.');
         return redirect()->back();
     }
+
+
+    /**
+     * Halaman index untuk proses approval kelas
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function ujianIndex()
+    {
+        if (auth()->user()->can('Jadwal Kelas Open Ujian')) {
+            return view('ManajemenAssessmen.JadwalKelasController.ujian-index');
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Buka Ujian Kelas');
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Method untuk get Data kelas yang belum approve untuk feed datatable halaman approve
+     *
+     * @param DataTables $dataTables
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getJadwalKelasUjianData(DataTables $dataTables)
+    {
+        $jadwalKelas = ProgramSchedule::where('is_publish', 1)->where('status', 1)->where('registration_closed', 1)->where('aktif', true)->where('is_ujian', true)->orderBy('id', 'desc')->get();
+        $jadwalKelas->load('program', 'tuk');
+
+        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (ProgramSchedule $jadwalKelas) {
+            $action = "";
+            if (auth()->user()->can('Jadwal Kelas Open Ujian')) {
+                $action .= "<button data-id='".$jadwalKelas->id. "' class='btn btn-sm btn-icon btn-clean btn-icon-sm openUjian' data-toggle='kt-tooltip' title='Buka Ujian Kelas' data-original-tooltip='Buka Ujian Kelas'>
+                              <i class='la la-check'></i>
+                            </button>";
+            }
+
+            return $action;
+        })->escapeColumns([])->make(true);
+
+        return $jadwalKelasJson;
+    }
+
+   
+
+    /**
+     * Proses Approval & Batalkan Approve Jadwal Kelas
+     *
+     * @param Request $request
+     * @param JadwalKelas $jadwalKelas
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    
+    public function ujianJadwalKelas(Request $request)
+    {
+        if (auth()->user()->can('Jadwal Kelas Open Ujian')) {
+            if(ProgramSchedule::find($request->id)->update(['status' => 5])){
+                return json_encode(array(
+                    "status"=>200,
+                    "message"=>"sukses"
+                ));  
+            }
+        }
+    }
+
 }

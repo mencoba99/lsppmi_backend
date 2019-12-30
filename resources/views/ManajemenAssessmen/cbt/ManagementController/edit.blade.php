@@ -36,12 +36,11 @@
                                                 <ul>
                                                     @foreach ($moduls->elements as $com_element)
                                                     @foreach ($com_element->kuk as $kuk)
-                                                   
-                                                         @if(in_array($kuk->id, $submodul_id) AND in_array($moduls->id, $modul_id))
-                                                                            <li data-jstree='{"selected":true}' dataid="{{ $kuk->id }}"> {{ $kuk->name }}</li>
-                                                                        @else
-                                                                            <li dataid="{{ $kuk->id }}"> {{ $kuk->name }}</li>
-                                                                        @endif
+                                                        @if(in_array($kuk->id, $submodul_id) AND in_array($moduls->id, $modul_id))
+                                                            <li data-jstree='{"selected":true}' dataid="{{ $kuk->id }}"> {{ $kuk->name }}</li>
+                                                        @else
+                                                            <li dataid="{{ $kuk->id }}"> {{ $kuk->name }}</li>
+                                                        @endif
                                                     @endforeach
                                                     @endforeach
                                                 </ul>

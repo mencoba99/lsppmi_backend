@@ -262,6 +262,13 @@ Route::middleware(['auth'])->group(function (){
             Route::post('jadwal-kelas/register/getdata', 'JadwalKelasController@getJadwalKelasNotCloseRegisterData')->name('jadwal-kelas.register.getdata');
             Route::get('jadwal-kelas/register/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@registerJadwalKelas')->name('jadwal-kelas.register.set-approve');
 
+             /** Pembukan Ujian Kelas */
+            Route::get('jadwal-kelas/ujian/index', 'JadwalKelasController@ujianIndex')->name('jadwal-kelas.ujian.index');
+            Route::get('jadwal-kelas/ujian/{jadwal_kelas}/view', 'JadwalKelasController@ujianView')->name('jadwal-kelas.ujian.view');
+            Route::post('jadwal-kelas/ujian/getdata', 'JadwalKelasController@getJadwalKelasUjianData')->name('jadwal-kelas.ujian.getdata');
+            Route::post('jadwal-kelas/ujian/store', 'JadwalKelasController@ujianJadwalKelas')->name('jadwal-kelas.ujian.set-open');
+
+             
             /** Transfer Kelas */
             Route::post('jadwal-kelas/transfer', 'JadwalKelasController@transfer')->name('jadwal-kelas.transfer');
         });
