@@ -9,7 +9,7 @@
                     <div class="form-group row">
                         <label class="col-3 col-form-label">Program</label>
                         <div class="col-9">
-                            {!! Form::select('program_id', $programs, (!empty($jadwalKelas) ? $jadwalKelas->program_id:null), ['class'=>'kt-select2','data-placeholder'=>'Pilih Program']) !!}
+                            {!! Form::select('program_id', $programs, (!empty($jadwalKelas) ? $jadwalKelas->program_id:null), ['class'=>'kt-select2 program_id','data-placeholder'=>'Pilih Program']) !!}
                         </div>
                     </div>
                     <div class="form-group row">
@@ -61,6 +61,12 @@
                                 {!! Form::text('started_at',(!empty($jadwalKelas) ? $jadwalKelas->started_at:null),['class'=>'form-control','id'=>'kt_datepicker_1','placeholder'=>'Tanggal Ujian']) !!}
                                 <small class="form-text text-muted">Masukkan informasi durasi assessmen dalam hitungan hari</small>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group row row-ujian " {{!empty($jadwalKelas->ujian_parameter_id) ? "":"style=display:none"}} >
+                        <label class="col-3 col-form-label"> Ujian Parameter</label>
+                        <div class="col-9">
+                            {!! Form::select('ujian_parameter_id', $parameter, (!empty($jadwalKelas) ? $jadwalKelas->ujian_parameter_id:null), ['class'=>'kt-select2','data-placeholder'=>'Pilih Ujian Parameter']) !!}
                         </div>
                     </div>
                     <div class="form-group row">
@@ -237,6 +243,42 @@
                 todayHighlight: true,
                 orientation: "bottom left",
                 templates: 'arrows'
+            });
+
+            $('select.program_id').on('change', function () {
+             
+                $.ajax({
+                type: "POST",
+                url: "{{ route('jadwal-kelas.cekProgram') }}",
+                data: {
+                    'id'      : $(this).val(),
+                },
+                
+                beforeSend: function () {
+
+                    // KTApp.block('#add .modal-content', {
+                    // overlayColor: '#000000',
+                    // type: 'v2',
+                    // state: 'primary',
+                    // message: 'Processing...'
+                    // });
+                   
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+                   
+                    // alert(JSON.stringify(data));
+                    if(data=='direct'){
+                        $('.row-ujian').show();
+                    }else{
+                        $('.row-ujian').hide();
+                    }
+                    KTApp.unblock('#add .modal-content');
+
+                }
+            });
             });
 
             $('#kt_repeater_1').repeater({

@@ -242,6 +242,7 @@ Route::middleware(['auth'])->group(function (){
         Route::group(['prefix'=>'manajemen-kelas'], function () {
             Route::resource('jadwal-kelas', 'JadwalKelasController');
             Route::post('jadwal-kelas/getdata', 'JadwalKelasController@getJadwalKelasData')->name('jadwal-kelas.getdata');
+            Route::post('jadwal-kelas/cek', 'JadwalKelasController@getCBTTrue')->name('jadwal-kelas.cekProgram');
             Route::get('jadwal-kelas/{jadwal_kelas}/delete', 'JadwalKelasController@delete')->name('jadwal-kelas.delete');
 
             /** Approve Jadwal Kelas */
