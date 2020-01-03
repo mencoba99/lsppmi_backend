@@ -141,6 +141,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                       
                                         <div class="form-group row metode" style="display:none;">
                                             <label class="col-3 col-form-label">Metode</label>
                                             <div class="col-9">
@@ -444,6 +445,8 @@ jQuery(document).ready(function () {
 
         /* Edit Data */
         $("#datatable").on("click", "tr #edit", function () {
+
+            
             $("input").val("");
             form.resetForm();
             $('#summernote').summernote('destroy');
@@ -455,6 +458,8 @@ jQuery(document).ready(function () {
             $("#status").val($(this).data('status'));
             $("#program_sing_eng").val($(this).data('sing_int'));
             $("#program_sing_ind").val($(this).data('sing_ind'));
+            $("#min_competence").val($(this).data('min_competence'));
+            $("#opt_competence").val($(this).data('opt_competence'));
             $("#program_harga").val($(this).data('harga'));
 
             $("select#level").val($(this).data('level'));
