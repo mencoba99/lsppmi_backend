@@ -93,9 +93,12 @@ class PreAssessmentController extends Controller
         $chatApl02 = MemberCertificationChat::apl02Chat($memberCertification->id)->get();
         $paap = $memberCertification->paap;
 
+//        return count($memberCertification->schedules->program->type);
         $direct = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
+//            return $value;
             return ($value['type'] == 'direct');
         });
+//        return $direct['type'];
         $direct = Arr::get($direct, '0.methods');
 
         $indirect = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
@@ -142,10 +145,14 @@ class PreAssessmentController extends Controller
     {
         \DB::beginTransaction();
         try {
-            $apl02 = $memberCertification->apl02();
+            $apl02 = $memberCertification->apl02()->get();
+
 
             if ($status == 'approve') {
-                if ($apl02->update(['status' => 3])) {
+                if ($memberCertification->update(['status' => 3])) {
+                    foreach ($apl02 as $item) {
+                        $item->update(['status' => 1]);
+                    }
                     /**
                      * Insert data peserta ke table pendaftaran_trx
                      */
@@ -167,44 +174,53 @@ class PreAssessmentController extends Controller
                     /**
                      * Udate table member certification set status = 3
                      */
-                    $memberCertification->update(['status' => 3]);
+//                    $memberCertification->update(['status' => 3]);
 
                     flash()->success('Berhasil Approve APL-02');
                 } else {
                     flash()->error('Gagal Approve APL-02');
                 }
             } elseif ($status == 'unapprove') {
-                if ($apl02->update(['status' => 2])) {
+                if ($memberCertification->update(['status' => 2])) {
+                    foreach ($apl02 as $item) {
+                        $item->update(['status' => 0]);
+                    }
                     $pendaftaran_trx = Pendaftaran_trx::wherePendaftaranId($memberCertification->id)->where('batch_id', $memberCertification->program_schedule_id);
                     $pendaftaran_trx->delete();
 
                     /**
                      * Udate table member certification set status = 2
                      */
-                    $memberCertification->update(['status' => 2]);
+//                    $memberCertification->update(['status' => 2]);
 
                     flash()->success('Berhasil Unapprove APL-02');
                 } else {
                     flash()->error('Gagal Unapprove APL-02');
                 }
             } elseif ($status == 'reject') {
-                if ($apl02->update(['status' => 4])) {
+                if ($memberCertification->update(['status' => 4])) {
+                    foreach ($apl02 as $item) {
+                        $item->update(['status' => 1]);
+                    }
                     $pendaftaran_trx = Pendaftaran_trx::wherePendaftaranId($memberCertification->id)->where('batch_id', $memberCertification->program_schedule_id);
                     $pendaftaran_trx->delete();
 
                     /**
                      * Udate table member certification set status = 2
                      */
-                    $memberCertification->update(['status' => 4]);
+//                    $memberCertification->update(['status' => 4]);
 
                     flash()->success('Berhasil Reject APL-02');
                 } else {
                     flash()->error('Gagal Reject APL-02');
                 }
             }
+//            echo "Sukses";
             \DB::commit();
         } catch (\Exception $exception) {
             \DB::rollBack();
+
+            return $exception->getMessage();
         }
 
         return redirect()->route('pre-assessment.viewsinglepeserta', ['member_certification' => $memberCertification]);

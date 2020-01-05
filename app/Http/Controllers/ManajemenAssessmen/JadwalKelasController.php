@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ManajemenAssessmen;
 use App\Http\Controllers\Controller;
 use App\Models\Assessor;
 use App\Models\JadwalKelas;
+use App\Models\Ujian\Parameter;
 use App\Models\Program;
 use App\Models\Batch_modul_dtl;
 use App\Models\ProgramSchedule;
@@ -20,7 +21,6 @@ use Illuminate\Support\Arr;
 use Yajra\DataTables\DataTables;
 use DB;
 use function GuzzleHttp\Psr7\str;
-use DB;
 
 class JadwalKelasController extends Controller
 {
@@ -118,9 +118,12 @@ class JadwalKelasController extends Controller
             $jadwalKelas = null;
             $programs    = Program::selectRaw("CONCAT(name,'( ',code,' ) ',' ') AS name, id")->active()->get()->pluck('name', 'id')->prepend('', '');
             $tuk         = TUK::active()->get()->pluck('name', 'id')->prepend('', '');
+            
+           
+            $parameter         = Parameter::active()->get()->pluck('name', 'ujian_parameter_id')->prepend('', '');
             $assessor    = Assessor::active()->get()->pluck('name', 'id');
-
-            return view('ManajemenAssessmen.JadwalKelasController.create', compact('jadwalKelas', 'programs', 'tuk', 'assessor'));
+            // return $parameter ; exit;
+            return view('ManajemenAssessmen.JadwalKelasController.create', compact('jadwalKelas', 'programs', 'tuk', 'assessor','parameter'));
         } else {
             flash()->error("Maaf, Anda tidak mempunyai akses untuk menambah Jadwal Kelas");
             return redirect()->route('jadwal-kelas.index');
@@ -147,8 +150,18 @@ class JadwalKelasController extends Controller
                                ]);
 
             $jadwalKelas                    = new ProgramSchedule($request->all());
+            $cek = Program::find($jadwalKelas->program_id)->first();
+
+            foreach($cek->type as $value){
+                 if($value['type']=='direct'){
+                    $jadwalKelas->is_ujian = true;
+                 }
+            }
+
+           
             $token                          = \Str::random(16);
             $jadwalKelas->token             = $token;
+            $jadwalKelas->aktif             = true;
             $jadwalKelas->training_duration = 1;
 
             /** Get Assessor */
@@ -221,7 +234,8 @@ class JadwalKelasController extends Controller
             $programs    = Program::selectRaw("CONCAT(name,'( ',code,' ) ',' ') AS name, id")->active()->get()->pluck('name', 'id')->prepend('', '');
             $tuk         = TUK::active()->get()->pluck('name', 'id')->prepend('', '');
             $assessor    = Assessor::active()->get()->pluck('name', 'id');
-            return view('ManajemenAssessmen.JadwalKelasController.edit', compact('jadwalKelas', 'programs', 'tuk', 'assessor'));
+            $parameter   = Parameter::active()->get()->pluck('name', 'ujian_parameter_id')->prepend('', '');
+            return view('ManajemenAssessmen.JadwalKelasController.edit', compact('jadwalKelas', 'programs', 'tuk', 'assessor','parameter'));
         } else {
             flash()->error("Maaf, Anda tidak mempunyai akses untuk mengubah Jadwal Kelas");
             return redirect()->route('jadwal-kelas.index');
@@ -237,6 +251,7 @@ class JadwalKelasController extends Controller
      */
     public function update(Request $request, ProgramSchedule $jadwalKelas)
     {
+       
         if (auth()->user()->can('Jadwal Kelas Edit')) {
             $request->validate([
                                    'program_id'          => 'required',
@@ -249,8 +264,8 @@ class JadwalKelasController extends Controller
                                    'assessor_id.*.*'       => 'required|distinct|min:1',
                                ]);
             /** @var  $update | get semua value POST dari form edit */
-            $update = $request->all();
-
+             $update = $request->all();
+           
             /** Cek nilai untuk kolom field dan is_hidden , karena jika di uncentang maka value tidak ada di data yang di lempar di $request */
             $status              = $request->get('status');
             $update['status']    = empty($status) ? '0' : $status;
@@ -262,7 +277,7 @@ class JadwalKelasController extends Controller
             /** Get Assessor */
             $assessor_ids = $request->get('assessor_id');
             $assessor_ids = Arr::flatten($assessor_ids);
-
+                
             if ($jadwalKelas->update($update)) {
                 $jadwalKelas->assessor()->sync($assessor_ids);
                 flash()->success('Berhasil mengubah data Jadwal Kelas');
@@ -603,4 +618,88 @@ class JadwalKelasController extends Controller
         flash()->success('Transfer kelas berhasil.');
         return redirect()->back();
     }
+
+
+    /**
+     * Halaman index untuk proses approval kelas
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function ujianIndex()
+    {
+        if (auth()->user()->can('Jadwal Kelas Open Ujian')) {
+            return view('ManajemenAssessmen.JadwalKelasController.ujian-index');
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Buka Ujian Kelas');
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Method untuk get Data kelas yang belum approve untuk feed datatable halaman approve
+     *
+     * @param DataTables $dataTables
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getJadwalKelasUjianData(DataTables $dataTables)
+    {
+        $jadwalKelas = ProgramSchedule::where('is_publish', 1)->where('status', 1)->where('registration_closed', 1)->where('aktif', true)->where('is_ujian', true)->orderBy('id', 'desc')->get();
+        $jadwalKelas->load('program', 'tuk');
+
+        $jadwalKelasJson = $dataTables->of($jadwalKelas)->addColumn('action', function (ProgramSchedule $jadwalKelas) {
+            $action = "";
+            if (auth()->user()->can('Jadwal Kelas Open Ujian')) {
+                $action .= "<button data-id='".$jadwalKelas->id. "' class='btn btn-sm btn-icon btn-clean btn-icon-sm openUjian' data-toggle='kt-tooltip' title='Buka Ujian Kelas' data-original-tooltip='Buka Ujian Kelas'>
+                              <i class='la la-check'></i>
+                            </button>";
+            }
+
+            return $action;
+        })->escapeColumns([])->make(true);
+
+        return $jadwalKelasJson;
+    }
+
+   
+
+    /**
+     * Proses Approval & Batalkan Approve Jadwal Kelas
+     *
+     * @param Request $request
+     * @param JadwalKelas $jadwalKelas
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    
+    public function ujianJadwalKelas(Request $request)
+    {
+        if (auth()->user()->can('Jadwal Kelas Open Ujian')) {
+            if(ProgramSchedule::find($request->id)->update(['status' => 5])){
+                return json_encode(array(
+                    "status"=>200,
+                    "message"=>"sukses"
+                ));  
+            }
+        }
+    }
+
+     /**
+     * Proses Cek CBT Jadwal Kelas
+     *
+     * @param Request $request
+     * @param Program $program
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+
+    public function getCBTTrue(Request $request)
+    {
+        $program = Program::find($request->id);
+        foreach( $program->type as $value){
+            return $value['type'];
+        }
+
+    }
+
 }

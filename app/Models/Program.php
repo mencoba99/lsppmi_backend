@@ -31,7 +31,10 @@ class Program extends Revisionable
             'sing_int',
             'harga',
             'level',
-
+            'min_competence',
+            'opt_competence',
+            'abbreviation_id',
+            'abbreviation_en'
 
         ];
 

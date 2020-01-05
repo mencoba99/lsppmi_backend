@@ -22,4 +22,9 @@ class Parameter extends Revisionable
     {
         return $this->hasOne('App\Models\ProgramSchedule', 'id', 'program_schedule_id');
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('aktif',true);
+    }
 }

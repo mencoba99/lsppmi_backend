@@ -242,6 +242,7 @@ Route::middleware(['auth'])->group(function (){
         Route::group(['prefix'=>'manajemen-kelas'], function () {
             Route::resource('jadwal-kelas', 'JadwalKelasController');
             Route::post('jadwal-kelas/getdata', 'JadwalKelasController@getJadwalKelasData')->name('jadwal-kelas.getdata');
+            Route::post('jadwal-kelas/cek', 'JadwalKelasController@getCBTTrue')->name('jadwal-kelas.cekProgram');
             Route::get('jadwal-kelas/{jadwal_kelas}/delete', 'JadwalKelasController@delete')->name('jadwal-kelas.delete');
 
             /** Approve Jadwal Kelas */
@@ -262,6 +263,13 @@ Route::middleware(['auth'])->group(function (){
             Route::post('jadwal-kelas/register/getdata', 'JadwalKelasController@getJadwalKelasNotCloseRegisterData')->name('jadwal-kelas.register.getdata');
             Route::get('jadwal-kelas/register/{jadwal_kelas}/setapprove/{status}', 'JadwalKelasController@registerJadwalKelas')->name('jadwal-kelas.register.set-approve');
 
+             /** Pembukan Ujian Kelas */
+            Route::get('jadwal-kelas/ujian/index', 'JadwalKelasController@ujianIndex')->name('jadwal-kelas.ujian.index');
+            Route::get('jadwal-kelas/ujian/{jadwal_kelas}/view', 'JadwalKelasController@ujianView')->name('jadwal-kelas.ujian.view');
+            Route::post('jadwal-kelas/ujian/getdata', 'JadwalKelasController@getJadwalKelasUjianData')->name('jadwal-kelas.ujian.getdata');
+            Route::post('jadwal-kelas/ujian/store', 'JadwalKelasController@ujianJadwalKelas')->name('jadwal-kelas.ujian.set-open');
+
+             
             /** Transfer Kelas */
             Route::post('jadwal-kelas/transfer', 'JadwalKelasController@transfer')->name('jadwal-kelas.transfer');
         });
