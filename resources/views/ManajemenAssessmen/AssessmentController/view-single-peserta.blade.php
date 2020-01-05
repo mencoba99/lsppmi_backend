@@ -74,8 +74,10 @@
                                 </a>
                             </li>
                         @endif
-                        @if(in_array('wawancara', $indirect))
+                        @if ($indirect)
+                            @if(in_array('wawancara', $indirect))
 
+                            @endif
                         @endif
                     </ul>
                 </div>
@@ -977,15 +979,17 @@
                                     @php($no=1)
                                     @foreach($ujian_detail as $dtl)
                                         <?php
+//                                            dd($ujian_batch_id);
                                             $modul_soal = \DB::table('modul_soal')->where('modul_id',$dtl->modul_id)->get();
-                                            // $ujian_modul_id = \DB::table('ujian_modul')->where('modul_id', $dtl->modul_id)->where('ujian_batch_id', $ujian_batch_id)->first();
-                                            $ujian_modul_id = null;
+                                             $ujian_modul_id = \DB::table('ujian_modul')->where('modul_id', $dtl->modul_id)->where('ujian_batch_id', $ujian_batch_id)->first();
+//                                             dd($ujian_modul_id);
+//                                            $ujian_modul_id = null;
                                             $soal_peserta_id = \DB::table('soal_peserta')->where('ujian_modul_id', $ujian_modul_id->ujian_modul_id)->first();
                                         ?>
                                         <tr>
                                             <td>{{ $no }} {{ $dtl->modul_id }}</td>
                                             <td>{{ $dtl->nama_modul }}</td>
-                                            <td align="right">{{ \App\Models\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->where('soal_peserta_id', $soal_peserta_id->soal_peserta_id)->count() }}</td>
+                                            <td align="right">{{ \App\Models\StartUjian\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->where('soal_peserta_id', $soal_peserta_id->soal_peserta_id)->count() }}</td>
                                             {{--                                                    <td align="right">{{ \App\Models\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->where('soal_peserta_id', $soal_peserta_id->soal_peserta_id)->where('is_bener', true)->count() }}</td>--}}
                                             <td align="right">{{ \DB::table('soal_peserta')->where('ujian_modul_id', $ujian_modul_id->ujian_modul_id)->where('perdana_peserta_id', $perdana_peserta_id)->first()->nilai }}</td>
                                             <td align="right">{{ $dtl->nilai }}%</td>
@@ -1036,6 +1040,7 @@
                                     <br><br>
                                 </div>
                                 {!! Form::open(['url'=>route('asesmen.interview.save',['member_certification'=>$memberCertification->id]),'name'=>'formInterview','id'=>'formInterview']) !!}
+                                <input type="hidden" name="tipe_pertanyaan" value="lisan">
                                 <table class="table table-bordered tablePertanyaan">
                                     <thead>
                                     <tr>
@@ -1065,13 +1070,16 @@
                                                             <td>Jawaban yang diharapkan : {!! $interview->pertanyaan_lisan->jawaban !!}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Kesimpulan jawaban asesi : <textarea name='kesimpulan_{{ $interview->pertanyaan_lisan->id }}' id='' class='form-control' cols='30' rows='10'></textarea></td>
+                                                            <td>Kesimpulan jawaban asesi : <textarea name='kesimpulan[{{ $interview->pertanyaan_lisan->id }}]' id='' class='form-control' cols='30' rows='10'>{{ $interview->kesimpulan }}</textarea></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>
-                                                <td><input type='radio' name='is_kompeten_{{ $interview->pertanyaan_lisan->id }}' required="required" {{ ($interview->is_kompeten == 1) ? 'checked':'' }} value='kompeten'></td>
-                                                <td><input type='radio' name='is_kompeten_{{ $interview->pertanyaan_lisan->id }}' required="required" {{ ($interview->is_kompeten == 2) ? 'checked':'' }} value='belum_kompeten'></td>
+                                                <td><input type='radio' name='is_kompeten[{{ $interview->pertanyaan_lisan->id }}]' required="required" {{ ($interview->is_kompeten == 1) ? 'checked':'' }} value='1'></td>
+                                                <td>
+                                                    <input type='radio' name='is_kompeten[{{ $interview->pertanyaan_lisan->id }}]' required="required" {{ ($interview->is_kompeten == 2) ? 'checked':'' }} value='2'>
+                                                    <input type="hidden" name="pertanyaan_id[{{ $interview->pertanyaan_lisan->id }}]" value="{{ $interview->pertanyaan_lisan->id }}">
+                                                </td>
                                                 <td><a href="{{ route('asesmen.interview.delete',['interview_id'=>$interview->id,'member_certification'=>$memberCertification->id]) }}" class="btn btn-sm btn-icon btn-clean btn-icon-sm delconfirm" title="Delete Pertanyaan"><i class="la la-trash"></i></a></td>
                                             </tr>
                                             @php($noInterview++)
@@ -1253,11 +1261,13 @@
                     $('span.for_tl').html('');
                     $('span.for_t').html('');
                 } else if (val == 2) {
-                    @if(in_array('observasi', $indirect))
-                    $('span.for_portfolio').html('<i class="la la-check"></i>');
+                    @if($indirect)
+                        @if(in_array('observasi', $indirect))
+                            $('span.for_portfolio').html('<i class="la la-check"></i>');
+                        @endif
+                        @if(in_array('wawancara', $indirect))
+                        $('span.for_interview').html('<i class="la la-check"></i>');
                     @endif
-                    @if(in_array('wawancara', $indirect))
-                    $('span.for_interview').html('<i class="la la-check"></i>');
                     @endif
                     $('span.for_cbt').html('');
                     $('span.for_l').html('');

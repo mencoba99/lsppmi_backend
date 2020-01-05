@@ -18,7 +18,7 @@
                     <div class="kt-portlet__head-actions">
                         @can('Program Add')
                         <button type="button" id="new" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal" data-target="#add"><i class="la la-plus"></i>
-                            Tambah Data 
+                            Tambah Data
                         </button>
                         @endcan
                     </div>
@@ -134,27 +134,43 @@
                                             <div class="col-9">
                                                 <div class="kt-checkbox-inline">
                                                     <label class="kt-checkbox">
-                                                        {!! Form::checkbox('type',1,null,['id'=>'type','data-direct'=>'']) !!} Direct
+                                                        {!! Form::checkbox('type[]','direct',null,['class'=>'tipe-asesmen','id'=>'direct','data-direct'=>'']) !!} Langsung
                                                         <span></span>
                                                     </label>
-
+                                                    <label class="kt-checkbox">
+                                                        {!! Form::checkbox('type[]','indirect',null,['class'=>'tipe-asesmen','id'=>'indirect','data-indirect'=>'']) !!} Tidak Langsung
+                                                        <span></span>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
-                                       
                                         <div class="form-group row metode" style="display:none;">
                                             <label class="col-3 col-form-label">Metode</label>
                                             <div class="col-9">
                                                 <div class="kt-checkbox-inline">
                                                     <label class="kt-checkbox">
-                                                        {!! Form::checkbox('cbt',1,null,['id'=>'cbt','data-cbt'=>'']) !!} CBT
+                                                        {!! Form::checkbox('type[direct][]','cbt',null,['id'=>'cbt','data-cbt'=>'']) !!} CBT
                                                         <span></span>
                                                     </label>
                                                     <label class="kt-checkbox">
-                                                        {!! Form::checkbox('interview',1,null,['id'=>'interview','data-interview'=>'','checked'=>false]) !!} Interview
+                                                        {!! Form::checkbox('type[direct][]','interview',null,['id'=>'interview','data-interview'=>'','checked'=>false]) !!} Interview
                                                         <span></span>
                                                     </label>
-
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row metode-tidak-langsung" style="display:none;">
+                                            <label class="col-3 col-form-label">Pilih Metode Asesmen Tidak Langsung</label>
+                                            <div class="col-9">
+                                                <div class="kt-checkbox-inline">
+                                                    <label class="kt-checkbox">
+                                                        {!! Form::checkbox('type[indirect][]','observasi',null,['id'=>'observasi','data-observasi'=>'']) !!} Verifikasi Portofolio
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-checkbox">
+                                                        {!! Form::checkbox('type[indirect][]','wawancara',null,['id'=>'wawancara','data-wawancara'=>'','checked'=>false]) !!} Wawancara
+                                                        <span></span>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -305,22 +321,23 @@ jQuery(document).ready(function () {
                 type: "post",
                 url: "{{ route('ujian-komputer.program.insert') }}",
                 dataType: "json",
-                data: {
-                    id: $("#program_id").val(),
-                    program_type_id: $("#kategori_id").val(),
-                    code: $("#program_code").val(),
-                    name: $("#program_name").val(),
-                    sing_int: $("#program_sing_eng").val(),
-                    sing_ind: $("#program_sing_ind").val(),
-                    min_competence: $("#min_competence").val(),
-                    opt_competence: $("#opt_competence").val(),
-                    level: $("#level").val(),
-                    type: $("#type").data('direct'),
-                    cbt: $("#cbt").data('cbt'),
-                    interview: $("#interview").data('interview'),
-                    status: $("#status").val(),
-                    desc: $(".note-editable").html(),
-                },
+                data: $('#form').serialize(),
+                // data: {
+                //     id: $("#program_id").val(),
+                //     program_type_id: $("#kategori_id").val(),
+                //     code: $("#program_code").val(),
+                //     name: $("#program_name").val(),
+                //     sing_int: $("#program_sing_eng").val(),
+                //     sing_ind: $("#program_sing_ind").val(),
+                //     min_competence: $("#min_competence").val(),
+                //     opt_competence: $("#opt_competence").val(),
+                //     level: $("#level").val(),
+                //     // type: $("input[name='type']"),
+                //     cbt: $("#cbt").data('cbt'),
+                //     interview: $("#interview").data('interview'),
+                //     status: $("#status").val(),
+                //     desc: $(".note-editable").html(),
+                // },
                 beforeSend: function () {
                     KTApp.block('#add .modal-content', {
                         overlayColor: '#000000',
@@ -352,7 +369,7 @@ jQuery(document).ready(function () {
                             });
                         }, 2000);
 
-                        //          
+                        //
                     } else if (response.status === 500) {
                         KTApp.unblock('#add .modal-content');
                         $('#add').modal('hide');
@@ -445,8 +462,6 @@ jQuery(document).ready(function () {
 
         /* Edit Data */
         $("#datatable").on("click", "tr #edit", function () {
-
-            
             $("input").val("");
             form.resetForm();
             $('#summernote').summernote('destroy');
@@ -458,9 +473,9 @@ jQuery(document).ready(function () {
             $("#status").val($(this).data('status'));
             $("#program_sing_eng").val($(this).data('sing_int'));
             $("#program_sing_ind").val($(this).data('sing_ind'));
-            $("#min_competence").val($(this).data('min_competence'));
-            $("#opt_competence").val($(this).data('opt_competence'));
             $("#program_harga").val($(this).data('harga'));
+            $("#min_competence").val($(this).data('optCompetence'));
+            $("#opt_competence").val($(this).data('optCompetence'));
 
             $("select#level").val($(this).data('level'));
             $('.kt-selectpicker').selectpicker('refresh');
@@ -481,7 +496,47 @@ jQuery(document).ready(function () {
                 success: function (response) {
 
                     if (response.status === 200) {
+                        // console.log(response.type[0]);
+                        // console.log($.inArray('direct', response.type[0]));
 
+                        if (response.type[0].type.length > 0 && response.type[0].type == 'direct') {
+                            // console.log('nemu direct');
+                            $('.metode-langsung').show();
+                            $("#direct").prop('checked', true);
+                            if (response.type[0].methods.length > 0 && response.type[0].methods[0] == 'cbt') {
+                                // console.log('nemu cbt');
+                                $("#cbt").prop('checked', true)
+                            }
+
+                            if (response.type[0].methods.length > 0 && response.type[0].methods[1] == 'interview') {
+                                // console.log($.inArray('interview',response.type));
+                                $("#interview").prop('checked', true);
+                            }
+                        }
+
+                        if (response.type[1]) {
+                            if (response.type[1].type.length > 0 && response.type[1].type == 'indirect') {
+                                // console.log('nemu indirect')
+                                $('.metode-tidak-langsung').show();
+                                $("#indirect").prop('checked', true);
+
+                                if (response.type[1].methods.length > 0 && response.type[1].methods[0] == 'observasi') {
+                                    // console.log('nemu cbt');
+                                    $("#observasi").prop('checked', true)
+                                }
+
+                                if (response.type[1].methods.length > 0 && response.type[1].methods[1] == 'wawancara') {
+                                    // console.log($.inArray('interview',response.type));
+                                    $("#wawancara").prop('checked', true);
+                                }
+                            }
+                        }
+                        // if(response.type[0].type == 'direct') {
+                        //     $("#direct").prop('checked', true);
+                        //     $('.metode-langsung').show();
+                        //
+                        //     // if (response.methods[0])
+                        // }
                         $('.summernote').summernote('code', response.data);
                         setTimeout(function () {
                             KTApp.unblockPage(); //loading icon
@@ -499,19 +554,36 @@ jQuery(document).ready(function () {
 
 
 
-        $('#type').change(function () {
-            if ($(this).prop("checked") == true) {
-                $(".metode").show();
+        // $('.type').change(function () {
+        //     if ($(this).prop("checked") == true) {
+        //         console.log($(this).val());
+        //         $(".metode").show();
+        //         $(this).data('direct', 'direct');
+        //     } else if ($(this).prop("checked") == false) {
+        //         $(".metode").hide();
+        //         $("#cbt").prop("checked", false).trigger("change");
+        //         $("#interview").prop("checked", false).trigger("change");
+        //         $(this).data('direct', '');
+        //     }
+        // });
 
-                $(this).data('direct', 'direct');
-
-            } else if ($(this).prop("checked") == false) {
-                $(".metode").hide();
-                $("#cbt").prop("checked", false).trigger("change");
-                $("#interview").prop("checked", false).trigger("change");
-                $(this).data('direct', '');
+        $(document).on('click', '.tipe-asesmen', function (e) {
+            console.log($(this).val());
+            if ($(this).is(':checked') === true && $(this).val() == 'direct') {
+                $('.metode-langsung').show();
+            } else if ($(this).is(':checked') === false && $(this).val() == 'direct') {
+                console.log('unchecked langsung');
+                $('#cbt').prop('checked', false);
+                $('#interview').prop('checked', false);
             }
 
+            if ($(this).is(':checked') === true && $(this).val() == 'indirect') {
+                $('.metode-tidak-langsung').show();
+            } else if ($(this).is(':checked') === false && $(this).val() == 'indirect') {
+                console.log('unchecked langsung');
+                $('#portofolio').prop('checked', false);
+                $('#wawancara').prop('checked', false);
+            }
         });
 
         $('#cbt').change(function () {
@@ -533,7 +605,7 @@ jQuery(document).ready(function () {
 
         /* New Data Button */
         $('#new').click(function (event) {
-            $("input").val("");
+            // $("input").val("");
             $('.summernote').summernote('reset');
             $("select#program_id").val("");
             $('.kt-selectpicker').selectpicker('refresh');
