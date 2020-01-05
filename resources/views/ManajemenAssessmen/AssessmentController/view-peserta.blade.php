@@ -107,7 +107,11 @@
                                 </tfoot>
                                 <tbody>
                                 @role('Assessor')
-                                    @php($pendaftar = $jadwalKelas->pendaftar->where('assessor_id', $asesor->id)->where('status',3))
+                                    @if ($asesor && $asesor->count() > 0)
+                                        @php($pendaftar = $jadwalKelas->pendaftar->where('assessor_id', $asesor->id)->where('status',3))
+                                    @else
+                                        @php($pendaftar = $jadwalKelas->pendaftar->where('status',3))
+                                    @endif
                                 @else
                                     @php($pendaftar = $jadwalKelas->pendaftar->where('status',3))
                                 @endrole

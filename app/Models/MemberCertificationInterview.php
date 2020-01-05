@@ -15,7 +15,7 @@ class MemberCertificationInterview extends Revisionable
 
     protected $table = 'member_certification_interview';
 
-    protected $fillable = ['member_certification_id', 'pertanyaan_id', 'kesimpulan', 'urutan'];
+    protected $fillable = ['member_certification_id', 'pertanyaan_id', 'kesimpulan', 'urutan', 'is_kompeten'];
 
     public function member_certification()
     {
