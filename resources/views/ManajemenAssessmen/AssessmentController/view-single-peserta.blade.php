@@ -426,7 +426,9 @@
                                                                 @if ($item->proof)
                                                                     @php($noFile=1)
                                                                     @foreach($item->proof['files'] as $file)
-                                                                        <a href="{{ Storage::url($file) }}" class="showDocument">{{ $noFile }}. {{ $item->proof['filename'] }}</a>
+                                                                        @if ($file && Storage::exists(key($file)))
+                                                                            <a href="{{ Storage::url(key($file)) }}" class="showDocument">{{ $noFile }}. {{ $file[key($file)] }}</a>
+                                                                        @endif
                                                                         @php($noFile++)
                                                                     @endforeach
                                                                     {{--                                                                @php($arrProof=GeneralHelper::getAPL01File($item->proof))--}}
