@@ -255,6 +255,7 @@
                 $("#id").val($(this).data('id'));
                 $("#name").val($(this).data('name'));
                 $("#code").val($(this).data('code'));
+                $("#persentase_kelulusan").val($(this).data('persen'));
                 $("select#type").val($(this).data('type'));
                 if($(this).data('status') == 1) {
                     console.log('checked');

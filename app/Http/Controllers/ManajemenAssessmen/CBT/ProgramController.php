@@ -75,7 +75,7 @@ class ProgramController extends Controller
             $action = "<div class='btn-group'>";
             if (auth()->user()->can('Program Edit')) {
 
-                $action .= '<button id="edit" data-code="'.$Program->code.'" data-status="'.$Program->status.'" data-level="'.$Program->level.'" data-harga="'.$Program->harga.'" data-sing_ind="'.$Program->abbreviation_id.'" data-sing_int="'.$Program->abbreviation_en.'" data-kategori="'.$Program->program_type_id.'" data-id="'.$Program->id.'" data-nama="'.$Program->name.'" data-min-competence="'.$Program->min_competence.'" data-opt-competence="'.$Program->opt_competence.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Program->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+                $action .= '<button id="edit" data-code="'.$Program->code.'" data-status="'.$Program->status.'" data-level="'.$Program->level.'" data-harga="'.$Program->harga.'" data-sing_ind="'.$Program->abbreviation_id.'" data-sing_int="'.$Program->abbreviation_en.'" data-kategori="'.$Program->program_type_id.'" data-id="'.$Program->id.'" data-nama="'.$Program->name.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Program->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             }
             // $action .= '<button id="hapus"  data-id="'.$Program->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Program->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
 
@@ -145,6 +145,7 @@ class ProgramController extends Controller
 
     public function AjaxProgramInsertData(Request $request)
     {
+
             $Program = new Program();
             $Program->program_type_id = $request->get('kategori_id');
             $Program->code = $request->get('program_code');

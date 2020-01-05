@@ -123,6 +123,7 @@
                                     <th>No HP</th>
                                     <th>Perusahaan</th>
                                     <th>Status Pendaftaran</th>
+                                    <th>Transfer</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -131,6 +132,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td class="nosearch"></td>
                                     <td class="nosearch"></td>
                                 </tr>
                                 </tfoot>
@@ -153,6 +155,7 @@
                                                     <span class="kt-badge kt-badge--inline kt-badge--danger">Ditolak</span>
                                                 @endif
                                             </td>
+                                            <td><a href="#" class="cert" data-toggle="modal" data-target="#tf_class_md" data-record-id="{{ $item->id }}" data-record-member="{{ $item->members->name }}"><i class="la la-share"></i></a></td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -166,12 +169,57 @@
         </div>
     </div>
 
+    <div class="modal fade" id="tf_class_md" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Transfer Kelas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form class="kt-form" method="post" action="{{ route('jadwal-kelas.transfer') }}">
+                <div class="modal-body">  
+                    <div class="kt-portlet__body">
+                        {{ csrf_field() }}
+                        {{ Form::hidden('program_schedule_id', $jadwalKelas->id) }}
+                        {{ Form::hidden('member_certification_id', '', ['id' => 'member_certification_id']) }}
+                        <div class="form-group">
+                            <label>User</label>
+                            <input type="text" class="form-control" id="member_name" readonly="readonly">
+                        </div>
+                        <div class="form-group">
+                            <label for="pilihkelas">Pilih Kelas Tujuan</label>
+                            <select name="program_schedule_id_to" class="form-control" id="pilihkelas">
+                            @foreach ($jadwalKelas->classes as $k => $v)
+                            <option value="{{ $v->schedule_id }}">
+                                {{ $v->name . " - " . $v->place . " " . date_format(date_create($v->started_at), "d F Y") }}
+                            </option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- end:: Content -->
 @endsection
 @push('modal-script')
     <script src="{{ Storage::url('assets/backend/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.cert').click(function () {
+                let cert_id = $(this).data('record-id')
+                let member_name = $(this).data('record-member')
+                $('#member_certification_id').val(cert_id)
+                $('#member_name').val(member_name)
+                //alert(ps_id)
+            })
             var table = $('#kt_table_1').DataTable({
                 responsive: true,
                 lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],

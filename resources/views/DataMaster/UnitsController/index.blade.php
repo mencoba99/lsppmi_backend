@@ -163,6 +163,9 @@
                     "type": {
                         required: true
                     },
+                    "persen": {
+                        required: true
+                    },
                     "status": {
                         required: true
                     }
@@ -177,6 +180,9 @@
                     },
                     "type": {
                         required: "Silahkan pilih kategori"
+                    },
+                    "persen": {
+                        required: "Silahkan tulis persentase kelulusan"
                     },
                     "status": {
                         required: "Silahkan pilih status"
@@ -252,12 +258,13 @@
 
             /* Edit Data */
             $("#datatable").on("click", "tr #edit", function() {
-                console.log($(this).data('status'));
-
+                console.log($(this).data('persen'));
+                alert($(this).data('persen'));
                 $('form').trigger("reset");
                 $("#id").val($(this).data('id'));
                 $("#name").val($(this).data('name'));
                 $("#code").val($(this).data('code'));
+                $("#persen").val($(this).data('persen'));
                 $("input#type").val($(this).data('type'));
                 if($(this).data('status') == 1) {
                     console.log('checked');

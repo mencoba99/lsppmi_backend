@@ -349,7 +349,7 @@ class JadwalController extends Controller
                                                         //        $q->select('peserta_aktivasi_id')
                                                         //          ->from('peserta_cancel');
                                                         //   })
-                                                        ->pluck('peserta_id');
+                                                        ->pluck('pendaftaran_id');
                                                       
                                                                              
                 $peserta_ujian         = Perdana_peserta::whereIn('ujian_batch_id', $ujian_batch_id)

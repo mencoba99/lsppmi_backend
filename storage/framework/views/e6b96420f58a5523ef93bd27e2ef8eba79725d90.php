@@ -199,6 +199,9 @@
                                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Jadwal Kelas Close Register')): ?>
                                                 <li class="kt-menu__item <?php echo e(($routeName == 'jadwal-kelas.register.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('jadwal-kelas.register.index')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Tutup Pendaftaran Kelas</span></a></li>
                                             <?php endif; ?>
+                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Jadwal Kelas Open Ujian')): ?>
+                                                <li class="kt-menu__item <?php echo e(($routeName == 'jadwal-kelas.ujian.index') ? 'kt-menu__item--active':''); ?>" aria-haspopup="true"><a href="<?php echo e(route('jadwal-kelas.ujian.index')); ?>" class="kt-menu__link "><span class="kt-menu__link-text">Buka Ujian Kelas</span></a></li>
+                                            <?php endif; ?>
                                         </ul>
                                     </div>
                                 </li>

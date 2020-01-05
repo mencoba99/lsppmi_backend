@@ -144,8 +144,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row metode-langsung" style="display:none;">
-                                            <label class="col-3 col-form-label">Pilih Metode Asesmen Langsung</label>
+                                        <div class="form-group row metode" style="display:none;">
+                                            <label class="col-3 col-form-label">Metode</label>
                                             <div class="col-9">
                                                 <div class="kt-checkbox-inline">
                                                     <label class="kt-checkbox">
@@ -316,7 +316,6 @@ jQuery(document).ready(function () {
         submitHandler: function (form) {
             table = $('#datatable').DataTable().destroy();
 
-            console.log($('#form').serialize());
 
             $.ajax({
                 type: "post",
@@ -466,9 +465,6 @@ jQuery(document).ready(function () {
             $("input").val("");
             form.resetForm();
             $('#summernote').summernote('destroy');
-
-            // console.log($(this).data());
-            // alert('asasasas');
 
             $("#program_id").val($(this).data('id'));
             $("select#kategori_id").val($(this).data('kategori'));

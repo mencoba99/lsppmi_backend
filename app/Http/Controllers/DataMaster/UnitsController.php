@@ -88,7 +88,7 @@ class UnitsController extends Controller
         return DataTables::of($Units)->addColumn('action', function (Units $Units) {
             $action = "<div class='btn-group'>";
             if (auth()->user()->can('Unit Kompetensi Edit')) {
-                $action .= '<button id="edit" data-id="'.$Units->id.'" data-status="'.$Units->status.'"  data-name="'.$Units->name.'" data-code="'.$Units->code.'" data-type="'.$Units->type.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Units->nm_Units . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+                $action .= '<button id="edit" data-persen="'.$Units->persentase_kelulusan.'" data-id="'.$Units->id.'" data-status="'.$Units->status.'"  data-name="'.$Units->name.'" data-code="'.$Units->code.'" data-type="'.$Units->type.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Units->nm_Units . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             }
             $action .= "</div>";
 			return $action;
