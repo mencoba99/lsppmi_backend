@@ -33,6 +33,11 @@ Route::post('ujian/perdana/password_ulang/{emp_id}', 'Ujian\Ujian_perdanaControl
 Route::post('ujian/perdana/save_peserta_jawab', 'Ujian\Ujian_perdanaController@ajax_save_peserta_jawab');
 Route::post('ujian/perdana/save_persentase_kelulusan', 'Ujian\Ujian_perdanaController@ajax_persentase_kelulusan');
 
+/**
+ * For tes purpose
+ */
+Route::get('tes', 'DashboardController@testing');
+
 Route::middleware(['auth'])->group(function (){
 
     Route::group(['namespace'=>'PengaturanAplikasi', 'prefix'=>'pengaturan-aplikasi'], function () {
@@ -269,7 +274,7 @@ Route::middleware(['auth'])->group(function (){
             Route::post('jadwal-kelas/ujian/getdata', 'JadwalKelasController@getJadwalKelasUjianData')->name('jadwal-kelas.ujian.getdata');
             Route::post('jadwal-kelas/ujian/store', 'JadwalKelasController@ujianJadwalKelas')->name('jadwal-kelas.ujian.set-open');
 
-             
+
             /** Transfer Kelas */
             Route::post('jadwal-kelas/transfer', 'JadwalKelasController@transfer')->name('jadwal-kelas.transfer');
         });

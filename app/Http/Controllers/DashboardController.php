@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CobaEmail;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -48,5 +49,10 @@ class DashboardController extends Controller
     {
         \Auth::logout();
         return redirect('login');
+    }
+
+    public function testing()
+    {
+        \Mail::to('akmal.squal@gmail.com')->send(new CobaEmail());
     }
 }

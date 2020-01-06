@@ -52,7 +52,7 @@
                                 <i class="la la-briefcase"></i> FR APL-02
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content"
                                role="tab" aria-selected="false">
                                 <i class="la la-bell-o"></i> FR PAAP-01
@@ -68,7 +68,7 @@
                         @endif
                         @if(in_array('interview', $direct))
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_5_tab_content"
+                                <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_5_tab_content"
                                    role="tab" aria-selected="false">
                                     <i class="la la-desktop"></i> INTERVIEW / WAWANCARA
                                 </a>
@@ -426,7 +426,9 @@
                                                                 @if ($item->proof)
                                                                     @php($noFile=1)
                                                                     @foreach($item->proof['files'] as $file)
-                                                                        <a href="{{ Storage::url($file) }}" class="showDocument">{{ $noFile }}. {{ $item->proof['filename'] }}</a>
+                                                                        @if ($file && Storage::exists(key($file)))
+                                                                            <a href="{{ Storage::url(key($file)) }}" class="showDocument">{{ $noFile }}. {{ $file[key($file)] }}</a>
+                                                                        @endif
                                                                         @php($noFile++)
                                                                     @endforeach
                                                                     {{--                                                                @php($arrProof=GeneralHelper::getAPL01File($item->proof))--}}
@@ -476,7 +478,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
+                    <div class="tab-pane active" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
                         <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">
@@ -1021,7 +1023,7 @@
                     </div>
                     @endif
                     @if(in_array('interview', $direct))
-                    <div class="tab-pane active" id="kt_portlet_base_demo_1_5_tab_content" role="tabpanel">
+                    <div class="tab-pane" id="kt_portlet_base_demo_1_5_tab_content" role="tabpanel">
                         <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">
