@@ -122,4 +122,31 @@ $(document).ready(function() {
     $(".btn-loading").on('click', 'body', function(e) {
         $(this).addClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
     });
+
+    /** Untuk Popup Image menggunakan Bootstrap Modal */
+    $('.showImageModal').on('click', function (event) {
+        event.preventDefault();
+        var url = $(this).attr("href");
+        var title = $(this).data("original-title");
+        title = (title === undefined) ? $(this).attr('title') : title;
+        var fwidth = $(this).data("fwidth");
+        var afterClose = $(this).data('after-close');
+
+        $('#myModalImage').on('show.bs.modal', function (e) {
+            var image = $(this).find('img');
+            $(this).find('img').attr('src', url);
+
+            var tinggi = $(window).height() - 220;
+            if (fwidth == "") {
+                fwidth = '80%';
+            }
+
+            $(this).attr('data-after-close', afterClose);
+
+            $(this).find('.modal-title').html(title);
+            image.width('80%');
+            $(this).find('.modal-dialog').width(fwidth);
+        });
+        $('#myModalImage').modal({show: true});
+    });
 });

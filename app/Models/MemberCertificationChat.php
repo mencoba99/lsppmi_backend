@@ -21,7 +21,18 @@ class MemberCertificationChat extends Revisionable
 //        $result = $query->where('member_certification_id', $member_certification_id);
         if (!empty($member_id)) {
             return $query->where(function ($q) use ($member_certification_id, $member_id) {
-                $q->where('member_certification_id', $member_certification_id)->where('member_id', $member_id);
+                $q->where('member_certification_id', $member_certification_id)->where('member_id', $member_id)->where('chat_type',2);
+            });
+        }
+
+        return $query->where('member_certification_id', $member_certification_id);
+    }
+
+    public function scopeApl01Chat($query, $member_certification_id, $member_id = null)
+    {
+        if (!empty($member_id)) {
+            return $query->where(function ($q) use ($member_certification_id, $member_id) {
+                $q->where('member_certification_id', $member_certification_id)->where('member_id', $member_id)->where('chat_type',1);
             });
         }
 

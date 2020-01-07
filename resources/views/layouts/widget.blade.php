@@ -65,10 +65,30 @@
     </div>
 </div>
 
-
 <!--end::Modal Iframe-->
 
-<!-- end::Scrolltop -->
+
+<!--begin::Modal Image-->
+<div class="modal fade rotate" id="myModalImage">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Gambar</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        aria-label="Close"></button>
+            </div>
+            <div class="container"></div>
+            <div class="modal-body text-center">
+                <img src="" alt="" class="img-responsive" width="" height="">
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end::Modal Image -->
 
 <!-- begin::Sticky Toolbar -->
 {{--<ul class="kt-sticky-toolbar" style="margin-top: 30px;">--}}
