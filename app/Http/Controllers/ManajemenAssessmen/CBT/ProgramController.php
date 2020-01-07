@@ -75,7 +75,7 @@ class ProgramController extends Controller
             $action = "<div class='btn-group'>";
             if (auth()->user()->can('Program Edit')) {
 
-                $action .= '<button id="edit" data-code="'.$Program->code.'" data-status="'.$Program->status.'" data-level="'.$Program->level.'" data-harga="'.$Program->harga.'" data-sing_ind="'.$Program->abbreviation_id.'" data-sing_int="'.$Program->abbreviation_en.'" data-kategori="'.$Program->program_type_id.'" data-id="'.$Program->id.'" data-nama="'.$Program->name.'"  class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Program->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+                $action .= '<button id="edit" data-code="'.$Program->code.'" data-status="'.$Program->status.'" data-level="'.$Program->level.'" data-harga="'.$Program->harga.'" data-sing_ind="'.$Program->abbreviation_id.'" data-sing_int="'.$Program->abbreviation_en.'" data-kategori="'.$Program->program_type_id.'" data-id="'.$Program->id.'" data-nama="'.$Program->name.'" data-min-competence="'.$Program->min_competence.'" data-opt-competence="'.$Program->opt_competence.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Program->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             }
             // $action .= '<button id="hapus"  data-id="'.$Program->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Program->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
 
@@ -145,7 +145,7 @@ class ProgramController extends Controller
 
     public function AjaxProgramInsertData(Request $request)
     {
-
+//            return $request->all();
             $Program = new Program();
             $Program->program_type_id = $request->get('kategori_id');
             $Program->code = $request->get('program_code');
@@ -172,6 +172,7 @@ class ProgramController extends Controller
 
             /** Update Data */
             if($request->get('id')){
+//                return "Update";
                 if (auth()->user()->can('Program Edit')) {
                     $update =[];
                     $update['id'] = $request->get('id');
@@ -189,7 +190,7 @@ class ProgramController extends Controller
 //                        "message"=>array($request->get('cbt'), $request->get('interview'))
 //                    ));
                     $update['type'] = json_encode($arrType);
-                    $update['harga'] = $request->get('harga');
+//                    $update['harga'] = $request->get('harga');
                     $update['description'] = $request->get('desc');
 
 
@@ -207,6 +208,7 @@ class ProgramController extends Controller
                 }
 
             }else{
+//                return 'Insert';
                 /** Insert Data */
                 if (auth()->user()->can('Program Add')) {
                     if ($Program->save()) {
