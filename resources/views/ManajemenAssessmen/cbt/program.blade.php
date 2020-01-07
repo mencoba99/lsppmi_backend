@@ -83,7 +83,7 @@
                                             <label class="col-lg-3 col-form-label">Kategori:</label>
                                             <div class="col-lg-6">
                                                 {!! Form::select('kategori_id',$Kategori,null,['id'=>'kategori_id','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Kategori']) !!}
-                                                {!! Form::text('program_id',null,['id'=>'program_id','class'=>'form-control','hidden'=>'hidden']) !!}
+                                                {!! Form::text('id',null,['id'=>'program_id','class'=>'form-control','hidden'=>'hidden']) !!}
 
                                             </div>
                                         </div>
@@ -144,7 +144,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row metode" style="display:none;">
+                                        <div class="form-group row metode-langsung" style="display:none;">
                                             <label class="col-3 col-form-label">Metode</label>
                                             <div class="col-9">
                                                 <div class="kt-checkbox-inline">
@@ -462,7 +462,8 @@ jQuery(document).ready(function () {
 
         /* Edit Data */
         $("#datatable").on("click", "tr #edit", function () {
-            $("input").val("");
+            // $("input").val("");
+            console.log($(this).data())
             form.resetForm();
             $('#summernote').summernote('destroy');
 
@@ -474,7 +475,7 @@ jQuery(document).ready(function () {
             $("#program_sing_eng").val($(this).data('sing_int'));
             $("#program_sing_ind").val($(this).data('sing_ind'));
             $("#program_harga").val($(this).data('harga'));
-            $("#min_competence").val($(this).data('optCompetence'));
+            $("#min_competence").val($(this).data('minCompetence'));
             $("#opt_competence").val($(this).data('optCompetence'));
 
             $("select#level").val($(this).data('level'));
@@ -505,7 +506,7 @@ jQuery(document).ready(function () {
                             $("#direct").prop('checked', true);
                             if (response.type[0].methods.length > 0 && response.type[0].methods[0] == 'cbt') {
                                 // console.log('nemu cbt');
-                                $("#cbt").prop('checked', true)
+                                $("#cbt").prop('checked', true);
                             }
 
                             if (response.type[0].methods.length > 0 && response.type[0].methods[1] == 'interview') {

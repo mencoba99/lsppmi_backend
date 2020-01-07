@@ -84,7 +84,6 @@ class PreAssessmentController extends Controller
 
     public function viewAllPeserta(ProgramSchedule $jadwalKelas)
     {
-//        return $jadwalKelas;
         return view('ManajemenAssessmen.PreAssessmentController.view-peserta', compact('jadwalKelas'));
     }
 

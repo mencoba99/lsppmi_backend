@@ -76,14 +76,16 @@ class MemberController extends Controller
 			$s = null;
 
 			if ($c->status == 1) {
-				$s = 'Diterima';
+				$s = 'APL01 Disetujui';
 			} else if ($c->status == 2) {
-				$s = 'Menunggu Pembayaran';
-			} else if ($c->status == 3) {
 				$s = 'Menunggu APL02';
-			} else {
-				$s = 'Ditolak';
-			}
+			} else if ($c->status == 3) {
+				$s = 'APL02 Disetujui';
+			} else if ($c->status == 0) {
+				$s = 'Pendaftaran Diterima';
+			} else if ($c->status == 4) {
+			    $s = 'APL02 Ditolak';
+            }
 
 			return $s;
 		})
@@ -138,6 +140,8 @@ class MemberController extends Controller
 			$units = $c->schedules->programs->unit_kompetensi;
 			//dd($units[0]->elements[0]->kuk[0]->kuk02);
 		}
+
+		$chatApl01 =
 
 		return view('ManajemenPeserta.viewAPL01',compact('c', 'units'));
 	}
