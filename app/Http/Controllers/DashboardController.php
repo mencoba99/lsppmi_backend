@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CobaEmail;
 use Illuminate\Http\Request;
+use Mailgun\Mailgun;
 
 class DashboardController extends Controller
 {
@@ -48,5 +50,20 @@ class DashboardController extends Controller
     {
         \Auth::logout();
         return redirect('login');
+    }
+
+    public function testing()
+    {
+        \Mail::to('akmal.squal@gmail.com')->send(new CobaEmail());
+
+//        $mgClient = Mailgun::create('key-7cb73884caad6ac7f19bb87eccecdcea');
+//
+//        $mgClient->messages()->send('devbackend.lsppmi.id', [
+//            'from' => '<noreply@lsppmi.id>',
+//            'to' => 'akmal.squal@gmail.com',
+//            'subject' => 'Tes Email',
+//            'text' => 'COba email'
+//        ]);
+
     }
 }

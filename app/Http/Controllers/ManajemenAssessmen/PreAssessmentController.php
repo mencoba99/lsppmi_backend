@@ -84,7 +84,6 @@ class PreAssessmentController extends Controller
 
     public function viewAllPeserta(ProgramSchedule $jadwalKelas)
     {
-//        return $jadwalKelas;
         return view('ManajemenAssessmen.PreAssessmentController.view-peserta', compact('jadwalKelas'));
     }
 
@@ -111,6 +110,12 @@ class PreAssessmentController extends Controller
         return view('ManajemenAssessmen.PreAssessmentController.view-single-peserta', compact('memberCertification', 'chatApl02', 'direct', 'indirect', 'paap'));
     }
 
+    /**
+     * Proses untuk simpan data chat APL02
+     *
+     * @param Request $request
+     * @param MemberCertification $memberCertification
+     */
     public function saveChatApl02(Request $request, MemberCertification $memberCertification)
     {
         $message = $request->get('message');

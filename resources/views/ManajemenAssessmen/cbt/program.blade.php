@@ -246,6 +246,28 @@
 //validate
 jQuery(document).ready(function () {
     KTBootstrapSelect.init();
+
+    // $('#program_desc').summernote({
+    //     callbacks: {
+    //         onChange: function(contents, $editable) {
+    //             console.log('onChange:', contents, $editable);
+    //         }
+    //     }
+    // });
+
+    // $('.summernote').each(function () {
+    //     var $textArea = $(this);
+    //     // $('.summernote').summernote('code', response.data);
+    //
+    //     $textArea.summernote({
+    //         onKeyup: function (e) {
+    //             console.log($(this).code());
+    //             $textArea.val($(this).code());
+    //             $textArea.change(); //To update any action binded on the control
+    //         }
+    //     });
+    // });
+
     form = $("#form").validate({
         rules: {
             "kategori_id": {
@@ -351,6 +373,7 @@ jQuery(document).ready(function () {
                 //     desc: $(".note-editable").html(),
                 // },
                 beforeSend: function () {
+                    alert($('#program_desc').val());
                     KTApp.block('#add .modal-content', {
                         overlayColor: '#000000',
                         type: 'v2',
@@ -475,7 +498,7 @@ jQuery(document).ready(function () {
         /* Edit Data */
         $("#datatable").on("click", "tr #edit", function () {
             // $("input").val("");
-            console.log($(this).data())
+
             form.resetForm();
             $('#summernote').summernote('destroy');
 
@@ -552,6 +575,7 @@ jQuery(document).ready(function () {
                         //     // if (response.methods[0])
                         // }
                         $('.summernote').summernote('code', response.data);
+                        $('#program_desc').val(response.data);
                         setTimeout(function () {
                             KTApp.unblockPage(); //loading icon
                         }, 2000);
