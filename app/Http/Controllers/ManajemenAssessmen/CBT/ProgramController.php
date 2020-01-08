@@ -191,7 +191,7 @@ class ProgramController extends Controller
 //                    ));
                     $update['type'] = json_encode($arrType);
 //                    $update['harga'] = $request->get('harga');
-                    $update['description'] = $request->get('desc');
+                    $update['description'] = $request->get('program_desc');
 
 
                     if(Program::whereId($request->get('id'))->update($update)){
