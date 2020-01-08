@@ -208,7 +208,7 @@ class AssessorController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param Assessor $assessor
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Assessor $assessor)
     {

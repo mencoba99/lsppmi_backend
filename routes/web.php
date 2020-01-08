@@ -336,6 +336,7 @@ Route::middleware(['auth'])->group(function (){
             Route::get('peserta/sertifikasi/pembayaran/data', 'MemberController@getPaymentData')->name('peserta.pendaftaran.sertifikasi.pembayaran.data');
             Route::put('peserta/sertifikasi/apl01/verify', 'MemberController@verifyAPL01');
             Route::put('peserta/sertifikasi/apl01/reject', 'MemberController@rejectAPL01');
+            Route::post('peserta/sertifikasi/apl01/{member_certification}/saveChatApl01', 'MemberController@saveChatApl01')->name('peserta.pendaftaran.savechatapl01');
         });
 
         Route::group(['prefix'=>'pendaftaran'], function (){

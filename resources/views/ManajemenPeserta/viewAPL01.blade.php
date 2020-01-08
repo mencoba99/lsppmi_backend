@@ -317,102 +317,39 @@
                                 <div class="kt-portlet__body">
                                     <div class="kt-scroll kt-scroll--pull" data-mobile-height="300">
                                         <div class="kt-chat__messages">
-                                            <div class="kt-chat__message">
-                                                <div class="kt-chat__user">
-																<span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-																	<img src="./assets/media/users/100_12.jpg" alt="image">
-																</span>
-                                                    <a href="#" class="kt-chat__username">Jason Muller</span></a>
-                                                    <span class="kt-chat__datetime">2 Hours</span>
-                                                </div>
-                                                <div class="kt-chat__text kt-bg-light-success">
-                                                    How likely are you to recommend our company <br>to your friends and family?
-                                                </div>
-                                            </div>
-                                            <div class="kt-chat__message kt-chat__message--right">
-                                                <div class="kt-chat__user">
-                                                    <span class="kt-chat__datetime">30 Seconds</span>
-                                                    <a href="#" class="kt-chat__username">You</span></a>
-                                                    <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-																	<img src="./assets/media/users/300_21.jpg" alt="image">
-																</span>
-                                                </div>
-                                                <div class="kt-chat__text kt-bg-light-brand">
-                                                    Hey there, we’re just writing to let you know <br>that you’ve been subscribed to a repository on GitHub.
-                                                </div>
-                                            </div>
-                                            <div class="kt-chat__message">
-                                                <div class="kt-chat__user">
-																<span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-																	<img src="./assets/media/users/100_12.jpg" alt="image">
-																</span>
-                                                    <a href="#" class="kt-chat__username">Jason Muller</span></a>
-                                                    <span class="kt-chat__datetime">30 Seconds</span>
-                                                </div>
-                                                <div class="kt-chat__text kt-bg-light-success">
-                                                    Ok, Understood!
-                                                </div>
-                                            </div>
-                                            <div class="kt-chat__message kt-chat__message--right">
-                                                <div class="kt-chat__user">
-                                                    <span class="kt-chat__datetime">Just Now</span>
-                                                    <a href="#" class="kt-chat__username">You</span></a>
-                                                    <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-																	<img src="./assets/media/users/300_21.jpg" alt="image">
-																</span>
-                                                </div>
-                                                <div class="kt-chat__text kt-bg-light-brand">
-                                                    You’ll receive notifications for all issues, pull requests!
-                                                </div>
-                                            </div>
-                                            <div class="kt-chat__message">
-                                                <div class="kt-chat__user">
-																<span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-																	<img src="./assets/media/users/100_12.jpg" alt="image">
-																</span>
-                                                    <a href="#" class="kt-chat__username">Jason Muller</span></a>
-                                                    <span class="kt-chat__datetime">2 Hours</span>
-                                                </div>
-                                                <div class="kt-chat__text kt-bg-light-success">
-                                                    You were automatically <b class="kt-font-brand">subscribed</b> <br>because you’ve been given access to the repository
-                                                </div>
-                                            </div>
-                                            <div class="kt-chat__message kt-chat__message--right">
-                                                <div class="kt-chat__user">
-                                                    <span class="kt-chat__datetime">30 Seconds</span>
-                                                    <a href="#" class="kt-chat__username">You</span></a>
-                                                    <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-																	<img src="./assets/media/users/300_21.jpg" alt="image">
-																</span>
-                                                </div>
-                                                <div class="kt-chat__text kt-bg-light-brand">
-                                                    You can unwatch this repository immediately <br>by clicking here: <a href="#" class="kt-font-bold kt-link">https://github.com</a>
-                                                </div>
-                                            </div>
-                                            <div class="kt-chat__message">
-                                                <div class="kt-chat__user">
-																<span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-																	<img src="./assets/media/users/100_12.jpg" alt="image">
-																</span>
-                                                    <a href="#" class="kt-chat__username">Jason Muller</span></a>
-                                                    <span class="kt-chat__datetime">30 Seconds</span>
-                                                </div>
-                                                <div class="kt-chat__text kt-bg-light-success">
-                                                    Discover what students who viewed Learn Figma - UI/UX Design <br>Essential Training also viewed
-                                                </div>
-                                            </div>
-                                            <div class="kt-chat__message kt-chat__message--right">
-                                                <div class="kt-chat__user">
-                                                    <span class="kt-chat__datetime">Just Now</span>
-                                                    <a href="#" class="kt-chat__username">You</span></a>
-                                                    <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
-																	<img src="./assets/media/users/300_21.jpg" alt="image">
-																</span>
-                                                </div>
-                                                <div class="kt-chat__text kt-bg-light-brand">
-                                                    Most purchased Business courses during this sale!
-                                                </div>
-                                            </div>
+                                            @if ($chatApl01 && $chatApl01->count() > 0)
+                                                @foreach($chatApl01 as $chat)
+                                                    @if (!empty($chat->member_id) && empty($chat->user_id))
+                                                        {{-- Chat dari Peserta  --}}
+                                                        <div class="kt-chat__message kt-bg-light-primary" style="min-width: 55%;">
+                                                            <div class="kt-chat__user">
+                                                        <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
+                                                            <img src="{{ asset('assets/media/users/default.jpg') }}" alt="">
+                                                        </span>
+                                                                <a href="#" class="kt-chat__username">{{ $memberCertification->members->name }}</a>
+                                                                <span class="kt-chat__datetime">{{ $chat->created_at->locale('id_ID')->diffForHumans() }}</span>
+                                                            </div>
+                                                            <div class="kt-chat__text">
+                                                                {{ $chat->message }}
+                                                            </div>
+                                                        </div>
+                                                    @elseif(empty($chat->member_id) && !empty($chat->user_id))
+                                                        {{-- Chat dari Asesor --}}
+                                                        <div class="kt-chat__message kt-chat__message--right kt-bg-light-success" style="min-width: 55%;">
+                                                            <div class="kt-chat__user">
+                                                                <span class="kt-chat__datetime">{{ $chat->created_at->locale('id_ID')->diffForHumans() }}</span>
+                                                                <a href="#" class="kt-chat__username">Saya</a>
+                                                                <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
+                                                                <img src="{{ asset('assets/media/users/default.jpg') }}" alt="Asesor">
+                                                            </span>
+                                                            </div>
+                                                            <div class="kt-chat__text">
+                                                                {{ $chat->message }}
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -423,12 +360,15 @@
                                         </div>
                                         <div class="kt-chat__toolbar">
                                             <div class="kt_chat__tools">
-                                                <a href="#"><i class="flaticon2-link"></i></a>
-                                                <a href="#"><i class="flaticon2-photograph"></i></a>
-                                                <a href="#"><i class="flaticon2-photo-camera"></i></a>
+{{--                                                <a href="#"><i class="flaticon2-link"></i></a>--}}
+{{--                                                <a href="#"><i class="flaticon2-photograph"></i></a>--}}
+{{--                                                <a href="#"><i class="flaticon2-photo-camera"></i></a>--}}
                                             </div>
                                             <div class="kt_chat__actions">
-                                                <button type="button" class="btn btn-brand btn-md btn-upper btn-bold kt-chat__reply">reply</button>
+{{--                                                <button type="button" class="btn btn-brand btn-md btn-upper btn-bold kt-chat__reply">reply</button>--}}
+                                                <button type="button" class="btn btn-brand btn-md btn-font-sm btn-upper btn-bold reply_chat">
+                                                    Kirim pesan
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -450,6 +390,7 @@
 
 @push('script')
 <script type="text/javascript">
+    var parentEl = KTUtil.getByID('kt_chat_content');
     $(document).ready(function() {
         $('#approveAPL01').click(function (e) {
             e.preventDefault();
@@ -497,6 +438,81 @@
                 $('.btn-loading').addClass('kt-spinner kt-spinner--sm kt-spinner--light');
                 form[0].submit(); // submit the form
             }
+        });
+
+
+        /**
+         * Fungsi Chat
+         **/
+
+        var sendMessage = function (e) {
+            var scrollEl = KTUtil.find(parentEl, '.kt-scroll');
+            var messagesEl = KTUtil.find(parentEl, '.kt-chat__messages');
+            var textarea = KTUtil.find(parentEl, '.kt-chat__input textarea');
+
+            if (textarea.value.length === 0) {
+                return;
+            }
+
+            /**
+             * Save chat message to database
+             */
+
+            $.post("{{ route('peserta.pendaftaran.savechatapl01',['member_certification'=>$c]) }}",{message:textarea.value}, function (data) {
+                if (data.status === true) {
+                    var node = document.createElement("DIV");
+                    KTUtil.addClass(node, 'kt-chat__message kt-chat__message--right');
+                    var html =
+                        '<div class="kt-chat__message kt-chat__message--right kt-bg-light-success">' +
+                        '<div class="kt-chat__user">' +
+                        '<span class="kt-chat__datetime">Just now</span>' +
+                        '<a href="#" class="kt-chat__username">{{ auth()->user()->name }}</span></a>' +
+                        '<span class="kt-userpic kt-userpic--circle kt-userpic--sm">' +
+                        '<img src="{{ asset("assets/media/users/default.jpg") }}" alt="image">' +
+                        '</span>' +
+                        '</div>' +
+                        '<div class="kt-chat__text">' +
+                        textarea.value
+                    '</div></div>';
+
+                    KTUtil.setHTML(node, html);
+                    messagesEl.appendChild(node);
+                    // console.log(node);
+                    textarea.value = '';
+                    var ps;
+                    if (ps = KTUtil.data(scrollEl).get('ps')) {
+                        ps.update();
+                    }
+
+                    console.log(scrollEl);
+                    scrollEl.scrollTop = parseInt(KTUtil.css(scrollEl, 'height')) * 10;
+                } else {
+                    alert('Pesan gagal dikirim');
+                }
+
+                $('.reply_chat').text('Kirim pesan').removeClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
+            },'json');
+
+            // ps.update();
+        };
+
+        KTUtil.on(parentEl, '.kt-chat__input textarea', 'keydown', function(e) {
+            if (e.keyCode == 13) {
+                $('.reply_chat').text('Loading...').addClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
+                sendMessage();
+                e.preventDefault();
+
+                return false;
+            }
+        });
+
+        KTUtil.on(parentEl, '.kt-chat__input .reply_chat', 'click', function(e) {
+            $(this).text('Loading...').addClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
+            // console.log(KTUtil.data(scrollEl).get('ps'));
+            sendMessage();
+            e.preventDefault();
+
+            return false;
         });
 
         // $('#remove_image').on('click', function (e) {
