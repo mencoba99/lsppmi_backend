@@ -75,7 +75,9 @@ class ProgramController extends Controller
             $action = "<div class='btn-group'>";
             if (auth()->user()->can('Program Edit')) {
 
-                $action .= '<button id="edit" data-code="'.$Program->code.'" data-status="'.$Program->status.'" data-level="'.$Program->level.'" data-harga="'.$Program->harga.'" data-sing_ind="'.$Program->abbreviation_id.'" data-sing_int="'.$Program->abbreviation_en.'" data-kategori="'.$Program->program_type_id.'" data-id="'.$Program->id.'" data-nama="'.$Program->name.'" data-min-competence="'.$Program->min_competence.'" data-opt-competence="'.$Program->opt_competence.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Program->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+
+                $action .= '<button id="edit" data-persentase_kelulusan="'.$Program->persentase_kelulusan.'"  data-code="'.$Program->code.'" data-status="'.$Program->status.'" data-level="'.$Program->level.'" data-harga="'.$Program->harga.'" data-sing_ind="'.$Program->abbreviation_id.'" data-sing_int="'.$Program->abbreviation_en.'" data-kategori="'.$Program->program_type_id.'" data-id="'.$Program->id.'" data-nama="'.$Program->name.'" data-min-competence="'.$Program->min_competence.'" data-opt-competence="'.$Program->opt_competence.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Program->name . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+
             }
             // $action .= '<button id="hapus"  data-id="'.$Program->id.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete ' . $Program->name . '"><i class="flaticon2 flaticon2-trash"></i></button>';
 
@@ -111,7 +113,7 @@ class ProgramController extends Controller
     public function AjaxProgramGetDesc(Request $request)
     {
         $data = Program::find($request->get('id'));
-
+        
         if ($data) {
             return json_encode(array(
                     "status"=>200,
@@ -145,7 +147,7 @@ class ProgramController extends Controller
 
     public function AjaxProgramInsertData(Request $request)
     {
-            return $request->all();
+
             $Program = new Program();
             $Program->program_type_id = $request->get('kategori_id');
             $Program->code = $request->get('program_code');
@@ -156,7 +158,8 @@ class ProgramController extends Controller
             $Program->opt_competence = $request->get('opt_competence');
             $Program->status = $request->get('status');
             $Program->level = $request->get('level');
-
+            $Program->persentase_kelulusan = $request->get('persentase_kelulusan');
+            
 //            $Program->type = json_encode(array(
 //                "type" =>$request->get('type'),
 //                "methods"=>array($request->get('cbt'), $request->get('interview'))
@@ -185,6 +188,7 @@ class ProgramController extends Controller
                     $update['opt_competence'] = $request->get('opt_competence');
                     $update['level'] = $request->get('level');
                     $update['status'] = $request->get('status');
+                    $update['persentase_kelulusan'] = $request->get('persentase_kelulusan');
 //                    $update['type'] = json_encode(array(
 //                        "type" =>$request->get('type'),
 //                        "message"=>array($request->get('cbt'), $request->get('interview'))
