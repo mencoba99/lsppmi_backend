@@ -2,7 +2,7 @@
 @section('content')
 
 <!-- begin:: Content -->
-<div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+<div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
 
     @include('flash::message')
     <div class="kt-portlet kt-portlet--mobile">
@@ -29,7 +29,7 @@
         <div class="kt-portlet__body">
             {!! Form::open(['url'=>'','id'=>'form-apl01','method'=> 'PUT']) !!}
             <div class="row">
-                <div class="col-6">
+                <div class="col-sm-6">
 
                     {!! Form::hidden('token', $c->token) !!}
                         <div class="row">
@@ -148,7 +148,7 @@
                         </div>
 
                 </div>
-                <div class="col-6">
+                <div class="col-sm-6">
                     <h5 class="black">Unit Kompetensi Dipilih</h5>
                     <ol>
                     @foreach($c->apl01 as $key => $val)
@@ -174,8 +174,8 @@
                             <tr>
                                 <td>1</td>
                                 <td>
-                                    @if ($c->members->ktp_file)
-                                    <a href="{{ $c->members->ktp_file }}">KTP</a>
+                                    @if ($c->members->ktp_file && Storage::exists($c->members->ktp_file))
+                                        <a href="{{ Storage::url($c->members->ktp_file) }}" class="showImageModal" title="KTP {{ $c->members->name }}">KTP</a>
                                     @else
                                     KTP
                                     @endif
@@ -187,10 +187,10 @@
                             <tr>
                                 <td>2</td>
                                 <td>
-                                    @if ($c->members->foto_file)
-                                    <a href="{{ $c->members->foto_file }}">Foto</a>
+                                    @if ($c->members->foto_file && Storage::exists($c->members->foto_file))
+                                        <a href="{{ Storage::url($c->members->foto_file) }}" class="showImageModal" title="Foto {{ $c->members->name }}">Foto</a>
                                     @else
-                                    Foto
+                                        Foto
                                     @endif
                                 </td>
                                 <td class="text-center"><input type="radio" name="foto_verified" value="1" @if($c->members->foto_verified == 1) {{ 'checked' }} @endif></td>
@@ -200,8 +200,8 @@
                             <tr>
                                 <td>3</td>
                                 <td>
-                                    @if ($c->members->ijazah_file)
-                                    <a href="{{ $c->members->ijazah_file }}">Ijazah</a>
+                                    @if ($c->members->ijazah_file && Storage::exists($c->members->ijazah_file))
+                                    <a href="{{ $c->members->ijazah_file }}" class="showImageModal" title="Ijazah {{ $c->members->name }}">Ijazah</a>
                                     @else
                                     Ijazah
                                     @endif
@@ -213,8 +213,8 @@
                             <tr>
                                 <td>4</td>
                                 <td>
-                                    @if ($c->members->skb_file)
-                                    <a href="{{ $c->members->skb_file }}">SKB</a>
+                                    @if ($c->members->skb_file && Storage::exists($c->members->skb_file))
+                                    <a href="{{ $c->members->skb_file }}" class="showImageModal" title="Surat Keterangan Bekerja {{ $c->members->name }}">Surat Keterangan Bekerja</a>
                                     @else
                                     SKB
                                     @endif
@@ -225,6 +225,160 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <hr>
+
+
+                    <!--Begin:: App Content-->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_chat_content">
+                        <div class="kt-chat">
+                            <div class="kt-portlet kt-portlet--head-lg kt-portlet--last">
+                                <div class="kt-portlet__head">
+                                    <div class="kt-chat__head ">
+                                        <div class="kt-chat__left">
+
+                                            <!--end:: Aside Mobile Toggle-->
+                                            {{--                                            <div class="dropdown dropdown-inline">--}}
+                                            {{--                                                <button type="button" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+                                            {{--                                                    <i class="flaticon-more-1"></i>--}}
+                                            {{--                                                </button>--}}
+                                            {{--                                                <div class="dropdown-menu dropdown-menu-fit dropdown-menu-left dropdown-menu-md">--}}
+
+                                            {{--                                                    <!--begin::Nav-->--}}
+                                            {{--                                                    <ul class="kt-nav">--}}
+                                            {{--                                                        <li class="kt-nav__item">--}}
+                                            {{--                                                            <a href="#" class="kt-nav__link">--}}
+                                            {{--                                                                <i class="kt-nav__link-icon flaticon2-group"></i>--}}
+                                            {{--                                                                <span class="kt-nav__link-text">New Group</span>--}}
+                                            {{--                                                            </a>--}}
+                                            {{--                                                        </li>--}}
+                                            {{--                                                        <li class="kt-nav__item">--}}
+                                            {{--                                                            <a href="#" class="kt-nav__link">--}}
+                                            {{--                                                                <i class="kt-nav__link-icon flaticon2-open-text-book"></i>--}}
+                                            {{--                                                                <span class="kt-nav__link-text">Contacts</span>--}}
+                                            {{--                                                            </a>--}}
+                                            {{--                                                        </li>--}}
+                                            {{--                                                        <li class="kt-nav__item">--}}
+                                            {{--                                                            <a href="#" class="kt-nav__link">--}}
+                                            {{--                                                                <i class="kt-nav__link-icon flaticon2-rocket-1"></i>--}}
+                                            {{--                                                                <span class="kt-nav__link-text">Groups</span>--}}
+                                            {{--                                                                <span class="kt-nav__link-badge">--}}
+                                            {{--																				<span class="kt-badge kt-badge--brand kt-badge--inline">new</span>--}}
+                                            {{--																			</span>--}}
+                                            {{--                                                            </a>--}}
+                                            {{--                                                        </li>--}}
+                                            {{--                                                        <li class="kt-nav__item">--}}
+                                            {{--                                                            <a href="#" class="kt-nav__link">--}}
+                                            {{--                                                                <i class="kt-nav__link-icon flaticon2-bell-2"></i>--}}
+                                            {{--                                                                <span class="kt-nav__link-text">Calls</span>--}}
+                                            {{--                                                            </a>--}}
+                                            {{--                                                        </li>--}}
+                                            {{--                                                        <li class="kt-nav__item">--}}
+                                            {{--                                                            <a href="#" class="kt-nav__link">--}}
+                                            {{--                                                                <i class="kt-nav__link-icon flaticon2-dashboard"></i>--}}
+                                            {{--                                                                <span class="kt-nav__link-text">Settings</span>--}}
+                                            {{--                                                            </a>--}}
+                                            {{--                                                        </li>--}}
+                                            {{--                                                        <li class="kt-nav__separator"></li>--}}
+                                            {{--                                                        <li class="kt-nav__item">--}}
+                                            {{--                                                            <a href="#" class="kt-nav__link">--}}
+                                            {{--                                                                <i class="kt-nav__link-icon flaticon2-protected"></i>--}}
+                                            {{--                                                                <span class="kt-nav__link-text">Help</span>--}}
+                                            {{--                                                            </a>--}}
+                                            {{--                                                        </li>--}}
+                                            {{--                                                        <li class="kt-nav__item">--}}
+                                            {{--                                                            <a href="#" class="kt-nav__link">--}}
+                                            {{--                                                                <i class="kt-nav__link-icon flaticon2-bell-2"></i>--}}
+                                            {{--                                                                <span class="kt-nav__link-text">Privacy</span>--}}
+                                            {{--                                                            </a>--}}
+                                            {{--                                                        </li>--}}
+                                            {{--                                                    </ul>--}}
+
+                                            {{--                                                    <!--end::Nav-->--}}
+                                            {{--                                                </div>--}}
+                                            {{--                                            </div>--}}
+
+                                        </div>
+                                        <div class="kt-chat__center">
+                                            <div class="kt-chat__label">
+                                                <a href="javascript:return false;" class="kt-chat__title">{{ $c->members->name }}</a>
+                                                <span class="kt-chat__status">
+                                                    <span class="kt-badge kt-badge--dot kt-badge--success"></span> {{ $c->members->email }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="kt-chat__right">
+                                            <div class="dropdown dropdown-inline">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__body">
+                                    <div class="kt-scroll kt-scroll--pull" data-mobile-height="300">
+                                        <div class="kt-chat__messages">
+                                            @if ($chatApl01 && $chatApl01->count() > 0)
+                                                @foreach($chatApl01 as $chat)
+                                                    @if (!empty($chat->member_id) && empty($chat->user_id))
+                                                        {{-- Chat dari Peserta  --}}
+                                                        <div class="kt-chat__message kt-bg-light-primary" style="min-width: 55%;">
+                                                            <div class="kt-chat__user">
+                                                        <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
+                                                            <img src="{{ asset('assets/media/users/default.jpg') }}" alt="">
+                                                        </span>
+                                                                <a href="#" class="kt-chat__username">{{ $memberCertification->members->name }}</a>
+                                                                <span class="kt-chat__datetime">{{ $chat->created_at->locale('id_ID')->diffForHumans() }}</span>
+                                                            </div>
+                                                            <div class="kt-chat__text">
+                                                                {{ $chat->message }}
+                                                            </div>
+                                                        </div>
+                                                    @elseif(empty($chat->member_id) && !empty($chat->user_id))
+                                                        {{-- Chat dari Asesor --}}
+                                                        <div class="kt-chat__message kt-chat__message--right kt-bg-light-success" style="min-width: 55%;">
+                                                            <div class="kt-chat__user">
+                                                                <span class="kt-chat__datetime">{{ $chat->created_at->locale('id_ID')->diffForHumans() }}</span>
+                                                                <a href="#" class="kt-chat__username">Saya</a>
+                                                                <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
+                                                                <img src="{{ asset('assets/media/users/default.jpg') }}" alt="Asesor">
+                                                            </span>
+                                                            </div>
+                                                            <div class="kt-chat__text">
+                                                                {{ $chat->message }}
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="kt-chat__input">
+                                        <div class="kt-chat__editor">
+                                            <textarea style="height: 50px" placeholder="Type here..."></textarea>
+                                        </div>
+                                        <div class="kt-chat__toolbar">
+                                            <div class="kt_chat__tools">
+{{--                                                <a href="#"><i class="flaticon2-link"></i></a>--}}
+{{--                                                <a href="#"><i class="flaticon2-photograph"></i></a>--}}
+{{--                                                <a href="#"><i class="flaticon2-photo-camera"></i></a>--}}
+                                            </div>
+                                            <div class="kt_chat__actions">
+{{--                                                <button type="button" class="btn btn-brand btn-md btn-upper btn-bold kt-chat__reply">reply</button>--}}
+                                                <button type="button" class="btn btn-brand btn-md btn-font-sm btn-upper btn-bold reply_chat">
+                                                    Kirim pesan
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--End:: App Content-->
+
                 </div>
             </div>
             {!! Form::close() !!}
@@ -236,6 +390,7 @@
 
 @push('script')
 <script type="text/javascript">
+    var parentEl = KTUtil.getByID('kt_chat_content');
     $(document).ready(function() {
         $('#approveAPL01').click(function (e) {
             e.preventDefault();
@@ -283,6 +438,81 @@
                 $('.btn-loading').addClass('kt-spinner kt-spinner--sm kt-spinner--light');
                 form[0].submit(); // submit the form
             }
+        });
+
+
+        /**
+         * Fungsi Chat
+         **/
+
+        var sendMessage = function (e) {
+            var scrollEl = KTUtil.find(parentEl, '.kt-scroll');
+            var messagesEl = KTUtil.find(parentEl, '.kt-chat__messages');
+            var textarea = KTUtil.find(parentEl, '.kt-chat__input textarea');
+
+            if (textarea.value.length === 0) {
+                return;
+            }
+
+            /**
+             * Save chat message to database
+             */
+
+            $.post("{{ route('peserta.pendaftaran.savechatapl01',['member_certification'=>$c]) }}",{message:textarea.value}, function (data) {
+                if (data.status === true) {
+                    var node = document.createElement("DIV");
+                    KTUtil.addClass(node, 'kt-chat__message kt-chat__message--right');
+                    var html =
+                        '<div class="kt-chat__message kt-chat__message--right kt-bg-light-success">' +
+                        '<div class="kt-chat__user">' +
+                        '<span class="kt-chat__datetime">Just now</span>' +
+                        '<a href="#" class="kt-chat__username">{{ auth()->user()->name }}</span></a>' +
+                        '<span class="kt-userpic kt-userpic--circle kt-userpic--sm">' +
+                        '<img src="{{ asset("assets/media/users/default.jpg") }}" alt="image">' +
+                        '</span>' +
+                        '</div>' +
+                        '<div class="kt-chat__text">' +
+                        textarea.value
+                    '</div></div>';
+
+                    KTUtil.setHTML(node, html);
+                    messagesEl.appendChild(node);
+                    // console.log(node);
+                    textarea.value = '';
+                    var ps;
+                    if (ps = KTUtil.data(scrollEl).get('ps')) {
+                        ps.update();
+                    }
+
+                    console.log(scrollEl);
+                    scrollEl.scrollTop = parseInt(KTUtil.css(scrollEl, 'height')) * 10;
+                } else {
+                    alert('Pesan gagal dikirim');
+                }
+
+                $('.reply_chat').text('Kirim pesan').removeClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
+            },'json');
+
+            // ps.update();
+        };
+
+        KTUtil.on(parentEl, '.kt-chat__input textarea', 'keydown', function(e) {
+            if (e.keyCode == 13) {
+                $('.reply_chat').text('Loading...').addClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
+                sendMessage();
+                e.preventDefault();
+
+                return false;
+            }
+        });
+
+        KTUtil.on(parentEl, '.kt-chat__input .reply_chat', 'click', function(e) {
+            $(this).text('Loading...').addClass('kt-spinner kt-spinner--v2 kt-spinner--sm kt-spinner--light');
+            // console.log(KTUtil.data(scrollEl).get('ps'));
+            sendMessage();
+            e.preventDefault();
+
+            return false;
         });
 
         // $('#remove_image').on('click', function (e) {
