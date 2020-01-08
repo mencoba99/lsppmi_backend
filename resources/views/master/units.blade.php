@@ -82,7 +82,7 @@
                                             ','required'=>'required']) !!}
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    {{-- <div class="form-group row">
                                         <label class="col-lg-3 col-form-label">Persentase Kelulusan:</label>
                                         <div class="col-lg-4">
                                             <div class="input-group right-text">
@@ -93,7 +93,7 @@
                                                         id="btnGroupAddon2">%.</span></div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label">Type Program:</label>
                                         <div class="col-lg-6">
@@ -255,7 +255,7 @@
                 $("#id").val($(this).data('id'));
                 $("#name").val($(this).data('name'));
                 $("#code").val($(this).data('code'));
-                $("#persentase_kelulusan").val($(this).data('persen'));
+                // $("#persentase_kelulusan").val($(this).data('persen'));
                 $("select#type").val($(this).data('type'));
                 if($(this).data('status') == 1) {
                     console.log('checked');

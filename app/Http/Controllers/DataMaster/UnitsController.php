@@ -32,7 +32,7 @@ class UnitsController extends Controller
         $Units->name = $request->get('name');
         $Units->code = $request->get('code');
         $Units->status = $request->get('status');
-        $Units->persentase_kelulusan = $request->get('persentase_kelulusan');
+        // $Units->persentase_kelulusan = $request->get('persentase_kelulusan');
         if($request->get('status')==1){
             $Units->type = 1;
         }else{
@@ -47,7 +47,7 @@ class UnitsController extends Controller
             $update['name'] = $request->get('name');
             $update['code'] = $request->get('code');
             $update['type'] = $request->get('type');
-            $update['persentase_kelulusan'] = $request->get('persentase_kelulusan');
+            // $update['persentase_kelulusan'] = $request->get('persentase_kelulusan');
             $update['status'] = $request->get('status') ? 1 : 0;
 
             if(Units::whereId($request->get('id'))->update($update)){
@@ -88,7 +88,7 @@ class UnitsController extends Controller
         return DataTables::of($Units)->addColumn('action', function (Units $Units) {
             $action = "<div class='btn-group'>";
             if (auth()->user()->can('Unit Kompetensi Edit')) {
-                $action .= '<button id="edit" data-persen="'.$Units->persentase_kelulusan.'" data-id="'.$Units->id.'" data-status="'.$Units->status.'"  data-name="'.$Units->name.'" data-code="'.$Units->code.'" data-type="'.$Units->type.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Units->nm_Units . '"><i class="flaticon2 flaticon2-pen"></i></button>';
+                $action .= '<button id="edit" data-id="'.$Units->id.'" data-status="'.$Units->status.'"  data-name="'.$Units->name.'" data-code="'.$Units->code.'" data-type="'.$Units->type.'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit ' . $Units->nm_Units . '"><i class="flaticon2 flaticon2-pen"></i></button>';
             }
             $action .= "</div>";
 			return $action;
