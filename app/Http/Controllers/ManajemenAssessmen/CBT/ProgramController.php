@@ -145,7 +145,7 @@ class ProgramController extends Controller
 
     public function AjaxProgramInsertData(Request $request)
     {
-//            return $request->all();
+            return $request->all();
             $Program = new Program();
             $Program->program_type_id = $request->get('kategori_id');
             $Program->code = $request->get('program_code');
