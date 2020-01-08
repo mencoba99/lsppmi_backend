@@ -3,22 +3,20 @@
 namespace App\Http\Controllers\ManajemenPeserta;
 
 use App\Http\Controllers\Controller;
+use App\Models\MemberCertificationChat;
+use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Log;
-
 use DB;
 use Mail;
-
 use App\Mail\APL01Verified;
 use App\Mail\APL01Rejected;
 use App\Mail\PaymentVerified;
 use App\Mail\SendVerificationEmail;
 use App\Mail\SendPaymentEmail;
-
 use App\Models\Member;
 use App\Models\MemberCertification;
 use App\Models\MemberCertificationPayment;
-
 use App\Jobs\CreateAPL02;
 
 class MemberController extends Controller
@@ -28,11 +26,23 @@ class MemberController extends Controller
 
 	}
 
+    /**
+     * Controller halaman Peserta
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function index()
 	{
 		return view('ManajemenPeserta.index');
 	}
 
+    /**
+     * Controller untuk get data peserta (Ajax call)
+     *
+     * @param DataTables $dataTables
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
 	public function getPesertaData(DataTables $dataTables)
 	{
 		$data = Member::query();
@@ -141,10 +151,36 @@ class MemberController extends Controller
 			//dd($units[0]->elements[0]->kuk[0]->kuk02);
 		}
 
-		$chatApl01 =
+		$chatApl01 = MemberCertificationChat::apl01Chat($c->id)->get();
 
-		return view('ManajemenPeserta.viewAPL01',compact('c', 'units'));
+		return view('ManajemenPeserta.viewAPL01',compact('c', 'units', 'chatApl01'));
 	}
+
+    /**
+     * @param Request $request
+     * @param MemberCertification $memberCertification
+     */
+    public function saveChatApl01(Request $request, MemberCertification $memberCertification)
+    {
+        $message = $request->get('message');
+
+        $chat = new MemberCertificationChat();
+
+        $chat->member_certification_id = $memberCertification->id;
+        $chat->user_id                 = auth()->user()->id;
+        $chat->message                 = $message;
+        $chat->chat_type               = 1;
+
+        $result = ['status' => false, 'data' => null];
+
+        if ($chat->save()) {
+            $chat->load('asesor');
+            $result['status'] = true;
+            $result['data']   = $chat;
+        }
+
+        echo json_encode($result);
+    }
 
 	public function verifyAPL01()
 	{
