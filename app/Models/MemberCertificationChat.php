@@ -36,7 +36,7 @@ class MemberCertificationChat extends Revisionable
             });
         }
 
-        return $query->where('member_certification_id', $member_certification_id);
+        return $query->where('member_certification_id', $member_certification_id)->where('chat_type',1);
     }
 
     public function asesor()
