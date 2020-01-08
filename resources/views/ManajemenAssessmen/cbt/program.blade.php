@@ -373,7 +373,7 @@ jQuery(document).ready(function () {
                 //     desc: $(".note-editable").html(),
                 // },
                 beforeSend: function () {
-                    alert($('#program_desc').val());
+                   // alert($('#program_desc').val());
                     KTApp.block('#add .modal-content', {
                         overlayColor: '#000000',
                         type: 'v2',
