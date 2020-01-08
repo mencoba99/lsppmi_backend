@@ -123,9 +123,21 @@
                                                 {!! Form::text('opt_competence',null,['id'=>'opt_competence','class'=>'form-control ','required'=>'required']) !!}
                                             </div>
                                         </div>
+                                         <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Persentase Kelulusan:</label>
+                                        <div class="col-lg-2">
+                                            <div class="input-group right-text">
+                                                {!!
+                                                Form::number('persentase_kelulusan',null,['id'=>'persentase_kelulusan','class'=>'form-control
+                                                ','required'=>'required']) !!}
+                                                <div class="input-group-prepend"><span class="input-group-text"
+                                                        id="btnGroupAddon2">%.</span></div>
+                                            </div>
+                                        </div>
+                                        </div>
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label">Level:</label>
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-2">
                                                 {!! Form::select('level',$level,null,['id'=>'level','class'=>'form-control input-sm kt-selectpicker','required'=>'required','data-live-search'=>"true",'placeholder'=>'Pilih Level']) !!}
                                             </div>
                                         </div>
@@ -486,12 +498,13 @@ jQuery(document).ready(function () {
         /* Edit Data */
         $("#datatable").on("click", "tr #edit", function () {
             // $("input").val("");
-            // console.log($(this).data());
+
             form.resetForm();
             $('#summernote').summernote('destroy');
 
             $("#program_id").val($(this).data('id'));
             $("select#kategori_id").val($(this).data('kategori'));
+            $("#persentase_kelulusan").val($(this).data('persentase_kelulusan'));
             $("#program_name").val($(this).data('nama'));
             $("#program_code").val($(this).data('code'));
             $("#status").val($(this).data('status'));
@@ -518,7 +531,7 @@ jQuery(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-
+                    
                     if (response.status === 200) {
                         // console.log(response.type[0]);
                         // console.log($.inArray('direct', response.type[0]));

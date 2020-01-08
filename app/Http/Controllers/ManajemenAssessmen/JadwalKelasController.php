@@ -7,6 +7,8 @@ use App\Models\Assessor;
 use App\Models\JadwalKelas;
 use App\Models\Ujian\Parameter;
 use App\Models\Program;
+use App\Models\MgtProgram;
+use App\Models\CompetenceUnit;
 use App\Models\Batch_modul_dtl;
 use App\Models\ProgramSchedule;
 use App\Models\TUK;
@@ -175,15 +177,16 @@ class JadwalKelasController extends Controller
                 /** Save to  */
                 $last_batch_id = $jadwalKelas->id;
                 $program_id = $request->program_id;
-                $modul_id   = DB::table('program_mgt')->where('program_id', $program_id)->where('status', 1)->pluck('modul_id')->unique();
-                $moduls     = DB::table('competence_units')->whereIn('id', $modul_id)->get();
+                $moduls   = MgtProgram::where('program_id', $program_id)->where('status', 1)->get();
+                // $moduls     = DB::table('competence_units')->whereIn('id', $modul_id)->get();
                 // @insert tbl:batch_modul_dtl
                 foreach ($moduls as $modul) {
+                    $Modul = CompetenceUnit::where('id', $modul->modul_id)->first();
                     $modul_dtl                             = new Batch_modul_dtl;
                     $modul_dtl->batch_id                   = $last_batch_id;
-                    $modul_dtl->modul_id                   = $modul->id;
-                    $modul_dtl->nama_modul                 = $modul->name;
-                    $modul_dtl->persentase_kelulusan_modul = $modul->persentase_kelulusan;
+                    $modul_dtl->modul_id                   = $modul->modul_id;
+                    $modul_dtl->nama_modul                 = $Modul->name;
+                    $modul_dtl->persentase_kelulusan_modul = $modul->program->persentase_kelulusan;
                     $modul_dtl->save();
                 }
 
