@@ -36,10 +36,15 @@ table#kt_table_1 > tfoot{
     display: table-header-group;
 }
 
+.modal-dialog.modal-xl {
+    max-width: 90%!important;
+}
+
 /** Untuk Modal */
 @media (min-width: 1400px) {
     .modal-dialog.modal-xl {
-        max-width: 90%; }
+        max-width: 90%!important;
+    }
 }
 #mod-iframe-large .modal-body {
     padding: 1px;

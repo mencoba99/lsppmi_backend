@@ -52,7 +52,7 @@
                                 <i class="la la-briefcase"></i> FR APL-02
                             </a>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content"
                                role="tab" aria-selected="false">
                                 <i class="la la-bell-o"></i> FR PAAP-01
@@ -79,6 +79,12 @@
 
                             @endif
                         @endif
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_6_tab_content"
+                               role="tab" aria-selected="false">
+                                <i class="la la-save"></i> REKAMAN ASESMEN
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -478,7 +484,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane active" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
+                    <div class="tab-pane" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
                         <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">
@@ -1104,6 +1110,242 @@
                         </div>
                     </div>
                     @endif
+                    <div class="tab-pane active" id="kt_portlet_base_demo_1_6_tab_content" role="tabpanel">
+                        <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        FR.AC.01. FORMULIR REKAMAN ASESMEN KOMPETENSI
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar" style="align-items: center!important;">
+                                    <div class="kt-portlet__head-actions">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kt-portlet__body">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td width="25%">Nama Asesi</td>
+                                        <td>{{ $memberCertification->members->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nama Asesor</td>
+                                        <td>{{ $memberCertification->assessor->name ?? 'No asesor' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Skema sertifikasi Okupasi/ Kualifikasi/ Klaster</td>
+                                        <td>{{ $memberCertification->schedules->program->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tanggal mulainya asesmen</td>
+                                        <td>{{ date("d, F Y", strtotime($memberCertification->schedules->started_at)) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Keputusan Asesmen</td>
+                                        <td>
+                                            <input data-switch="true" type="checkbox" checked="checked" data-on-text="Kompeten" data-handle-width="70" data-off-text="Belum Kompeten" data-on-color="brand" data-off-color="warning">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tindak lanjut yang dibutuhkan (Masukkan pekerjaan tambahan dan asesmen yang diperlukan untuk mencapai kompetensi) </td>
+                                        <td>
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio kt-radio--success">
+                                                    <input type="radio" name="tindak_lanjut" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 1) ? 'checked':''):'' }} value="1">
+                                                    Seluruh Elemen Kompetensi/Kriteria Unjuk Kerja (KUK) yang diujikan telah tercapai
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio kt-radio--success">
+                                                    <input type="radio" name="tindak_lanjut" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 2) ? 'checked':''):'' }} value="2">
+                                                    Terdapat Elemen Kompetensi/Kriteria Unjuk Kerja (KUK) yang diujikan belum tercapai Pada Elemen / Kriteria Unjuk Kerja   :
+                                                    <span></span>
+                                                </label>
+                                                <br><br>
+
+                                                <!--begin::Portlet-->
+                                                <div class="kt-portlet ">
+                                                    <div class="kt-portlet__head">
+                                                        <div class="kt-portlet__head-label">
+                                                            <h3 class="kt-portlet__head-title">
+                                                                Daftar Unit Kompetensi
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-portlet__body">
+
+                                                        <!--begin::Accordion-->
+                                                        <div class="accordion accordion-solid accordion-toggle-plus" id="accordionTindakLanjut">
+                                                            <div class="card">
+                                                                <div class="card-header" id="headingOne6">
+                                                                    <div class="card-title" data-toggle="collapse" data-target="#uktindaklanjut" aria-expanded="false" aria-controls="collapseOne6">
+                                                                        <i class="flaticon-more"></i> Unit Kompetensi
+                                                                    </div>
+                                                                </div>
+                                                                <div id="uktindaklanjut" class="collapse" aria-labelledby="headingOne6" data-parent="#accordionTindakLanjut">
+                                                                    <div class="card-body">
+
+                                                                        <table class="table table-bordered">
+                                                                            @if ($memberCertification->apl01 && $memberCertification->apl01->count() > 0)
+                                                                                @php($noUk=1)
+                                                                                @foreach($memberCertification->apl01 as $item)
+                                                                                    <tr class="bg-light">
+                                                                                        <td><strong>Unit Kompetensi: {{ $noUk }} {{ $item->puk->uk->name }}</strong> </td>
+                                                                                    </tr>
+                                                                                    @if ($item->puk->uk->elements && $item->puk->uk->elements->count() > 0)
+                                                                                        @php($noElemen=1)
+                                                                                        @foreach($item->puk->uk->elements as $element)
+                                                                                            <tr>
+                                                                                                <td style="text-indent:20px;">
+                                                                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                                                                        <input type="checkbox" name="elemen_tindak_lanjut[]" value="{{ $element->id }}"> <strong>Elemen :</strong> {{ $noElemen }} : {{ $element->name }}
+                                                                                                        <span></span>
+                                                                                                    </label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            @if ($element->kuk)
+                                                                                                @php($nokuk=1)
+                                                                                                @foreach($element->kuk as $kuk)
+                                                                                                    <tr>
+                                                                                                        <td style="text-indent:40px;">
+                                                                                                            <label class="kt-checkbox kt-checkbox--success">
+                                                                                                                <input type="checkbox" name="kuk_tindak_lanjut[]" value="{{ $kuk->id }}"> KUK : {{ $nokuk }} {{ $kuk->name }}
+                                                                                                                <span></span>
+                                                                                                            </label>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    @php($nokuk++)
+                                                                                                @endforeach
+                                                                                            @endif
+                                                                                            @php($noElemen++)
+                                                                                        @endforeach
+                                                                                    @endif
+                                                                                    @php($noUk++)
+                                                                                @endforeach
+                                                                            @else
+                                                                                Tidak ada Data Unit Kompetensi
+                                                                            @endif
+                                                                        </table>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!--end::Accordion-->
+                                                    </div>
+                                                </div>
+
+                                                <!--end::Portlet-->
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Komentar/ Observasi oleh asesor </td>
+                                        <td>
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio kt-radio--success">
+                                                    <input type="radio" name="tindak_lanjut" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 1) ? 'checked':''):'' }} value="1">
+                                                    Tingkatkan kompetensi anda atau ambil kompetensi pada kualifikasi berikutnya
+                                                    <span></span>
+                                                </label> <br>
+                                                <label class="kt-radio kt-radio--success">
+                                                    <input type="radio" name="tindak_lanjut" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 2) ? 'checked':''):'' }} value="2">
+                                                    Perlu dilakukan asesmen ulang pada unit kompetensi :
+                                                    <span></span>
+                                                </label>
+                                                <br><br>
+
+                                                <!--begin::Portlet-->
+                                                <div class="kt-portlet ">
+                                                    <div class="kt-portlet__head">
+                                                        <div class="kt-portlet__head-label">
+                                                            <h3 class="kt-portlet__head-title">
+                                                                Daftar Unit Kompetensi
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-portlet__body">
+
+                                                        <!--begin::Accordion-->
+                                                        <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
+                                                            <div class="card">
+                                                                <div class="card-header" id="headingOne6">
+                                                                    <div class="card-title" data-toggle="collapse" data-target="#ukkomentarasesor" aria-expanded="false" aria-controls="collapseOne6">
+                                                                        <i class="flaticon-more"></i> Unit Kompetensi
+                                                                    </div>
+                                                                </div>
+                                                                <div id="ukkomentarasesor" class="collapse" aria-labelledby="headingOne6" data-parent="#accordionExample6">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-bordered">
+                                                                            @if ($memberCertification->apl01 && $memberCertification->apl01->count() > 0)
+                                                                                @php($noUk=1)
+                                                                                @foreach($memberCertification->apl01 as $item)
+                                                                                    <tr class="bg-light">
+                                                                                        <td><strong>Unit Kompetensi: {{ $noUk }} {{ $item->puk->uk->name }}</strong> </td>
+                                                                                    </tr>
+                                                                                    @if ($item->puk->uk->elements && $item->puk->uk->elements->count() > 0)
+                                                                                        @php($noElemen=1)
+                                                                                        @foreach($item->puk->uk->elements as $element)
+                                                                                            <tr>
+                                                                                                <td style="text-indent:20px;">
+                                                                                                    <label class="kt-checkbox kt-checkbox--success">
+                                                                                                        <input type="checkbox" name="elemen_komentar_asesor[]" value="{{ $element->id }}"> <strong>Elemen :</strong> {{ $noElemen }} : {{ $element->name }}
+                                                                                                        <span></span>
+                                                                                                    </label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            @if ($element->kuk)
+                                                                                                @php($nokuk=1)
+                                                                                                @foreach($element->kuk as $kuk)
+                                                                                                    <tr>
+                                                                                                        <td style="text-indent:40px;">
+                                                                                                            <label class="kt-checkbox kt-checkbox--success">
+                                                                                                                <input type="checkbox" name="kuk_komentar_asesor[]" value="{{ $kuk->id }}"> KUK : {{ $nokuk }} {{ $kuk->name }}
+                                                                                                                <span></span>
+                                                                                                            </label>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    @php($nokuk++)
+                                                                                                @endforeach
+                                                                                            @endif
+                                                                                            @php($noElemen++)
+                                                                                        @endforeach
+                                                                                    @endif
+                                                                                    @php($noUk++)
+                                                                                @endforeach
+                                                                            @else
+                                                                                Tidak ada Data Unit Kompetensi
+                                                                            @endif
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!--end::Accordion-->
+                                                    </div>
+                                                </div>
+
+                                                <!--end::Portlet-->
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="kt-portlet__foot">
+                                <div class="kt-form__actions">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a href="#" class="btn btn-success btn-lg pull-right btnSimpanInterview">Simpan Data Rekaman Asesmen</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1395,6 +1637,9 @@
                     form[0].submit(); // submit the form
                 }
             });
+
+            /** Rekaman Asesmen */
+            $('[data-switch=true]').bootstrapSwitch();
 
         });
     </script>
