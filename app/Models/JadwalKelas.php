@@ -18,7 +18,7 @@ class JadwalKelas extends Revisionable
     protected $fillable = [
         'token', 'program_id', 'competence_place_id', 'price', 'min_participants', 'max_participants', 'training_duration',
         'exam_duration', 'started_at', 'is_hidden', 'is_approve', 'date_approve', 'approved_by', 'is_publish', 'date_publish',
-        'status', 'date_closed', 'closed_by', 'remark'
+        'status', 'date_closed', 'closed_by', 'remark', 'registration_closed', 'date_registration_closed'
     ];
 
     public function scopeActive($query)
