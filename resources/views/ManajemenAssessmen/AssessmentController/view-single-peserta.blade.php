@@ -431,12 +431,14 @@
                                                             <td rowspan="{{ ($element->kuk->count() + 1) }}">
                                                                 @if ($item->proof)
                                                                     @php($noFile=1)
-                                                                    @foreach($item->proof['files'] as $file)
-                                                                        @if ($file && Storage::exists(key($file)))
-                                                                            <a href="{{ Storage::url(key($file)) }}" class="showDocument">{{ $noFile }}. {{ $file[key($file)] }}</a>
-                                                                        @endif
-                                                                        @php($noFile++)
-                                                                    @endforeach
+                                                                    @if ($item->proof['files'])
+                                                                        @foreach($item->proof['files'] as $file)
+                                                                            @if ($file && Storage::exists(key($file)))
+                                                                                <a href="{{ Storage::url(key($file)) }}" class="showDocument">{{ $noFile }}. {{ $file[key($file)] }}</a>
+                                                                            @endif
+                                                                            @php($noFile++)
+                                                                        @endforeach
+                                                                    @endif
                                                                     {{--                                                                @php($arrProof=GeneralHelper::getAPL01File($item->proof))--}}
                                                                     {{--                                                                @if ($arrProof)--}}
                                                                     {{--                                                                    @foreach($arrProof as $proof)--}}
