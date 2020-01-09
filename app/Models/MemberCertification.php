@@ -71,4 +71,9 @@ class MemberCertification extends Revisionable
     {
         return $this->hasMany('App\Models\MemberCertificationInterview');
     }
+
+    public function rekaman()
+    {
+        return $this->hasOne('App\Models\MemberCertificationRekaman', 'member_certification_id', 'id');
+    }
 }

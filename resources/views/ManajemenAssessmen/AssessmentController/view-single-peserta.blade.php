@@ -1124,6 +1124,7 @@
                                 </div>
                             </div>
                             <div class="kt-portlet__body">
+                                {!! Form::open(['url'=>route('asesmen.rekaman.save',['member_certification'=>$memberCertification->id]),'name'=>'formRekaman','id'=>'formRekaman']) !!}
                                 <table class="table table-bordered">
                                     <tr>
                                         <td width="25%">Nama Asesi</td>
@@ -1144,7 +1145,7 @@
                                     <tr>
                                         <td>Keputusan Asesmen</td>
                                         <td>
-                                            <input data-switch="true" type="checkbox" checked="checked" data-on-text="Kompeten" data-handle-width="70" data-off-text="Belum Kompeten" data-on-color="brand" data-off-color="warning">
+                                            <input name="rekomendasi_asesor" data-switch="true" id="is_kompeten" type="checkbox" checked data-on-text="Kompeten" data-handle-width="70" data-off-text="Belum Kompeten" data-on-color="brand" data-off-color="warning">
                                         </td>
                                     </tr>
                                     <tr>
@@ -1246,12 +1247,12 @@
                                         <td>
                                             <div class="kt-radio-inline">
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="tindak_lanjut" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 1) ? 'checked':''):'' }} value="1">
+                                                    <input type="radio" name="komentar_asesor" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 1) ? 'checked':''):'' }} value="1">
                                                     Tingkatkan kompetensi anda atau ambil kompetensi pada kualifikasi berikutnya
                                                     <span></span>
                                                 </label> <br>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="tindak_lanjut" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 2) ? 'checked':''):'' }} value="2">
+                                                    <input type="radio" name="komentar_asesor" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 2) ? 'checked':''):'' }} value="2">
                                                     Perlu dilakukan asesmen ulang pada unit kompetensi :
                                                     <span></span>
                                                 </label>
@@ -1334,12 +1335,70 @@
                                         </td>
                                     </tr>
                                 </table>
+
+                                <h6>Beri tanda centang ( &#x2713; ) di kolom yang sesuai untuk mencerminkan bukti yang diperoleh untuk menentukan Kompetensi Asesi untuk setiap Unit Kompetensi.</h6>
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Unit Kompetensi</th>
+                                        <th width="10%">Observasi Demonstrasi</th>
+                                        <th width="10%">Portfolio</th>
+                                        <th width="10%">Pernyataan pihak ketiga</th>
+                                        <th width="10%">Pertanyaan Lisan</th>
+                                        <th width="10%">Pertanyaan Tertulis</th>
+                                        <th width="10%">Proyek Kerja</th>
+                                        <th width="10%">Lainnya</th>
+                                    </tr>
+                                    </thead>
+                                    @if ($memberCertification->apl01 && $memberCertification->apl01->count() > 0)
+                                        @php($noUk=1)
+                                        @foreach($memberCertification->apl01 as $item)
+                                            @if(is_object($memberCertification->paap) && $memberCertification->paap->metode_asesmen == 1)
+                                                <tr>
+                                                    <td>Unit Kompetensi: {{ $noUk }} {{ $item->puk->uk->name }}</td>
+                                                    <td><i class="la la-check"></i></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><i class="la la-check"></i></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            @elseif(is_object($memberCertification->paap) && $memberCertification->paap->metode_asesmen == 2)
+                                                <tr>
+                                                    <td>Unit Kompetensi: {{ $noUk }} {{ $item->puk->uk->name }}</td>
+                                                    <td></td>
+                                                    <td><i class="la la-check"></i></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><i class="la la-check"></i></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td>Unit Kompetensi: {{ $noUk }} {{ $item->puk->uk->name }}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            @endif
+                                            @php($noUk++)
+                                        @endforeach
+                                    @endif
+                                </table>
+                                {!! Form::close() !!}
                             </div>
                             <div class="kt-portlet__foot">
                                 <div class="kt-form__actions">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <a href="#" class="btn btn-success btn-lg pull-right btnSimpanInterview">Simpan Data Rekaman Asesmen</a>
+                                            <a href="#" class="btn btn-success btn-lg pull-right btnSimpanRekaman">Simpan Data Rekaman Asesmen</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1641,6 +1700,27 @@
             /** Rekaman Asesmen */
             $('[data-switch=true]').bootstrapSwitch();
 
+
+            $(document).on('click', '.btnSimpanRekaman', function (e) {
+                e.preventDefault();
+                swal.fire({
+                    title: 'Simpan Interview/Wawancara ?',
+                    text: 'Apakah Anda yakin untuk menyimpan data Rekaman Asesmen ?',
+                    type: 'info',
+                    allowOutsideClick: true,
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn-info',
+                    cancelButtonClass: 'btn-danger',
+                    // closeOnConfirm: true,
+                    // closeOnCancel: true,
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                }).then(function(result){
+                    document.formRekaman.submit();
+                });
+            });
+            $("#is_kompeten").bootstrapSwitch('state', true);
         });
     </script>
 @endpush
