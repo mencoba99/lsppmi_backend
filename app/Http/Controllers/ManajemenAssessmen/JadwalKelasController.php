@@ -566,7 +566,7 @@ class JadwalKelasController extends Controller
         } else {
             flash()->error('Maaf, Anda tidak mempunyai akses untuk Menutup pendaftaran Jadwal Kelas');
         }
-//        return redirect()->route('jadwal-kelas.register.view', ['jadwal_kelas' => $jadwalKelas]);
+        return redirect()->route('jadwal-kelas.register.view', ['jadwal_kelas' => $jadwalKelas]);
     }
 
     /**
