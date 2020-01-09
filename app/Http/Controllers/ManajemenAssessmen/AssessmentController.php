@@ -8,6 +8,7 @@ use App\Models\DataMaster\Lisan;
 use App\Models\DataMaster\Tertulis;
 use App\Models\MemberCertification;
 use App\Models\MemberCertificationInterview;
+use App\Models\MemberCertificationRekaman;
 use App\Models\ProgramSchedule;
 use App\Models\StartUjian\Peserta_jawab;
 use App\Models\StartUjian\Soal_peserta;
@@ -319,10 +320,10 @@ class AssessmentController extends Controller
                     $interview = new MemberCertificationInterview();
 
                     $interview->member_certification_id = $memberCertification->id;
-                    $interview->$pertanyaan_field = $item;
-                    $interview->kesimpulan        = $kesimpulan[ $item ];
-                    $interview->is_kompeten       = $is_kompeten[ $item ];
-                    $interview->urutan            = $urutan;
+                    $interview->$pertanyaan_field       = $item;
+                    $interview->kesimpulan              = $kesimpulan[ $item ];
+                    $interview->is_kompeten             = $is_kompeten[ $item ];
+                    $interview->urutan                  = $urutan;
                     $urutan++;
 
                     if ($interview->save()) {
@@ -334,6 +335,38 @@ class AssessmentController extends Controller
             }
         } else {
             flash()->error('Silahkan pilih pertanyaan terlebih dahulu');
+        }
+
+        return redirect()->route('asesmen.viewsinglepeserta', ['member_certification' => $memberCertification]);
+    }
+
+    public function saveRekaman(Request $request, MemberCertification $memberCertification)
+    {
+        /** Gathering Data */
+        $tindak_lanjut        = $request->get('tindak_lanjut');
+        $elemen_tindak_lanjut = $request->get('elemen_tindak_lanjut');
+        $kuk_tindak_lanjut    = $request->get('kuk_tindak_lanjut');
+
+        $komentar_asesor        = $request->get('komentar_asesor');
+        $elemen_komentar_asesor = $request->get('elemen_komentar_asesor');
+        $kuk_komentar_asesor    = $request->get('kuk_komentar_asesor');
+
+        $arrTindakLanjut   = ['tindak_lanjut' => $tindak_lanjut, 'elemen' => $elemen_tindak_lanjut, 'kuk' => $kuk_tindak_lanjut];
+        $arrKomentarAsesor = ['komentar_asesor' => $komentar_asesor, 'elemen' => $elemen_komentar_asesor, 'kuk' => $kuk_komentar_asesor];
+
+
+        $rekaman = new MemberCertificationRekaman();
+
+        $rekaman->member_certification_id = $memberCertification->id;
+        $rekaman->rekomendasi_asesor      = $request->get('rekomendasi_asesor');
+        $rekaman->tindak_lanjut           = $arrTindakLanjut;
+        $rekaman->komentar_asesor         = $arrKomentarAsesor;
+
+        /** Proses Simpan */
+        if ($rekaman->save()) {
+            flash()->success('Berhasil menyimpan data Rekaman Asesmen');
+        } else {
+            flash()->error('Gagal menyimpan data Rekaman Asesmen');
         }
 
         return redirect()->route('asesmen.viewsinglepeserta', ['member_certification' => $memberCertification]);
