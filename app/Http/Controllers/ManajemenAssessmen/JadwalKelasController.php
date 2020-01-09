@@ -120,8 +120,8 @@ class JadwalKelasController extends Controller
             $jadwalKelas = null;
             $programs    = Program::selectRaw("CONCAT(name,'( ',code,' ) ',' ') AS name, id")->active()->get()->pluck('name', 'id')->prepend('', '');
             $tuk         = TUK::active()->get()->pluck('name', 'id')->prepend('', '');
-            
-           
+
+
             $parameter         = Parameter::active()->get()->pluck('name', 'ujian_parameter_id')->prepend('', '');
             $assessor    = Assessor::active()->get()->pluck('name', 'id');
             // return $parameter ; exit;
@@ -160,7 +160,7 @@ class JadwalKelasController extends Controller
                  }
             }
 
-           
+
             $token                          = \Str::random(16);
             $jadwalKelas->token             = $token;
             $jadwalKelas->aktif             = true;
@@ -219,7 +219,7 @@ class JadwalKelasController extends Controller
         ->where('ps.registration_closed', 0)
         ->select('ps.id as schedule_id', 'p.code', 'p.name', 'cp.name as place', 'ps.started_at')
         ->get();
-        
+
         $jadwalKelas->classes = $classes;
         return view('ManajemenAssessmen.JadwalKelasController.show', compact('jadwalKelas'));
     }
@@ -254,7 +254,7 @@ class JadwalKelasController extends Controller
      */
     public function update(Request $request, ProgramSchedule $jadwalKelas)
     {
-       
+
         if (auth()->user()->can('Jadwal Kelas Edit')) {
             $request->validate([
                                    'program_id'          => 'required',
@@ -268,7 +268,7 @@ class JadwalKelasController extends Controller
                                ]);
             /** @var  $update | get semua value POST dari form edit */
              $update = $request->all();
-           
+
             /** Cek nilai untuk kolom field dan is_hidden , karena jika di uncentang maka value tidak ada di data yang di lempar di $request */
             $status              = $request->get('status');
             $update['status']    = empty($status) ? '0' : $status;
@@ -280,7 +280,7 @@ class JadwalKelasController extends Controller
             /** Get Assessor */
             $assessor_ids = $request->get('assessor_id');
             $assessor_ids = Arr::flatten($assessor_ids);
-                
+
             if ($jadwalKelas->update($update)) {
                 $jadwalKelas->assessor()->sync($assessor_ids);
                 flash()->success('Berhasil mengubah data Jadwal Kelas');
@@ -445,6 +445,16 @@ class JadwalKelasController extends Controller
             }
 
             return $action;
+        })->editColumn('registration_closed', function (ProgramSchedule $programSchedule) {
+            $status = '';
+            if ($programSchedule->registration_closed == 1) {
+                $status = "<span class='kt-badge kt-badge--inline kt-badge--danger'>Pendaftaran Ditutup</span>";
+            } else {
+                $status = "<span class='kt-badge kt-badge--inline kt-badge--brand'>Pendaftaran Dibuka</span>";
+            }
+            return $status;
+        })->addColumn('testing', function (ProgramSchedule $programSchedule) {
+            return 'aaaa';
         })->escapeColumns([])->make(true);
 
         return $jadwalKelasJson;
@@ -510,6 +520,60 @@ class JadwalKelasController extends Controller
         }
     }
 
+    /**
+     * Halaman proses peutupan pendaftaran kelas
+     *
+     * @param Request $request
+     * @param ProgramSchedule $programSchedule
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function registerView(Request $request, $id)
+    {
+        if (auth()->user()->can('Jadwal Kelas Close Register')) {
+            $jadwalKelas = ProgramSchedule::find($id);
+            return view('ManajemenAssessmen.JadwalKelasController.register-view', compact('jadwalKelas'));
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Publish Kelas');
+            return redirect('/');
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function registerJadwalKelas(Request $request, $id, $status)
+    {
+        $jadwalKelas = ProgramSchedule::find($id);
+        if (auth()->user()->can('Jadwal Kelas Close Register')) {
+            if ($status == 'tutuppendaftaran') {
+                $update = ['registration_closed' => 1, 'date_registration_closed' => date('Y-m-d H:i:s')];
+                if ($jadwalKelas->update($update)) {
+                    flash()->success('Berhasil Menutup Pendaftaran Jadwal Kelas');
+                } else {
+                    flash()->error('Gagal Menutup Pendaftaran Jadwal Kelas');
+                }
+            } elseif ($status == 'bukapendaftaran') {
+                $update = ['registration_closed' => '0', 'date_registration_closed' => 'NULL'];
+                if ($jadwalKelas->update($update)) {
+                    flash()->success('Berhasil Membatalkan Penutupan Pendaftaran Jadwal Kelas');
+                } else {
+                    flash()->error('Gagal Membatalkan Penutupan Pendaftaran Jadwal Kelas');
+                }
+            }
+        } else {
+            flash()->error('Maaf, Anda tidak mempunyai akses untuk Menutup pendaftaran Jadwal Kelas');
+        }
+//        return redirect()->route('jadwal-kelas.register.view', ['jadwal_kelas' => $jadwalKelas]);
+    }
+
+    /**
+     * @param DataTables $dataTables
+     * @return mixed
+     * @throws \Exception
+     */
     public function getJadwalKelasNotCloseRegisterData(DataTables $dataTables)
     {
         $jadwalKelas = ProgramSchedule::where('is_approve', 1)->where('status', 1)->where('is_publish', 1)->orderBy('id', 'desc')->get();
@@ -526,11 +590,24 @@ class JadwalKelasController extends Controller
             }
 
             return $action;
+        })->editColumn('registration_closed', function (ProgramSchedule $programSchedule) {
+            $status = '';
+            if ($programSchedule->registration_closed == 1) {
+                $status = "<span class='kt-badge kt-badge--inline kt-badge--danger'>Pendaftaran Ditutup</span>";
+            } else {
+                $status = "<span class='kt-badge kt-badge--inline kt-badge--brand'>Pendaftaran Dibuka</span>";
+            }
+            return $status;
+        })->addColumn('jml_pendaftar', function (ProgramSchedule $programSchedule) {
+            return $programSchedule->pendaftar()->count();
         })->escapeColumns([])->make(true);
 
         return $jadwalKelasJson;
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function transfer()
     {
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -539,7 +616,7 @@ class JadwalKelasController extends Controller
         try {
             $scheduleFrom = ProgramSchedule::findOrFail(request('program_schedule_id'));
             $scheduleTo = ProgramSchedule::findOrFail(request('program_schedule_id_to'));
-            
+
             $certFrom = MemberCertification::findOrFail(request('member_certification_id'));
             $apl01From = MemberCertificationAPL01::where('member_certification_id', request('member_certification_id'))->get();
             $apl02From = MemberCertificationAPL02::where('member_certification_id', request('member_certification_id'))->get();
@@ -622,7 +699,6 @@ class JadwalKelasController extends Controller
         return redirect()->back();
     }
 
-
     /**
      * Halaman index untuk proses approval kelas
      *
@@ -664,7 +740,7 @@ class JadwalKelasController extends Controller
         return $jadwalKelasJson;
     }
 
-   
+
 
     /**
      * Proses Approval & Batalkan Approve Jadwal Kelas
@@ -674,7 +750,7 @@ class JadwalKelasController extends Controller
      * @param $status
      * @return \Illuminate\Http\RedirectResponse
      */
-    
+
     public function ujianJadwalKelas(Request $request)
     {
         if (auth()->user()->can('Jadwal Kelas Open Ujian')) {
@@ -682,7 +758,7 @@ class JadwalKelasController extends Controller
                 return json_encode(array(
                     "status"=>200,
                     "message"=>"sukses"
-                ));  
+                ));
             }
         }
     }

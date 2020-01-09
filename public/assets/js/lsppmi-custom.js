@@ -91,7 +91,7 @@ $(document).ready(function() {
             $(this).find('iframe').attr('src', url);
 
             var tinggi = $(window).height() - 220;
-            if (fwidth == "") { fwidth = '80%'; }
+            if (fwidth == "") { fwidth = '90%'; }
 
             $(this).attr('data-after-close', afterClose);
 
