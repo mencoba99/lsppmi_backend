@@ -201,7 +201,7 @@
                                 <td>3</td>
                                 <td>
                                     @if ($c->members->ijazah_file && Storage::exists($c->members->ijazah_file))
-                                    <a href="{{ $c->members->ijazah_file }}" class="showImageModal" title="Ijazah {{ $c->members->name }}">Ijazah</a>
+                                    <a href="{{ Storage::url($c->members->ijazah_file) }}" class="showImageModal" title="Ijazah {{ $c->members->name }}">Ijazah</a>
                                     @else
                                     Ijazah
                                     @endif
@@ -214,7 +214,7 @@
                                 <td>4</td>
                                 <td>
                                     @if ($c->members->skb_file && Storage::exists($c->members->skb_file))
-                                    <a href="{{ $c->members->skb_file }}" class="showImageModal" title="Surat Keterangan Bekerja {{ $c->members->name }}">Surat Keterangan Bekerja</a>
+                                    <a href="{{ Storage::url($c->members->skb_file) }}" class="showImageModal" title="Surat Keterangan Bekerja {{ $c->members->name }}">Surat Keterangan Bekerja</a>
                                     @else
                                     SKB
                                     @endif
