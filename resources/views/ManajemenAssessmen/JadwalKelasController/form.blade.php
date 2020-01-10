@@ -58,8 +58,17 @@
                         <div class="form-group row">
                             <label class="col-3 col-form-label">Tanggal Ujian</label>
                             <div class="col-3">
-                                {!! Form::text('started_at',(!empty($jadwalKelas) ? $jadwalKelas->started_at:null),['class'=>'form-control','id'=>'kt_datepicker_1','placeholder'=>'Tanggal Ujian']) !!}
+                                {!! Form::text('started_at',(!empty($jadwalKelas) ? $jadwalKelas->started_at:null),['class'=>'form-control','id'=>'kt_datetimepicker_1','placeholder'=>'Tanggal Ujian']) !!}
                                 <small class="form-text text-muted">Masukkan informasi durasi assessmen dalam hitungan hari</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-section__body">
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label">Tanggal Penutupan Pendaftaran</label>
+                            <div class="col-3">
+                                {!! Form::text('date_registration_closed',(!empty($jadwalKelas) ? $jadwalKelas->date_registration_closed:null),['class'=>'form-control','id'=>'kt_datepicker_2','placeholder'=>'Tanggal Penutupan Pendaftaran']) !!}
+                                <small class="form-text text-muted">Masukkan tanggal penutupan pendaftaran</small>
                             </div>
                         </div>
                     </div>
@@ -244,16 +253,33 @@
                 orientation: "bottom left",
                 templates: 'arrows'
             });
+            // datepicker minimum setup
+            $('#kt_datepicker_2').datepicker({
+                rtl: KTUtil.isRTL(),
+                todayBtn: "linked",
+                clearBtn: true,
+                format: "yyyy-mm-dd",
+                todayHighlight: true,
+                orientation: "bottom left",
+                templates: 'arrows'
+            });
+
+            // minimal setup
+            $('#kt_datetimepicker_1').datetimepicker({
+                todayHighlight: true,
+                autoclose: true,
+                format: 'yyyy-mm-dd hh:ii:ss'
+            });
 
             $('select.program_id').on('change', function () {
-             
+
                 $.ajax({
                 type: "POST",
                 url: "{{ route('jadwal-kelas.cekProgram') }}",
                 data: {
                     'id'      : $(this).val(),
                 },
-                
+
                 beforeSend: function () {
 
                     // KTApp.block('#add .modal-content', {
@@ -262,13 +288,13 @@
                     // state: 'primary',
                     // message: 'Processing...'
                     // });
-                   
+
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
-                   
+
                     // alert(JSON.stringify(data));
                     if(data=='direct'){
                         $('.row-ujian').show();
