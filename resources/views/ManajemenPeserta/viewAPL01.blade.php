@@ -326,7 +326,7 @@
                                                         <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
                                                             <img src="{{ asset('assets/media/users/default.jpg') }}" alt="">
                                                         </span>
-                                                                <a href="#" class="kt-chat__username">{{ $memberCertification->members->name }}</a>
+                                                                <a href="#" class="kt-chat__username">{{ $c->members->name }}</a>
                                                                 <span class="kt-chat__datetime">{{ $chat->created_at->locale('id_ID')->diffForHumans() }}</span>
                                                             </div>
                                                             <div class="kt-chat__text">
