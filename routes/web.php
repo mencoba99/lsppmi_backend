@@ -290,6 +290,8 @@ Route::middleware(['auth'])->group(function (){
             Route::get('pre-assessment','PreAssessmentController@index')->name('pre-assessment.index');
             Route::post('pre-assessment/getdata','PreAssessmentController@getPreAssessmentData')->name('pre-assessment.getdata');
             Route::get('pre-assessment/{jadwal_kelas}/view-allpeserta','PreAssessmentController@viewAllPeserta')->name('pre-assessment.viewallpeserta');
+            Route::get('pre-assessment/{jadwal_kelas}/create-paap', 'PreAssessmentController@createPaap')->name('pre-assessment.createpaap');
+            Route::post('pre-assessment/{jadwal_kelas}/save-template-paap', 'PreAssessmentController@saveTemplatePaap')->name('pre-assessment.savetemplatepaap');
             Route::get('pre-assessment/{member_certification}/view-singlepeserta','PreAssessmentController@viewSinglePeserta')->name('pre-assessment.viewsinglepeserta');
             Route::post('pre-assessment/{member_certification}/send-chat-apl02','PreAssessmentController@saveChatApl02')->name('pre-assessment.savechatapl02');
             Route::get('pre-assessment/{member_certification}/approve-apl02/{status}','PreAssessmentController@approveAPL02')->name('pre-assessment.approveapl02');

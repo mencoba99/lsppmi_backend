@@ -36,6 +36,7 @@
                         <th>Program</th>
                         <th>TUK</th>
                         <th>Harga</th>
+                        <th>Jumlah Peserta</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -45,6 +46,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td class="nosearch"></td>
                     <td class="nosearch"></td>
                     <td class="nosearch"></td>
                     </tfoot>
@@ -83,6 +85,7 @@
                     {data: 'tuk.name', name: 'tuk.name', title: 'Tempat Uji Kompetensi'},
                     {data: 'program.name', name: 'program.name', title: 'Program'},
                     {data: 'price', name: 'price', title: 'Harga'},
+                    {data: 'jml_peserta', name: 'jml_peserta', title: 'Harga'},
                     {data: 'status', name: 'status', title: 'Status'},
                     {data: 'action', responsivePriority: -1},
                 ],

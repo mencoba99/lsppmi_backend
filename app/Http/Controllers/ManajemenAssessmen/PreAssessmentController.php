@@ -10,6 +10,7 @@ use App\Models\MemberCertificationChat;
 use App\Models\MemberCertificationPaap;
 use App\Models\Pendaftaran_trx;
 use App\Models\ProgramSchedule;
+use App\Models\ProgramSchedulePaap;
 use Arr;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -90,14 +91,20 @@ class PreAssessmentController extends Controller
     public function viewSinglePeserta(MemberCertification $memberCertification)
     {
         $chatApl02 = MemberCertificationChat::apl02Chat($memberCertification->id)->get();
+
         $paap = $memberCertification->paap;
 
-//        return count($memberCertification->schedules->program->type);
+        /** Get PAAP Template */
+        $paapTemplate = ProgramSchedulePaap::where('program_schedule_id', $memberCertification->schedules->id)->first();
+
+        /** Jika PAAP belum diisi ambil data dari PAAP Template */
+        if (!is_object($paap)) {
+            $paap = $paapTemplate;
+        }
+
         $direct = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
-//            return $value;
             return ($value['type'] == 'direct');
         });
-//        return $direct['type'];
         $direct = Arr::get($direct, '0.methods');
 
         $indirect = \Arr::where($memberCertification->schedules->program->type, function ($value, $key) {
@@ -244,6 +251,7 @@ class PreAssessmentController extends Controller
             'status' => false,
             'message' => 'Gagal menyimpan data PAAP'
         ];
+
         if (auth()->user()->can('Validasi APL-02')) {
             /**
              * Cek apakah Paap Sudah ada atau belum
@@ -295,7 +303,7 @@ class PreAssessmentController extends Controller
             }
 
         } else {
-            flash()->error('Maaf Anda tidak mempunyai akses untuk Approval APL02');
+            flash()->error('Maaf Anda tidak mempunyai akses untuk mengisi PAAP');
         }
         return redirect()->route('pre-assessment.viewsinglepeserta', ['member_certification' => $memberCertification]);
     }
@@ -343,5 +351,88 @@ class PreAssessmentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function createPaap(ProgramSchedule $jadwalKelas)
+    {
+//        return $jadwalKelas->program->unit_kompetensi;
+
+//        return count($memberCertification->schedules->program->type);
+        $direct = \Arr::where($jadwalKelas->program->type, function ($value, $key) {
+//            return $value;
+            return ($value['type'] == 'direct');
+        });
+//        return $direct['type'];
+        $direct = Arr::get($direct, '0.methods');
+
+        $indirect = \Arr::where($jadwalKelas->program->type, function ($value, $key) {
+            if (!empty($value['type'])) {
+                return ($value['type'] == 'indirect');
+            } else return null;
+        });
+        $indirect = !empty($indirect) ? Arr::get($indirect, '1.methods'):[];
+
+        $paap = ProgramSchedulePaap::where('program_schedule_id', $jadwalKelas->id)->first();
+        return view('ManajemenAssessmen.PreAssessmentController.form-paap', compact('jadwalKelas', 'paap', 'direct', 'indirect'));
+    }
+
+    public function saveTemplatePaap(Request $request, ProgramSchedule $jadwalKelas)
+    {
+        if (auth()->user()->hasRole('Assessor')) {
+
+            /** Cek dulu apakah sudah ada Data */
+            $cek = ProgramSchedulePaap::where('program_schedule_id', $jadwalKelas->id)->first();
+            if ($cek && $cek->count() > 0) {
+                /**
+                 * Jika sudah ada data, update data
+                 */
+                $update = [
+                    'pa_asesi'          => $request->get('pa_asesi'),
+                    'pa_tujuan_asesmen' => $request->get('pa_tujuan_asesmen'),
+                    'pa_konteks_asesmen' => $request->get('pa_konteks_asesmen'),
+                    'pa_orang_relevan' => $request->get('pa_orang_relevan'),
+                    'pa_tolak_ukur' => $request->get('pa_tolak_ukur'),
+                    'metode_asesmen' => $request->get('metode_asesmen'),
+                    'mk_1' => $request->get('mk_1'),
+                    'mk_2' => $request->get('mk_2'),
+                    'mk_3' => $request->get('mk_3'),
+                    'mk_4' => $request->get('mk_4'),
+                ];
+
+                if ($cek->update($update)) {
+                    flash()->success('Berhasil memperbarui form PAAP');
+                } else {
+                    flash()->error('Gagal memperbarui form PAAP');
+                }
+
+            } else {
+                /**
+                 * Jika belum ada data maka actionnya INSERT
+                 */
+                $paap = new ProgramSchedulePaap();
+
+                $paap->program_schedule_id     = $jadwalKelas->id;
+                $paap->pa_asesi                = $request->get('pa_asesi');
+                $paap->pa_tujuan_asesmen       = $request->get('pa_tujuan_asesmen');
+                $paap->pa_konteks_asesmen      = $request->get('pa_konteks_asesmen');
+                $paap->pa_orang_relevan        = $request->get('pa_orang_relevan');
+                $paap->pa_tolak_ukur           = $request->get('pa_tolak_ukur');
+                $paap->metode_asesmen          = $request->get('metode_asesmen');
+                $paap->mk_1                    = $request->get('mk_1');
+                $paap->mk_2                    = $request->get('mk_2');
+                $paap->mk_3                    = $request->get('mk_3');
+                $paap->mk_4                    = $request->get('mk_4');
+
+                if ($paap->save()) {
+                    flash()->success('Berhasil simpan form PAAP');
+                } else {
+                    flash()->error('Gagal simpan form PAAP');
+                }
+            }
+
+        } else {
+            flash()->error('Maaf Anda tidak mempunyai akses untuk mengisi PAAP');
+        }
+        return redirect()->route('pre-assessment.createpaap', ['jadwal_kelas'=>$jadwalKelas]);
     }
 }

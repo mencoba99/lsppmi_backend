@@ -96,6 +96,8 @@ class AssessmentController extends Controller
             }
 
             return $status;
+        })->addColumn('jml_peserta', function (ProgramSchedule $programSchedule) {
+            return $programSchedule->pendaftar->count();
         })->escapeColumns([])->make(true);
 
         return $jadwalKelasJson;
@@ -165,6 +167,7 @@ class AssessmentController extends Controller
         $perdana_peserta_id = Perdana_peserta::where('peserta_id', $peserta_id)->whereIn('ujian_batch_id', $ujian_batch_id)->pluck('perdana_peserta_id');
 //        return $perdana_peserta_id;
         $soal_peserta_id = Soal_peserta::whereIn('perdana_peserta_id', $perdana_peserta_id)->get();
+//        return $soal_peserta_id->pluck('soal_peserta_id');
 
         $total_soal = Peserta_jawab::whereIn('soal_peserta_id', $soal_peserta_id->pluck('soal_peserta_id'))->get();
 
@@ -175,7 +178,7 @@ class AssessmentController extends Controller
         $pertanyaan_tertulis = Tertulis::where('status', 1)->get();
 
         return view('ManajemenAssessmen.AssessmentController.view-single-peserta', compact('memberCertification', 'direct', 'indirect', 'paap', 'ujian_detail', 'total_soal'
-            , 'pertanyaan_lisan', 'pertanyaan_tertulis', 'ujian_batch_id', 'perdana_peserta_id'));
+            , 'pertanyaan_lisan', 'pertanyaan_tertulis', 'ujian_batch_id', 'perdana_peserta_id', 'soal_peserta_id'));
     }
 
     /**

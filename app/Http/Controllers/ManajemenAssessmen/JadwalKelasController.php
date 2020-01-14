@@ -297,7 +297,8 @@ class JadwalKelasController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function delete($id)
     {
@@ -317,7 +318,7 @@ class JadwalKelasController extends Controller
     /**
      * Halaman index untuk proses approval kelas
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function approveIndex()
     {
@@ -739,8 +740,6 @@ class JadwalKelasController extends Controller
 
         return $jadwalKelasJson;
     }
-
-
 
     /**
      * Proses Approval & Batalkan Approve Jadwal Kelas
