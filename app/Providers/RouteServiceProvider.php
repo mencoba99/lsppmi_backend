@@ -31,7 +31,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('unit_kompetensi', \App\Models\CompetenceUnit::class);
         Route::model('pengaturan_kompetensi', \App\Models\ProgramCompetenceUnit::class);
         Route::model('jadwal_kela', \App\Models\ProgramSchedule::class);
-        Route::model('jadwal_kelas', \App\Models\ProgramSchedule::class);
+//        Route::model('jadwal_kelas', \App\Models\ProgramSchedule::class);
     }
 
     /**

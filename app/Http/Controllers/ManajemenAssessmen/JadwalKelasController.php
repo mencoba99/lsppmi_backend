@@ -367,6 +367,7 @@ class JadwalKelasController extends Controller
      */
     public function approveView(Request $request, $id)
     {
+//        return  $request;
         if (auth()->user()->can('Jadwal Kelas Approve')) {
             $jadwalKelas = ProgramSchedule::find($id);
             return view('ManajemenAssessmen.JadwalKelasController.approve-view', compact('jadwalKelas'));
