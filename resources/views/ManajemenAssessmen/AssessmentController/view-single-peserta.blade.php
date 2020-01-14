@@ -60,7 +60,7 @@
                         </li>
                         @if(in_array('cbt', $direct))
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_4_tab_content"
+                                <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_4_tab_content"
                                    role="tab" aria-selected="false">
                                     <i class="la la-desktop"></i> HASIL UJIAN CBT
                                 </a>
@@ -80,7 +80,7 @@
                             @endif
                         @endif
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_6_tab_content"
+                            <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_6_tab_content"
                                role="tab" aria-selected="false">
                                 <i class="la la-save"></i> REKAMAN ASESMEN
                             </a>
@@ -958,7 +958,7 @@
                         </div>
                     </div>
                     @if(in_array('cbt', $direct))
-                    <div class="tab-pane" id="kt_portlet_base_demo_1_4_tab_content" role="tabpanel">
+                    <div class="tab-pane active" id="kt_portlet_base_demo_1_4_tab_content" role="tabpanel">
                         <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">
@@ -990,17 +990,21 @@
                                     @foreach($ujian_detail as $dtl)
                                         <?php
 //                                            dd($ujian_batch_id);
-                                            $modul_soal = \DB::table('modul_soal')->where('modul_id',$dtl->modul_id)->get();
-                                             $ujian_modul_id = \DB::table('ujian_modul')->where('modul_id', $dtl->modul_id)->where('ujian_batch_id', $ujian_batch_id)->first();
+                                                $modul_soal = \DB::table('modul_soal')->where('modul_id',$dtl->modul_id)->get();
+                                                $ujian_modul_id = \DB::table('ujian_modul')->where('modul_id', $dtl->modul_id)->where('ujian_batch_id', $ujian_batch_id)->first();
 //                                             dd($ujian_modul_id);
 //                                            $ujian_modul_id = null;
-                                            $soal_peserta_id = \DB::table('soal_peserta')->where('ujian_modul_id', $ujian_modul_id->ujian_modul_id)->first();
+//                                            $soal_peserta_id = \DB::table('soal_peserta')->where('ujian_modul_id', $ujian_modul_id->ujian_modul_id)->get();
+//                                            dd($soal_peserta_id->pluck('soal_peserta_id'));
+
+                                             /** Get Element */
+                                            $elementCbt = \App\Models\Element::where('competence_unit_id', $dtl->modul_id)->get();
                                         ?>
                                         <tr>
-                                            <td>{{ $no }} {{ $dtl->modul_id }}</td>
-                                            <td>{{ $dtl->nama_modul }}</td>
-                                            <td align="right">{{ \App\Models\StartUjian\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->where('soal_peserta_id', $soal_peserta_id->soal_peserta_id)->count() }}</td>
-                                            {{--                                                    <td align="right">{{ \App\Models\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->where('soal_peserta_id', $soal_peserta_id->soal_peserta_id)->where('is_bener', true)->count() }}</td>--}}
+                                            <td>{{ $no }}</td>
+                                            <td>{{ $dtl->nama_modul }} {{ // $modul_soal->pluck('soal_id') }}</td>
+                                            <td align="right">{{ \App\Models\StartUjian\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->whereIn('soal_peserta_id', $soal_peserta_id->pluck('soal_peserta_id') )->count() }}</td>
+                                            {{-- <td align="right">{{ \App\Models\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->where('soal_peserta_id', $soal_peserta_id->soal_peserta_id)->where('is_bener', true)->count() }}</td>--}}
                                             <td align="right">{{ \DB::table('soal_peserta')->where('ujian_modul_id', $ujian_modul_id->ujian_modul_id)->where('perdana_peserta_id', $perdana_peserta_id)->first()->nilai }}</td>
                                             <td align="right">{{ $dtl->nilai }}%</td>
                                         </tr>
@@ -1112,7 +1116,7 @@
                         </div>
                     </div>
                     @endif
-                    <div class="tab-pane active" id="kt_portlet_base_demo_1_6_tab_content" role="tabpanel">
+                    <div class="tab-pane" id="kt_portlet_base_demo_1_6_tab_content" role="tabpanel">
                         <div class="kt-portlet kt-portlet--bordered kt-portlet--responsive-mobile">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">

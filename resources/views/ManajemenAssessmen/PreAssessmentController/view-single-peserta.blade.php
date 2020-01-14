@@ -796,16 +796,16 @@
                                         <td colspan="11"><h5>2. Rencana Asesmen</h5></td>
                                     </tr>
 
-                                    @if ($memberCertification->apl01 && $memberCertification->apl01->count() > 0)
+                                    @if ($memberCertification->schedules->program->unit_kompetensi && $memberCertification->schedules->program->unit_kompetensi->count() > 0)
                                         @php($noUk=1)
-                                        @foreach($memberCertification->apl01 as $item)
+                                        @foreach($memberCertification->schedules->program->unit_kompetensi as $item)
                                             <tr class="bg-light">
                                                 <td>Unit Kompetensi</td>
-                                                <td colspan="10">: {{ $item->puk->uk->name }}</td>
+                                                <td colspan="10">: {{ $item->name }}</td>
                                             </tr>
-                                            @if ($item->puk->uk->elements && $item->puk->uk->elements->count() > 0)
+                                            @if ($item->elements && $item->elements->count() > 0)
                                                 @php($noElemen=1)
-                                                @foreach($item->puk->uk->elements as $element)
+                                                @foreach($item->elements as $element)
                                                     <tr>
                                                         <td><strong>ELEMEN</strong></td>
                                                         <td colspan="10">: {{ $element->name }}</td>

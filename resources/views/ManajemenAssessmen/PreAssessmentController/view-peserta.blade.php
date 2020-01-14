@@ -80,6 +80,21 @@
                 <table class="table table-striped- table-bordered table-hover table-checkable" id="">
                     <thead>
                     <tr>
+                        <th colspan="2">Pengaturan PAAP</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a href="{{ route('pre-assessment.createpaap',['jadwal_kelas'=>$jadwalKelas->id]) }}" class="btn btn-info btn-lg btn-block modalIframe"><i class="la la-file-text"></i> Buat Form PAAP Untuk Kelas Ini</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-striped- table-bordered table-hover table-checkable" id="">
+                    <thead>
+                    <tr>
                         <th>Data Peserta</th>
                     </tr>
                     </thead>

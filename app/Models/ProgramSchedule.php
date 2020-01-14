@@ -58,4 +58,9 @@ class ProgramSchedule extends Revisionable
     {
         return $this->hasMany('App\Models\MemberCertification');
     }
+
+    public function paap()
+    {
+        return $this->hasOne('App\Models\ProgramSchedulePaap');
+    }
 }
