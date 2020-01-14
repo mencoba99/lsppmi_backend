@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\Revisionable;
 
-class MemberCertificationPaap extends Revisionable
+class ProgramSchedulePaap extends Revisionable
 {
+    use SoftDeletes;
+
     /** Untuk config Revision Log */
     protected $revisionCleanup          = true;
     protected $revisionCreationsEnabled = true;
@@ -20,16 +23,16 @@ class MemberCertificationPaap extends Revisionable
             'pa_orang_relevan'   => 'json',
         ];
 
-    protected $table = 'member_certification_paap';
+    protected $table = 'program_schedule_paap';
 
     protected $fillable
         = [
-            'member_certification_id', 'member_id', 'pa_asesi', 'pa_tujuan_asesmen', 'pa_konteks_asesmen', 'pa_orang_relevan',
+            'program_schedule_id', 'pa_asesi', 'pa_tujuan_asesmen', 'pa_konteks_asesmen', 'pa_orang_relevan',
             'pa_tolak_ukur', 'metode_asesmen', 'mk_1', 'mk_2', 'mk_3', 'mk_4', 'asesor_id', 'validated_by', 'is_completed'
         ];
 
-    public function member_certification()
+    public function program_schedule()
     {
-        return $this->belongsTo('App\Models\MemberCertification', 'member_certification_id', 'id');
+        return $this->belongsTo('App\Models\ProgramSchedule');
     }
 }
