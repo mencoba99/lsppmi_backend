@@ -1002,7 +1002,7 @@
                                         ?>
                                         <tr>
                                             <td>{{ $no }}</td>
-                                            <td>{{ $dtl->nama_modul }} {{ // $modul_soal->pluck('soal_id') }}</td>
+                                            <td>{{ $dtl->nama_modul }}</td>
                                             <td align="right">{{ \App\Models\StartUjian\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->whereIn('soal_peserta_id', $soal_peserta_id->pluck('soal_peserta_id') )->count() }}</td>
                                             {{-- <td align="right">{{ \App\Models\Peserta_jawab::whereIn('soal_id', $modul_soal->pluck('soal_id'))->where('soal_peserta_id', $soal_peserta_id->soal_peserta_id)->where('is_bener', true)->count() }}</td>--}}
                                             <td align="right">{{ \DB::table('soal_peserta')->where('ujian_modul_id', $ujian_modul_id->ujian_modul_id)->where('perdana_peserta_id', $perdana_peserta_id)->first()->nilai }}</td>
