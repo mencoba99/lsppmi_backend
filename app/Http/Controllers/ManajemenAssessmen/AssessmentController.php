@@ -177,8 +177,13 @@ class AssessmentController extends Controller
         $pertanyaan_lisan    = Lisan::where('status', 1)->get();
         $pertanyaan_tertulis = Tertulis::where('status', 1)->get();
 
+        /**
+         * Untuk Rekaman
+         */
+        $rekaman = MemberCertificationRekaman::where('member_certification_id', $memberCertification->id)->first();
+
         return view('ManajemenAssessmen.AssessmentController.view-single-peserta', compact('memberCertification', 'direct', 'indirect', 'paap', 'ujian_detail', 'total_soal'
-            , 'pertanyaan_lisan', 'pertanyaan_tertulis', 'ujian_batch_id', 'perdana_peserta_id', 'soal_peserta_id'));
+            , 'pertanyaan_lisan', 'pertanyaan_tertulis', 'ujian_batch_id', 'perdana_peserta_id', 'soal_peserta_id', 'rekaman'));
     }
 
     /**
@@ -357,19 +362,38 @@ class AssessmentController extends Controller
         $arrTindakLanjut   = ['tindak_lanjut' => $tindak_lanjut, 'elemen' => $elemen_tindak_lanjut, 'kuk' => $kuk_tindak_lanjut];
         $arrKomentarAsesor = ['komentar_asesor' => $komentar_asesor, 'elemen' => $elemen_komentar_asesor, 'kuk' => $kuk_komentar_asesor];
 
+        /**
+         * Cek rekaman terlebih dahulu, jika sudah ada update data
+         */
+        $cek = MemberCertificationRekaman::where('member_certification_id', $memberCertification->id)->first();
+        if ($cek && $cek->count() > 0) {
+            /** Update Data */
+            $update = [
+                'rekomendasi_asesor' => $request->get('rekomendasi_asesor'),
+                'tindak_lanjut' => $arrTindakLanjut,
+                'komentar_asesor' => $arrKomentarAsesor,
+            ];
 
-        $rekaman = new MemberCertificationRekaman();
-
-        $rekaman->member_certification_id = $memberCertification->id;
-        $rekaman->rekomendasi_asesor      = $request->get('rekomendasi_asesor');
-        $rekaman->tindak_lanjut           = $arrTindakLanjut;
-        $rekaman->komentar_asesor         = $arrKomentarAsesor;
-
-        /** Proses Simpan */
-        if ($rekaman->save()) {
-            flash()->success('Berhasil menyimpan data Rekaman Asesmen');
+            if ($cek->update($update)) {
+                flash()->success('Berhasil mengubah data Rekaman Asesmen');
+            } else {
+                flash()->error('Gagal mengubah data Rekaman Asesmen');
+            }
         } else {
-            flash()->error('Gagal menyimpan data Rekaman Asesmen');
+            /** Simpan Data */
+            $rekaman = new MemberCertificationRekaman();
+
+            $rekaman->member_certification_id = $memberCertification->id;
+            $rekaman->rekomendasi_asesor      = $request->get('rekomendasi_asesor');
+            $rekaman->tindak_lanjut           = $arrTindakLanjut;
+            $rekaman->komentar_asesor         = $arrKomentarAsesor;
+
+            /** Proses Simpan */
+            if ($rekaman->save()) {
+                flash()->success('Berhasil menyimpan data Rekaman Asesmen');
+            } else {
+                flash()->error('Gagal menyimpan data Rekaman Asesmen');
+            }
         }
 
         return redirect()->route('asesmen.viewsinglepeserta', ['member_certification' => $memberCertification]);

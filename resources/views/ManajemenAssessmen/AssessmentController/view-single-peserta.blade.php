@@ -1151,7 +1151,7 @@
                                     <tr>
                                         <td>Keputusan Asesmen</td>
                                         <td>
-                                            <input name="rekomendasi_asesor" data-switch="true" id="is_kompeten" type="checkbox" checked data-on-text="Kompeten" data-handle-width="70" data-off-text="Belum Kompeten" data-on-color="brand" data-off-color="warning">
+                                            <input name="rekomendasi_asesor" data-switch="true" {{ is_object($rekaman) ? (($rekaman->rekomendasi_asesor == true) ? 'checked':''):'' }} id="is_kompeten" type="checkbox" checked data-on-text="Kompeten" data-handle-width="70" data-off-text="Belum Kompeten" data-on-color="brand" data-off-color="warning">
                                         </td>
                                     </tr>
                                     <tr>
@@ -1159,12 +1159,12 @@
                                         <td>
                                             <div class="kt-radio-inline">
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="tindak_lanjut" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 1) ? 'checked':''):'' }} value="1">
+                                                    <input type="radio" name="tindak_lanjut" {{ is_object($rekaman) ? (($rekaman->tindak_lanjut == 1) ? 'checked':''):'' }} value="1">
                                                     Seluruh Elemen Kompetensi/Kriteria Unjuk Kerja (KUK) yang diujikan telah tercapai
                                                     <span></span>
                                                 </label>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="tindak_lanjut" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 2) ? 'checked':''):'' }} value="2">
+                                                    <input type="radio" name="tindak_lanjut" {{ is_object($rekaman) ? (($rekaman->tindak_lanjut == 2) ? 'checked':''):'' }} value="2">
                                                     Terdapat Elemen Kompetensi/Kriteria Unjuk Kerja (KUK) yang diujikan belum tercapai Pada Elemen / Kriteria Unjuk Kerja   :
                                                     <span></span>
                                                 </label>
@@ -1253,12 +1253,12 @@
                                         <td>
                                             <div class="kt-radio-inline">
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="komentar_asesor" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 1) ? 'checked':''):'' }} value="1">
+                                                    <input type="radio" name="komentar_asesor" {{ is_object($rekaman) ? (($rekaman->komentar_asesor == 1) ? 'checked':''):'' }} value="1">
                                                     Tingkatkan kompetensi anda atau ambil kompetensi pada kualifikasi berikutnya
                                                     <span></span>
                                                 </label> <br>
                                                 <label class="kt-radio kt-radio--success">
-                                                    <input type="radio" name="komentar_asesor" {{ is_object($paap) ? (($paap->pa_tujuan_asesmen == 2) ? 'checked':''):'' }} value="2">
+                                                    <input type="radio" name="komentar_asesor" {{ is_object($rekaman) ? (($rekaman->komentar_asesor == 2) ? 'checked':''):'' }} value="2">
                                                     Perlu dilakukan asesmen ulang pada unit kompetensi :
                                                     <span></span>
                                                 </label>
